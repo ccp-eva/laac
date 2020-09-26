@@ -2,7 +2,7 @@
 
 * date (numeric): formatted in the following way: YYYYMMDD (e.g. 20180131)
 * time_point (numeric): number of times the task is being administered, counted from the beginning of data collection
-* group	(text): group/species name
+* group (text): group/species name
 * subject (text): subject name
 * sick_severity (numeric): 0 (not sick) to 7 (very sick)
 * test_day (text): has the subject participated in a test on the same day (yes/no)
