@@ -303,7 +303,9 @@ sd_task_summary <- sd_sample_task %>%
 
 
 
-meta_plot <- ggplot(aes(b_Intercept, relevel(time_point, "Pooled Effect", after = Inf),fill = task), 
+meta_plot
+
+ggplot(aes(b_Intercept, relevel(time_point, "Pooled Effect", after = Inf),fill = task), 
        data = forest_data_task) +
   facet_grid(measure~task, scales = "free",space = "free_y", shrink = T)+
   geom_vline(data = forest_data_task_summary%>%filter(time_point == "Pooled Effect"), aes(xintercept = b_Intercept), color = "grey", size = 1) +
@@ -673,14 +675,32 @@ model_waic <-  readRDS(file = "saves/model_waic.rds")
 ```{r}
 model_comp <- model_waic %>%left_join(model_weights)
 
-comp_plot <- ggplot(data = model_comp, aes(fill=model, y=weight, x = task, label = paste(waic%>%round(digits =1), se_waic%>%round(digits =1), sep = "\n")))+
-  geom_bar(position="stack", stat="identity", width = .5, alpha = .8)+
-  geom_text(size = 2, position = position_stack(vjust = 0.5))+
-  labs(x = "", y = "WAIC Model Weights")+
-  scale_fill_ptol(name = "Predictor")+
-  theme_minimal()+
-  coord_flip()+
-  theme(legend.position = "right")
+# comp_plot <- ggplot(data = model_comp, aes(fill=model, y=weight, x = task, label = paste(waic%>%round(digits =1), se_waic%>%round(digits =1), sep = "\n")))+
+#   geom_bar(position="stack", stat="identity", width = .5, alpha = .8)+
+#   geom_text(size = 2, position = position_stack(vjust = 0.5))+
+#   labs(x = "", y = "WAIC Model Weights")+
+#   scale_fill_ptol(name = "Predictor")+
+#   theme_minimal()+
+#   coord_flip()+
+#   theme(legend.position = "right")
+```
+
+```{r xtable, results="asis"}
+comp_tab <- model_comp%>%
+  select(task, model, waic, se_waic, weight)%>%
+  mutate_if(is.numeric, round, 2)%>%
+  mutate(Task = c("Causality", rep("",4),"Gaze following", rep("",4),"Inference", rep("",4),"Quantity", rep("",4),"Switching", rep("",4)))%>%
+  dplyr::rename(WAIC = waic,
+                SE = se_waic, 
+                Weight = weight,
+                Model = model)%>%
+  select(Task, Model, WAIC, SE, Weight)
+
+
+tab1 <- xtable::xtable(comp_tab, 
+                       caption = "This table prints across one column.")
+
+print(tab1, type="latex", comment = F, table.placement = "H")
 ```
 
 ```{r}
