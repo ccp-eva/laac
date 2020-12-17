@@ -5,7 +5,12 @@ csl: apa6.csl
 document-params: "10pt, letterpaper"
 
 author-information: > 
-    \author{{\large \bf Manuel Bohn (manuel\_bohn@eva.mpg.de), Johanna Eckert (johanna\_eckert@eva.mpg.de), Daniel Hanus (hanus@eva.mpg.de) & (haun@eva.mpg.de) Daniel Haun} \\ Department of Comparative Cultural Psychology, Max Planck Institute for Evolutionary Anthropology, Deutscher Platz 6, 04103 Leipzig, Germany}
+    \author{{\large \bf Manuel Bohn (manuel\_bohn@eva.mpg.de)}
+    \\ {\large \bf Johanna Eckert (johanna\_eckert@eva.mpg.de)}
+    \\ {\large \bf Daniel Hanus (hanus@eva.mpg.de)}
+    \\ {\large \bf Daniel Haun (haun@eva.mpg.de)}
+    \\ Department of Comparative Cultural Psychology, Max Planck Institute for Evolutionary Anthropology,
+    \\ Deutscher Platz 6, 04103 Leipzig, Germany}
 
 abstract: >
     Include no author information in the initial submission, to facilitate
@@ -113,34 +118,6 @@ A total of `r sum(participants$n)` great apes participated at least once in one 
 
 Apes were housed at the Wolfgang Köhler Primate Research Center, located at Zoo Leipzig in Leipzig, Germany. They live in groups, with one group per species and two chimpanzee groups. Research was noninvasive and strictly adhered to the legal requirements in Germany. Animal husbandry and research complied with the European Association of Zoos and Aquaria Minimum Standards for the Accommodation and Care of Animals in Zoos and Aquaria as well as the World Association of Zoos and Aquariums Ethical Guidelines for the Conduct of Research on Animals by Zoos and Aquariums. Participation was voluntary, all food was given in addition to the daily diet, and water was available ad libitum throughout the study. The study was approved by an internal ethics committee at the Max Planck Institute for Evolutionary Anthropology.
 
-## Design, Setup and Procedure
-
-We tested apes on the same five tasks every other week. The tasks were always presented in the same order and with the same positioning and counterbalancing (to keep conditions constant between individuals and across occasions). Apes were tested in familiar sleeping or observation rooms by a single experimenter. Whenever possible, they were tested individually. For each individual, the tasks at one time point were usually spread out across two consecutive days with causality and inference on day 1 and quantity and switching on day 2. Gaze following trials were run at the beginning and the end of each day. The basic setup comprised a sliding table positioned in front of a clear Plexiglas panel. The experimenter sat on a small stool and used an occluder to cover the sliding table.
-
-### Causality
-
-Two identical cups with a lid were placed left and right on the table. The experimenter covered the table with the occluder, retrieved a piece of food and hid it in one the cups outside the view of the participant. Next, they removed the occluder, picked up the baited up and shook it three times, which produced a rattling sound. Next the cup was put back in place, the sliding table pushed forwards and the participant made a choice by pointing to one of the cups. If they picked the baited cup, there choice was coded as correct and they received the reward. On each time point, participants received 12 trials. 
-
-### Inference by Exclusion
-
-Inference trials were identical to causality trials but instead of shaking the baited cup, the experimenter shook the empty cup. On each time point, participants received 12 trials. Inference trials were intermixed with causality trials.
-
-### Gaze Following
-
-The experimenter sat opposite the ape and handed over food at a constant pace. That is, the experimenter picked up a piece of food, briefly held it out in front of her face and then handed it over to the participant. At some point, the experimenter looked up (i.e. moving her head up) while holding up the food in front of her head. After 10s, the experimenter looked down again and handed over the food. We coded whether the subject looked up during the 10s interval. Participants received a total of 8 trials, spread out across the two test days.    
-
-### Quantity Discrimination
-
-Two small plates were presented left and right on the table. The experimenter placed 5 small food pieces on one plate and 7 in the other. Then they pushed the sliding table forwards, and the subject made a choice. We coded as correct when the subject chose the plate with the larger quantity. There were 12 trials per time point.   
-
-### Switching
-
-Three different looking cups (silver cup with handle, plastic ice cone, red cup without handle) were placed next to each other on the table. There were two condition, in the place condition, the experimenter hid a piece of food under one of the cups in full view of the participant. Next, the cups were covered by the occluder and the experimenter switched the position of two cups, while the reward remained in the same location. We coded as correct, if the participant chose the location where the food was hidden. Participants received four trials in this condition. The feature condition, followed the same procedure but now the experimenter also moved the reward when switching the cups. A correct choice in this condition meant choosing the location that the cup was moved to. Here, participants received 8 trials. The dependent measure of interest for this task was calculated as: `[proportion correct place] - (1 - [proportion correct feature])`.  Positive values in this score mean that participants were quickly able to switch between choosing based on location to choosing based on feature. High negative values suggest that participants did not switch strategies.   
-
-# Analysis and Results
-
-We combined the data from all species for the analysis because sample sizes for some species were too small to get representative estimates. However, we accounted for the nesting of subjects in species as part of the random effect structure of our models. All analysis were run in `R` [@R-base]. Bayesian multilevel models were implemented using the package `brms` [@R-brms_a] and used default priors. All models included random intercepts for participants nested within group and random slopes for trial (`trial|group/subject`). Data and analysis code can be found in the associate online repository (see below). 
-
 ```{r}
 # include metaanalytic estimate
 time_plot_1 <- data_task%>%
@@ -189,17 +166,45 @@ perf_plot <- ggplot()+
   scale_color_ptol(name = "Group")
 ```
 
-```{r 2-col-image, fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=2.5, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "This image spans both columns. And the caption text is limited to 0.8 of the width of the document."}
+```{r perfplot, fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=2.5, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "Results from the five cognitive tasks across time points. Black crosses show mean performance at each time point across species (with 95\\% CI). Colored dots show mean performance by species. Transparent grey lines connect individual performances across time points, with the size of the line corresponding to the number of participants. Dashed line shows the chance level whenever applicable. The panel for switching includes triangles and dots showing the mean performance in the two phases from which the overall performance score was computed (see main text)."}
 perf_plot
 ```
+
+## Design, Setup and Procedure
+
+We tested apes on the same five tasks every other week. The tasks were always presented in the same order and with the same positioning and counterbalancing (to keep conditions constant between individuals and across occasions). Apes were tested in familiar sleeping or observation rooms by a single experimenter. Whenever possible, they were tested individually. For each individual, the tasks at one time point were usually spread out across two consecutive days with causality and inference on day 1 and quantity and switching on day 2. Gaze following trials were run at the beginning and the end of each day. The basic setup comprised a sliding table positioned in front of a clear Plexiglas panel. The experimenter sat on a small stool and used an occluder to cover the sliding table.
+
+### Causality
+
+Two identical cups with a lid were placed left and right on the table. The experimenter covered the table with the occluder, retrieved a piece of food and hid it in one the cups outside the view of the participant. Next, they removed the occluder, picked up the baited up and shook it three times, which produced a rattling sound. Next the cup was put back in place, the sliding table pushed forwards and the participant made a choice by pointing to one of the cups. If they picked the baited cup, there choice was coded as correct and they received the reward. On each time point, participants received 12 trials. 
+
+### Inference by Exclusion
+
+Inference trials were identical to causality trials but instead of shaking the baited cup, the experimenter shook the empty cup. On each time point, participants received 12 trials. Inference trials were intermixed with causality trials.
+
+### Gaze Following
+
+The experimenter sat opposite the ape and handed over food at a constant pace. That is, the experimenter picked up a piece of food, briefly held it out in front of her face and then handed it over to the participant. At some point, the experimenter looked up (i.e. moving her head up) while holding up the food in front of her head. After 10s, the experimenter looked down again and handed over the food. We coded whether the subject looked up during the 10s interval. Participants received a total of 8 trials, spread out across the two test days.    
+
+### Quantity Discrimination
+
+Two small plates were presented left and right on the table. The experimenter placed 5 small food pieces on one plate and 7 in the other. Then they pushed the sliding table forwards, and the subject made a choice. We coded as correct when the subject chose the plate with the larger quantity. There were 12 trials per time point.   
+
+### Switching
+
+Three different looking cups (silver cup with handle, plastic ice cone, red cup without handle) were placed next to each other on the table. There were two condition, in the place condition, the experimenter hid a piece of food under one of the cups in full view of the participant. Next, the cups were covered by the occluder and the experimenter switched the position of two cups, while the reward remained in the same location. We coded as correct, if the participant chose the location where the food was hidden. Participants received four trials in this condition. The feature condition, followed the same procedure but now the experimenter also moved the reward when switching the cups. A correct choice in this condition meant choosing the location that the cup was moved to. Here, participants received 8 trials. The dependent measure of interest for this task was calculated as: `[proportion correct place] - (1 - [proportion correct feature])`.  Positive values in this score mean that participants were quickly able to switch between choosing based on location to choosing based on feature. High negative values suggest that participants did not switch strategies.   
+
+# Analysis and Results
+
+We combined the data from all species for the analysis because sample sizes for some species were too small to get representative estimates. However, we accounted for the nesting of subjects in species as part of the random effect structure of our models. All analysis were run in `R` [@R-base]. Bayesian multilevel models were implemented using the package `brms` [@R-brms_a] and used default priors. All models included random intercepts for participants nested within group and random slopes for trial (`trial|group/subject`). Data and analysis code can be found in the associate online repository (see below). 
 
 ## Stability
 
 First we looked at group level stability in performance. That is, we asked how much performance varied across time points in the different tasks. For this analysis, we ignored the temporal order of the different time points and treated them as replications of the same experiment (i.e. as a factor instead of a numerical variable). As such, we asked a meta-analytic question: how much variation is there between different instances of the same experiment. To answer this, we fitted a mixed model with a random intercept term for time point to the data from each task^[We modeled the trial by trial data using a binomial distribution in a logistic GLMM for all tasks, except switching. Here we modeled the score (by time point) as a truncated normal distribution]. As part of each model, we estimated a standard deviation of the random intercept term ($\tau$), which reflects the variation between time points. 
 
-Figure XX visualizes performance across time points. The bottom row, gives the intercept estimate for the average effect across time points (with 95 % highest density interval (HDI)). For causality, inference and quantity, we can evaluate group level performance by comparing it to chance (50% correct = intercept of 0 in link space). Group level performance was reliably above chance for causality and quantity but at chance for quantity. For gaze following, there is no such reference level and we can simply say that at at least some individuals of all species followed the experimenter's gaze. The switching score was consistently negative, suggesting that - on a group level - apes did not switch strategies.    
+Figure \ref{fig:perfplot} visualizes performance across time points. For causality, inference and quantity, we can evaluate group level performance by comparing it to chance (50% correct = intercept of 0 in link space). Group level performance was reliably above chance for causality and quantity but at chance for quantity. For gaze following, there is no such reference level and we can simply say that at at least some individuals of all species followed the experimenter's gaze. The switching score was consistently negative, suggesting that - on a group level - apes did not switch strategies.    
 
-Figure XX shows the posterior distribution of $\tau$ for each task. While performance was very stable for inference, quantity and switching ($\tau$ very close to 0), performance was slightly more variable for causality and varied substantially for gaze following. For causality, variation did not seem to follow a clear temporal pattern. On the other hand, for gaze following, there seems to be a downward trend with apes (as a group) becoming less likely to follow the experimenter's gaze. We explore this temporal pattern in more detail below. Taken together, we may say that 4 out of 5 measures yield stable measures of group level performance.
+Figure \ref{fig:metaplot} shows the posterior distribution of $\tau$ for each task. While performance was very stable for inference, quantity and switching ($\tau$ very close to 0), performance was slightly more variable for causality and varied substantially for gaze following. For causality, variation did not seem to follow a clear temporal pattern. On the other hand, for gaze following, there seems to be a downward trend with apes (as a group) becoming less likely to follow the experimenter's gaze. We explore this temporal pattern in more detail below. Taken together, we may say that 4 out of 5 measures yield stable measures of group level performance.
 
 ```{r}
 # bm_stab_data <- raw_data%>%
@@ -380,13 +385,13 @@ p_meta <- meta_plot + insets
 ```
 
 
-```{r 2-col-image3, fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=1.5, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "This image spans both columns. And the caption text is limited to 0.8 of the width of the document."}
+```{r metaplot, fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=1.5, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "Posterior distributions for Tau from the meta-analytic models for each task. Numbers denote mean and 95\\% HDI for Tau. Insets show the posterior distribution for the model intercept estimate at each time point."}
 p_meta
 ```
 
 ## Reliability 
 
-Next, we asked how stable performance is on an individual level. This question also relates to the reliability of each task - how well suited it is to capture differences between individuals. In general, reliability is high if individuals are consistently ranked across measurement instances. One way to assess reliability is to correlate performance from two time points (re-test reliability). Because we had multiple time points, we computed pairwise correlations for all combinations of time points (total of 28 unique correlations per task). This results in a distribution of correlations, which we visualize in Figure XX. Results suggest good re-test reliability for gaze following, causality and inference, variable reliability for quantity and poor reliability for switching. This pattern is interesting in light of the group level performance we reported above: stable performance on a group level does not imply stable individual differences. We come back to this point in the discussion. 
+Next, we asked how stable performance is on an individual level. This question also relates to the reliability of each task - how well suited it is to capture differences between individuals. In general, reliability is high if individuals are consistently ranked across measurement instances. One way to assess reliability is to correlate performance from two time points (re-test reliability). Because we had multiple time points, we computed pairwise correlations for all combinations of time points (total of 28 unique correlations per task). This results in a distribution of correlations, which we visualize in Figure \ref{fig:relplot}. Results suggest good re-test reliability for gaze following, causality and inference, variable reliability for quantity and poor reliability for switching. This pattern is interesting in light of the group level performance we reported above: stable performance on a group level does not imply stable individual differences. We come back to this point in the discussion. 
 
 ```{r}
 cor_data <- data_task%>%
@@ -433,7 +438,7 @@ rel_plot <- ggplot(data = cor_data, aes(x = value , y = task ,fill = task)) +
   scale_fill_colorblind()
 ```
 
-```{r plot, fig.env="figure", fig.pos = "H", fig.align = "center", fig.width=3.4, fig.height=2, fig.cap = "R plot" }
+```{r relplot, fig.env="figure", fig.pos = "H", fig.align = "center", fig.width=3.4, fig.height=2, fig.cap = "Distribution of correlations between time points for each task. Dots represent the mean of the distribution with 95\\% HDI. Numbers denote mean and 95\\% HDI." }
 
 rel_plot
 
@@ -445,7 +450,7 @@ In the final set of analysis, we investigated if variation in cognitive performa
 
 For each task, we ran the same five models^[We used the same response distributions as in the stability analysis.]: A baseline model predicting performance by time point (numerical) and trial as well as four models, each with one of the predictors (age, sex, rank and rearing history) added to the baseline model. We did not investigate any interaction models (interactions among the predictors or with time point) because we had no specific hypothesis in that direction. We used Bayesian model comparison based on WAIC (widely applicable information criterion) scores and weights [@rethinking]. This comparison tells us which of the models considered makes the best out-of-sample predictions. If the model with one predictor (e.g. age) would be consistently assigned the highest weight across tasks, we would conclude that cognitive performance is best predicted by participants' age.
 
-Table XX gives WAIC scores and weights for each model and task. Figure XX shows the posterior distribution of the test predictors (as well as for time point). The baseline model was ranked highest across tasks (first or second for all tasks), suggesting that none of the test predictors was consistently related to performance. Within the baseline model, the estimate for time point was close to 0 for all tasks except gaze following, for which it was largely negative (reflecting the downward trend we saw in Figure XX).
+Table \ref{tab:tab1} gives WAIC scores and weights for each model and task. Figure \ref{fig:predlplot} shows the posterior distribution of the test predictors (as well as for time point). The baseline model was ranked highest across tasks (first or second for all tasks), suggesting that none of the test predictors was consistently related to performance. Within the baseline model, the estimate for time point was close to 0 for all tasks except gaze following, for which it was largely negative (reflecting the downward trend we saw in Figure \ref{fig:perfplot}).
 
 For gaze following, the model including sex as predictor was ranked highest: males were somewhat less likely to follow the experimenter's gaze. For quantity and witching, the rank model was rated highest with lower ranking individuals showing better quantity discrimination or switching abilities. In the case of switching, the model results should be interpreted with caution. The low re-test correlations suggests that the task does not reliably measure the cognitive ability in question. Thus, the variation in performance that the model tries to explain might not have a cognitive origin and could equally well be due to factors we did not capture.  
 
@@ -736,7 +741,7 @@ model_comp <- model_waic %>%left_join(model_weights)
 #   theme(legend.position = "right")
 ```
 
-```{r xtable, results="asis"}
+```{r tab1, results="asis"}
 comp_tab <- model_comp%>%
   select(task, model, waic, se_waic, weight)%>%
   mutate_if(is.numeric, round, 2)%>%
@@ -749,7 +754,7 @@ comp_tab <- model_comp%>%
 
 
 tab1 <- xtable::xtable(comp_tab, 
-                       caption = "This table prints across one column.")
+                       caption = "WAIC Scores and weights for each predictor model and task.")
 
 print(tab1, type="latex", comment = F, table.placement = "H")
 ```
@@ -826,19 +831,18 @@ pred_plot <-  ggplot(data = pred, aes(x = value , y = predictor ,fill = task)) +
 #ggsave(file = "predictors.png", width = 10, height = 3, scale = 1.5)
 ```
 
-```{r 2-col-image2, fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=2, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "This image spans both columns. And the caption text is limited to 0.8 of the width of the document."}
-#ggarrange(comp_plot,pred_plot, nrow = 2, ncol = 1, labels = c("A","B"))
+```{r predplot, fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=2, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "Posterior distribution for the test predictors for each task. Dots represent the mean of the distribution with 95\\% HDI. Samples for time point are drawn from the baseline model. For all models except switching, the estimates are given in link space."}
 pred_plot
 ```
 
 
 # Discussion 
 
-We tested the same sample of great apes repeatedly on five cognitive tasks. This design allowed us to address some pressing questions in primate cognition research: How stable is group level performance in cognitive tasks? How reliable are the results of these taks? How much is performance influenced by individual characteristics? Below we discuss the results in light of these questions. 
+We tested the same sample of great apes repeatedly on five cognitive tasks. This design allowed us to address some pressing questions in primate cognition research: How stable is group level performance in cognitive tasks? How reliable are the results of these tasks? How much is performance influenced by individual characteristics? Below we discuss the results in light of these questions. 
 
 Performance was relatively stable for all tasks except gaze following. This result is somewhat surprising given that individuals were differentialy reinforced in all tasks - except gaze following. Furthermore, counterbalancing and positioning were exactly the same at each time point. Together, this creates a scenario that would be ideal for learning effects. How can we interpret this lack of improvement? One interpretation could be that the different routes to solving the task constitute incompatible information sources for great apes. For example, in the case of causality, apes could solve the task by spontaneously inferring that the sound was caused by the food. Alternatively, they could learn that whenever they hear a rattling sound, food is under the cup the experimenter touches. In principle, these two information sources could easily be integrated and supplement one another - resulting in an improvement of performance over time. The absence of improvement could mean that apes rely on spontaneous inferences alone. However, many alternative explanation are possible. For example, many of the apes in Leipzig Zoo have had years of experience with the kind of tasks we included in the study. Thus, the absence of improvement might indicated that they already reached an individual performance maximum. the continuation of this project might help to shed light on these questions. For now, we may conclude that short term improvements based on learned arbitrary relations are unlikely to occur in great apes. In support of this interpretation, when researchers want primates to learn arbitrary relations, it takes a very long time and an elaborate training regime [e.g. @allritz2016chimpanzees; @vasconcelos2008transitive].   
 
-Three out of five tasks showed acceptable levels of reliability. Importantly, reliability is independent from group level performance (leaving aside floor and ceiling effects) [see @hedge2018reliability]. Here, we see such a pattern for inference: Group level performance was consistently at chance level for every time point. On a group level, one would conclude that great apes did not make the inference in question. However, the tasks was highly reliable, suggesting that it accurately captured individual differences. Together with the observation that some individuals consistently performed at ceiling (see Figure XX), this suggests that the task is well suited to measure inferential abilities on a *individual* level. The opposite pattern holds for quantity. Here, group level performance was consistently above chance but individual differences were not very consistent. This suggests that variation was due to sources other than systematic differences between individuals. This phenomenon is quite common in the adult cognitive literature [hedge2018reliability] and arises when experimental tasks (optimized for low variance in measurement) are used to study individual differences (requiring high variance in measurement). Taken together, we may recommend that researchers select their tasks depending on the kind of questions they want to answer. When planning to study individual differences by relating measures to one another, researchers are well advised to first study the reliability of these measures. Even though this takes considerable time and effort, it increases to the chances of finding effects.  
+Three out of five tasks showed acceptable levels of reliability. Importantly, reliability is independent from group level performance (leaving aside floor and ceiling effects) [see @hedge2018reliability]. Here, we see such a pattern for inference: Group level performance was consistently at chance level for every time point. On a group level, one would conclude that great apes did not make the inference in question. However, the tasks was highly reliable, suggesting that it accurately captured individual differences. Together with the observation that some individuals consistently performed at ceiling (see grey transparent lines in Figure \ref{fig:perfplot}), this suggests that the task is well suited to measure inferential abilities on a *individual* level. The opposite pattern holds for quantity. Here, group level performance was consistently above chance but individual differences were not very consistent. This suggests that variation was due to sources other than systematic differences between individuals. This phenomenon is quite common in the adult cognitive literature [hedge2018reliability] and arises when experimental tasks (optimized for low variance in measurement) are used to study individual differences (requiring high variance in measurement). Taken together, we may recommend that researchers select their tasks depending on the kind of questions they want to answer. When planning to study individual differences by relating measures to one another, researchers are well advised to first study the reliability of these measures. Even though this takes considerable time and effort, it increases to the chances of finding effects.  
 
 We did not find that one of the individual level characteristics (age, sex, rank or rearing history) was consistently related to performance across tasks. A baseline model, predicting performance by time variables alone was, on average, rated highest in the different model comparisons. The model including rank was rated highest for two tasks (quantity and switching). However, in the case of switching, this should be interpreted with caution in the light of low reliability of the task (see results section). Moving forward, we will explore additional predictors, to see if we do find some that are related to cognitive performance more broadly. For now, we may conclude that researchers should carefully select  predictors based on theoretical considerations. Including them as a default or to control for potential effects might make models unnecessarily complex -- and might not even have the desired effect [see @westfall2016statistically].
 
