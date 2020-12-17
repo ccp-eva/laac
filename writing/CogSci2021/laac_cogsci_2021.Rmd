@@ -19,9 +19,9 @@ abstract: >
     shown below.
     
 keywords: >
-    Add your choice of indexing terms or keywords; kindly use a semi-colon; between each term.
+    Primate Cognition, Stability, Reliability, Individual Differences
     
-#output: cogsci2016::cogsci_paper
+output: cogsci2016::cogsci_paper
 final-submission: \cogscifinalcopy
 ---
 
