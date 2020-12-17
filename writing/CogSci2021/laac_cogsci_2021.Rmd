@@ -108,7 +108,7 @@ Apes were housed at the Wolfgang Köhler Primate Research Center, located at Zoo
 
 ## Design, Setup and Procedure
 
-We tested apes on the same five tasks every other week. The tasks were always presented in the same order and with the same counterbalancing. Apes were tested in familiar sleeping or observation rooms by a single experimenter. Whenever possible, they were tested individually. For each individual, the tasks at one time point were usually spread out across two consecutive days with causality and inference on day 1 and quantity and switching on day 2. Gaze following trials were run at the beginning and the end of each day. The basic setup comprised a sliding table positioned in front of a clear Plexiglas panel. The experimenter sat on a small stool and used an occluder to cover the sliding table.
+We tested apes on the same five tasks every other week. The tasks were always presented in the same order and with the same positioning and counterbalancing (to keep conditions constant between individuals and across occasions). Apes were tested in familiar sleeping or observation rooms by a single experimenter. Whenever possible, they were tested individually. For each individual, the tasks at one time point were usually spread out across two consecutive days with causality and inference on day 1 and quantity and switching on day 2. Gaze following trials were run at the beginning and the end of each day. The basic setup comprised a sliding table positioned in front of a clear Plexiglas panel. The experimenter sat on a small stool and used an occluder to cover the sliding table.
 
 ### Causality
 
@@ -132,7 +132,7 @@ Three different looking cups (silver cup with handle, plastic ice cone, red cup 
 
 # Analysis and Results
 
-We combined the data from all species for the analysis because sample sizes for some species were too small to get representative estimates. However, we accounted for the nesting of subjects in species as part of the random effect structure of our models. All analysis were run in `R`. Bayesian multilevel models were implemented using the package `brms` and used default priors.    
+We combined the data from all species for the analysis because sample sizes for some species were too small to get representative estimates. However, we accounted for the nesting of subjects in species as part of the random effect structure of our models. All analysis were run in `R` [@R-base]. Bayesian multilevel models were implemented using the package `brms` [@R-brms_a] and used default priors.    
 
 ```{r}
 # include metaanalytic estimate
@@ -182,7 +182,7 @@ perf_plot <- ggplot()+
   scale_color_ptol(name = "Group")
 ```
 
-```{r 2-col-image, fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=2, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "This image spans both columns. And the caption text is limited to 0.8 of the width of the document."}
+```{r 2-col-image, fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=2.5, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "This image spans both columns. And the caption text is limited to 0.8 of the width of the document."}
 perf_plot
 ```
 
@@ -195,113 +195,129 @@ Figure XX visualizes performance across time points. The bottom row, gives the i
 Figure XX shows the posterior distribution of $\tau$ for each task. While performance was very stable for inference, quantity and switching ($\tau$ very close to 0), performance was slightly more variable for causality and varied substantially for gaze following. For causality, variation did not seem to follow a clear temporal pattern. On the other hand, for gaze following, there seems to be a downward trend with apes (as a group) becoming less likely to follow the experimenter's gaze. We explore this temporal pattern in more detail below. Taken together, we may say that 4 out of 5 measures yield stable measures of group level performance.
 
 ```{r}
-bm_stab_data <- raw_data%>%
-  mutate(trial_time_point = scale(trial_time_point),
-         time_point = factor(time_point))%>%
-  group_split(task, .keep = TRUE)%>%
-  as.list()
-
-# bm_stab <- brm_multiple(code ~  trial_time_point + (trial_time_point|group/subject) + (1|time_point),
-#             family = bernoulli(),
-#             data = bm_stab_data,
-#             combine = F,
-#             control = list(adapt_delta = 0.99, max_treedepth = 20),
-#             iter = 5000, cores = 3, chains = 3)
+# bm_stab_data <- raw_data%>%
+#   mutate(trial_time_point = scale(trial_time_point),
+#          time_point = factor(time_point))%>%
+#   group_split(task, .keep = TRUE)%>%
+#   as.list()
 # 
-# saveRDS(bm_stab,file = "saves/bm_stab.rds")
-
-bm_stab <- readRDS(file = "saves/bm_stab.rds")
-
-bm_stab_switch_data <- data_task%>%
-  filter(task == "switching")%>%
-  mutate(time_point = factor(time_point))%>%
-  filter(!is.na(performance))
-
-# bm_stab_switch <- brm(performance | trunc(lb=-1,ub=1) ~  1 + (1|group/subject) + (1|time_point),
-#                       family = gaussian(),
-#                       data = bm_stab_switch_data,
-#                       control = list(adapt_delta = 0.99, max_treedepth = 20),
-#                       iter = 5000, cores = 3, chains = 3)
+# # bm_stab <- brm_multiple(code ~  trial_time_point + (trial_time_point|group/subject) + (1|time_point),
+# #             family = bernoulli(),
+# #             data = bm_stab_data,
+# #             combine = F,
+# #             control = list(adapt_delta = 0.99, max_treedepth = 20),
+# #             iter = 5000, cores = 3, chains = 3)
+# # 
+# # saveRDS(bm_stab,file = "saves/bm_stab.rds")
 # 
-# saveRDS(bm_stab_switch,file = "saves/bm_stab_switch.rds")
+# bm_stab <- readRDS(file = "saves/bm_stab.rds")
 # 
-bm_stab_switch <- readRDS(file = "saves/bm_stab_switch.rds")
+# bm_stab_switch_data <- data_task%>%
+#   filter(task == "switching")%>%
+#   mutate(time_point = factor(time_point))%>%
+#   filter(!is.na(performance))
+# 
+# # bm_stab_switch <- brm(performance | trunc(lb=-1,ub=1) ~  1 + (1|group/subject) + (1|time_point),
+# #                       family = gaussian(),
+# #                       data = bm_stab_switch_data,
+# #                       control = list(adapt_delta = 0.99, max_treedepth = 20),
+# #                       iter = 5000, cores = 3, chains = 3)
+# # 
+# # saveRDS(bm_stab_switch,file = "saves/bm_stab_switch.rds")
+# # 
+# bm_stab_switch <- readRDS(file = "saves/bm_stab_switch.rds")
+# 
+# post_sample_task <- bind_rows(
+# posterior_samples(bm_stab[1], pars = c("b_Intercept","r_time_point.1.Intercept.","r_time_point.2.Intercept.","r_time_point.3.Intercept.","r_time_point.4.Intercept.","r_time_point.5.Intercept.","r_time_point.6.Intercept.","r_time_point.7.Intercept.","r_time_point.8.Intercept."))%>%
+#   gather(time_point, tp_int, -b_Intercept)%>%
+#   mutate(b_Intercept = tp_int + b_Intercept, 
+#          time_point = parse_number(str_remove(time_point,"\\.")))%>%mutate(task = "causality"),
+# 
+# posterior_samples(bm_stab[2], pars = c("b_Intercept","r_time_point.1.Intercept.","r_time_point.2.Intercept.","r_time_point.3.Intercept.","r_time_point.4.Intercept.","r_time_point.5.Intercept.","r_time_point.6.Intercept.","r_time_point.7.Intercept.","r_time_point.8.Intercept."))%>%
+#   gather(time_point, tp_int, -b_Intercept)%>%
+#   mutate(b_Intercept = tp_int + b_Intercept, 
+#          time_point = parse_number(str_remove(time_point,"\\.")))%>%mutate(task = "gaze_following"),
+# 
+# posterior_samples(bm_stab[3], pars = c("b_Intercept","r_time_point.1.Intercept.","r_time_point.2.Intercept.","r_time_point.3.Intercept.","r_time_point.4.Intercept.","r_time_point.5.Intercept.","r_time_point.6.Intercept.","r_time_point.7.Intercept.","r_time_point.8.Intercept."))%>%
+#   gather(time_point, tp_int, -b_Intercept)%>%
+#   mutate(b_Intercept = tp_int + b_Intercept, 
+#          time_point = parse_number(str_remove(time_point,"\\.")))%>%mutate(task = "inference"),
+# 
+# posterior_samples(bm_stab[4], pars = c("b_Intercept","r_time_point.1.Intercept.","r_time_point.2.Intercept.","r_time_point.3.Intercept.","r_time_point.4.Intercept.","r_time_point.5.Intercept.","r_time_point.6.Intercept.","r_time_point.7.Intercept.","r_time_point.8.Intercept."))%>%
+#   gather(time_point, tp_int, -b_Intercept)%>%
+#   mutate(b_Intercept = tp_int + b_Intercept, 
+#          time_point = parse_number(str_remove(time_point,"\\.")))%>%mutate(task = "quantity"),
+# 
+# posterior_samples(bm_stab_switch, pars = c("b_Intercept","r_time_point.1.Intercept.","r_time_point.2.Intercept.","r_time_point.3.Intercept.","r_time_point.4.Intercept.","r_time_point.5.Intercept.","r_time_point.6.Intercept.","r_time_point.7.Intercept.","r_time_point.8.Intercept."))%>%
+#   gather(time_point, tp_int, -b_Intercept)%>%
+#   mutate(b_Intercept = tp_int + b_Intercept, 
+#          time_point = parse_number(str_remove(time_point,"\\.")))%>%mutate(task = "switching")
+# )%>%
+#   group_by(task,time_point)%>%
+#   filter(!is.na(time_point))%>%
+#   mutate(mean = mean(b_Intercept),
+#          #time_point = paste("Time point ", time_point, sep = "")
+#          )%>%
+#   mutate(time_point = factor(time_point))
+# 
+# pooled_effect_task <- bind_rows(
+# posterior_samples(bm_stab[1])%>%select(b_Intercept)%>%mutate(task = "causality", time_point = "Pooled Effect"),
+# posterior_samples(bm_stab[2])%>%select(b_Intercept)%>%mutate(task = "gaze_following", time_point = "Pooled Effect"),
+# posterior_samples(bm_stab[3])%>%select(b_Intercept)%>%mutate(task = "inference", time_point = "Pooled Effect"),
+# posterior_samples(bm_stab[4])%>%select(b_Intercept)%>%mutate(task = "quantity", time_point = "Pooled Effect"),
+# posterior_samples(bm_stab_switch)%>%select(b_Intercept)%>%mutate(task = "switching", time_point = "Pooled Effect")
+# )%>%
+#   mutate(time_point = factor(time_point))
+# 
+# forest_data_task <- bind_rows(post_sample_task, pooled_effect_task)%>%
+#   mutate(time_point = factor(time_point),
+#          measure = "Model Intercept",
+#          task = factor(task))%>%
+#   filter(task != "switching_place")
+# 
+# saveRDS(forest_data_task,file = "saves/forest_data_task.rds")
+ 
+forest_data_task <- readRDS(file = "saves/forest_data_task.rds")
 
-post_sample_task <- bind_rows(
-posterior_samples(bm_stab[1], pars = c("b_Intercept","r_time_point.1.Intercept.","r_time_point.2.Intercept.","r_time_point.3.Intercept.","r_time_point.4.Intercept.","r_time_point.5.Intercept.","r_time_point.6.Intercept.","r_time_point.7.Intercept.","r_time_point.8.Intercept."))%>%
-  gather(time_point, tp_int, -b_Intercept)%>%
-  mutate(b_Intercept = tp_int + b_Intercept, 
-         time_point = parse_number(str_remove(time_point,"\\.")))%>%mutate(task = "causality"),
-
-posterior_samples(bm_stab[2], pars = c("b_Intercept","r_time_point.1.Intercept.","r_time_point.2.Intercept.","r_time_point.3.Intercept.","r_time_point.4.Intercept.","r_time_point.5.Intercept.","r_time_point.6.Intercept.","r_time_point.7.Intercept.","r_time_point.8.Intercept."))%>%
-  gather(time_point, tp_int, -b_Intercept)%>%
-  mutate(b_Intercept = tp_int + b_Intercept, 
-         time_point = parse_number(str_remove(time_point,"\\.")))%>%mutate(task = "gaze_following"),
-
-posterior_samples(bm_stab[3], pars = c("b_Intercept","r_time_point.1.Intercept.","r_time_point.2.Intercept.","r_time_point.3.Intercept.","r_time_point.4.Intercept.","r_time_point.5.Intercept.","r_time_point.6.Intercept.","r_time_point.7.Intercept.","r_time_point.8.Intercept."))%>%
-  gather(time_point, tp_int, -b_Intercept)%>%
-  mutate(b_Intercept = tp_int + b_Intercept, 
-         time_point = parse_number(str_remove(time_point,"\\.")))%>%mutate(task = "inference"),
-
-posterior_samples(bm_stab[4], pars = c("b_Intercept","r_time_point.1.Intercept.","r_time_point.2.Intercept.","r_time_point.3.Intercept.","r_time_point.4.Intercept.","r_time_point.5.Intercept.","r_time_point.6.Intercept.","r_time_point.7.Intercept.","r_time_point.8.Intercept."))%>%
-  gather(time_point, tp_int, -b_Intercept)%>%
-  mutate(b_Intercept = tp_int + b_Intercept, 
-         time_point = parse_number(str_remove(time_point,"\\.")))%>%mutate(task = "quantity"),
-
-posterior_samples(bm_stab_switch, pars = c("b_Intercept","r_time_point.1.Intercept.","r_time_point.2.Intercept.","r_time_point.3.Intercept.","r_time_point.4.Intercept.","r_time_point.5.Intercept.","r_time_point.6.Intercept.","r_time_point.7.Intercept.","r_time_point.8.Intercept."))%>%
-  gather(time_point, tp_int, -b_Intercept)%>%
-  mutate(b_Intercept = tp_int + b_Intercept, 
-         time_point = parse_number(str_remove(time_point,"\\.")))%>%mutate(task = "switching")
-)%>%
-  group_by(task,time_point)%>%
-  filter(!is.na(time_point))%>%
-  mutate(mean = mean(b_Intercept),
-         #time_point = paste("Time point ", time_point, sep = "")
-         )%>%
-  mutate(time_point = factor(time_point))
-
-pooled_effect_task <- bind_rows(
-posterior_samples(bm_stab[1])%>%select(b_Intercept)%>%mutate(task = "causality", time_point = "Pooled Effect"),
-posterior_samples(bm_stab[2])%>%select(b_Intercept)%>%mutate(task = "gaze_following", time_point = "Pooled Effect"),
-posterior_samples(bm_stab[3])%>%select(b_Intercept)%>%mutate(task = "inference", time_point = "Pooled Effect"),
-posterior_samples(bm_stab[4])%>%select(b_Intercept)%>%mutate(task = "quantity", time_point = "Pooled Effect"),
-posterior_samples(bm_stab_switch)%>%select(b_Intercept)%>%mutate(task = "switching", time_point = "Pooled Effect")
-)%>%
-  mutate(time_point = factor(time_point))
-
-forest_data_task <- bind_rows(post_sample_task, pooled_effect_task)%>%
-  mutate(time_point = factor(time_point),
-         measure = "Model Intercept",
-         task = factor(task))%>%
-  filter(task != "switching_place")
-
-forest_data_task_summary <- forest_data_task %>%
-  group_by(task,measure, time_point) %>% 
-  mean_hdci(b_Intercept)
-
+# forest_data_task_summary <- forest_data_task %>%
+#   group_by(task,measure, time_point) %>% 
+#   mean_hdci(b_Intercept)
+# 
+# saveRDS(forest_data_task_summary,file = "saves/forest_data_task_summary.rds")
+#  
+forest_data_task_summary <- readRDS(file = "saves/forest_data_task_summary.rds")
 
 ## sd across tasks
 
-sd_sample_task <- bind_rows(
-  posterior_samples(bm_stab[1], pars = c("sd_time_point__Intercept"))%>%mutate(task = "causality")%>%
-    mutate(tau_squared = sd_time_point__Intercept^2),
-  posterior_samples(bm_stab[2], pars = c("sd_time_point__Intercept"))%>%mutate(task = "gaze_following")%>%
-    mutate(tau_squared = sd_time_point__Intercept^2),
-  posterior_samples(bm_stab[3], pars = c("sd_time_point__Intercept"))%>%mutate(task = "inference")%>%
-    mutate(tau_squared = sd_time_point__Intercept^2),
-  posterior_samples(bm_stab[4], pars = c("sd_time_point__Intercept"))%>%mutate(task = "quantity")%>%
-    mutate(tau_squared = sd_time_point__Intercept^2),
-  posterior_samples(bm_stab_switch, pars = c("sd_time_point__Intercept"))%>%mutate(task = "switching")%>%
-    mutate(tau_squared = sd_time_point__Intercept^2)
-)%>%
-  mutate(time_point = "Tau")%>%
-  filter(task != "switching_place")%>%
-  mutate(time_point = factor(time_point),
-         measure = "Heterogeneity")
+# sd_sample_task <- bind_rows(
+#   posterior_samples(bm_stab[1], pars = c("sd_time_point__Intercept"))%>%mutate(task = "causality")%>%
+#     mutate(tau_squared = sd_time_point__Intercept^2),
+#   posterior_samples(bm_stab[2], pars = c("sd_time_point__Intercept"))%>%mutate(task = "gaze_following")%>%
+#     mutate(tau_squared = sd_time_point__Intercept^2),
+#   posterior_samples(bm_stab[3], pars = c("sd_time_point__Intercept"))%>%mutate(task = "inference")%>%
+#     mutate(tau_squared = sd_time_point__Intercept^2),
+#   posterior_samples(bm_stab[4], pars = c("sd_time_point__Intercept"))%>%mutate(task = "quantity")%>%
+#     mutate(tau_squared = sd_time_point__Intercept^2),
+#   posterior_samples(bm_stab_switch, pars = c("sd_time_point__Intercept"))%>%mutate(task = "switching")%>%
+#     mutate(tau_squared = sd_time_point__Intercept^2)
+# )%>%
+#   mutate(time_point = "Tau")%>%
+#   filter(task != "switching_place")%>%
+#   mutate(time_point = factor(time_point),
+#          measure = "Heterogeneity")
+# 
+# saveRDS(sd_sample_task,file = "saves/sd_sample_task.rds")
+ 
+sd_sample_task <- readRDS(file = "saves/sd_sample_task.rds")
 
-sd_task_summary <- sd_sample_task %>%
-  group_by(measure, time_point,task) %>% 
-  mean_hdci(sd_time_point__Intercept,tau_squared)
+# sd_task_summary <- sd_sample_task %>%
+#   group_by(measure, time_point,task) %>% 
+#   mean_hdci(sd_time_point__Intercept,tau_squared)
+# 
+# 
+# saveRDS(sd_task_summary,file = "saves/sd_task_summary.rds")
+ 
+sd_task_summary <- readRDS(file = "saves/sd_task_summary.rds")
 
 
 annotation_custom2 <- function (grob, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf, data) 
@@ -322,7 +338,7 @@ get_inset <- function(df){
                       alpha = 0.25) +
   labs(x = element_blank(),
        y = element_blank()) +
-  theme_few(base_size = 10)+
+  theme_few(base_size = 6)+
   guides(fill = F)+
   scale_fill_colorblind()+
   theme(axis.text.y = element_blank(),
@@ -335,7 +351,7 @@ insets <- forest_data_task %>%
   purrr::map(~annotation_custom2(
     grob = ggplotGrob(get_inset(.) + scale_fill_colorblind()), 
     data = data.frame(task=unique(.$task)),
-    xmin = 0.2, xmax = 1.8, ymin = 5, ymax = 15)
+    xmin = 0.2, xmax = 1.8, ymin = 5, ymax = 17.5)
   )
 
 
@@ -344,12 +360,12 @@ meta_plot <- ggplot(aes(b_Intercept, fill = task),
   facet_grid(~task, scales = "free_y")+
   geom_vline(xintercept = 0, color = "black", size = .5, lty = 2) +
   geom_text(data = mutate_if(sd_task_summary, is.numeric, round, 2),
-     aes(label = glue("{sd_time_point__Intercept} [{sd_time_point__Intercept.lower}, {sd_time_point__Intercept.upper}]"), x= Inf, y = 1), hjust = "inward", size = 4)+
+     aes(label = glue("{sd_time_point__Intercept} [{sd_time_point__Intercept.lower}, {sd_time_point__Intercept.upper}]"), x= Inf, y = 1), hjust = "inward", size = 2)+
   geom_density(data = sd_sample_task, aes(sd_time_point__Intercept ,fill = task),col = "black", alpha = 0.5) +
   xlim(0,2)+
   labs(x = element_blank(),
        y = element_blank()) +
-  theme_minimal(base_size = 10)+
+  theme_minimal(base_size = 8)+
   guides(fill = F)+
   scale_fill_colorblind()
 
@@ -420,139 +436,138 @@ rel_plot
 
 In the final set of analysis, we investigated if variation in cognitive performance could -- in part -- be explained by participant characteristics. We chose to look at variables that are commonly analyzed in the primate cognition literature: age, sex, rank and rearing history. Rank was rated by animal keepers at every time point and rearing history was classified as "mother reared", "human reared" and "unknown".
 
-For each task, we ran the same five models^[We used the same response distributions as in the stability analysis.]: A baseline model predicting performance by time point (numerical) and trial as well as four models, each with one of the predictors (age, sex, rank and rearing history) added to the baseline model. We did not investigate any interaction models (interactions among the predictors or with time point) because we had no specific hypothesis in that direction. We used Bayesian model comparison based on WAIC (widely applicable information criterion) scores and weights [cite McElreath book]. This comparison tells us which of the models considered makes the best out-of-sample predictions. If the model with one predictor (e.g. age) would be consistently assigned the highest weight across tasks, we would conclude that cognitive performance is best predicted by participants' age.
+For each task, we ran the same five models^[We used the same response distributions as in the stability analysis.]: A baseline model predicting performance by time point (numerical) and trial as well as four models, each with one of the predictors (age, sex, rank and rearing history) added to the baseline model. We did not investigate any interaction models (interactions among the predictors or with time point) because we had no specific hypothesis in that direction. We used Bayesian model comparison based on WAIC (widely applicable information criterion) scores and weights [@rethinking]. This comparison tells us which of the models considered makes the best out-of-sample predictions. If the model with one predictor (e.g. age) would be consistently assigned the highest weight across tasks, we would conclude that cognitive performance is best predicted by participants' age.
 
 Figure XX gives WAIC scores and weights for each model and task. Figure XX shows the posterior distribution of the test predictors (as well as for time point). The baseline model was ranked highest across tasks (first or second for all tasks), suggesting that none of the test predictors was consistently related to performance. Within the baseline model, the estimate for time point was close to 0 for all tasks except gaze following, for which it was largely negative (reflecting the downward trend we saw in Figure XX).
 
-For gaze following, the model including sex as predictor was ranked highest: males were somewhat less likely to follow the experimenter's gaze. For quantity, the rank model was rated highest with lower ranking individuals showing better quantity discrimination.
+For gaze following, the model including sex as predictor was ranked highest: males were somewhat less likely to follow the experimenter's gaze. For quantity and witching, the rank model was rated highest with lower ranking individuals showing better quantity discrimination or switching abilities. In the case of switching, the model results should be interpreted with caution. The low re-test correlations suggests that the task does not reliably measure the cognitive ability in question. Thus, the variation in performance that the model tries to explain might not have a cognitive origin and could equally well be due to factors we did not capture.  
 
-Taken togther
 
 ```{r}
-# bm_model_data <- raw_data%>%
-#   filter(!is.na(rank) & !is.na(age) & !is.na(sex) & !is.na(rearing))%>%
-#   mutate(trial_time_point = scale(trial_time_point),
-#          time_point = scale(time_point),
-#          rank = scale(rank),
-#          age = scale(age))%>%
-#   group_split(task, .keep = TRUE)%>%
-#   as.list()
+# # bm_model_data <- raw_data%>%
+# #   filter(!is.na(rank) & !is.na(age) & !is.na(sex) & !is.na(rearing))%>%
+# #   mutate(trial_time_point = scale(trial_time_point),
+# #          time_point = scale(time_point),
+# #          rank = scale(rank),
+# #          age = scale(age))%>%
+# #   group_split(task, .keep = TRUE)%>%
+# #   as.list()
+# # 
+# #   
+# # bm_null <- brm_multiple(code ~ trial_time_point + time_point + (trial_time_point + time_point|group/subject),
+# #             family = bernoulli(),
+# #             data = bm_model_data,
+# #             combine = F,
+# #             control = list(adapt_delta = 0.99, max_treedepth = 20),
+# #             iter = 5000, cores = 3, chains = 3)
+# # 
+# # saveRDS(bm_null,file = "saves/bm_null.rds")
+# # 
+# bm_null <- readRDS(file = "saves/bm_null.rds")
+# # 
+# # bm_rank <- brm_multiple(code ~ rank + trial_time_point + time_point + (trial_time_point + time_point|group/subject),
+# #             family = bernoulli(),
+# #             data = bm_model_data,
+# #             combine = F,
+# #             control = list(adapt_delta = 0.99, max_treedepth = 20),
+# #             iter = 5000, cores = 3, chains = 3)
+# # 
+# # saveRDS(bm_rank,file = "saves/bm_rank.rds")
+# # 
+# bm_rank <- readRDS(file = "saves/bm_rank.rds")
+# # 
+# # bm_age <- brm_multiple(code ~ age + trial_time_point + time_point + (trial_time_point + time_point|group/subject),
+# #             family = bernoulli(),
+# #             data = bm_model_data,
+# #             combine = F,
+# #             control = list(adapt_delta = 0.99, max_treedepth = 20),
+# #             iter = 5000, cores = 3, chains = 3)
+# # 
+# # saveRDS(bm_age,file = "saves/bm_age.rds")
+# # 
+# bm_age <- readRDS(file = "saves/bm_age.rds")
+# # 
+# # bm_sex <- brm_multiple(code ~ sex + trial_time_point + time_point + (trial_time_point + time_point|group/subject),
+# #             family = bernoulli(),
+# #             data = bm_model_data,
+# #             combine = F,
+# #             control = list(adapt_delta = 0.99, max_treedepth = 20),
+# #             iter = 5000, cores = 3, chains = 3)
+# # 
+# # saveRDS(bm_sex,file = "saves/bm_sex.rds")
+# # 
+# bm_sex <- readRDS(file = "saves/bm_sex.rds")
+# # 
+# # bm_rearing <- brm_multiple(code ~ rearing + trial_time_point + time_point + (trial_time_point + time_point|group/subject),
+# #             family = bernoulli(),
+# #             data = bm_model_data,
+# #             combine = F,
+# #             control = list(adapt_delta = 0.99, max_treedepth = 20),
+# #             iter = 5000, cores = 3, chains = 3)
+# # 
+# # saveRDS(bm_rearing,file = "saves/bm_rearing.rds")
 # 
-#   
-# bm_null <- brm_multiple(code ~ trial_time_point + time_point + (trial_time_point + time_point|group/subject),
-#             family = bernoulli(),
-#             data = bm_model_data,
-#             combine = F,
-#             control = list(adapt_delta = 0.99, max_treedepth = 20),
-#             iter = 5000, cores = 3, chains = 3)
+# bm_rearing <- readRDS(file = "saves/bm_rearing.rds")
 # 
-# saveRDS(bm_null,file = "saves/bm_null.rds")
+# ## switching 
 # 
-bm_null <- readRDS(file = "saves/bm_null.rds")
+# # bm_switch_data <- data_task%>%
+# #   filter(task == "switching")%>%
+# #   left_join(raw_data%>%filter(!is.na(rank))%>%group_by(subject,time_point,rank)%>%summarise(rank = mean(rank)))%>%
+# #   filter( !is.na(rank) & !is.na(age) & !is.na(sex) & !is.na(rearing) & !is.na(performance))%>%
+# #   mutate(time_point = scale(time_point),
+# #          rank = scale(rank),
+# #          age = scale(age))
+# # 
+# # bm_switch_null <- brm(performance | trunc(lb=-1,ub=1) ~  time_point + (time_point|group/subject),
+# #             family = gaussian(),
+# #             data = bm_switch_data,
+# #             control = list(adapt_delta = 0.99, max_treedepth = 20),
+# #             iter = 5000, cores = 3, chains = 3)
+# # 
+# #saveRDS(bm_switch_null,file = "saves/bm_switch_null.rds")
 # 
-# bm_rank <- brm_multiple(code ~ rank + trial_time_point + time_point + (trial_time_point + time_point|group/subject),
-#             family = bernoulli(),
-#             data = bm_model_data,
-#             combine = F,
-#             control = list(adapt_delta = 0.99, max_treedepth = 20),
-#             iter = 5000, cores = 3, chains = 3)
+# bm_switch_null <- readRDS(file = "saves/bm_switch_null.rds")
 # 
-# saveRDS(bm_rank,file = "saves/bm_rank.rds")
+# # bm_switch_rank <- brm(performance | trunc(lb=-1,ub=1) ~  rank + time_point + (time_point|group/subject),
+# #             family = gaussian(),
+# #             data = bm_switch_data,
+# #             control = list(adapt_delta = 0.99, max_treedepth = 20),
+# #             iter = 5000, cores = 3, chains = 3)
+# # 
+# #saveRDS(bm_switch_rank,file = "saves/bm_switch_rank.rds")
 # 
-bm_rank <- readRDS(file = "saves/bm_rank.rds")
+# bm_switch_rank <- readRDS(file = "saves/bm_switch_rank.rds")
 # 
-# bm_age <- brm_multiple(code ~ age + trial_time_point + time_point + (trial_time_point + time_point|group/subject),
-#             family = bernoulli(),
-#             data = bm_model_data,
-#             combine = F,
-#             control = list(adapt_delta = 0.99, max_treedepth = 20),
-#             iter = 5000, cores = 3, chains = 3)
+# # bm_switch_sex <- brm(performance | trunc(lb=-1,ub=1) ~  sex + time_point + (time_point|group/subject),
+# #             family = gaussian(),
+# #             data = bm_switch_data,
+# #             control = list(adapt_delta = 0.99, max_treedepth = 20),
+# #             iter = 5000, cores = 3, chains = 3)
+# # 
+# # saveRDS(bm_switch_sex,file = "saves/bm_switch_sex.rds")
 # 
-# saveRDS(bm_age,file = "saves/bm_age.rds")
+# bm_switch_sex <- readRDS(file = "saves/bm_switch_sex.rds")
 # 
-bm_age <- readRDS(file = "saves/bm_age.rds")
+# # bm_switch_age <- brm(performance | trunc(lb=-1,ub=1) ~  age + time_point + (time_point|group/subject),
+# #             family = gaussian(),
+# #             data = bm_switch_data,
+# #             control = list(adapt_delta = 0.99, max_treedepth = 20),
+# #             iter = 5000, cores = 3, chains = 3)
+# # 
+# # saveRDS(bm_switch_age,file = "saves/bm_switch_age.rds")
 # 
-# bm_sex <- brm_multiple(code ~ sex + trial_time_point + time_point + (trial_time_point + time_point|group/subject),
-#             family = bernoulli(),
-#             data = bm_model_data,
-#             combine = F,
-#             control = list(adapt_delta = 0.99, max_treedepth = 20),
-#             iter = 5000, cores = 3, chains = 3)
+# bm_switch_age <- readRDS(file = "saves/bm_switch_age.rds")
 # 
-# saveRDS(bm_sex,file = "saves/bm_sex.rds")
+# # bm_switch_rearing <- brm(performance | trunc(lb=-1,ub=1) ~  rearing + time_point + (time_point|group/subject),
+# #             family = gaussian(),
+# #             data = bm_switch_data,
+# #             control = list(adapt_delta = 0.99, max_treedepth = 20),
+# #             iter = 5000, cores = 3, chains = 3)
+# # 
+# # saveRDS(bm_switch_rearing,file = "saves/bm_switch_rearing.rds")
 # 
-bm_sex <- readRDS(file = "saves/bm_sex.rds")
-# 
-# bm_rearing <- brm_multiple(code ~ rearing + trial_time_point + time_point + (trial_time_point + time_point|group/subject),
-#             family = bernoulli(),
-#             data = bm_model_data,
-#             combine = F,
-#             control = list(adapt_delta = 0.99, max_treedepth = 20),
-#             iter = 5000, cores = 3, chains = 3)
-# 
-# saveRDS(bm_rearing,file = "saves/bm_rearing.rds")
-
-bm_rearing <- readRDS(file = "saves/bm_rearing.rds")
-
-## switching 
-
-# bm_switch_data <- data_task%>%
-#   filter(task == "switching")%>%
-#   left_join(raw_data%>%filter(!is.na(rank))%>%group_by(subject,time_point,rank)%>%summarise(rank = mean(rank)))%>%
-#   filter( !is.na(rank) & !is.na(age) & !is.na(sex) & !is.na(rearing) & !is.na(performance))%>%
-#   mutate(time_point = scale(time_point),
-#          rank = scale(rank),
-#          age = scale(age))
-# 
-# bm_switch_null <- brm(performance | trunc(lb=-1,ub=1) ~  time_point + (time_point|group/subject),
-#             family = gaussian(),
-#             data = bm_switch_data,
-#             control = list(adapt_delta = 0.99, max_treedepth = 20),
-#             iter = 5000, cores = 3, chains = 3)
-# 
-#saveRDS(bm_switch_null,file = "saves/bm_switch_null.rds")
-
-bm_switch_null <- readRDS(file = "saves/bm_switch_null.rds")
-
-# bm_switch_rank <- brm(performance | trunc(lb=-1,ub=1) ~  rank + time_point + (time_point|group/subject),
-#             family = gaussian(),
-#             data = bm_switch_data,
-#             control = list(adapt_delta = 0.99, max_treedepth = 20),
-#             iter = 5000, cores = 3, chains = 3)
-# 
-#saveRDS(bm_switch_rank,file = "saves/bm_switch_rank.rds")
-
-bm_switch_rank <- readRDS(file = "saves/bm_switch_rank.rds")
-
-# bm_switch_sex <- brm(performance | trunc(lb=-1,ub=1) ~  sex + time_point + (time_point|group/subject),
-#             family = gaussian(),
-#             data = bm_switch_data,
-#             control = list(adapt_delta = 0.99, max_treedepth = 20),
-#             iter = 5000, cores = 3, chains = 3)
-# 
-# saveRDS(bm_switch_sex,file = "saves/bm_switch_sex.rds")
-
-bm_switch_sex <- readRDS(file = "saves/bm_switch_sex.rds")
-
-# bm_switch_age <- brm(performance | trunc(lb=-1,ub=1) ~  age + time_point + (time_point|group/subject),
-#             family = gaussian(),
-#             data = bm_switch_data,
-#             control = list(adapt_delta = 0.99, max_treedepth = 20),
-#             iter = 5000, cores = 3, chains = 3)
-# 
-# saveRDS(bm_switch_age,file = "saves/bm_switch_age.rds")
-
-bm_switch_age <- readRDS(file = "saves/bm_switch_age.rds")
-
-# bm_switch_rearing <- brm(performance | trunc(lb=-1,ub=1) ~  rearing + time_point + (time_point|group/subject),
-#             family = gaussian(),
-#             data = bm_switch_data,
-#             control = list(adapt_delta = 0.99, max_treedepth = 20),
-#             iter = 5000, cores = 3, chains = 3)
-# 
-# saveRDS(bm_switch_rearing,file = "saves/bm_switch_rearing.rds")
-
-bm_switch_rearing <- readRDS(file = "saves/bm_switch_rearing.rds")
+# bm_switch_rearing <- readRDS(file = "saves/bm_switch_rearing.rds")
 ```
 
 
@@ -733,49 +748,53 @@ print(tab1, type="latex", comment = F, table.placement = "H")
 ```
 
 ```{r}
-sex_pred <- bind_rows(
-posterior_samples(bm_sex[1], pars = "b_sexm")%>%mutate(task = "causality"),
-posterior_samples(bm_sex[2], pars = "b_sexm")%>%mutate(task = "gaze_following"),
-posterior_samples(bm_sex[3], pars = "b_sexm")%>%mutate(task = "inference"),
-posterior_samples(bm_sex[4], pars = "b_sexm")%>%mutate(task = "quantity"),
-posterior_samples(bm_switch_sex, pars = "b_sexm")%>%mutate(task = "switching")
-)%>%
-  dplyr::rename(value = b_sexm)%>%
-  mutate(predictor = "sex (male)")
-
-
-rank_pred <- bind_rows(
-posterior_samples(bm_rank[1], pars = "b_rank")%>%mutate(task = "causality"),
-posterior_samples(bm_rank[2], pars = "b_rank")%>%mutate(task = "gaze_following"),
-posterior_samples(bm_rank[3], pars = "b_rank")%>%mutate(task = "inference"),
-posterior_samples(bm_rank[4], pars = "b_rank")%>%mutate(task = "quantity"),
-posterior_samples(bm_switch_rank, pars = "b_rank")%>%mutate(task = "switching")
-)%>%
-  dplyr::rename(value = b_rank)%>%
-  mutate(predictor = "rank")
-
-age_pred <- bind_rows(
-posterior_samples(bm_age[1], pars = "b_age")%>%mutate(task = "causality"),
-posterior_samples(bm_age[2], pars = "b_age")%>%mutate(task = "gaze_following"),
-posterior_samples(bm_age[3], pars = "b_age")%>%mutate(task = "inference"),
-posterior_samples(bm_age[4], pars = "b_age")%>%mutate(task = "quantity"),
-posterior_samples(bm_switch_age, pars = "b_age")%>%mutate(task = "switching")
-)%>%
-  dplyr::rename(value = b_age)%>%
-  mutate(predictor = "age")
-
-time_pred <- bind_rows(
-posterior_samples(bm_null[1], pars = "b_time_point")%>%mutate(task = "causality"),
-posterior_samples(bm_null[2], pars = "b_time_point")%>%mutate(task = "gaze_following"),
-posterior_samples(bm_null[3], pars = "b_time_point")%>%mutate(task = "inference"),
-posterior_samples(bm_null[4], pars = "b_time_point")%>%mutate(task = "quantity"),
-posterior_samples(bm_switch_null, pars = "b_time_point")%>%mutate(task = "switching")
-)%>%
-  dplyr::rename(value = b_time_point)%>%
-  filter(value > -3)%>%
-  mutate(predictor = "time_point")
-
-pred <-  bind_rows(sex_pred,rank_pred,age_pred,time_pred)
+# sex_pred <- bind_rows(
+# posterior_samples(bm_sex[1], pars = "b_sexm")%>%mutate(task = "causality"),
+# posterior_samples(bm_sex[2], pars = "b_sexm")%>%mutate(task = "gaze_following"),
+# posterior_samples(bm_sex[3], pars = "b_sexm")%>%mutate(task = "inference"),
+# posterior_samples(bm_sex[4], pars = "b_sexm")%>%mutate(task = "quantity"),
+# posterior_samples(bm_switch_sex, pars = "b_sexm")%>%mutate(task = "switching")
+# )%>%
+#   dplyr::rename(value = b_sexm)%>%
+#   mutate(predictor = "sex (male)")
+# 
+# 
+# rank_pred <- bind_rows(
+# posterior_samples(bm_rank[1], pars = "b_rank")%>%mutate(task = "causality"),
+# posterior_samples(bm_rank[2], pars = "b_rank")%>%mutate(task = "gaze_following"),
+# posterior_samples(bm_rank[3], pars = "b_rank")%>%mutate(task = "inference"),
+# posterior_samples(bm_rank[4], pars = "b_rank")%>%mutate(task = "quantity"),
+# posterior_samples(bm_switch_rank, pars = "b_rank")%>%mutate(task = "switching")
+# )%>%
+#   dplyr::rename(value = b_rank)%>%
+#   mutate(predictor = "rank")
+# 
+# age_pred <- bind_rows(
+# posterior_samples(bm_age[1], pars = "b_age")%>%mutate(task = "causality"),
+# posterior_samples(bm_age[2], pars = "b_age")%>%mutate(task = "gaze_following"),
+# posterior_samples(bm_age[3], pars = "b_age")%>%mutate(task = "inference"),
+# posterior_samples(bm_age[4], pars = "b_age")%>%mutate(task = "quantity"),
+# posterior_samples(bm_switch_age, pars = "b_age")%>%mutate(task = "switching")
+# )%>%
+#   dplyr::rename(value = b_age)%>%
+#   mutate(predictor = "age")
+# 
+# time_pred <- bind_rows(
+# posterior_samples(bm_null[1], pars = "b_time_point")%>%mutate(task = "causality"),
+# posterior_samples(bm_null[2], pars = "b_time_point")%>%mutate(task = "gaze_following"),
+# posterior_samples(bm_null[3], pars = "b_time_point")%>%mutate(task = "inference"),
+# posterior_samples(bm_null[4], pars = "b_time_point")%>%mutate(task = "quantity"),
+# posterior_samples(bm_switch_null, pars = "b_time_point")%>%mutate(task = "switching")
+# )%>%
+#   dplyr::rename(value = b_time_point)%>%
+#   filter(value > -3)%>%
+#   mutate(predictor = "time_point")
+# 
+# pred <-  bind_rows(sex_pred,rank_pred,age_pred,time_pred)
+# 
+# saveRDS(pred,file = "saves/pred.rds")
+ 
+pred <- readRDS(file = "saves/pred.rds")
 
 pred_summary <- pred %>%
   group_by(task,predictor) %>% 
@@ -797,25 +816,28 @@ pred_plot <-  ggplot(data = pred, aes(x = value , y = predictor ,fill = task)) +
   guides(fill = F)+
   scale_fill_colorblind()
 
-
-
 #ggsave(file = "predictors.png", width = 10, height = 3, scale = 1.5)
 ```
 
-```{r 2-col-image2, fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=5, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "This image spans both columns. And the caption text is limited to 0.8 of the width of the document."}
-ggarrange(comp_plot,pred_plot, nrow = 2, ncol = 1, labels = c("A","B"))
+```{r 2-col-image2, fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=2, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "This image spans both columns. And the caption text is limited to 0.8 of the width of the document."}
+#ggarrange(comp_plot,pred_plot, nrow = 2, ncol = 1, labels = c("A","B"))
+pred_plot
 ```
 
 
 # Discussion 
 
-Stability: Performance except for gaze following relatively stable. This is true even though subjects are differentially reinforced and recieve the exact same procedure and counterbalancing each time. This suggests that subjects are not very suceptible to these inforamtion sources, making it difficult to increase performance via associative learning. 
+We tested the same sample of great apes repeatedly on five cognitive tasks. This design allowed us to address some pressing questions in primate cognition research: How stable is group level performance in cognitive tasks? How reliable are the results of these taks? How much is performance influenced by individual characteristics? Below we discuss the results in light of these questions. 
 
-Reliability is independent from group level performance (leaving aside floor and ceiling effects); thus, a task may be highly reliable even if group level performance is at chance level [cite Hedge paper]. Here, we see such a pattern for inference. Group level performance is consistently at chance level for every time point. On a group level, one would conclude that great apes do not make the inference in question. However, the tasks is highly reliable, suggesting that accurately captures individual differences. Together with the observation that some individuals consistently perform at ceiling (see Figure XX), this suggests that the task is well suited to measure inferential abilities on a individual level. The opposite pattern holds for quantity. Here, group level performance is consistently above chance but individual differences are not very consistent, suggesting that variation is due to sources other than systematic differences between individuals. This Phenomenon is quite common in the adult cognitive literature (e.g. Hedge paper) and arises when experimental tasks (optimized for low variance in measurement) are used to study individual differences (requiring high variance in measurement). In sum, when planning to study individual differences by relating measures to one another, researchers are well advised to first study the reliability of these measures. Even though this takes considerable time and effort, it increases to the chances to find effects.  
+Performance was relatively stable for all tasks except gaze following. This result is somewhat surprising given that individuals were differentialy reinforced in all tasks - except gaze following. Furthermore, counterbalancing and positioning were exactly the same at each time point. Together, this creates a scenario that would be ideal for learning effects. How can we interpret this lack of improvement? One interpretation could be that the different routes to solving the task constitute incompatible information sources for great apes. For example, in the case of causality, apes could solve the task by spontaneously inferring that the sound was caused by the food. Alternatively, they could learn that whenever they hear a rattling sound, food is under the cup the experimenter touches. In principle, these two information sources could easily be integrated and supplement one another - resulting in an improvement of performance over time. The absence of improvement could mean that apes rely on spontaneous inferences alone. However, many alternative explanation are possible. For example, many of the apes in Leipzig Zoo have had years of experience with the kind of tasks we included in the study. Thus, the absence of improvement might indicated that they already reached an individual performance maximum. the continuation of this project might help to shed light on these questions. For now, we may conclude that short term improvements based on learned arbitrary relations are unlikely to occur in great apes. In support of this interpretation, when researchers want primates to learn arbitrary relations, it takes a very long time and an elaborate training regime [e.g. @allritz2016chimpanzees; @vasconcelos2008transitive].   
 
-Predictors: no predictor makes sense everywhere - carefully select them based on theoretical considerations. Avoid including them just to control for stuff (cite paper Mike Frank mentioned: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0152719)
+Three out of five tasks showed acceptable levels of reliability. Importantly, reliability is independent from group level performance (leaving aside floor and ceiling effects) [see @hedge2018reliability]. Here, we see such a pattern for inference: Group level performance was consistently at chance level for every time point. On a group level, one would conclude that great apes did not make the inference in question. However, the tasks was highly reliable, suggesting that it accurately captured individual differences. Together with the observation that some individuals consistently performed at ceiling (see Figure XX), this suggests that the task is well suited to measure inferential abilities on a *individual* level. The opposite pattern holds for quantity. Here, group level performance was consistently above chance but individual differences were not very consistent. This suggests that variation was due to sources other than systematic differences between individuals. This phenomenon is quite common in the adult cognitive literature [hedge2018reliability] and arises when experimental tasks (optimized for low variance in measurement) are used to study individual differences (requiring high variance in measurement). Taken together, we may recommend that researchers select their tasks depending on the kind of questions they want to answer. When planning to study individual differences by relating measures to one another, researchers are well advised to first study the reliability of these measures. Even though this takes considerable time and effort, it increases to the chances of finding effects.  
+
+We did not find that one of the individual level characteristics (age, sex, rank or rearing history) was consistently related to performance across tasks. A baseline model, predicting performance by time variables alone was, on average, rated highest in the different model comparisons. The model including rank was rated highest for two tasks (quantity and switching). However, in the case of switching, this should be interpreted with caution in the light of low reliability of the task (see results section). Moving forward, we will explore additional predictors, to see if we do find some that are related to cognitive performance more broadly. For now, we may conclude that researchers should carefully select  predictors based on theoretical considerations. Including them as a default or to control for potential effects might make models unnecessarily complex -- and might not even have the desried effect [see @westfall2016statistically].
 
 Outlook: first wave of data. Will continue for at least another 6 month. record additional variables like social network data or live history variables such as sickness, birth and death of group members.
+
+Due to small sample sizes within species, we need to combine them for analysis. It takes large scale collaborative efforts to like the ManyPrimates project [@many2019establishing] to scale such an investiagtion. 
 
 
 # Acknowledgements
