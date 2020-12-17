@@ -182,7 +182,7 @@ perf_plot <- ggplot()+
   scale_color_ptol(name = "Group")
 ```
 
-```{r 2-col-image, fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=2.5, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "This image spans both columns. And the caption text is limited to 0.8 of the width of the document."}
+```{r 2-col-image, fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=2, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "This image spans both columns. And the caption text is limited to 0.8 of the width of the document."}
 perf_plot
 ```
 
@@ -256,7 +256,8 @@ posterior_samples(bm_stab_switch, pars = c("b_Intercept","r_time_point.1.Interce
   group_by(task,time_point)%>%
   filter(!is.na(time_point))%>%
   mutate(mean = mean(b_Intercept),
-         time_point = paste("Time point ", time_point, sep = ""))%>%
+         #time_point = paste("Time point ", time_point, sep = "")
+         )%>%
   mutate(time_point = factor(time_point))
 
 pooled_effect_task <- bind_rows(
@@ -270,7 +271,8 @@ posterior_samples(bm_stab_switch)%>%select(b_Intercept)%>%mutate(task = "switchi
 
 forest_data_task <- bind_rows(post_sample_task, pooled_effect_task)%>%
   mutate(time_point = factor(time_point),
-         measure = "Model Intercept")%>%
+         measure = "Model Intercept",
+         task = factor(task))%>%
   filter(task != "switching_place")
 
 forest_data_task_summary <- forest_data_task %>%
@@ -302,34 +304,61 @@ sd_task_summary <- sd_sample_task %>%
   mean_hdci(sd_time_point__Intercept,tau_squared)
 
 
+annotation_custom2 <- function (grob, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf, data) 
+{
+  layer(data = data, stat = StatIdentity, position = PositionIdentity, 
+        geom = ggplot2:::GeomCustomAnn,
+        inherit.aes = F, params = list(grob = grob, 
+                                          xmin = xmin, xmax = xmax, 
+                                          ymin = ymin, ymax = ymax))
+}
 
-meta_plot
-
-ggplot(aes(b_Intercept, relevel(time_point, "Pooled Effect", after = Inf),fill = task), 
-       data = forest_data_task) +
-  facet_grid(measure~task, scales = "free",space = "free_y", shrink = T)+
-  geom_vline(data = forest_data_task_summary%>%filter(time_point == "Pooled Effect"), aes(xintercept = b_Intercept), color = "grey", size = 1) +
-  geom_vline(data = forest_data_task_summary%>%filter(time_point == "Pooled Effect"), aes(xintercept = .lower), color = "grey", linetype = 2) +
-    geom_vline(data = forest_data_task_summary%>%filter(time_point == "Pooled Effect"), aes(xintercept = .upper), color = "grey", linetype = 2) +
-  geom_segment(y = "Time point 1", yend = "Time point 1", x = -Inf, xend = Inf, color = "black", size = 1) +
+get_inset <- function(df){
+  p <- ggplot(aes(b_Intercept, relevel(time_point, "Pooled Effect", after = Inf)), 
+       data = df) +
+  geom_segment(y = "1", yend = "1", x = -Inf, xend = Inf, color = "black", size = .5) +
   geom_vline(xintercept = 0, color = "black", size = .5, lty = 2) +
   geom_density_ridges(rel_min_height = 0.01,col = "black", scale = 3,
-                      alpha = 0.5) +
+                      alpha = 0.25) +
+  labs(x = element_blank(),
+       y = element_blank()) +
+  theme_few(base_size = 10)+
+  guides(fill = F)+
+  scale_fill_colorblind()+
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
+  return(p)
+}
+
+insets <- forest_data_task %>% 
+  base::split(f = .$task) %>%
+  purrr::map(~annotation_custom2(
+    grob = ggplotGrob(get_inset(.) + scale_fill_colorblind()), 
+    data = data.frame(task=unique(.$task)),
+    xmin = 0.2, xmax = 1.8, ymin = 5, ymax = 15)
+  )
+
+
+meta_plot <- ggplot(aes(b_Intercept, fill = task), 
+       data = forest_data_task) +
+  facet_grid(~task, scales = "free_y")+
+  geom_vline(xintercept = 0, color = "black", size = .5, lty = 2) +
   geom_text(data = mutate_if(sd_task_summary, is.numeric, round, 2),
-    aes(label = glue("{sd_time_point__Intercept} [{sd_time_point__Intercept.lower}, {sd_time_point__Intercept.upper}]"), x= -Inf, y = time_point), hjust = "inward", size = 2)+
-  geom_pointintervalh(data = forest_data_task_summary%>%filter(time_point == "Pooled Effect"), size = 1)+
-  #geom_text(data = mutate_if(forest_data_task_summary%>%filter(time_point == "Pooled Effect"), is.numeric, round, 2), aes(label = glue("{b_Intercept} [{.lower}, {.upper}]"), x= Inf, y = time_point), hjust = "inward", size = 2)+
-  geom_density_ridges(data = sd_sample_task, aes(sd_time_point__Intercept, time_point ,fill = task), rel_min_height = 0.01,col = "black", scale = .3, alpha = 0.5) +
+     aes(label = glue("{sd_time_point__Intercept} [{sd_time_point__Intercept.lower}, {sd_time_point__Intercept.upper}]"), x= Inf, y = 1), hjust = "inward", size = 4)+
+  geom_density(data = sd_sample_task, aes(sd_time_point__Intercept ,fill = task),col = "black", alpha = 0.5) +
+  xlim(0,2)+
   labs(x = element_blank(),
        y = element_blank()) +
   theme_minimal(base_size = 10)+
   guides(fill = F)+
   scale_fill_colorblind()
+
+p_meta <- meta_plot + insets
 ```
 
 
-```{r 2-col-image3, fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=3, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "This image spans both columns. And the caption text is limited to 0.8 of the width of the document."}
-meta_plot
+```{r 2-col-image3, fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=1.5, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "This image spans both columns. And the caption text is limited to 0.8 of the width of the document."}
+p_meta
 ```
 
 ## Reliability 
@@ -780,9 +809,13 @@ ggarrange(comp_plot,pred_plot, nrow = 2, ncol = 1, labels = c("A","B"))
 
 # Discussion 
 
+Stability: Performance except for gaze following relatively stable. This is true even though subjects are differentially reinforced and recieve the exact same procedure and counterbalancing each time. This suggests that subjects are not very suceptible to these inforamtion sources, making it difficult to increase performance via associative learning. 
+
 Reliability is independent from group level performance (leaving aside floor and ceiling effects); thus, a task may be highly reliable even if group level performance is at chance level [cite Hedge paper]. Here, we see such a pattern for inference. Group level performance is consistently at chance level for every time point. On a group level, one would conclude that great apes do not make the inference in question. However, the tasks is highly reliable, suggesting that accurately captures individual differences. Together with the observation that some individuals consistently perform at ceiling (see Figure XX), this suggests that the task is well suited to measure inferential abilities on a individual level. The opposite pattern holds for quantity. Here, group level performance is consistently above chance but individual differences are not very consistent, suggesting that variation is due to sources other than systematic differences between individuals. This Phenomenon is quite common in the adult cognitive literature (e.g. Hedge paper) and arises when experimental tasks (optimized for low variance in measurement) are used to study individual differences (requiring high variance in measurement). In sum, when planning to study individual differences by relating measures to one another, researchers are well advised to first study the reliability of these measures. Even though this takes considerable time and effort, it increases to the chances to find effects.  
 
 Predictors: no predictor makes sense everywhere - carefully select them based on theoretical considerations. Avoid including them just to control for stuff (cite paper Mike Frank mentioned: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0152719)
+
+Outlook: first wave of data. Will continue for at least another 6 month. record additional variables like social network data or live history variables such as sickness, birth and death of group members.
 
 
 # Acknowledgements
