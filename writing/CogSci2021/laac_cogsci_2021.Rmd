@@ -19,7 +19,7 @@ abstract: >
     shown below.
     
 keywords: >
-    Primate Cognition, Stability, Reliability, Individual Differences
+    Primate Cognition; Stability; Reliability; Individual Differences.
     
 output: cogsci2016::cogsci_paper
 final-submission: \cogscifinalcopy
