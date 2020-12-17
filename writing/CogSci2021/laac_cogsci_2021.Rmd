@@ -5,7 +5,7 @@ csl: apa6.csl
 document-params: "10pt, letterpaper"
 
 author-information: > 
-    \author{{\large \bf Manuel Bohn (manuel_bohn@eva.mpg.de), Johanna Eckert (johanna_eckert@eva.mpg.de), Daniel Hanus (hanus@eva.mpg.de) & (haun@eva.mpg.de) Daniel Haun} \\ Department of Comparative Cultural Psychology, Max Planck Institute for Evolutionary Anthropology, Deutscher Platz 6, 04103 Leipzig, Germany}
+    \author{{\large \bf Manuel Bohn (manuel\_bohn@eva.mpg.de), Johanna Eckert (johanna\_eckert@eva.mpg.de), Daniel Hanus (hanus@eva.mpg.de) & (haun@eva.mpg.de) Daniel Haun} \\ Department of Comparative Cultural Psychology, Max Planck Institute for Evolutionary Anthropology, Deutscher Platz 6, 04103 Leipzig, Germany}
 
 abstract: >
     Include no author information in the initial submission, to facilitate
@@ -28,11 +28,11 @@ final-submission: \cogscifinalcopy
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(fig.width=3, fig.height=3, fig.crop = F, 
                       fig.pos = "tb", fig.path='figs/',
-                      echo=F, warning=F, cache=F, 
+                      echo=F, warning=F, cache=T, 
                       message=F, sanitize = T)
 ```
 
-```{r}
+```{r, cache = F}
 library(png)
 library(grid)
 library(xtable)
