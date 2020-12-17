@@ -1,12 +1,11 @@
 ---
-title: "How to Make a Proceedings Paper Submission"
+title: "A Longitudinal Study of Great Ape Cognition: Stability, Reliability and the Influence of Individual Characteristics"
 bibliography: library.bib
 csl: apa6.csl
 document-params: "10pt, letterpaper"
 
 author-information: > 
-    \author{{\large \bf Morton Ann Gernsbacher (MAG@Macc.Wisc.Edu)} \\ Department of Psychology, 1202 W. Johnson Street \\ Madison, WI 53706 USA
-    \AND {\large \bf Sharon J.~Derry (SDJ@Macc.Wisc.Edu)} \\ Department of Educational Psychology, 1025 W. Johnson Street \\ Madison, WI 53706 USA}
+    \author{{\large \bf Manuel Bohn (manuel_bohn@eva.mpg.de), Johanna Eckert (johanna_eckert@eva.mpg.de), Daniel Hanus (hanus@eva.mpg.de) & (haun@eva.mpg.de) Daniel Haun} \\ Department of Comparative Cultural Psychology, Max Planck Institute for Evolutionary Anthropology, Deutscher Platz 6, 04103 Leipzig, Germany}
 
 abstract: >
     Include no author information in the initial submission, to facilitate
@@ -22,8 +21,8 @@ abstract: >
 keywords: >
     Add your choice of indexing terms or keywords; kindly use a semi-colon; between each term.
     
-output: cogsci2016::cogsci_paper
-#final-submission: \cogscifinalcopy
+#output: cogsci2016::cogsci_paper
+final-submission: \cogscifinalcopy
 ---
 
 ```{r global_options, include=FALSE}
@@ -65,25 +64,33 @@ data_task <-  read_csv("cogsci_data_task.csv")
 
 # Introduction
 
-Describe the first results of a long term project that focuses on the stability, reliability and predictability of cognitive performance in great apes. Thus, we ask how stable performance is on a group level, how reliable individual differences in performance are and to what extend these individual differences can be explained by a common set of predictor variables.   
+ 
 
 Animal cognition studies are hardly ever replicated: Only 2 % of studies incldued a replicaiton in recent review. Unclear how stable results are. 
 
-ManyPrimates et al. (2019) Collaborative open science as a way to reproducibility and new insights in primate cognition research. Japanese Psychological Review 62(3), 205-220
+[@primates2019collaborative]
 
-Farrar, B.G., Boeckle, M, Clayton N. S. Replications in Comparative Cognition: What Should We Expect and How Can We Improve? Animal Behavior and  Cognition 7 (1), 1-22 
+[@farrar2020replications]
 
-Farrar, B. G., Voudouris, K., & Clayton, N. S. Replications, Comparisons, Sampling and the Problem of Representativeness in Animal Behavior and Cognition Research. Psyarxiv [pre-print]
+[@farrar2020replications]
 
 Know very little about reliability of individual tasks. That is the stability of individual differences as opposed to group level means. Reliability is important to know for study design. If you want to realte measures to one another, they should have high reliability (the produt of re-test reliabilities is the upper limit of correlations to expect between tasks).
 
 shifting vs switching
 
-christoph paper - executive functioning und psychometrics paper
+[@volter2018comparative]
 
 Researchers in animal cognition often wonder whether performance in cognitive tasks can be (in part) be explained by individual level characteristics such as age, sex, rank or rearing history. However, usually samples are too small to really disentangle theses effects. Furthermore, sometimes these characteristics are correlated. For example, in chimpanzees, higher ranking individuals are usually middle aged males. 
 
+Describe the first results of a long term project that focuses on the stability, reliability and predictability of cognitive performance in great apes. Thus, we ask how stable performance is on a group level, how reliable individual differences in performance are and to what extend these individual differences can be explained by a common set of predictor variables.  
+
 Five tasks that have been used before with a wide variety of species and that cover a road range of cognitive abilities. 
+
+[@call2004inferences]
+
+[@haun2006evolutionary]
+
+[@hanus2007discrete]
 
 # Methods
 
@@ -104,7 +111,7 @@ participants <- raw_data%>%
 ```
 A total of `r sum(participants$n)` great apes participated at least once in one of the tasks. This included `r participants%>%filter(species == "bonobo")%>%pull(n)%>%sum()` Bonobos (`r participants%>%filter(species == "bonobo", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "bonobo", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "bonobo", sex == "f")%>%pull(maxage)`), `r participants%>%filter(species == "chimpanzee")%>%pull(n)%>%sum()` Chimpanzees (`r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(maxage)`), `r participants%>%filter(species == "gorilla")%>%pull(n)%>%sum()` Gorillas (`r participants%>%filter(species == "gorilla", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "gorilla", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "gorilla", sex == "f")%>%pull(maxage)`) and , `r participants%>%filter(species == "gorilla")%>%pull(n)%>%sum()` Orangutans (`r participants%>%filter(species == "orangutan", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "orangutan", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "orangutan", sex == "f")%>%pull(maxage)`). The sample size at the different time points ranged from `r min(tpn$n)` to `r max(tpn$n)`.
 
-Apes were housed at the Wolfgang Köhler Primate Research Center, located at Zoo Leipzig in Leipzig, Germany. Research was noninvasive and strictly adhered to the legal requirements in Germany. Animal husbandry and research complied with the European Association of Zoos and Aquaria Minimum Standards for the Accommodation and Care of Animals in Zoos and Aquaria as well as the World Association of Zoos and Aquariums Ethical Guidelines for the Conduct of Research on Animals by Zoos and Aquariums. Participation was voluntary, all food was given in addition to the daily diet, and water was available ad libitum throughout the study. The study was approved by an internal ethics committee at the Max Planck Institute for Evolutionary Anthropology.
+Apes were housed at the Wolfgang Köhler Primate Research Center, located at Zoo Leipzig in Leipzig, Germany. They live in groups, with one group per species and two chimpanzee groups. Research was noninvasive and strictly adhered to the legal requirements in Germany. Animal husbandry and research complied with the European Association of Zoos and Aquaria Minimum Standards for the Accommodation and Care of Animals in Zoos and Aquaria as well as the World Association of Zoos and Aquariums Ethical Guidelines for the Conduct of Research on Animals by Zoos and Aquariums. Participation was voluntary, all food was given in addition to the daily diet, and water was available ad libitum throughout the study. The study was approved by an internal ethics committee at the Max Planck Institute for Evolutionary Anthropology.
 
 ## Design, Setup and Procedure
 
@@ -132,7 +139,7 @@ Three different looking cups (silver cup with handle, plastic ice cone, red cup 
 
 # Analysis and Results
 
-We combined the data from all species for the analysis because sample sizes for some species were too small to get representative estimates. However, we accounted for the nesting of subjects in species as part of the random effect structure of our models. All analysis were run in `R` [@R-base]. Bayesian multilevel models were implemented using the package `brms` [@R-brms_a] and used default priors.    
+We combined the data from all species for the analysis because sample sizes for some species were too small to get representative estimates. However, we accounted for the nesting of subjects in species as part of the random effect structure of our models. All analysis were run in `R` [@R-base]. Bayesian multilevel models were implemented using the package `brms` [@R-brms_a] and used default priors. All models included random intercepts for participants nested within group and random slopes for trial (`trial|group/subject`). Data and analysis code can be found in the associate online repository (see below). 
 
 ```{r}
 # include metaanalytic estimate
@@ -438,7 +445,7 @@ In the final set of analysis, we investigated if variation in cognitive performa
 
 For each task, we ran the same five models^[We used the same response distributions as in the stability analysis.]: A baseline model predicting performance by time point (numerical) and trial as well as four models, each with one of the predictors (age, sex, rank and rearing history) added to the baseline model. We did not investigate any interaction models (interactions among the predictors or with time point) because we had no specific hypothesis in that direction. We used Bayesian model comparison based on WAIC (widely applicable information criterion) scores and weights [@rethinking]. This comparison tells us which of the models considered makes the best out-of-sample predictions. If the model with one predictor (e.g. age) would be consistently assigned the highest weight across tasks, we would conclude that cognitive performance is best predicted by participants' age.
 
-Figure XX gives WAIC scores and weights for each model and task. Figure XX shows the posterior distribution of the test predictors (as well as for time point). The baseline model was ranked highest across tasks (first or second for all tasks), suggesting that none of the test predictors was consistently related to performance. Within the baseline model, the estimate for time point was close to 0 for all tasks except gaze following, for which it was largely negative (reflecting the downward trend we saw in Figure XX).
+Table XX gives WAIC scores and weights for each model and task. Figure XX shows the posterior distribution of the test predictors (as well as for time point). The baseline model was ranked highest across tasks (first or second for all tasks), suggesting that none of the test predictors was consistently related to performance. Within the baseline model, the estimate for time point was close to 0 for all tasks except gaze following, for which it was largely negative (reflecting the downward trend we saw in Figure XX).
 
 For gaze following, the model including sex as predictor was ranked highest: males were somewhat less likely to follow the experimenter's gaze. For quantity and witching, the rank model was rated highest with lower ranking individuals showing better quantity discrimination or switching abilities. In the case of switching, the model results should be interpreted with caution. The low re-test correlations suggests that the task does not reliably measure the cognitive ability in question. Thus, the variation in performance that the model tries to explain might not have a cognitive origin and could equally well be due to factors we did not capture.  
 
@@ -833,17 +840,19 @@ Performance was relatively stable for all tasks except gaze following. This resu
 
 Three out of five tasks showed acceptable levels of reliability. Importantly, reliability is independent from group level performance (leaving aside floor and ceiling effects) [see @hedge2018reliability]. Here, we see such a pattern for inference: Group level performance was consistently at chance level for every time point. On a group level, one would conclude that great apes did not make the inference in question. However, the tasks was highly reliable, suggesting that it accurately captured individual differences. Together with the observation that some individuals consistently performed at ceiling (see Figure XX), this suggests that the task is well suited to measure inferential abilities on a *individual* level. The opposite pattern holds for quantity. Here, group level performance was consistently above chance but individual differences were not very consistent. This suggests that variation was due to sources other than systematic differences between individuals. This phenomenon is quite common in the adult cognitive literature [hedge2018reliability] and arises when experimental tasks (optimized for low variance in measurement) are used to study individual differences (requiring high variance in measurement). Taken together, we may recommend that researchers select their tasks depending on the kind of questions they want to answer. When planning to study individual differences by relating measures to one another, researchers are well advised to first study the reliability of these measures. Even though this takes considerable time and effort, it increases to the chances of finding effects.  
 
-We did not find that one of the individual level characteristics (age, sex, rank or rearing history) was consistently related to performance across tasks. A baseline model, predicting performance by time variables alone was, on average, rated highest in the different model comparisons. The model including rank was rated highest for two tasks (quantity and switching). However, in the case of switching, this should be interpreted with caution in the light of low reliability of the task (see results section). Moving forward, we will explore additional predictors, to see if we do find some that are related to cognitive performance more broadly. For now, we may conclude that researchers should carefully select  predictors based on theoretical considerations. Including them as a default or to control for potential effects might make models unnecessarily complex -- and might not even have the desried effect [see @westfall2016statistically].
+We did not find that one of the individual level characteristics (age, sex, rank or rearing history) was consistently related to performance across tasks. A baseline model, predicting performance by time variables alone was, on average, rated highest in the different model comparisons. The model including rank was rated highest for two tasks (quantity and switching). However, in the case of switching, this should be interpreted with caution in the light of low reliability of the task (see results section). Moving forward, we will explore additional predictors, to see if we do find some that are related to cognitive performance more broadly. For now, we may conclude that researchers should carefully select  predictors based on theoretical considerations. Including them as a default or to control for potential effects might make models unnecessarily complex -- and might not even have the desired effect [see @westfall2016statistically].
 
-Outlook: first wave of data. Will continue for at least another 6 month. record additional variables like social network data or live history variables such as sickness, birth and death of group members.
+For our analysis, we combined the data from all species, neglecting potential species differences. The reason is simply that the sample size for each species was too small to really differentiate individual from species level differences. This is a common problem in primate cognition research. Species level inferences require data sets that are beyond the resources of individual labs. A promising way forward to overcome this limitation is the *ManyPrimates* project; a large-scale collaborative initiative initiated to establish and infrastructure to support the pooling of resources across labs [@many2019establishing]. 
 
-Due to small sample sizes within species, we need to combine them for analysis. It takes large scale collaborative efforts to like the ManyPrimates project [@many2019establishing] to scale such an investiagtion. 
+The data we have reported here are the first couple of waves in a lonitudinal study which we hope to continue for at least one year. As part of it, we will record additional variables that might help to explain variation in cognitive performance such as social network data or live history variables (sickness, birth and death of group members, etc.). We hope that this project will contribute to our understanding of the dynamic nature of primate cognition.
 
+<!-- \vspace{1em} \fbox{\parbox[b][][c]{7.3cm}{\centering Corresponding data and code are available at [masked for peer review]}} \vspace{1em} -->
+
+\vspace{1em} \fbox{\parbox[b][][c]{7.3cm}{\centering Corresponding data and code are available at\ \url{https://github.com/ccp-eva/laac}}} \vspace{1em}
 
 # Acknowledgements
 
-Place acknowledgments (including funding information) in a section at
-the end of the paper.
+We thank Damilola Olaoba and Anna Wolff for data colection, Luke Maurits for helpful discussion about the analytical approach and the animal caretakers at the WKPRC for their support. 
 
 # References 
 
