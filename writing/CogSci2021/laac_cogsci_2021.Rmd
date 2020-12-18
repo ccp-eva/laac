@@ -13,15 +13,7 @@ author-information: >
     \\ Deutscher Platz 6, 04103 Leipzig, Germany}
 
 abstract: >
-    Include no author information in the initial submission, to facilitate
-    blind review.  The abstract should be one paragraph, indented 1/8 inch on both sides,
-    in 9~point font with single spacing. The heading 'Abstract'
-    should be 10~point, bold, centered, with one line of space below
-    it. This one-paragraph abstract section is required only for standard
-    six page proceedings papers. Following the abstract should be a blank
-    line, followed by the header 'Keywords' and a list of
-    descriptive keywords separated by semicolons, all in 9~point font, as
-    shown below.
+    Primate cognition research allows us to reconstruct the evolution of human cognition. Here we report on a longitudinal study on great ape cognition. We repeatedly tested a comparatively large sample of great apes (N = 40) with the same set of cognitive measures. We investigated the stability of group level results, the reliability of individual differences and the relation between cognitive performance and individual level characteristics. We found results to be relatively stable on a group level. Some, but not all, tasks showed acceptable levels of reliability. Cognitive performance across tasks was not systematically related to any particular individual level predictor. This study highlights the importance of methodological considerations on the route to building a more robust science of primate cognitive evolution.
     
 keywords: >
     Primate Cognition; Stability; Reliability; Individual Differences.
