@@ -19,7 +19,7 @@ keywords: >
     Primate Cognition; Stability; Reliability; Individual Differences.
     
 output: cogsci2016::cogsci_paper
-# final-submission: \cogscifinalcopy
+final-submission: \cogscifinalcopy
 ---
 
 ```{r global_options, include=FALSE}
@@ -43,6 +43,7 @@ library(forcats)
 library(ggthemes)
 library(ggpubr)
 library(reshape)
+library(ggExtra)
 library(tidyboot)
 
 cor_func <- function(x) {
@@ -63,7 +64,7 @@ data_task <-  read_csv("cogsci_data_task.csv")
 
 Primate cognition research can inform us about the evolution of human cognition. This research has contributed significantly to our understanding of the shared and unique aspects of human cognition [@laland2021understanding]. But, like all other branches of cognitive science, primate cognition research faces some critical challenges: Because cognitive processes cannot be observed directly, they must be inferred from behavior. This kind of inference requires strong methods which specify the link between behavior and cognition. In this paper, we report on a longitudinal study that focuses on the stability, reliability and predictability of great apes' performance in a range of cognitive tasks.
 
-To allow for generalization, study results need to replicate. That is, comparable results should be obtained when applying the same method to a new population of individuals. Psychological science has been riddled with problems of non-replicable results [@open2015estimating]. Animal cognition research shows many of the characteristics that have been identified to yield a low replication rate in other psychological fields [@stevens2017replicability; @farrar2020replications]. Furthermore, replication attempts are rare in animal cognition research [@farrar2020replicomp]. A recent review of experimental primate cognition research between 2014 and 2019 found that only 2 % of studies included a replication [@primates2019collaborative]. Replications are rare, in part because researchers only have access to one sample of study participants and therefore cannot test a new sample. Nevertheless, in such conditions, we can ask a more fundamental question: how *repeatable* are the results of a study. That is if we test the same animals multiple times, do we get similar results? Repeatability could be seen as a pre-condition for replicability. In this study, we investigate the stability of results by repeatedly testing the same sample of great apes on the same tasks. 
+To allow for generalization, study results need to replicate. That is, comparable results should be obtained when applying the same method to a new population of individuals. Psychological science has been riddled with problems of non-replicable results [@open2015estimating]. Animal cognition research shows many of the characteristics that have been identified to yield a low replication rate in other psychological fields [@stevens2017replicability; @farrar2020replications]. Furthermore, replication attempts are rare in animal cognition research [@farrar2020replicomp]. A recent review of experimental primate cognition research between 2014 and 2019 found that only 2 % of studies included a replication [@primates2019collaborative]. Replications are rare, in part because researchers only have access to one sample of study participants and therefore cannot test a new sample. Nevertheless, in such conditions, we can ask a more basic question: how *repeatable* are the results of a study. That is if we test the same animals multiple times, do we get similar results? Repeatability could be seen as a pre-condition for replicability. In this study, we investigate the stability of results by repeatedly testing the same sample of great apes on the same tasks. This will allow us to estimate how stable group-level performance is and thus how representative a single data collection point is for a group of great apes.
 
 One way to explain cognitive evolution is to study how cognitive abilities cluster in different species. This approach needs reliable measures [@volter2018comparative]. Reliability refers to the stability of individual differences as opposed to group-level means. Reliability is paramount if a study’s goal is to relate cognitive performance to individual characteristics or external variables: a measure cannot be stronger related to a second measure than to itself. Recent years have seen an increase of individual differences studies in animal cognition research [@shaw2017cognitive]. In these studies, the reliability of the tasks is rarely assessed. Therefore, it is difficult to say if the absence of a relation between two variables is real or merely a consequence of low reliability. As part of this study, we investigate the re-test reliability of a range of commonly used cognitive tasks for great apes. 
 
@@ -141,9 +142,9 @@ participants <- raw_data%>%
   group_by(time_point)%>%
   summarise(n = length(unique(subject)))
 ```
-A total of `r sum(participants$n)` great apes participated at least once in one of the tasks. This included `r participants%>%filter(species == "bonobo")%>%pull(n)%>%sum()` Bonobos (`r participants%>%filter(species == "bonobo", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "bonobo", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "bonobo", sex == "f")%>%pull(maxage)`), `r participants%>%filter(species == "chimpanzee")%>%pull(n)%>%sum()` Chimpanzees (`r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(maxage)`), `r participants%>%filter(species == "gorilla")%>%pull(n)%>%sum()` Gorillas (`r participants%>%filter(species == "gorilla", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "gorilla", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "gorilla", sex == "f")%>%pull(maxage)`), and `r participants%>%filter(species == "gorilla")%>%pull(n)%>%sum()` Orangutans (`r participants%>%filter(species == "orangutan", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "orangutan", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "orangutan", sex == "f")%>%pull(maxage)`). The sample size at the different time points ranged from `r min(tpn$n)` to `r max(tpn$n)`.
+A total of `r sum(participants$n)` great apes participated at least once in one of the tasks. This included `r participants%>%filter(species == "bonobo")%>%pull(n)%>%sum()` Bonobos (`r participants%>%filter(species == "bonobo", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "bonobo", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "bonobo", sex == "f")%>%pull(maxage)`), `r participants%>%filter(species == "chimpanzee")%>%pull(n)%>%sum()` Chimpanzees (`r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(maxage)`), `r participants%>%filter(species == "gorilla")%>%pull(n)%>%sum()` Gorillas (`r participants%>%filter(species == "gorilla", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "gorilla", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "gorilla", sex == "f")%>%pull(maxage)`), and `r participants%>%filter(species == "gorilla")%>%pull(n)%>%sum()` Orangutans (`r participants%>%filter(species == "orangutan", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "orangutan", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "orangutan", sex == "f")%>%pull(maxage)`). The sample size at the different time points ranged from `r min(tpn$n)` to `r max(tpn$n)`. All apes participate in cognitive research on a regular basis. Many of them have ample experience with the very tasks we used in the current study.
 
-Apes were housed at the [masked for peer review]. They lived in groups, with one group per species and two chimpanzee groups. Research was noninvasive and strictly adhered to the legal requirements in Germany. Animal husbandry and research complied with the European Association of Zoos and Aquaria Minimum Standards for the Accommodation and Care of Animals in Zoos and Aquaria as well as the World Association of Zoos and Aquariums Ethical Guidelines for the Conduct of Research on Animals by Zoos and Aquariums. Participation was voluntary, all food was given in addition to the daily diet, and water was available ad libitum throughout the study. The study was approved by an internal ethics committee at the [masked for peer review].
+Apes were housed at the Wolfgang Köhler Primate Research Center located in Zoo Leipzig, Germany. They lived in groups, with one group per species and two chimpanzee groups. Research was noninvasive and strictly adhered to the legal requirements in Germany. Animal husbandry and research complied with the European Association of Zoos and Aquaria Minimum Standards for the Accommodation and Care of Animals in Zoos and Aquaria as well as the World Association of Zoos and Aquariums Ethical Guidelines for the Conduct of Research on Animals by Zoos and Aquariums. Participation was voluntary, all food was given in addition to the daily diet, and water was available ad libitum throughout the study. The study was approved by an internal ethics committee at the Max Planck Institute for Evolutionary Anthropology.
 
 ## Design, Setup and Procedure
 ```{r}
@@ -328,7 +329,9 @@ p_meta <- meta_plot + insets
 p_meta
 ```
 
-We tested apes on the same five tasks every other week. Here we report the data from the first eight time points. The tasks were presented in the same order and with the same positioning and counterbalancing (to keep conditions constant between individuals and across occasions). Apes were tested in familiar sleeping or observation rooms by a single experimenter. Whenever possible, they were tested individually. For each individual, the tasks at one time point were usually spread out across two consecutive days with causality and inference on day 1 and quantity and switching on day 2. Gaze following trials were run at the beginning and the end of each day. The basic setup comprised a sliding table positioned in front of a clear Plexiglas panel with three holes in it. The experimenter sat on a small stool and used an occluder to cover the sliding table.
+We tested apes on the same five tasks every other week. The tasks we selected are based on published procedures and are commonly used in the field of comparative psychology. The original publications often include control conditions to rule out alternative, non-cognitive explanations. We did not include such controls here and only ran the experimental conditions. Here we report the data from the first eight time points. The tasks were presented in the same order and with the same positioning and counterbalancing (to keep conditions constant between individuals and across occasions). 
+
+Apes were tested in familiar sleeping or observation rooms by a single experimenter. Whenever possible, they were tested individually. For each individual, the tasks at one time point were usually spread out across two consecutive days with causality and inference on day 1 and quantity and switching on day 2. Gaze following trials were run at the beginning and the end of each day. The basic setup comprised a sliding table positioned in front of a clear Plexiglas panel with three holes in it. The experimenter sat on a small stool and used an occluder to cover the sliding table.
 
 ### Causality
 
@@ -336,7 +339,7 @@ The causality and inference tasks were modeled after [@call2004inferences]. Two 
 
 ### Inference
 
-Inference trials were identical to causality trials, but instead of shaking the baited cup, the experimenter shook the empty cup. On each time point, participants received 12 trials. Inference trials were intermixed with causality trials.
+Inference trials were identical to causality trials, but instead of shaking the baited cup, the experimenter shook the empty cup. Correct choice was again coded when the baited (non-shaken) cup was chosen. On each time point, participants received 12 trials. Inference trials were intermixed with causality trials.
 
 ### Gaze Following
 
@@ -352,19 +355,7 @@ This task was modeled after [@haun2006evolutionary]. Three differently looking c
 
 # Analysis and Results
 
-We combined the data from all species for the analysis because sample sizes for some species were too small to get representative estimates. However, we accounted for the nesting of subjects in species as part of the random effect structure of our models. All analyses were run in `R` [@R-base]. Bayesian multilevel models were implemented using the package `brms` [@R-brms_a] and default priors. All models included random intercepts for participants nested within group and random slopes for trial (`trial|group/subject`). Data and analysis code can be found in the associate online repository (see below). 
-
-## Stability
-
-First, we looked at group-level stability in performance. That is, we asked how much performance varied across time points in the different tasks. For this analysis, we ignored the temporal order of the different time points and treated them as repetitions of the same experiment (i.e., time point was treated as a factor instead of a numerical variable). As such, we asked a meta-analytic question: how much variation is there between different instances of the same experiment? To answer this, we fitted a mixed model with a random intercept term for time point to the data from each task^[We modeled the trial by trial data using a binomial distribution in a logistic GLMM for all tasks, except switching. Here we modeled the score (by time point) as a truncated normal distribution. As mentioned above, these models included random intercept terms for individuals nested within groups]. As part of each model, we estimated a standard deviation of the random intercept term ($\tau$), which reflects the variation between time points. 
-
-Figure \ref{fig:perfplot} visualizes performance across time points. For causality, inference and quantity, we can evaluate group-level performance by comparing it to chance (50% correct = intercept of 0 in link space). Group-level performance was reliably above chance for causality and quantity but at chance for inference. There is no such reference level for gaze following, and we can simply say that at least some individuals of all species followed the experimenter's gaze. The switching score was consistently negative, suggesting that - on a group level - apes did not switch strategies.    
-
-Figure \ref{fig:metaplot} shows the posterior distribution of $\tau$ for each task. While performance was very stable for inference, quantity and switching ($\tau$ very close to 0), performance was slightly more variable for causality and varied substantially for gaze following. For causality, variation did not seem to follow a clear temporal pattern. On the other hand, for gaze following, there seems to be a downward trend with apes (as a group) becoming less likely to follow the experimenter's gaze. We explore this temporal pattern in more detail below. Taken together, we may say that 4 out of 5 measures yield stable measures of group-level performance. For inference, however, stability corresponds to a stable performance at chance level, which suggests that the task was rather difficult. Whether that meant that participants simply guessed on each trial, we will explore in the next section.
-
-## Reliability 
-
-Next, we asked how stable performance was on an individual level. This question also relates to each task’s reliability - how well suited it is to capture differences between individuals. In general, reliability is high if individuals are consistently ranked across measurement instances. One way to assess reliability is to correlate performance from two time points (re-test reliability). Because we had multiple time points, we computed pairwise correlations for all combinations of time points (total of 28 unique correlations per task). This resulted in a distribution of correlations, which we visualize in Figure \ref{fig:relplot}. Results suggest good re-test reliability for gaze following, causality and inference, variable reliability for quantity and poor reliability for switching. This pattern is interesting in light of the group-level performance we reported above: stable performance on a group level (stability) does not imply stable individual differences (reliability). We come back to this point in the discussion. 
+We had no specific hypothesis about species differences for any of the following analysis. What is more, the unequal sample sizes between species does not warrant strong claims about differences between species. As a consequence, we will present and discuss the results from a generic "great ape" perspective. However, we accounted for the nesting of subjects in species (groups) as part of the random effect structure of our models. The interested reader may compute species-specific estimates from the data and analysis code in the associated repository (see below). All analyses were run in `R` [@R-base]. Bayesian multilevel models were implemented using the package `brms` [@R-brms_a] and default priors. All models included random intercepts for participants nested within group and random slopes for trial (`trial|group/subject`).
 
 ```{r}
 cor_data <- data_task%>%
@@ -378,8 +369,7 @@ cor_data <- data_task%>%
   setNames(unique(data_task$task))%>%
   purrr::map(cor_func)%>%
   melt()%>%
-  mutate(task = L1)%>%
-  select(task, value)
+  mutate(task = factor(L1))
 
 cor_data_sum <- cor_data%>%
   group_by(task)%>%
@@ -396,25 +386,129 @@ cor_data_sum <- cor_data%>%
 #   scale_fill_colorblind(name = "Task")
 
 
-rel_plot <- ggplot(data = cor_data, aes(x = value , y = task ,fill = task)) +
+rel_plot <- ggplot(data = cor_data, aes(x = value , y = reorder(task, desc(task)) ,fill = task)) +
   geom_vline(xintercept = 0, color = "black", size = .5, lty = 2) +
   geom_density_ridges(rel_min_height = 0.01,col = "black", scale = 2,
                       alpha = 0.5) +
   geom_pointintervalh(data = cor_data_sum, size = 1)+
   labs(x = "Correlation Coefficient",
        y = element_blank()) +
-  geom_text(data = mutate_if(cor_data_sum, is.numeric, round, 2),
+  geom_text(data = mutate_if(cor_data_sum, is.numeric, round, 1),
     aes(label = glue("{value} [{.lower}, {.upper}]"), x= Inf), hjust = "inward", size = 2)+
-  theme_minimal(base_size = 10)+
+  theme_minimal(base_size = 8)+
   xlim(-0.5,1.5)+
   guides(fill = F)+
   scale_fill_colorblind()
+
+rel_plot_dis <- cor_data%>%
+  mutate(time_span = abs(as.numeric(rowname) - as.numeric(time_point)))%>%
+  ggplot(aes(x = time_span, y = value, col = task))+
+  geom_point(alpha = .5, size = 0.75)+
+  geom_smooth(method = "lm", se = F, col = "black", lty = 2, size = .5)+
+  stat_cor(method = "pearson", aes(x = time_span, y = value, label = paste(..r.label..)), inherit.aes = F, size = 2,r.accuracy = 0.01, cor.coef.name = "r")+
+  ylim(0,1)+
+  xlim(1,7)+
+  labs(y = "Correlation Coefficient",
+     x = "Time Span") +
+  facet_grid(~task)+
+  theme_minimal(base_size = 8)+
+  guides (col = F)+
+  scale_colour_colorblind()
+
+
 ```
 
-```{r relplot, fig.env="figure", fig.pos = "H", fig.align = "center", fig.width=3.4, fig.height=2, fig.cap = "Distribution of correlations between time points for each task. Dots represent the mean of the distribution with 95\\% HDI. Numbers denote mean and 95\\% HDI." }
 
-rel_plot
+```{r relplot, fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=2, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "(A) Distribution of correlations between time points for each task. Dots represent the mean of the distribution with 95\\% HDI. Numbers denote mean and 95\\% HDI. (B) Correlations between re-test reliability and time span (in time points) between the testing time points."}
+ggarrange(rel_plot, rel_plot_dis, widths = c(2,3), labels = c("A","B"), font.label = list(size = 10))
+```
 
+## Stability
+
+First, we looked at group-level stability in performance. That is, we asked how much performance varied across time points in the different tasks. For this analysis, we ignored the temporal order of the different time points and treated them as repetitions of the same experiment (i.e., time point was treated as a factor instead of a numerical variable). As such, we asked a meta-analytic question: how much variation is there between different instances of the same experiment? To answer this, we fitted a mixed model with a random intercept term for time point to the data from each task^[We modeled the trial by trial data using a binomial distribution in a logistic GLMM for all tasks, except switching. Here we modeled the score (by time point) as a truncated normal distribution. As mentioned above, these models included random intercept terms for individuals nested within groups]. As part of each model, we estimated a standard deviation of the random intercept term ($\tau$), which reflects the variation between time points. 
+
+Figure \ref{fig:perfplot} visualizes performance across time points. For causality, inference and quantity, we can evaluate group-level performance by comparing it to chance (50% correct = intercept of 0 in link space). Group-level performance was reliably above chance for causality and quantity but at chance for inference. There is no such reference level for gaze following, and we can simply say that at least some individuals of all species followed the experimenter's gaze. The switching score was consistently negative, suggesting that - on a group level - apes did not switch strategies.    
+
+Figure \ref{fig:metaplot} shows the posterior distribution of $\tau$ for each task. While performance was very stable for inference, quantity and switching ($\tau$ very close to 0), performance was slightly more variable for causality and varied substantially for gaze following. For causality, variation did not seem to follow a clear temporal pattern. On the other hand, for gaze following, there seems to be a downward trend with apes (as a group) becoming less likely to follow the experimenter's gaze. We explore this temporal pattern in more detail below. Taken together, we may say that 4 out of 5 measures yield stable measures of group-level performance. For inference, however, stability corresponds to a stable performance at chance level, which suggests that the task was rather difficult. Whether that meant that participants simply guessed on each trial, we will explore in the next section.
+
+## Reliability 
+
+Next, we asked how stable performance was on an individual level. This question also relates to each task’s reliability - how well suited it is to capture differences between individuals. In general, reliability is high if individuals are consistently ranked across measurement instances. One way to assess reliability is to correlate performance from two time points (re-test reliability). Because we had multiple time points, we computed pairwise correlations for all combinations of time points (total of 28 unique correlations per task). This resulted in a distribution of correlations, which we visualize in Figure \ref{fig:relplot}A. We evaluate these correlations in light of meta-analytic estimates from them animal cognition literature [@cauchoix2018repeatability]. Results suggest good re-test reliability for gaze following, causality and inference, variable reliability for quantity and poor reliability for switching. This pattern is interesting in light of the group-level performance we reported above: stable performance on a group level (stability) does not imply stable individual differences (reliability). We come back to this point in the discussion. Figure \ref{fig:relplot}B shows the relation between the time span (in time points) between the testing time points and the re-test reliability measure. As expected, the further apart the two measurement time points, the lower the correlation tended to be [see @uher2011individual for a more detailed discussion of this phenomenon].
+
+```{r}
+# sex_pred <- bind_rows(
+# posterior_samples(bm_sex[1], pars = "b_sexm")%>%mutate(task = "causality"),
+# posterior_samples(bm_sex[2], pars = "b_sexm")%>%mutate(task = "gaze_following"),
+# posterior_samples(bm_sex[3], pars = "b_sexm")%>%mutate(task = "inference"),
+# posterior_samples(bm_sex[4], pars = "b_sexm")%>%mutate(task = "quantity"),
+# posterior_samples(bm_switch_sex, pars = "b_sexm")%>%mutate(task = "switching")
+# )%>%
+#   dplyr::rename(value = b_sexm)%>%
+#   mutate(predictor = "sex (male)")
+# 
+# 
+# rank_pred <- bind_rows(
+# posterior_samples(bm_rank[1], pars = "b_rank")%>%mutate(task = "causality"),
+# posterior_samples(bm_rank[2], pars = "b_rank")%>%mutate(task = "gaze_following"),
+# posterior_samples(bm_rank[3], pars = "b_rank")%>%mutate(task = "inference"),
+# posterior_samples(bm_rank[4], pars = "b_rank")%>%mutate(task = "quantity"),
+# posterior_samples(bm_switch_rank, pars = "b_rank")%>%mutate(task = "switching")
+# )%>%
+#   dplyr::rename(value = b_rank)%>%
+#   mutate(predictor = "rank")
+# 
+# age_pred <- bind_rows(
+# posterior_samples(bm_age[1], pars = "b_age")%>%mutate(task = "causality"),
+# posterior_samples(bm_age[2], pars = "b_age")%>%mutate(task = "gaze_following"),
+# posterior_samples(bm_age[3], pars = "b_age")%>%mutate(task = "inference"),
+# posterior_samples(bm_age[4], pars = "b_age")%>%mutate(task = "quantity"),
+# posterior_samples(bm_switch_age, pars = "b_age")%>%mutate(task = "switching")
+# )%>%
+#   dplyr::rename(value = b_age)%>%
+#   mutate(predictor = "age")
+# 
+# time_pred <- bind_rows(
+# posterior_samples(bm_null[1], pars = "b_time_point")%>%mutate(task = "causality"),
+# posterior_samples(bm_null[2], pars = "b_time_point")%>%mutate(task = "gaze_following"),
+# posterior_samples(bm_null[3], pars = "b_time_point")%>%mutate(task = "inference"),
+# posterior_samples(bm_null[4], pars = "b_time_point")%>%mutate(task = "quantity"),
+# posterior_samples(bm_switch_null, pars = "b_time_point")%>%mutate(task = "switching")
+# )%>%
+#   dplyr::rename(value = b_time_point)%>%
+#   filter(value > -3)%>%
+#   mutate(predictor = "time_point")
+# 
+# pred <-  bind_rows(sex_pred,rank_pred,age_pred,time_pred)
+# 
+# saveRDS(pred,file = "saves/pred.rds")
+ 
+pred <- readRDS(file = "saves/pred.rds")
+
+pred_summary <- pred %>%
+  group_by(task,predictor) %>% 
+  mean_hdci(value)
+
+pred_plot <-  ggplot(data = pred, aes(x = value , y = predictor ,fill = task)) +
+  facet_grid(~task, scales = "free")+
+  #geom_vline(data = forest.data.summary%>%filter(time_point == "Pooled Effect"), aes(xintercept = b_Intercept), color = "grey", size = 1) +
+  #geom_vline(data = forest.data.summary%>%filter(time_point == "Pooled Effect"), aes(xintercept = .lower), color = "grey", linetype = 2) +
+    #geom_vline(data = forest.data.summary%>%filter(time_point == "Pooled Effect"), aes(xintercept = .upper), color = "grey", linetype = 2) +
+  #geom_segment(y = "Time point 1", yend = "Time point 1", x = -Inf, xend = Inf, color = "black", size = 0.5) +
+  geom_vline(xintercept = 0, color = "black", size = .5, lty = 2) +
+  geom_density_ridges(rel_min_height = 0.01,col = "black", scale = 1.5,
+                      alpha = 0.5) +
+  geom_pointintervalh(data = pred_summary, size = 1)+
+  labs(x = "Model Estimate",
+       y = element_blank()) +
+  theme_minimal(base_size = 10)+
+  guides(fill = F)+
+  scale_fill_colorblind()
+
+#ggsave(file = "predictors.png", width = 10, height = 3, scale = 1.5)
+```
+
+```{r predplot, fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=2, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "Posterior distribution for the test predictors for each task. Dots represent the mean of the distribution with 95\\% HDI. Samples for time point are drawn from the baseline model. For all models except switching, the estimates are given in link space. No samples are shown for the rearing model."}
+pred_plot
 ```
 
 ## Predictors
@@ -709,96 +803,13 @@ Table 1 gives WAIC scores and weights for each model and task. Figure \ref{fig:p
 
 For gaze following, the model including sex as a predictor was ranked highest: males were somewhat less likely to follow the experimenter's gaze. For quantity and switching, the rank model was rated highest with lower-ranking individuals showing better quantity discrimination or switching abilities. In the case of switching, however, the model results should be interpreted with caution. The low re-test correlations suggest that the task does not reliably measure the cognitive ability in question. Thus, the variation in performance that the model tries to explain might not have a cognitive origin and could equally well be due to factors we did not capture.  
 
-```{r}
-# sex_pred <- bind_rows(
-# posterior_samples(bm_sex[1], pars = "b_sexm")%>%mutate(task = "causality"),
-# posterior_samples(bm_sex[2], pars = "b_sexm")%>%mutate(task = "gaze_following"),
-# posterior_samples(bm_sex[3], pars = "b_sexm")%>%mutate(task = "inference"),
-# posterior_samples(bm_sex[4], pars = "b_sexm")%>%mutate(task = "quantity"),
-# posterior_samples(bm_switch_sex, pars = "b_sexm")%>%mutate(task = "switching")
-# )%>%
-#   dplyr::rename(value = b_sexm)%>%
-#   mutate(predictor = "sex (male)")
-# 
-# 
-# rank_pred <- bind_rows(
-# posterior_samples(bm_rank[1], pars = "b_rank")%>%mutate(task = "causality"),
-# posterior_samples(bm_rank[2], pars = "b_rank")%>%mutate(task = "gaze_following"),
-# posterior_samples(bm_rank[3], pars = "b_rank")%>%mutate(task = "inference"),
-# posterior_samples(bm_rank[4], pars = "b_rank")%>%mutate(task = "quantity"),
-# posterior_samples(bm_switch_rank, pars = "b_rank")%>%mutate(task = "switching")
-# )%>%
-#   dplyr::rename(value = b_rank)%>%
-#   mutate(predictor = "rank")
-# 
-# age_pred <- bind_rows(
-# posterior_samples(bm_age[1], pars = "b_age")%>%mutate(task = "causality"),
-# posterior_samples(bm_age[2], pars = "b_age")%>%mutate(task = "gaze_following"),
-# posterior_samples(bm_age[3], pars = "b_age")%>%mutate(task = "inference"),
-# posterior_samples(bm_age[4], pars = "b_age")%>%mutate(task = "quantity"),
-# posterior_samples(bm_switch_age, pars = "b_age")%>%mutate(task = "switching")
-# )%>%
-#   dplyr::rename(value = b_age)%>%
-#   mutate(predictor = "age")
-# 
-# time_pred <- bind_rows(
-# posterior_samples(bm_null[1], pars = "b_time_point")%>%mutate(task = "causality"),
-# posterior_samples(bm_null[2], pars = "b_time_point")%>%mutate(task = "gaze_following"),
-# posterior_samples(bm_null[3], pars = "b_time_point")%>%mutate(task = "inference"),
-# posterior_samples(bm_null[4], pars = "b_time_point")%>%mutate(task = "quantity"),
-# posterior_samples(bm_switch_null, pars = "b_time_point")%>%mutate(task = "switching")
-# )%>%
-#   dplyr::rename(value = b_time_point)%>%
-#   filter(value > -3)%>%
-#   mutate(predictor = "time_point")
-# 
-# pred <-  bind_rows(sex_pred,rank_pred,age_pred,time_pred)
-# 
-# saveRDS(pred,file = "saves/pred.rds")
- 
-pred <- readRDS(file = "saves/pred.rds")
-
-pred_summary <- pred %>%
-  group_by(task,predictor) %>% 
-  mean_hdci(value)
-
-pred_plot <-  ggplot(data = pred, aes(x = value , y = predictor ,fill = task)) +
-  facet_grid(~task, scales = "free")+
-  #geom_vline(data = forest.data.summary%>%filter(time_point == "Pooled Effect"), aes(xintercept = b_Intercept), color = "grey", size = 1) +
-  #geom_vline(data = forest.data.summary%>%filter(time_point == "Pooled Effect"), aes(xintercept = .lower), color = "grey", linetype = 2) +
-    #geom_vline(data = forest.data.summary%>%filter(time_point == "Pooled Effect"), aes(xintercept = .upper), color = "grey", linetype = 2) +
-  #geom_segment(y = "Time point 1", yend = "Time point 1", x = -Inf, xend = Inf, color = "black", size = 0.5) +
-  geom_vline(xintercept = 0, color = "black", size = .5, lty = 2) +
-  geom_density_ridges(rel_min_height = 0.01,col = "black", scale = 1.5,
-                      alpha = 0.5) +
-  geom_pointintervalh(data = pred_summary, size = 1)+
-  labs(x = "Model Estimate",
-       y = element_blank()) +
-  theme_minimal(base_size = 10)+
-  guides(fill = F)+
-  scale_fill_colorblind()
-
-#ggsave(file = "predictors.png", width = 10, height = 3, scale = 1.5)
-```
-
-```{r predplot, fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=2, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "Posterior distribution for the test predictors for each task. Dots represent the mean of the distribution with 95\\% HDI. Samples for time point are drawn from the baseline model. For all models except switching, the estimates are given in link space. No samples are shown for the rearing model."}
-pred_plot
-```
-
-
 # Discussion 
 
 We tested the same sample of great apes repeatedly on five cognitive tasks. This design allowed us to address some pressing questions in primate cognition research: How stable is group-level performance in cognitive tasks? How reliable are the results of these tasks? How much do individual characteristics influence performance? Below we discuss the results in light of these questions. 
 
-Performance was relatively stable for all tasks except gaze following. This result is somewhat surprising given that individuals were differentially reinforced in all tasks -- except gaze following. Furthermore, counterbalancing and positioning were exactly the same at each time point. Together, this creates a potentially ideal learning scenario. How can we interpret this lack of improvement in the tasks other than gaze following? One explanation could be that the different routes to solving the task constitute incompatible information sources. For example, in the case of causality, apes could spontaneously solve the task by inferring that the food caused the sound. Alternatively, they could learn that food is under the cup the experimenter touches whenever they hear a rattling sound. In principle, these two information sources could easily be integrated and supplement one another, resulting in improved performance over time. The absence of improvement could mean that apes rely on spontaneous inferences alone, thereby ignoring repeating contingencies. However, many alternative explanations are possible. For example, many apes in [masked] have had years of experience with the kind of tasks we included in the study. Thus, the absence of improvement might indicate that they already reached an individual performance maximum. The continuation of this project might help to shed light on these questions. For now, we may conclude that short term improvements based on learned arbitrary relations are unlikely to occur in great apes. In support of this, when primates learned arbitrary relations in previous studies, it typically took a very long time and an elaborate training regime [e.g. @allritz2016chimpanzees].   
+Performance was relatively stable for all tasks except gaze following. This result is somewhat surprising given that individuals were differentially reinforced in all tasks -- except gaze following. Furthermore, counterbalancing and positioning were exactly the same at each time point. Together, this creates a potentially ideal learning scenario. How can we interpret this lack of improvement in the tasks other than gaze following? One explanation could be that the different routes to solving the task constitute incompatible information sources. For example, in the case of causality, apes could spontaneously solve the task by inferring that the food caused the sound. Alternatively, they could learn that food is under the cup the experimenter touches whenever they hear a rattling sound. In principle, these two information sources could easily be integrated and supplement one another, resulting in improved performance over time. The absence of improvement could mean that apes rely on spontaneous inferences alone, thereby ignoring repeating contingencies. However, many alternative explanations are possible. For example, many apes in Zoo Leipzig have had years of experience with the kind of tasks we included in the study. Thus, the absence of improvement might indicate that they already reached an individual performance maximum. The continuation of this project might help to shed light on these questions. For now, we may conclude that short term improvements based on learned arbitrary relations are unlikely to occur in great apes. In support of this, when primates learned arbitrary relations in previous studies, it typically took a very long time and an elaborate training regime [e.g. @allritz2016chimpanzees].   
 
 Three out of five tasks showed acceptable levels of reliability. Importantly, reliability is independent of group-level performance (leaving aside floor and ceiling effects) [see @hedge2018reliability]. Here, we see such a pattern for inference: Group-level performance was consistently at chance level for every time point. On a group level, one would conclude that great apes did not make the inference in question. However, the task was highly reliable, suggesting that it accurately captured individual differences. Together with the observation that some individuals consistently performed at ceiling (see grey transparent lines in Figure \ref{fig:perfplot}), this suggests that the task is well suited to measure inferential abilities on an *individual* level. The opposite pattern holds for quantity. Here, group-level performance was consistently above chance, but individual differences were not very consistent. This suggests that variation was due to sources other than systematic differences between individuals. This phenomenon is quite common in the human adult cognitive literature [@hedge2018reliability]. It arises when experimental tasks (optimized for low variance in measurement) are used to study individual differences (requiring high variance in measurement). Taken together, we may recommend that researchers investigate the psychometric properties of an experimental task before they use it to study individual differences. When planning to study individual differences by relating measures to one another, researchers might be well advised to first study the reliability of these measures. Even though this takes considerable time and effort, it increases the chances of finding meaningful effects.
-
-We did not find that one of the individual-level characteristics (age, sex, rank or rearing history) was consistently related to performance across tasks. A baseline model, predicting performance by time variables alone, was, on average, rated highest in the different model comparisons. The model including rank was rated highest for two tasks (quantity and switching). However, in the case of switching, this should be interpreted with caution in the light of low reliability of the task (see results section). Moving forward, we will explore additional predictors, to see if we do find some that are related to cognitive performance more broadly. For now, we may conclude that researchers should carefully select predictors based on theoretical considerations. Including them as a default or to control for potential effects might make models unnecessarily complex -- and might not even have the desired effect [see @westfall2016statistically].
-
-For our analysis, we combined the data from all species, neglecting potential species differences. The reason is that the sample size for each species was too small to really differentiate individual- from species-level differences. This is a common problem in primate cognition research. Species-level inferences require data sets that are beyond the resources of individual labs. A promising way forward to overcome this limitation is the *ManyPrimates* project; a large-scale collaborative initiative established to create an infrastructure to support the pooling of resources across labs [@many2019establishing]. 
-
-The data we have reported here are the first couple of waves in a longitudinal study which we hope to continue for at least one year. As part of it, we will record additional variables that might explain variation in cognitive performance such as social network data or live history variables (sickness, birth and death of group members, etc.). We hope that this project will contribute to our understanding of the dynamic nature of primate cognition.
 
 ```{r tab1, results="asis"}
 comp_tab <- model_comp%>%
@@ -818,15 +829,17 @@ tab1 <- xtable::xtable(comp_tab,
 print(tab1, type="latex", comment = F, table.placement = "H", include.rownames=FALSE)
 ```
 
-\vspace{0.2em} \fbox{\parbox[b][][c]{7.3cm}{\centering Corresponding data and code are available at [masked for peer review]}} \vspace{0.2em} 
+We did not find that one of the individual-level characteristics (age, sex, rank or rearing history) was consistently related to performance across tasks. A baseline model, predicting performance by time variables alone, was, on average, rated highest in the different model comparisons. The model including rank was rated highest for two tasks (quantity and switching). However, in the case of switching, this should be interpreted with caution in the light of low reliability of the task (see results section). Moving forward, we will explore additional predictors, to see if we do find some that are related to cognitive performance more broadly. For now, we may conclude that researchers should carefully select predictors based on theoretical considerations. Including them as a default or to control for potential effects might make models unnecessarily complex -- and might not even have the desired effect [see @westfall2016statistically].
 
-<!-- \vspace{1em} \fbox{\parbox[b][][c]{7.3cm}{\centering Corresponding data and code are available at\ \url{https://github.com/ccp-eva/laac}}} \vspace{1em} -->
+For our analysis, we combined the data from all species, neglecting potential species differences. The reason is that the sample size for each species was too small to really differentiate individual- from species-level differences. This is a common problem in primate cognition research. Species-level inferences require data sets that are beyond the resources of individual labs. A promising way forward to overcome this limitation is the *ManyPrimates* project; a large-scale collaborative initiative established to create an infrastructure to support the pooling of resources across labs [@many2019establishing]. 
+
+The data we have reported here are the first couple of waves in a longitudinal study which we hope to continue for at least one year. As part of it, we will record additional variables that might explain variation in cognitive performance such as social network data or live history variables (sickness, birth and death of group members, etc.). We hope that this project will contribute to our understanding of the dynamic nature of primate cognition.
+
+\vspace{1em} \fbox{\parbox[b][][c]{7.3cm}{\centering Corresponding data and code are available at\ \url{https://github.com/ccp-eva/laac}}} \vspace{1em}
 
 # Acknowledgements
 
-Masked for peer review
-
-<!-- We thank Damilola Olaoba and Anna Wolff for data collection, Luke Maurits for helpful discussion about the analytical approach and the animal caretakers at the WKPRC for their support.  -->
+We thank Damilola Olaoba and Anna Wolff for data collection, Luke Maurits for helpful discussion about the analytic approach and the animal caretakers at the WKPRC for their support.
 
 # References 
 

@@ -36,7 +36,7 @@
 \usepackage{apacite}
 
 % KM added 1/4/18 to allow control of blind submission
-
+\cogscifinalcopy
 
 \usepackage{color}
 
@@ -117,12 +117,15 @@ cognition research between 2014 and 2019 found that only 2 \% of studies
 included a replication (ManyPrimates, Altschul, Beran, Bohn, Caspar, et
 al., 2019). Replications are rare, in part because researchers only have
 access to one sample of study participants and therefore cannot test a
-new sample. Nevertheless, in such conditions, we can ask a more
-fundamental question: how \emph{repeatable} are the results of a study.
-That is if we test the same animals multiple times, do we get similar
-results? Repeatability could be seen as a pre-condition for
-replicability. In this study, we investigate the stability of results by
-repeatedly testing the same sample of great apes on the same tasks.
+new sample. Nevertheless, in such conditions, we can ask a more basic
+question: how \emph{repeatable} are the results of a study. That is if
+we test the same animals multiple times, do we get similar results?
+Repeatability could be seen as a pre-condition for replicability. In
+this study, we investigate the stability of results by repeatedly
+testing the same sample of great apes on the same tasks. This will allow
+us to estimate how stable group-level performance is and thus how
+representative a single data collection point is for a group of great
+apes.
 
 One way to explain cognitive evolution is to study how cognitive
 abilities cluster in different species. This approach needs reliable
@@ -184,19 +187,22 @@ A total of 40 great apes participated at least once in one of the tasks.
 This included 8 Bonobos (3 females, age 7.3 to 38), 21 Chimpanzees (16
 females, age 2.6 to 54.9), 6 Gorillas (4 females, age 2.7 to 21.6), and
 6 Orangutans (4 females, age 17 to 40.2). The sample size at the
-different time points ranged from 22 to 38.
+different time points ranged from 22 to 38. All apes participate in
+cognitive research on a regular basis. Many of them have ample
+experience with the very tasks we used in the current study.
 
-Apes were housed at the {[}masked for peer review{]}. They lived in
-groups, with one group per species and two chimpanzee groups. Research
-was noninvasive and strictly adhered to the legal requirements in
-Germany. Animal husbandry and research complied with the European
-Association of Zoos and Aquaria Minimum Standards for the Accommodation
-and Care of Animals in Zoos and Aquaria as well as the World Association
-of Zoos and Aquariums Ethical Guidelines for the Conduct of Research on
-Animals by Zoos and Aquariums. Participation was voluntary, all food was
-given in addition to the daily diet, and water was available ad libitum
-throughout the study. The study was approved by an internal ethics
-committee at the {[}masked for peer review{]}.
+Apes were housed at the Wolfgang Köhler Primate Research Center located
+in Zoo Leipzig, Germany. They lived in groups, with one group per
+species and two chimpanzee groups. Research was noninvasive and strictly
+adhered to the legal requirements in Germany. Animal husbandry and
+research complied with the European Association of Zoos and Aquaria
+Minimum Standards for the Accommodation and Care of Animals in Zoos and
+Aquaria as well as the World Association of Zoos and Aquariums Ethical
+Guidelines for the Conduct of Research on Animals by Zoos and Aquariums.
+Participation was voluntary, all food was given in addition to the daily
+diet, and water was available ad libitum throughout the study. The study
+was approved by an internal ethics committee at the Max Planck Institute
+for Evolutionary Anthropology.
 
 \hypertarget{design-setup-and-procedure}{%
 \subsection{Design, Setup and
@@ -213,11 +219,17 @@ Procedure}\label{design-setup-and-procedure}}
 \end{figure*}
 \end{CodeChunk}
 
-We tested apes on the same five tasks every other week. Here we report
-the data from the first eight time points. The tasks were presented in
-the same order and with the same positioning and counterbalancing (to
-keep conditions constant between individuals and across occasions). Apes
-were tested in familiar sleeping or observation rooms by a single
+We tested apes on the same five tasks every other week. The tasks we
+selected are based on published procedures and are commonly used in the
+field of comparative psychology. The original publications often include
+control conditions to rule out alternative, non-cognitive explanations.
+We did not include such controls here and only ran the experimental
+conditions. Here we report the data from the first eight time points.
+The tasks were presented in the same order and with the same positioning
+and counterbalancing (to keep conditions constant between individuals
+and across occasions).
+
+Apes were tested in familiar sleeping or observation rooms by a single
 experimenter. Whenever possible, they were tested individually. For each
 individual, the tasks at one time point were usually spread out across
 two consecutive days with causality and inference on day 1 and quantity
@@ -246,8 +258,9 @@ time point, participants received 12 trials.
 \subsubsection{Inference}\label{inference}}
 
 Inference trials were identical to causality trials, but instead of
-shaking the baited cup, the experimenter shook the empty cup. On each
-time point, participants received 12 trials. Inference trials were
+shaking the baited cup, the experimenter shook the empty cup. Correct
+choice was again coded when the baited (non-shaken) cup was chosen. On
+each time point, participants received 12 trials. Inference trials were
 intermixed with causality trials.
 
 \hypertarget{gaze-following}{%
@@ -301,16 +314,30 @@ strategies.
 \hypertarget{analysis-and-results}{%
 \section{Analysis and Results}\label{analysis-and-results}}
 
-We combined the data from all species for the analysis because sample
-sizes for some species were too small to get representative estimates.
-However, we accounted for the nesting of subjects in species as part of
-the random effect structure of our models. All analyses were run in
-\texttt{R} (R Core Team, 2018). Bayesian multilevel models were
-implemented using the package \texttt{brms} (Burkner, 2017) and default
-priors. All models included random intercepts for participants nested
-within group and random slopes for trial
-(\texttt{trial\textbar{}group/subject}). Data and analysis code can be
-found in the associate online repository (see below).
+We had no specific hypothesis about species differences for any of the
+following analysis. What is more, the unequal sample sizes between
+species does not warrant strong claims about differences between
+species. As a consequence, we will present and discuss the results from
+a generic ``great ape'' perspective. However, we accounted for the
+nesting of subjects in species (groups) as part of the random effect
+structure of our models. The interested reader may compute
+species-specific estimates from the data and analysis code in the
+associated repository (see below). All analyses were run in \texttt{R}
+(R Core Team, 2018). Bayesian multilevel models were implemented using
+the package \texttt{brms} (Burkner, 2017) and default priors. All models
+included random intercepts for participants nested within group and
+random slopes for trial (\texttt{trial\textbar{}group/subject}).
+
+\begin{CodeChunk}
+\begin{figure*}[h]
+
+{\centering \includegraphics{figs/relplot-1} 
+
+}
+
+\caption[(A) Distribution of correlations between time points for each task]{(A) Distribution of correlations between time points for each task. Dots represent the mean of the distribution with 95\% HDI. Numbers denote mean and 95\% HDI. (B) Correlations between re-test reliability and time span (in time points) between the testing time points.}\label{fig:relplot}
+\end{figure*}
+\end{CodeChunk}
 
 \hypertarget{stability}{%
 \subsection{Stability}\label{stability}}
@@ -368,22 +395,29 @@ from two time points (re-test reliability). Because we had multiple time
 points, we computed pairwise correlations for all combinations of time
 points (total of 28 unique correlations per task). This resulted in a
 distribution of correlations, which we visualize in Figure
-\ref{fig:relplot}. Results suggest good re-test reliability for gaze
+\ref{fig:relplot}A. We evaluate these correlations in light of
+meta-analytic estimates from them animal cognition literature (Cauchoix
+et al., 2018). Results suggest good re-test reliability for gaze
 following, causality and inference, variable reliability for quantity
 and poor reliability for switching. This pattern is interesting in light
 of the group-level performance we reported above: stable performance on
 a group level (stability) does not imply stable individual differences
-(reliability). We come back to this point in the discussion.
+(reliability). We come back to this point in the discussion. Figure
+\ref{fig:relplot}B shows the relation between the time span (in time
+points) between the testing time points and the re-test reliability
+measure. As expected, the further apart the two measurement time points,
+the lower the correlation tended to be (see Uher, 2011 for a more
+detailed discussion of this phenomenon).
 
 \begin{CodeChunk}
-\begin{figure}[H]
+\begin{figure*}[h]
 
-{\centering \includegraphics{figs/relplot-1} 
+{\centering \includegraphics{figs/predplot-1} 
 
 }
 
-\caption[Distribution of correlations between time points for each task]{Distribution of correlations between time points for each task. Dots represent the mean of the distribution with 95\% HDI. Numbers denote mean and 95\% HDI.}\label{fig:relplot}
-\end{figure}
+\caption[Posterior distribution for the test predictors for each task]{Posterior distribution for the test predictors for each task. Dots represent the mean of the distribution with 95\% HDI. Samples for time point are drawn from the baseline model. For all models except switching, the estimates are given in link space. No samples are shown for the rearing model.}\label{fig:predplot}
+\end{figure*}
 \end{CodeChunk}
 
 \hypertarget{predictors}{%
@@ -431,17 +465,6 @@ question. Thus, the variation in performance that the model tries to
 explain might not have a cognitive origin and could equally well be due
 to factors we did not capture.
 
-\begin{CodeChunk}
-\begin{figure*}[h]
-
-{\centering \includegraphics{figs/predplot-1} 
-
-}
-
-\caption[Posterior distribution for the test predictors for each task]{Posterior distribution for the test predictors for each task. Dots represent the mean of the distribution with 95\% HDI. Samples for time point are drawn from the baseline model. For all models except switching, the estimates are given in link space. No samples are shown for the rearing model.}\label{fig:predplot}
-\end{figure*}
-\end{CodeChunk}
-
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}
 
@@ -468,7 +491,7 @@ sources could easily be integrated and supplement one another, resulting
 in improved performance over time. The absence of improvement could mean
 that apes rely on spontaneous inferences alone, thereby ignoring
 repeating contingencies. However, many alternative explanations are
-possible. For example, many apes in {[}masked{]} have had years of
+possible. For example, many apes in Zoo Leipzig have had years of
 experience with the kind of tasks we included in the study. Thus, the
 absence of improvement might indicate that they already reached an
 individual performance maximum. The continuation of this project might
@@ -506,40 +529,6 @@ study the reliability of these measures. Even though this takes
 considerable time and effort, it increases the chances of finding
 meaningful effects.
 
-We did not find that one of the individual-level characteristics (age,
-sex, rank or rearing history) was consistently related to performance
-across tasks. A baseline model, predicting performance by time variables
-alone, was, on average, rated highest in the different model
-comparisons. The model including rank was rated highest for two tasks
-(quantity and switching). However, in the case of switching, this should
-be interpreted with caution in the light of low reliability of the task
-(see results section). Moving forward, we will explore additional
-predictors, to see if we do find some that are related to cognitive
-performance more broadly. For now, we may conclude that researchers
-should carefully select predictors based on theoretical considerations.
-Including them as a default or to control for potential effects might
-make models unnecessarily complex -- and might not even have the desired
-effect (see Westfall \& Yarkoni, 2016).
-
-For our analysis, we combined the data from all species, neglecting
-potential species differences. The reason is that the sample size for
-each species was too small to really differentiate individual- from
-species-level differences. This is a common problem in primate cognition
-research. Species-level inferences require data sets that are beyond the
-resources of individual labs. A promising way forward to overcome this
-limitation is the \emph{ManyPrimates} project; a large-scale
-collaborative initiative established to create an infrastructure to
-support the pooling of resources across labs (ManyPrimates, Altschul,
-Beran, Bohn, Call, et al., 2019).
-
-The data we have reported here are the first couple of waves in a
-longitudinal study which we hope to continue for at least one year. As
-part of it, we will record additional variables that might explain
-variation in cognitive performance such as social network data or live
-history variables (sickness, birth and death of group members, etc.). We
-hope that this project will contribute to our understanding of the
-dynamic nature of primate cognition.
-
 \begin{table}[H]
 \centering
 \begin{tabular}{llrrr}
@@ -576,15 +565,51 @@ Causality & baseline & 2432.35 & 52.98 & 0.25 \\
 \caption{WAIC Scores and weights for each predictor model and task.} 
 \end{table}
 
-\vspace{0.2em}
+We did not find that one of the individual-level characteristics (age,
+sex, rank or rearing history) was consistently related to performance
+across tasks. A baseline model, predicting performance by time variables
+alone, was, on average, rated highest in the different model
+comparisons. The model including rank was rated highest for two tasks
+(quantity and switching). However, in the case of switching, this should
+be interpreted with caution in the light of low reliability of the task
+(see results section). Moving forward, we will explore additional
+predictors, to see if we do find some that are related to cognitive
+performance more broadly. For now, we may conclude that researchers
+should carefully select predictors based on theoretical considerations.
+Including them as a default or to control for potential effects might
+make models unnecessarily complex -- and might not even have the desired
+effect (see Westfall \& Yarkoni, 2016).
 
-\fbox{\parbox[b][][c]{7.3cm}{\centering Corresponding data and code are available at [masked for peer review]}}
-\vspace{0.2em}
+For our analysis, we combined the data from all species, neglecting
+potential species differences. The reason is that the sample size for
+each species was too small to really differentiate individual- from
+species-level differences. This is a common problem in primate cognition
+research. Species-level inferences require data sets that are beyond the
+resources of individual labs. A promising way forward to overcome this
+limitation is the \emph{ManyPrimates} project; a large-scale
+collaborative initiative established to create an infrastructure to
+support the pooling of resources across labs (ManyPrimates, Altschul,
+Beran, Bohn, Call, et al., 2019).
+
+The data we have reported here are the first couple of waves in a
+longitudinal study which we hope to continue for at least one year. As
+part of it, we will record additional variables that might explain
+variation in cognitive performance such as social network data or live
+history variables (sickness, birth and death of group members, etc.). We
+hope that this project will contribute to our understanding of the
+dynamic nature of primate cognition.
+
+\vspace{1em}
+
+\fbox{\parbox[b][][c]{7.3cm}{\centering Corresponding data and code are available at\ \url{https://github.com/ccp-eva/laac}}}
+\vspace{1em}
 
 \hypertarget{acknowledgements}{%
 \section{Acknowledgements}\label{acknowledgements}}
 
-Masked for peer review
+We thank Damilola Olaoba and Anna Wolff for data collection, Luke
+Maurits for helpful discussion about the analytic approach and the
+animal caretakers at the WKPRC for their support.
 
 \hypertarget{references}{%
 \section{References}\label{references}}
@@ -595,7 +620,6 @@ Masked for peer review
 \noindent
 
 \hypertarget{refs}{}
-
 
 \leavevmode\hypertarget{ref-allritz2016chimpanzees}{}%
 Allritz, M., Call, J., \& Borkenau, P. (2016). How chimpanzees (pan
@@ -616,6 +640,13 @@ models using {Stan}. \emph{Journal of Statistical Software},
 Call, J. (2004). Inferences about the location of food in the great apes
 (pan paniscus, pan troglodytes, gorilla gorilla, and pongo pygmaeus).
 \emph{Journal of Comparative Psychology}, \emph{118}(2), 232.
+
+\leavevmode\hypertarget{ref-cauchoix2018repeatability}{}%
+Cauchoix, M., Chow, P., Van Horik, J., Atance, C., Barbeau, E.,
+Barragan-Jason, G., \ldots{} others. (2018). The repeatability of
+cognitive performance: A meta-analysis. \emph{Philosophical Transactions
+of the Royal Society B: Biological Sciences}, \emph{373}(1756),
+20170281.
 
 \leavevmode\hypertarget{ref-open2015estimating}{}%
 Collaboration, O. S. (2015). Estimating the reproducibility of
@@ -687,6 +718,12 @@ allows presenting anything as significant. \emph{Psychological Science},
 Stevens, J. R. (2017). Replicability and reproducibility in comparative
 psychology. \emph{Frontiers in Psychology}, \emph{8}, 862.
 
+\leavevmode\hypertarget{ref-uher2011individual}{}%
+Uher, J. (2011). Individual behavioral phenotypes: An integrative
+meta-theoretical framework. Why {``behavioral syndromes''} are not
+analogs of {``personality.''} \emph{Developmental Psychobiology},
+\emph{53}(6), 521--548.
+
 \leavevmode\hypertarget{ref-volter2018comparative}{}%
 Volter, C. J., Tinklenberg, B., Call, J., \& Seed, A. M. (2018).
 Comparative psychometrics: Establishing what differs is central to
@@ -697,7 +734,6 @@ Royal Society B: Biological Sciences}, \emph{373}(1756), 20170283.
 Westfall, J., \& Yarkoni, T. (2016). Statistically controlling for
 confounding constructs is harder than you think. \emph{PloS One},
 \emph{11}(3), e0152719.
-
 
 
 \bibliographystyle{apacite}
