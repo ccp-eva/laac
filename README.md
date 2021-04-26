@@ -1,6 +1,6 @@
 Repository associated with the following manuscripts: 
 
-(1) **Bohn, M., Eckert, J., Hanus, D., & Haun, D. (2021). [A Longitudinal Study of Great Ape Cognition: Stability, Reliability and the Influence of Individual Characteristics](https://arxiv.org/abs/2005.12656). *Proceedings of the 43rd Annual Conference of the Cognitive Science Society*.**
+**1. Bohn, M., Eckert, J., Hanus, D., & Haun, D. (2021). [A Longitudinal Study of Great Ape Cognition: Stability, Reliability and the Influence of Individual Characteristics](https://psyarxiv.com/pdt5w). *Proceedings of the 43rd Annual Conference of the Cognitive Science Society*.**
 
 ### Structure
 
