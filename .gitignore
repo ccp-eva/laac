@@ -1,6 +1,6 @@
 writing/CogSci2021/figs/
 
-
+*.log
 .DS_Store
 
 # History files
