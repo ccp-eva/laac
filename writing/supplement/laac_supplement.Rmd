@@ -109,11 +109,11 @@ participants <- data_trial%>%
    mutate(shade = time_point %% 2 == 0)
    
 ```
-A total of `r sum(participants$n)` great apes participated at least once in one of the tasks. This included `r participants%>%filter(species == "bonobo")%>%pull(n)%>%sum()` Bonobos (`r participants%>%filter(species == "bonobo", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "bonobo", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "bonobo", sex == "f")%>%pull(maxage)`), `r participants%>%filter(species == "chimpanzee")%>%pull(n)%>%sum()` Chimpanzees (`r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(maxage)`), `r participants%>%filter(species == "gorilla")%>%pull(n)%>%sum()` Gorillas (`r participants%>%filter(species == "gorilla", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "gorilla", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "gorilla", sex == "f")%>%pull(maxage)`), and `r participants%>%filter(species == "gorilla")%>%pull(n)%>%sum()` Orangutans (`r participants%>%filter(species == "orangutan", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "orangutan", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "orangutan", sex == "f")%>%pull(maxage)`). The sample size at the different time points ranged from `r min(tpn$n)` to `r max(tpn$n)`. Figure \ref{fig:sample} visualizes the sample size across time points. All apes participate in cognitive research on a regular basis. Many of them have ample experience with the very tasks we used in the current study.
+A total of `r sum(participants$n)` great apes participated at least once in one of the tasks. This included `r participants%>%filter(species == "bonobo")%>%pull(n)%>%sum()` Bonobos (`r participants%>%filter(species == "bonobo", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "bonobo", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "bonobo", sex == "f")%>%pull(maxage)`), `r participants%>%filter(species == "chimpanzee")%>%pull(n)%>%sum()` Chimpanzees (`r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(maxage)`), `r participants%>%filter(species == "gorilla")%>%pull(n)%>%sum()` Gorillas (`r participants%>%filter(species == "gorilla", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "gorilla", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "gorilla", sex == "f")%>%pull(maxage)`), and `r participants%>%filter(species == "gorilla")%>%pull(n)%>%sum()` Orangutans (`r participants%>%filter(species == "orangutan", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "orangutan", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "orangutan", sex == "f")%>%pull(maxage)`). The sample size at the different time points ranged from `r min(tpn$n)` to `r max(tpn$n)`. Figure \ref{fig:sample} visualizes the sample size across time points. We tried to test all apes at all time points but this was not always possible due to a lack of motivation or construction works. All apes participate in cognitive research on a regular basis. Many of them have ample experience with the very tasks we used in the current study.
 
 Apes were housed at the Wolfgang Köhler Primate Research Center located in Zoo Leipzig, Germany. They lived in groups, with one group per species and two chimpanzee groups. Research was noninvasive and strictly adhered to the legal requirements in Germany. Animal husbandry and research complied with the European Association of Zoos and Aquaria Minimum Standards for the Accommodation and Care of Animals in Zoos and Aquaria as well as the World Association of Zoos and Aquariums Ethical Guidelines for the Conduct of Research on Animals by Zoos and Aquariums. Participation was voluntary, all food was given in addition to the daily diet, and water was available ad libitum throughout the study. The study was approved by an internal ethics committee at the Max Planck Institute for Evolutionary Anthropology.
 
-```{r sample, out.width="100%", fig.cap = "Sample size by species across the different time points. Shaded regions correspond to the different time points. Time point specific predictor variables were collected during the time between two time points to predict the next. "}
+```{r sample, out.width="100%", fig.height = 3, fig.cap = "Sample size by species across the different time points. Time point specific predictor variables were collected during the time between two time points (shaded regions) to predict the next."}
 
 cols <- c(ptol_pal()(4),"black")
 
@@ -137,25 +137,31 @@ ggplot(tpn, aes(x = date, y = n, col = species))+
   scale_fill_manual(values = c("grey", NA))+
   guides(fill = F)
 ```
+## Setup
 
+Apes were tested in familiar sleeping or observation rooms by a single experimenter. Whenever possible, they were tested individually.  The basic setup comprised a sliding table positioned in front of a clear Plexiglas panel with three holes in it. The experimenter sat on a small stool and used an occluder to cover the sliding table (see Figure \ref{fig:setup}).
 
-## Data collection periods
+```{r setup, include = T, fig.cap = "Setup used for the six tasks. A) Causal reasoning and inference by exclusion. B) Quantity discrimination. C) Gaze following. D) Switching. E) Delay of gratification.", out.width="100%"}
+knitr::include_graphics("figures/setup.png")
+```
 
 ## Tasks
 
-Apes were tested in familiar sleeping or observation rooms by a single experimenter. Whenever possible, they were tested individually. For each individual, the tasks at one time point were usually spread out across two consecutive days with causality and inference on day 1 and quantity and switching on day 2. Gaze following trials were run at the beginning and the end of each day. The basic setup comprised a sliding table positioned in front of a clear Plexiglas panel with three holes in it. The experimenter sat on a small stool and used an occluder to cover the sliding table.
+The tasks we selected are based on published procedures and are commonly used in the field of comparative psychology. The original publications often include control conditions to rule out alternative, non-cognitive explanations. We did not include such controls here and only ran the experimental conditions. For each task, we refer to the publication we used to model our procedure. We ask the reader to read these papers if they want to know more about control conditions and/or a detailed discussion of the nature of the underlying cognitive mechanisms.
 
-### Gaze Following
-
-The gaze following task was modeled after [@brauer2005all]. The experimenter sat opposite the ape and handed over food at a constant pace. That is, the experimenter picked up a piece of food, briefly held it out in front of her face and then handed it over to the participant. At some point, the experimenter looked up (i.e., moving her head up) while holding up the food in front of her head. After 10s, the experimenter looked down again and handed over the food. We coded whether the subject looked up during the 10s interval. Participants received a total of 8 trials, spread out across the two test days.  
+Example videos for each task can be found in the associated online repository in [`videos/`]()
 
 ### Causal inference
 
-The causality and inference tasks were modeled after [@call2004inferences]. Two identical cups with a lid were placed left and right on the table. The experimenter covered the table with the occluder, retrieved a piece of food, showed it to the ape, and hid it in one the cups outside the participant’s view. Next, they removed the occluder, picked up the baited cup and shook it three times, which produced a rattling sound. Next, the cup was put back in place, the sliding table pushed forwards, and the participant made a choice by pointing to one of the cups. If they picked the baited cup, their choice was coded as correct, and they received the reward. If they chose the other cup, they did not. On each time point, participants received 12 trials. 
+The causal inference task was modeled after @call2004inferences. Two identical cups with a lid were placed left and right on the table (Figure \ref{fig:setup}A). The experimenter covered the table with the occluder, retrieved a piece of food, showed it to the ape, and hid it in one the cups outside the participant’s view. Next, the experimenter removed the occluder, picked up the baited cup and shook it three times, which produced a rattling sound. Next, the cup was put back in place, the sliding table pushed forwards, and the participant made a choice by pointing to one of the cups. If they picked the baited cup, their choice was coded as correct, and they received the reward. If they chose the empty cup, they did not. Participants received 12 trials. The location if the food was counterbalanced; 6 times in the right cup and 6 times in the left. Causal inference trials were intermixed with inference by exclusion trials.
 
 ### Inference by exclusion
 
-Inference trials were identical to causality trials, but instead of shaking the baited cup, the experimenter shook the empty cup. Correct choice was again coded when the baited (non-shaken) cup was chosen. On each time point, participants received 12 trials. Inference trials were intermixed with causality trials.
+Inference by exclusion trials were also modeled after @call2004inferences and followed a very similar procedure compared to causal inference trials. After covering the two cups with the occluder, the experimenter placed the food in one of the cups and covered both with the lid.   trials were identical to causality trials, but instead of shaking the baited cup, the experimenter shook the empty cup. Correct choice was again coded when the baited (non-shaken) cup was chosen. On each time point, participants received 12 trials. Inference trials were intermixed with causality trials.
+
+### Gaze Following
+
+The gaze following task was modeled after @brauer2005all. The experimenter sat opposite the ape and handed over food at a constant pace. That is, the experimenter picked up a piece of food, briefly held it out in front of her face and then handed it over to the participant. After a predetermined (but varying) number of food items had been handed over, the experimenter again picked up a food item, held it in front of her face and then looked up (i.e., moving her head up - see Figure \ref{fig:setup}C). After 10s, the experimenter looked down again, handed over the food and the trial ended. We coded whether the subject looked up during the 10s interval.
 
 ### Quantity discrimination
 
@@ -167,6 +173,12 @@ This task was modeled after [@haun2006evolutionary]. Three differently looking c
 
 ### Delay of gratification
 
+## Data collection
+
+sessions For each individual, the tasks at one time point were usually spread out across two consecutive days with causality and inference on day 1 and quantity and switching on day 2. Gaze following trials were run at the beginning and the end of each day.
+
+phases see Figure \ref{fig:setup}F
+
 ## Predictors
 
 ### Stable individual characterisitcs
@@ -177,6 +189,8 @@ This task was modeled after [@haun2006evolutionary]. Three differently looking c
 
 ### Testing arrangements
 
+
+
 # Analytical framework
 
 ## Structural equation modelling
@@ -185,7 +199,7 @@ Stability, reliability, relations between tasks
 
 ### Simulations
 
-### Projection predictive inference
+## Projection predictive inference
 
 predictor selection
 
