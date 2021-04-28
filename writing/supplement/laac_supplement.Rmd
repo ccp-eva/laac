@@ -1,23 +1,24 @@
 ---
 title: "tbd..."
-subtitle: "Supplementary material"
 author: "tbd..."
-output: 
+subtitle: Supplementary material
+output:
   bookdown::html_document2:
     toc: yes
-    toc_float: true
+    toc_float: yes
     fig_caption: yes
     code_folding: hide
-    number_sections: false
+    number_sections: no
   bookdown::pdf_document2:
-    toc: yes 
-    number_sections: false    
+    toc: yes
+    number_sections: no
+  html_document:
+    toc: yes
+    df_print: paged
+  pdf_document:
+    toc: yes
 bibliography: ../CogSci2021/library.bib
-#csl: pnas.csl
-header-includes:
-  \usepackage{caption}
-  \renewcommand{\thetable}{S\arabic{table}} 
-  \renewcommand{\thefigure}{S\arabic{figure}}
+header-includes: \usepackage{caption} \renewcommand{\thetable}{S\arabic{table}} \renewcommand{\thefigure}{S\arabic{figure}}
 ---
 
 ```{r, include = F}
@@ -70,7 +71,11 @@ data_trial <- bind_rows(
 
 # Overview
 
-In [Experiment 1](#experiment-1-mutual-exclusivity), we show that children make a so-called mutual exclusivity inference and that this inference depends on children's developing semantic knowledge. In [Experiment 2](#experiment-2-common-ground), we show that children make inferences about word meanings based on common ground. In [Experiment 3](#experiment-3-combination), we show that, when combined in one procedure, children are sensitive to the way that the two inferences are aligned.
+... Next we describe the different [tasks](#Tasks) we sused ...
+
+tasks - stability, reliability
+
+predictors - predictability 
 
 # Methods
 
@@ -109,7 +114,7 @@ participants <- data_trial%>%
    mutate(shade = time_point %% 2 == 0)
    
 ```
-A total of `r sum(participants$n)` great apes participated at least once in one of the tasks. This included `r participants%>%filter(species == "bonobo")%>%pull(n)%>%sum()` Bonobos (`r participants%>%filter(species == "bonobo", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "bonobo", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "bonobo", sex == "f")%>%pull(maxage)`), `r participants%>%filter(species == "chimpanzee")%>%pull(n)%>%sum()` Chimpanzees (`r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(maxage)`), `r participants%>%filter(species == "gorilla")%>%pull(n)%>%sum()` Gorillas (`r participants%>%filter(species == "gorilla", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "gorilla", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "gorilla", sex == "f")%>%pull(maxage)`), and `r participants%>%filter(species == "gorilla")%>%pull(n)%>%sum()` Orangutans (`r participants%>%filter(species == "orangutan", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "orangutan", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "orangutan", sex == "f")%>%pull(maxage)`). The sample size at the different time points ranged from `r min(tpn$n)` to `r max(tpn$n)`. Figure \ref{fig:sample} visualizes the sample size across time points. We tried to test all apes at all time points but this was not always possible due to a lack of motivation or construction works. All apes participate in cognitive research on a regular basis. Many of them have ample experience with the very tasks we used in the current study.
+A total of `r sum(participants$n)` great apes participated at least once in one of the tasks. This included `r participants%>%filter(species == "bonobo")%>%pull(n)%>%sum()` Bonobos (`r participants%>%filter(species == "bonobo", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "bonobo", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "bonobo", sex == "f")%>%pull(maxage)`), `r participants%>%filter(species == "chimpanzee")%>%pull(n)%>%sum()` Chimpanzees (`r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(maxage)`), `r participants%>%filter(species == "gorilla")%>%pull(n)%>%sum()` Gorillas (`r participants%>%filter(species == "gorilla", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "gorilla", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "gorilla", sex == "f")%>%pull(maxage)`), and `r participants%>%filter(species == "gorilla")%>%pull(n)%>%sum()` Orangutans (`r participants%>%filter(species == "orangutan", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "orangutan", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "orangutan", sex == "f")%>%pull(maxage)`). The sample size at the different time points ranged from `r min(tpn$n)` to `r max(tpn$n)`. Figure \@ref(fig:sample) visualizes the sample size across time points. We tried to test all apes at all time points but this was not always possible due to a lack of motivation or construction works. All apes participate in cognitive research on a regular basis. Many of them have ample experience with the very tasks we used in the current study.
 
 Apes were housed at the Wolfgang Köhler Primate Research Center located in Zoo Leipzig, Germany. They lived in groups, with one group per species and two chimpanzee groups. Research was noninvasive and strictly adhered to the legal requirements in Germany. Animal husbandry and research complied with the European Association of Zoos and Aquaria Minimum Standards for the Accommodation and Care of Animals in Zoos and Aquaria as well as the World Association of Zoos and Aquariums Ethical Guidelines for the Conduct of Research on Animals by Zoos and Aquariums. Participation was voluntary, all food was given in addition to the daily diet, and water was available ad libitum throughout the study. The study was approved by an internal ethics committee at the Max Planck Institute for Evolutionary Anthropology.
 
@@ -120,7 +125,7 @@ cols <- c(ptol_pal()(4),"black")
 ggplot(tpn, aes(x = date, y = n, col = species))+
   geom_rect(aes(xmin = start, xmax = end, ymin = -Inf, ymax = Inf, fill= shade), col = NA, alpha =.1)+
   geom_rect(aes(xmin = as.Date("2020-08-01"), xmax = as.Date("2021-03-05"), ymin = 0, ymax = 40),fill = NA, col = "darkgrey")+
-  annotate(geom="text", x=as.Date("2020-11-14"), y=42, label="Phase 1", color="black", size=5)+
+  annotate(geom="text", x=as.Date("2020-11-14"), y=42, label="Phase 1", color="black", size=4)+
   geom_point(alpha = .6)+
   geom_line(alpha = .6)+
   geom_point(aes(y = total_n), col = "black", alpha = .6)+
@@ -139,7 +144,7 @@ ggplot(tpn, aes(x = date, y = n, col = species))+
 ```
 ## Setup
 
-Apes were tested in familiar sleeping or observation rooms by a single experimenter. Whenever possible, they were tested individually.  The basic setup comprised a sliding table positioned in front of a clear Plexiglas panel with three holes in it. The experimenter sat on a small stool and used an occluder to cover the sliding table (see Figure \ref{fig:setup}).
+Apes were tested in familiar sleeping or observation rooms by a single experimenter. Whenever possible, they were tested individually.  The basic setup comprised a sliding table positioned in front of a clear Plexiglas panel with three holes in it. The experimenter sat on a small stool and used an occluder to cover the sliding table (see Figure \@ref(fig:setup)).
 
 ```{r setup, include = T, fig.cap = "Setup used for the six tasks. A) Causal reasoning and inference by exclusion. B) Quantity discrimination. C) Gaze following. D) Switching. E) Delay of gratification.", out.width="100%"}
 knitr::include_graphics("figures/setup.png")
@@ -149,47 +154,167 @@ knitr::include_graphics("figures/setup.png")
 
 The tasks we selected are based on published procedures and are commonly used in the field of comparative psychology. The original publications often include control conditions to rule out alternative, non-cognitive explanations. We did not include such controls here and only ran the experimental conditions. For each task, we refer to the publication we used to model our procedure. We ask the reader to read these papers if they want to know more about control conditions and/or a detailed discussion of the nature of the underlying cognitive mechanisms.
 
-Example videos for each task can be found in the associated online repository in [`videos/`]()
+Example videos for each task can be found in the associated online repository in [`videos/`](https://github.com/ccp-eva/laac/tree/master/videos).
 
 ### Causal inference
 
-The causal inference task was modeled after @call2004inferences. Two identical cups with a lid were placed left and right on the table (Figure \ref{fig:setup}A). The experimenter covered the table with the occluder, retrieved a piece of food, showed it to the ape, and hid it in one the cups outside the participant’s view. Next, the experimenter removed the occluder, picked up the baited cup and shook it three times, which produced a rattling sound. Next, the cup was put back in place, the sliding table pushed forwards, and the participant made a choice by pointing to one of the cups. If they picked the baited cup, their choice was coded as correct, and they received the reward. If they chose the empty cup, they did not. Participants received 12 trials. The location if the food was counterbalanced; 6 times in the right cup and 6 times in the left. Causal inference trials were intermixed with inference by exclusion trials.
+The causal inference task was modeled after @call2004inferences. Two identical cups with a lid were placed left and right on the table (Figure \@ref(fig:setup)A). The experimenter covered the table with the occluder, retrieved a piece of food, showed it to the ape, and hid it in one the cups outside the participant’s view. Next, the experimenter removed the occluder, picked up the baited cup and shook it three times, which produced a rattling sound. Next, the cup was put back in place, the sliding table pushed forwards, and the participant made a choice by pointing to one of the cups. If they picked the baited cup, their choice was coded as correct, and they received the reward. If they chose the empty cup, they did not. Participants received 12 trials. The location if the food was counterbalanced; 6 times in the right cup and 6 times in the left. Causal inference trials were intermixed with inference by exclusion trials.
+
+We assume that apes locate the food by reasoning that the food -- a solid object -- caused the rattling sound and must thus be in the shaken cup. 
 
 ### Inference by exclusion
 
-Inference by exclusion trials were also modeled after @call2004inferences and followed a very similar procedure compared to causal inference trials. After covering the two cups with the occluder, the experimenter placed the food in one of the cups and covered both with the lid.   trials were identical to causality trials, but instead of shaking the baited cup, the experimenter shook the empty cup. Correct choice was again coded when the baited (non-shaken) cup was chosen. On each time point, participants received 12 trials. Inference trials were intermixed with causality trials.
+Inference by exclusion trials were also modeled after @call2004inferences and followed a very similar procedure compared to causal inference trials. After covering the two cups with the occluder, the experimenter placed the food in one of the cups and covered both with the lid. Next, they removed the occluder, picked up the empty cup and shook it three times. In contrast to the causal inference trials, this did not produce any sound. The experimenter then pushed the sliding table forward and the participant made a choice by pointing to one of the cups. Correct choice was coded when the baited (non-shaken) cup was chosen. If correct, the food was given to the ape. There were 12 inference by exclusion trials, intermixed with causal inference trials. The order was counterbalanced: 6 times the left cup was baited, 6 times the right. 
+
+We assume that apes reason that the absence of a sound suggests that the shaken cup is empty. Because they saw a piece of food being hidden, they exclude the empty cup and infer that the food is more likely to be in the non-shaken cup. 
 
 ### Gaze Following
 
-The gaze following task was modeled after @brauer2005all. The experimenter sat opposite the ape and handed over food at a constant pace. That is, the experimenter picked up a piece of food, briefly held it out in front of her face and then handed it over to the participant. After a predetermined (but varying) number of food items had been handed over, the experimenter again picked up a food item, held it in front of her face and then looked up (i.e., moving her head up - see Figure \ref{fig:setup}C). After 10s, the experimenter looked down again, handed over the food and the trial ended. We coded whether the subject looked up during the 10s interval.
+The gaze following task was modeled after @brauer2005all. The experimenter sat opposite the ape and handed over food at a constant pace. That is, the experimenter picked up a piece of food, briefly held it out in front of her face and then handed it over to the participant. After a predetermined (but varying) number of food items had been handed over, the experimenter again picked up a food item, held it in front of her face and then looked up (i.e., moving her head up - see Figure \@ref(fig:setup)C). The experimenter looked to the ceiling, no object of particular interest was placed there. After 10s, the experimenter looked down again, always handed over the food and the trial ended. We coded whether the participant looked up during the 10s interval.
+
+We assume that participants look up in order to follow the experimenter's gaze to locate a potentially noteworthy object. 
 
 ### Quantity discrimination
 
-For this task, we followed the general procedure of [@hanus2007discrete]. Two small plates were presented left and right on the table. The experimenter placed 5 small food pieces on one plate and 7 on the other. Then they pushed the sliding table forwards, and the subject made a choice. We coded as correct when the subject chose the plate with the larger quantity. There were 12 trials per time point.   
+For this task, we followed the general procedure of @hanus2007discrete. Two small plates were presented left and right on the table (see Figure \@ref(fig:setup)B). The experimenter covered the plates with the occluder and placed 5 small food pieces on one plate and 7 on the other. Then they pushed the sliding table forwards, and the participant made a choice. We coded as correct when the subject chose the plate with the larger quantity. Participants always received the food from the plate they chose. There were 12 trials, 6 with the larger quantity on the right and 6 on the left (order counterbalanced).
+
+We assume that ??? 
 
 ### Switching
 
-This task was modeled after [@haun2006evolutionary]. Three differently looking cups (metal cup with handle, red plastic ice cone, red cup without handle) were placed next to each other on the table. There were two conditions. In the place condition, the experimenter hid a piece of food under one of the cups in full view of the participant. Next, the cups were covered by the occluder and the experimenter switched the position of two cups, while the reward remained in the same location. We coded as correct if the participant chose the location where the food was hidden. Participants received four trials in this condition. The place condition was run first. The feature condition followed the same procedure, but now the experimenter also moved the reward when switching the cups. The switch between conditions happened without informing the participant in any way. A correct choice in this condition meant choosing the location to which the cup plus the food were moved. Here, participants received eight trials. The dependent measure of interest for this task was calculated as: `[proportion correct place] - (1 - [proportion correct feature])`.  Positive values in this score mean that participants could quickly switch from choosing based on location to choosing based on feature. High negative values suggest that participants did not or hardly switch strategies.   
+This task was modeled after @haun2006evolutionary. Three differently looking cups (metal cup with handle, red plastic ice cone, red cup without handle - Figure \@ref(fig:setup)D) were placed next to each other on the table. There were two conditions. In the place condition, the experimenter hid a piece of food under one of the cups in full view of the participant. Next, the cups were covered by the occluder and the experimenter switched the position of two cups, while the reward remained in the same location. Next, the experimenter removed the occluder and pushed the table forward. We coded as correct if the participant chose the location where the food was hidden. Participants received four trials in this condition. 
+
+The place condition was run first. The feature condition followed the same procedure, but now the experimenter also moved the reward when switching the cups. The switch between conditions happened without informing the participant in any way. A correct choice in this condition meant choosing the location to which the cup plus the food were moved. Here, participants received eight trials. 
+
+The dependent measure of interest for this task was calculated as: `[proportion correct place] - (1 - [proportion correct feature])`.  Positive values in this score mean that participants could quickly switch from choosing based on location to choosing based on feature. High negative values suggest that participants did not or hardly switch strategies.  
+
+Based on the results of @haun2006evolutionary, we assume that apes have a tendency to expect the food to remain in the same location. When this strategy is no longer successful in the feature trials, they have to switch strategies and try a different one. 
 
 ### Delay of gratification
 
+tbd.
+
 ## Data collection
 
-sessions For each individual, the tasks at one time point were usually spread out across two consecutive days with causality and inference on day 1 and quantity and switching on day 2. Gaze following trials were run at the beginning and the end of each day.
+One time point meant running all tasks with all participants. Within each time point, the tasks were organized in two sessions (see Figure \@ref(fig:setup)F). Session 1 started with 2 gaze following trials. Next was a pseudo random mix of causal inference and inference by exclusion with 12 trials per task but no more than two trials of the same task in a row. At the end of session 1, there were again 2 gaze following trials. Sessions 2 also started with 2 gaze following trials, followed by quantity discrimination and switching. Finally, there were again 2 gaze following trials. B spreading out or mixing tasks we hoped to keep subjects more attentive and engaged. 
 
-phases see Figure \ref{fig:setup}F
+The order of tasks was the same for all subjects. So was the positioning of food items within each task. The counterbalancing can be found in the coding sheets in the online repository in `documentation/` [**to be added**]. This exact procedure was repeated at each time point so that the results would be comparable across participants. The two sessions were usually spread out across two adjacent days. For the larger chimpanzee group, they were sometimes spread out across 4 days. 
+
+The interval between two time points was planned to be two weeks. However, it was not always possible to follow this schedule so that that some intervals are longer/shorter. Figure \@ref(fig:sample) visualizes the intervals between time points. 
+
+We collected data in two phases. Phase 1 started on August 1st, 2020, lasted until March 5th, 2021 and included 14 time points (see Figure \@ref(fig:sample)). Phase 2 started on , lasted until and had time points.
 
 ## Predictors
 
+In addition to the data from the cognitive tasks, we collected data for a range of predictor variables. The goal here was to find variables that are systematically related to inter- and/or intraindividual variation in cognitive performance. That is, we were interested to see which predictors allow us to predict cognitive performance in a statistical model.   
+
+Predictors could either vary with the individual (stable individual characteristics; e.g. sex or rearing history), vary with individual and time point (variable individual characteristics; e.g. sickness or sociality), vary with group membership (group life; e.g. time spent outdoors or disturbances) or vary with the testing arrangements (testing arrangements; e.g. presence of an observer or participation in other tests).
+
+Most predictors were collected via a diary that the animal caretakers filled out on a daily basis. Here, the caretakers were asked a range of questions about the presence of a predictor and its severity. The diary (in German) can be found in `documentation/` in the associated online repository.
+
 ### Stable individual characterisitcs
+
+These predictors are stable individual differences. As a source, we used the ape handbook at Zoo Leipzig. Figure \@ref(fig:demo) gives an overview of the distribution of the different characteristics in the sample. 
+
+#### Age
+
+Absolute age of the individual. For some older individuals, only the year of birth was known. In these cases we calculated age with January 1st of that year as the birthday.
+
+#### Sex 
+
+Participant's biological sex.
+
+#### Rearing history
+
+Here, we differentiated between, mother reared, hand reared and unknown. 
+
+#### Time lived in Leipzig
+
+Absolute time the individual has lived in Leipzig Zoo. All apes living in Leipzig are involved in behavioral research. Thus, we take this measure to be a rough proxy of how much experience an individual has had with cognitive research. 
+
+```{r}
+psex <- data_trial%>%
+     mutate(group = as.character(group), 
+         species = ifelse(grepl("chimp",group),"chimpanzee", group), 
+         species = factor(species))%>%
+  group_by(species, sex)%>%
+  summarise(Frequency = length(unique(subject)))%>%
+  ggplot(aes(x = species, y = Frequency, fill = sex))+
+  geom_histogram(stat = "identity", position = position_dodge(), col = "black")+
+  theme_minimal(base_size = 8)+
+  scale_fill_grey(name = "Sex")+
+  theme(legend.position = c(0.8,0.7), legend.key.size = unit(0.3, "cm"))
+
+prearing <- data_trial%>%
+     mutate(group = as.character(group), 
+         species = ifelse(grepl("chimp",group),"chimpanzee", group), 
+         species = factor(species))%>%
+  group_by(species, rearing,.drop=FALSE)%>%
+  summarise(Frequency = length(unique(subject)))%>%
+  ggplot(aes(x = species, y = Frequency, fill = rearing))+
+  geom_histogram(stat = "identity", position = position_dodge(), col = "black")+
+  theme_minimal(base_size = 8)+
+  scale_fill_viridis_d(name = "Rearing history")+
+  theme(legend.position = c(0.8,0.7), legend.key.size = unit(0.3, "cm"))
+
+page <- data_trial%>%
+     mutate(group = as.character(group), 
+         species = ifelse(grepl("chimp",group),"chimpanzee", group), 
+         species = factor(species))%>%
+  group_by(species, subject)%>%
+  summarise(age = min(age))%>%
+  ggplot(aes(x = age, fill = species))+
+  geom_density(col = "black", alpha = .5)+
+  theme_minimal(base_size = 8)+
+  scale_fill_ptol(name = "Species")+
+  theme(legend.position = c(0.8,0.7), legend.key.size = unit(0.3, "cm"))
+
+pleipzig <- data_trial%>%
+     mutate(group = as.character(group), 
+         species = ifelse(grepl("chimp",group),"chimpanzee", group), 
+         species = factor(species))%>%
+  group_by(species, subject)%>%
+  summarise(time_in_leipzig = min(time_in_leipzig))%>%
+  ggplot(aes(x = time_in_leipzig, fill = species))+
+  geom_density(col = "black", alpha = .5)+
+  theme_minimal(base_size = 8)+
+  scale_fill_ptol(name = "Species")+
+  theme(legend.position = c(0.8,0.7), legend.key.size = unit(0.3, "cm"))
+  
+```
+
+```{r demo, out.width="100%", fig.height = 4, fig.cap = "Stable individual characteristics. A) participant sex, B) age distribution by species, C) rearing history, D) time lived in leipzig by species."}
+
+ggarrange(psex, page, prearing, pleipzig, nrow = 2, ncol= 2, widths = c(1,2), labels = c("A","B","C","D"))
+```
 
 ### Variable individual characteristics
 
+These predictors varied by participant and time point.
+
+#### Rank
+
+We asked caretakers to order individuals within a given group for their rank. Ties were allowed. This was done at each time point. An individual's rank was mostly stable across time points, however, there was some variation. 
+
+#### Sickness
+
+As part of the caretakers' daily diary, we asked whether an individual was sick and if yes, how sever the sickness was on a scale from 1 to 7. For each time point, we used the mean of the daily sickness ratings as predictor.  
+
+#### Sociality
+
+```{r}
+
+```
+
 ### Group life
+
+varied by group and time point
+
+time out
 
 ### Testing arrangements
 
-
+varied by participant and time point
 
 # Analytical framework
 
@@ -205,8 +330,7 @@ predictor selection
 
 # Results
 
-```{r perfplot, fig.align = "center", fig.cap = "Results from the five cognitive tasks across time points. Black crosses show mean performance at each time point across species (with 95\\% CI). Colored dots show mean performance by species. Transparent grey lines connect individual performances across time points, with the line’s width corresponding to the number of participants. Dashed line shows the chance level inference whenever applicable. The panel for switching includes triangles and dots showing the mean performance in the two phases from which the overall performance score was computed.", out.width="100%"}
-
+```{r}
 time_plot_1 <- data_task%>%
   filter(task != "switching_feature",
          task != "switching_place")%>%
@@ -238,7 +362,7 @@ time_plot_2 <- data_task%>%
   mutate(n = n(),
          chance = ifelse(task == "switching", 1/3, ifelse(task == "gaze_following", NA,0.5)))
 
-ggplot()+
+perfplot <- ggplot()+
   facet_wrap(~task)+
   geom_hline(data = time_plot_2,aes(yintercept = chance), lty = 2, col = "black", alpha = .75)+
   geom_point(data = time_plot_1, aes(x = time_point, y = mean,  col = species), alpha = .6)+
@@ -253,6 +377,11 @@ ggplot()+
   guides(size = F)+
   scale_shape(name = "Switching Phase")+
   scale_color_ptol(name = "Species")
+```
+
+
+```{r perfplot, fig.align = "center", fig.cap = "Results from the five cognitive tasks across time points. Black crosses show mean performance at each time point across species (with 95\\% CI). Colored dots show mean performance by species. Dashed line shows the chance level whenever applicable. The panel for switching includes triangles and dots showing the mean performance in the two phases from which the overall performance score was computed.", out.width="100%"}
+perfplot
 ```
 
 ## Phase 1
