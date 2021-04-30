@@ -43,6 +43,8 @@ library(reshape)
 library(ggExtra)
 library(tidyboot)
 
+source("../../utils/custom_facet.R")
+
 cor_func <- function(x) {
   x %>%
     corrr::correlate()%>%
@@ -71,7 +73,7 @@ data_trial <- bind_rows(
 
 # Overview
 
-... Next we describe the different [tasks](#Tasks) we sused ...
+... Next we describe the different [tasks](#tasks) we sused ...
 
 tasks - stability, reliability
 
@@ -206,7 +208,7 @@ We collected data in two phases. Phase 1 started on August 1st, 2020, lasted unt
 
 ## Predictors
 
-In addition to the data from the cognitive tasks, we collected data for a range of predictor variables. The goal here was to find variables that are systematically related to inter- and/or intraindividual variation in cognitive performance. That is, we were interested to see which predictors allow us to predict cognitive performance in a statistical model.   
+In addition to the data from the cognitive tasks, we collected data for a range of predictor variables. The goal here was to find variables that are systematically related to inter- and/or intra-individual variation in cognitive performance. That is, we were interested to see which variables allow us to predict cognitive performance. The second part of the [analysis](#projection-predictive-inference) section, describes the method we used to determine the predictive value of each variable.    
 
 Predictors could either vary with the individual (stable individual characteristics; e.g. sex or rearing history), vary with individual and time point (variable individual characteristics; e.g. sickness or sociality), vary with group membership (group life; e.g. time spent outdoors or disturbances) or vary with the testing arrangements (testing arrangements; e.g. presence of an observer or participation in other tests).
 
@@ -226,7 +228,7 @@ Participant's biological sex.
 
 #### Rearing history
 
-Here, we differentiated between, mother reared, hand reared and unknown. 
+Here, we differentiated between, `mother-reared`, `hand-reared` and `unknown`. The last category was used only for three chimpanzees. In the analysis, we classified them as `hand-reared` to facilitate model fitting (i.e. it is very difficult to estimate a parameter for a factor level with so little data). We think this decision is justified because the individuals in question have spent most of their life in close contact to humans and not in a larger chimpanzee group. 
 
 #### Time lived in Leipzig
 
@@ -302,19 +304,74 @@ As part of the caretakers' daily diary, we asked whether an individual was sick 
 
 #### Sociality
 
+We conducted proximity scans for all groups in the early afternoon on every work day (Monday to Friday). That is, we expect 10 scans for each time point. For each individual, we recorded which individuals are within arms reach. Research assistants used a tablet to record their observations. 
+
+To derive individual specific estimates of sociality for each time point, we fit a variant of a Social Relations Model [@snijders1999social] to the proximity data. These models allow estimating an individual specific sociality index while accounting for the dyadic nature of social interaction. Social relations model usually deal with directed behaviors (e.g. individual *i* is grooming individual *j*). Because the behavior we observed was symmetric, we cannot differentiate between the actor and receiver. @Kajokaite2020.08.04.235788 suggested to speak of a Multiple Membership Relations Model [see also @leckie2019multiple] in such a context, which simply estimates how likely likely an individual is to be observed in proximity to another individual. 
+
+In `brms` syntax, our model had the following structure: `count | trials(n) ~ group + (time_point | mm(focal, associates)) + (time_point | dyad)`. The dependent variable `count | trials(n)` is the number of times a dyad has been observed (`count`) at a time point relative to the number of scans taken for that time point (`trials(n)`). The fixed effect `group` estimates group difference in sociality. The random effect `(time_point | mm(focal, associates))` estimates the sociality for each individual. In that, the multi-membership grouping term `mm(focal, associates)` captures the fact that the assignment of the two roles (focal and associate) is arbitrary in the context of a symmetric behavior. The random slope `time_point` (treated as a factor) allowed us to estimate sociality for each time point. Finally, the random effect `(time_point | dyad)` accounts for dyad composition; in some cases a particular dyad composition (e.g. mother and infant) might be sufficient to explain high levels of sociality in an individual.
+
+For each individual and time point, we extracted the sociality estimates and used them to predict cognitive performance in the different tasks for that time point. Figure \@ref(fig:socrel) visualizes the sociality measures for one group across the different time points.     
+
 ```{r}
+
+```
+
+```{r socrel}
 
 ```
 
 ### Group life
 
-varied by group and time point
+This set of predictors varied by time point and group, but were the same for all individuals in that group. They were recorded in the animal caretaker diary. Figure \@ref(fig:glife) visualizes the different variables across time points. 
 
-time out
+#### Time outdoors
+
+Each day, the animal caretakers noted in the diary how many hours each group spent in the outdoor enclosure. To compute the predictor, we averaged across these values for each time point and group. 
+
+#### Disturbances
+
+The animal caretakers also noted down if there were any unusual disturbances for a particular group. Example were construction works in the building, heavy weather conditions or green-keeping activities. In addition, the caretakers rated how disturbing they judged these events to be on a scale from 1 to 7. For each time point, we calculated the mean of these ratings.
+
+#### Life events
+
+This variable captured whether there were any notable events within the group. Examples were fights in the group or the temporal removal of some individuals for medical procedures. Again, we asked the caretakesr to rate the severity of these events and averaged across them.  
+
+
+```{r}
+plife <- data_trial%>%
+  group_by(time_point,group)%>%
+  summarise(time_outdoors = mean(time_outdoors),
+            disturbance = mean(dist_mean),
+            life_event = mean(le_mean))%>%
+  pivot_longer(names_to = "measure", values_to = "value", cols = c(-group, -time_point))%>%
+  ggplot(aes(x = time_point, y = value, col = group))+
+  geom_point()+
+  geom_line(aes(group = group))+
+  facet_grid(measure~., scales = "free_y")+
+  labs(x = "Time Point", y = "")+
+  scale_color_ptol(name = "Group")+
+  theme_minimal()
+```
+
+```{r glife, out.width="100%", fig.height = 3, fig.cap = "Variation in group life related measures across groups and time points."}
+plife
+```
 
 ### Testing arrangements
 
-varied by participant and time point
+Testing arrangements varied between individuals and time points. The experimenter recorded them either based on their observations during testing or from the testing schedule which lists all studies along with their participants that take place on a particualr day.  
+
+#### Observer
+
+We noted whether or not there was another animal in the same room or the room adjacent to the one the participant was in. 
+
+#### Study on same day
+
+This predictor recorder whether the participant had already participated in a different test on the same day. The experimenter took this information from the testing schedule. 
+
+#### Studies since last time point
+
+Here we counted in how many other studies the participant had taken part since the last time they were tested in that particular task. 
 
 # Analytical framework
 
@@ -330,7 +387,7 @@ predictor selection
 
 # Results
 
-```{r}
+```{r, cache = T}
 time_plot_1 <- data_task%>%
   filter(task != "switching_feature",
          task != "switching_place")%>%
@@ -361,9 +418,97 @@ time_plot_2 <- data_task%>%
   tidyboot_mean(col = performance, na.rm = TRUE)%>%
   mutate(n = n(),
          chance = ifelse(task == "switching", 1/3, ifelse(task == "gaze_following", NA,0.5)))
+```
+
+```{r}
+# perfcaus <- ggplot()+
+#   geom_hline(data = time_plot_2%>%filter(task == "causality"),aes(yintercept = chance), lty = 2, col = "black", alpha = .75)+
+#   geom_point(data = time_plot_1%>%filter(task == "causality"), aes(x = time_point, y = mean,  col = species), alpha = .6)+
+#   geom_line(data = time_plot_1%>%filter(task == "causality"), aes(x = time_point, y = mean, col = species, group = species), alpha = .6)+
+#   geom_pointrange(data = time_plot_2%>%filter(task == "causality"), aes(x = time_point, y = mean, ymin = ci_lower, ymax = ci_upper),pch = 4)+
+#   geom_line(data = time_plot_2%>%filter(task == "causality"), aes(x = time_point, y = mean, group = task))+
+#   theme_minimal()+
+#     geom_pointrange(data = switch_data%>%filter(task == "causality"), aes(x = time_point, y = mean, ymin = ci_lower, ymax = ci_upper, pch = phase), alpha = .5)+
+#   labs(x = "", y = "")+
+#   geom_line(data = switch_data%>%filter(task == "causality"), aes(x = time_point, y = mean, group = phase), alpha = .5)+
+#   theme_minimal()+
+#   ylim(0,1)+
+#   guides(size = F)+
+#   scale_shape(name = "Switching Phase")+
+#   scale_color_ptol(name = "Species")
+# 
+# perfinf <- ggplot()+
+#   geom_hline(data = time_plot_2%>%filter(task == "inference"),aes(yintercept = chance), lty = 2, col = "black", alpha = .75)+
+#   geom_point(data = time_plot_1%>%filter(task == "inference"), aes(x = time_point, y = mean,  col = species), alpha = .6)+
+#   geom_line(data = time_plot_1%>%filter(task == "inference"), aes(x = time_point, y = mean, col = species, group = species), alpha = .6)+
+#   geom_pointrange(data = time_plot_2%>%filter(task == "inference"), aes(x = time_point, y = mean, ymin = ci_lower, ymax = ci_upper),pch = 4)+
+#   geom_line(data = time_plot_2%>%filter(task == "inference"), aes(x = time_point, y = mean, group = task))+
+#   theme_minimal()+
+#     geom_pointrange(data = switch_data%>%filter(task == "inference"), aes(x = time_point, y = mean, ymin = ci_lower, ymax = ci_upper, pch = phase), alpha = .5)+
+#   labs(x = "", y = "Performance")+
+#   geom_line(data = switch_data%>%filter(task == "inference"), aes(x = time_point, y = mean, group = phase), alpha = .5)+
+#   theme_minimal()+
+#   ylim(0,1)+
+#   guides(size = F)+
+#   scale_shape(name = "Switching Phase")+
+#   scale_color_ptol(name = "Species")
+# 
+# perfquant <- ggplot()+
+#   geom_hline(data = time_plot_2%>%filter(task == "quantity"),aes(yintercept = chance), lty = 2, col = "black", alpha = .75)+
+#   geom_point(data = time_plot_1%>%filter(task == "quantity"), aes(x = time_point, y = mean,  col = species), alpha = .6)+
+#   geom_line(data = time_plot_1%>%filter(task == "quantity"), aes(x = time_point, y = mean, col = species, group = species), alpha = .6)+
+#   geom_pointrange(data = time_plot_2%>%filter(task == "quantity"), aes(x = time_point, y = mean, ymin = ci_lower, ymax = ci_upper),pch = 4)+
+#   geom_line(data = time_plot_2%>%filter(task == "quantity"), aes(x = time_point, y = mean, group = task))+
+#   theme_minimal()+
+#     geom_pointrange(data = switch_data%>%filter(task == "quantity"), aes(x = time_point, y = mean, ymin = ci_lower, ymax = ci_upper, pch = phase), alpha = .5)+
+#   labs(x = "", y = "")+
+#   geom_line(data = switch_data%>%filter(task == "quantity"), aes(x = time_point, y = mean, group = phase), alpha = .5)+
+#   theme_minimal()+
+#   ylim(0,1)+
+#   guides(size = F)+
+#   scale_shape(name = "Switching Phase")+
+#   scale_color_ptol(name = "Species")
+# 
+# perfgaze <- ggplot()+
+#   geom_hline(data = time_plot_2%>%filter(task == "gaze_following"),aes(yintercept = chance), lty = 2, col = "black", alpha = .75)+
+#   geom_point(data = time_plot_1%>%filter(task == "gaze_following"), aes(x = time_point, y = mean,  col = species), alpha = .6)+
+#   geom_line(data = time_plot_1%>%filter(task == "gaze_following"), aes(x = time_point, y = mean, col = species, group = species), alpha = .6)+
+#   geom_pointrange(data = time_plot_2%>%filter(task == "gaze_following"), aes(x = time_point, y = mean, ymin = ci_lower, ymax = ci_upper),pch = 4)+
+#   geom_line(data = time_plot_2%>%filter(task == "gaze_following"), aes(x = time_point, y = mean, group = task))+
+#   theme_minimal()+
+#     geom_pointrange(data = switch_data%>%filter(task == "gaze_following"), aes(x = time_point, y = mean, ymin = ci_lower, ymax = ci_upper, pch = phase), alpha = .5)+
+#   labs(x = "", y = "")+
+#   geom_line(data = switch_data%>%filter(task == "gaze_following"), aes(x = time_point, y = mean, group = phase), alpha = .5)+
+#   theme_minimal()+
+#   ylim(0,1)+
+#   guides(size = F)+
+#   scale_shape(name = "Switching Phase")+
+#   scale_color_ptol(name = "Species")
+# 
+# perfswitch <- ggplot()+
+#   geom_hline(data = time_plot_2%>%filter(task == "switching"),aes(yintercept = chance), lty = 2, col = "black", alpha = .75)+
+#   geom_point(data = time_plot_1%>%filter(task == "switching"), aes(x = time_point, y = mean,  col = species), alpha = .6)+
+#   geom_line(data = time_plot_1%>%filter(task == "switching"), aes(x = time_point, y = mean, col = species, group = species), alpha = .6)+
+#   geom_pointrange(data = time_plot_2%>%filter(task == "switching"), aes(x = time_point, y = mean, ymin = ci_lower, ymax = ci_upper),pch = 4)+
+#   geom_line(data = time_plot_2%>%filter(task == "switching"), aes(x = time_point, y = mean, group = task))+
+#   theme_minimal()+
+#     geom_pointrange(data = switch_data, aes(x = time_point, y = mean, ymin = ci_lower, ymax = ci_upper, pch = phase), alpha = .5)+
+#   labs(x = "Time Point", y = "")+
+#   geom_line(data = switch_data, aes(x = time_point, y = mean, group = phase), alpha = .5)+
+#   theme_minimal()+
+#   ylim(-1,1)+
+#   guides(size = F)+
+#   scale_shape(name = "Switching Phase")+
+#   scale_color_ptol(name = "Species")
 
 perfplot <- ggplot()+
-  facet_wrap(~task)+
+  facet_wrap_custom(task~., scales = "free_y", ncol = 2, scale_overrides = list(
+    scale_override(1, scale_y_continuous(limits = c(0, 1))),
+    scale_override(2, scale_y_continuous(limits = c(0, 1))),
+    scale_override(3, scale_y_continuous(limits = c(0, 1))),
+    scale_override(4, scale_y_continuous(limits = c(0, 1))),
+    scale_override(5, scale_y_continuous(limits = c(-1, 1)))
+  ))+
   geom_hline(data = time_plot_2,aes(yintercept = chance), lty = 2, col = "black", alpha = .75)+
   geom_point(data = time_plot_1, aes(x = time_point, y = mean,  col = species), alpha = .6)+
   geom_line(data = time_plot_1, aes(x = time_point, y = mean, col = species, group = species), alpha = .6)+
@@ -373,14 +518,15 @@ perfplot <- ggplot()+
     geom_pointrange(data = switch_data, aes(x = time_point, y = mean, ymin = ci_lower, ymax = ci_upper, pch = phase), alpha = .5)+
   labs(x = "Time Point", y = "Performance")+
   geom_line(data = switch_data, aes(x = time_point, y = mean, group = phase), alpha = .5)+
-  theme_minimal(base_size = 8)+
+  theme_minimal()+
   guides(size = F)+
   scale_shape(name = "Switching Phase")+
   scale_color_ptol(name = "Species")
 ```
 
+```{r perfplot, fig.height=5, fig.cap = "Results from the five cognitive tasks across time points. Black crosses show mean performance at each time point across species (with 95\\% CI). Colored dots show mean performance by species. Dashed line shows the chance level whenever applicable. The panel for switching includes triangles and dots showing the mean performance in the two phases from which the overall performance score was computed.", out.width="100%"}
+# ggarrange(perfcaus, perfcaus, perfquant, perfgaze, perfswitch, common.legend = T, ncol= 1,  labels = c("A","B","C","D","E"), legend = "right")
 
-```{r perfplot, fig.align = "center", fig.cap = "Results from the five cognitive tasks across time points. Black crosses show mean performance at each time point across species (with 95\\% CI). Colored dots show mean performance by species. Dashed line shows the chance level whenever applicable. The panel for switching includes triangles and dots showing the mean performance in the two phases from which the overall performance score was computed.", out.width="100%"}
 perfplot
 ```
 
@@ -391,6 +537,8 @@ perfplot
 ### Reliability
 
 ### Relations between tasks
+
+### Predictability
 
 # Summary
 
