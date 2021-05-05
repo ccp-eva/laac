@@ -182,12 +182,6 @@ For this task, we followed the general procedure of @hanus2007discrete. Two smal
 
 We assume that ??? 
 
-blabla
-
-```{r johanna}
-
-```
-
 
 ### Switching
 
