@@ -3,14 +3,14 @@ title: "tbd..."
 author: "tbd..."
 subtitle: Supplementary material
 output:
+  bookdown::pdf_document2:
+    toc: yes
+    number_sections: no
   bookdown::html_document2:
     toc: yes
     toc_float: yes
     fig_caption: yes
     code_folding: hide
-    number_sections: no
-  bookdown::pdf_document2:
-    toc: yes
     number_sections: no
   html_document:
     toc: yes
@@ -245,7 +245,8 @@ psex <- data_trial%>%
   geom_histogram(stat = "identity", position = position_dodge(), col = "black")+
   theme_minimal(base_size = 8)+
   scale_fill_grey(name = "Sex")+
-  theme(legend.position = c(0.8,0.7), legend.key.size = unit(0.3, "cm"))
+  theme(legend.position = c(0.8,0.7), legend.key.size = unit(0.3, "cm"))+
+  coord_flip()
 
 prearing <- data_trial%>%
      mutate(group = as.character(group), 
@@ -257,7 +258,8 @@ prearing <- data_trial%>%
   geom_histogram(stat = "identity", position = position_dodge(), col = "black")+
   theme_minimal(base_size = 8)+
   scale_fill_viridis_d(name = "Rearing history")+
-  theme(legend.position = c(0.8,0.7), legend.key.size = unit(0.3, "cm"))
+  theme(legend.position = c(0.8,0.7), legend.key.size = unit(0.3, "cm"))+
+  coord_flip()
 
 page <- data_trial%>%
      mutate(group = as.character(group), 
@@ -265,11 +267,13 @@ page <- data_trial%>%
          species = factor(species))%>%
   group_by(species, subject)%>%
   summarise(age = min(age))%>%
-  ggplot(aes(x = age, fill = species))+
-  geom_density(col = "black", alpha = .5)+
+  ggplot(aes(x = age, y = species, fill = species))+
+  geom_jitter(aes( col = species),alpha = .75, height = 0, width = .05, pch = "|", size = 5)+
+  geom_density_ridges(col = "black", alpha = .5)+
   theme_minimal(base_size = 8)+
   scale_fill_ptol(name = "Species")+
-  theme(legend.position = c(0.8,0.7), legend.key.size = unit(0.3, "cm"))
+  scale_color_ptol(name = "Species")+
+  guides(fill = F, col = F)
 
 pleipzig <- data_trial%>%
      mutate(group = as.character(group), 
@@ -277,11 +281,13 @@ pleipzig <- data_trial%>%
          species = factor(species))%>%
   group_by(species, subject)%>%
   summarise(time_in_leipzig = min(time_in_leipzig))%>%
-  ggplot(aes(x = time_in_leipzig, fill = species))+
-  geom_density(col = "black", alpha = .5)+
+  ggplot(aes(x = time_in_leipzig, y = species, fill = species))+
+  geom_jitter(aes( col = species),alpha = .75, height = 0, width = .05, pch = "|", size = 5)+
+  geom_density_ridges(col = "black", alpha = .5)+
   theme_minimal(base_size = 8)+
   scale_fill_ptol(name = "Species")+
-  theme(legend.position = c(0.8,0.7), legend.key.size = unit(0.3, "cm"))
+  scale_color_ptol(name = "Species")+
+  guides(fill = F, col = F)
   
 ```
 
@@ -296,7 +302,7 @@ These predictors varied by participant and time point.
 
 #### Rank
 
-We asked caretakers to order individuals within a given group for their rank. Ties were allowed. This was done at each time point. An individual's rank was mostly stable across time points, however, there was some variation. 
+We asked caretakers to order individuals within a given group for their rank. Ties were allowed. This was done at each time point. An individual's rank was mostly stable (see Figure \@ref(fig:socrel)A) across time points, however, there was some variation. 
 
 #### Sickness
 
@@ -310,14 +316,28 @@ To derive individual specific estimates of sociality for each time point, we fit
 
 In `brms` syntax, our model had the following structure: `count | trials(n) ~ group + (time_point | mm(focal, associates)) + (time_point | dyad)`. The dependent variable `count | trials(n)` is the number of times a dyad has been observed (`count`) at a time point relative to the number of scans taken for that time point (`trials(n)`). The fixed effect `group` estimates group difference in sociality. The random effect `(time_point | mm(focal, associates))` estimates the sociality for each individual. In that, the multi-membership grouping term `mm(focal, associates)` captures the fact that the assignment of the two roles (focal and associate) is arbitrary in the context of a symmetric behavior. The random slope `time_point` (treated as a factor) allowed us to estimate sociality for each time point. Finally, the random effect `(time_point | dyad)` accounts for dyad composition; in some cases a particular dyad composition (e.g. mother and infant) might be sufficient to explain high levels of sociality in an individual.
 
-For each individual and time point, we extracted the sociality estimates and used them to predict cognitive performance in the different tasks for that time point. Figure \@ref(fig:socrel) visualizes the sociality measures for one group across the different time points.     
+For each individual and time point, we extracted the sociality estimates and used them to predict cognitive performance in the different tasks for that time point. Figure \@ref(fig:socrel)B visualizes the sociality measures for one group across the different time points.     
 
 ```{r}
-
+prank <- data_trial%>%
+     mutate(group = as.character(group), 
+         species = ifelse(grepl("chimp",group),"chimpanzee", group), 
+         species = factor(species))%>%
+  group_by(subject, species)%>%
+  summarise(sd = sd(rank, na.rm = T))%>%
+  ggplot(aes(x = sd, y = species, fill = species))+
+  geom_jitter(aes(col = species), height = 0, width = .05, pch = "|", size = 5)+
+  geom_density_ridges(alpha = .5, col = "black")+
+  labs(x ="Variability in rank (sd)")+
+  theme_minimal()+
+  scale_fill_ptol()+
+  scale_colour_ptol()+
+  scale_x_continuous(limits = c(0, 3), oob = scales::squish)+
+  guides(col = F, pch = F, fill =F)
 ```
 
 ```{r socrel}
-
+ggarrange(prank, labels = c("A"))
 ```
 
 ### Group life
@@ -359,7 +379,7 @@ plife
 
 ### Testing arrangements
 
-Testing arrangements varied between individuals and time points. The experimenter recorded them either based on their observations during testing or from the testing schedule which lists all studies along with their participants that take place on a particualr day.  
+Testing arrangements varied between individuals, sessions and time points. The experimenter recorded them either based on their observations during testing or from the testing schedule which lists all studies along with their participants that take place on a particular day.  
 
 #### Observer
 
@@ -367,11 +387,11 @@ We noted whether or not there was another animal in the same room or the room ad
 
 #### Study on same day
 
-This predictor recorder whether the participant had already participated in a different test on the same day. The experimenter took this information from the testing schedule. 
+This predictor recorder whether or not the participant had already participated in a different test on the same day. The experimenter took this information from the testing schedule. 
 
 #### Studies since last time point
 
-Here we counted in how many other studies the participant had taken part since the last time they were tested in that particular task. 
+Here we counted in how many other studies the participant had taken part since the last time they were tested in that particular task. The experimenter took this information from the testing schedule.  
 
 # Analytical framework
 
