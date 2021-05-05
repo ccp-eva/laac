@@ -182,6 +182,13 @@ For this task, we followed the general procedure of @hanus2007discrete. Two smal
 
 We assume that ??? 
 
+blabla
+
+```{r johanna}
+
+```
+
+
 ### Switching
 
 This task was modeled after @haun2006evolutionary. Three differently looking cups (metal cup with handle, red plastic ice cone, red cup without handle - Figure \@ref(fig:setup)D) were placed next to each other on the table. There were two conditions. In the place condition, the experimenter hid a piece of food under one of the cups in full view of the participant. Next, the cups were covered by the occluder and the experimenter switched the position of two cups, while the reward remained in the same location. Next, the experimenter removed the occluder and pushed the table forward. We coded as correct if the participant chose the location where the food was hidden. Participants received four trials in this condition. 
