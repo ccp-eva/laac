@@ -215,7 +215,7 @@ Predictors could either vary with the individual (stable individual characterist
 
 Most predictors were collected via a diary that the animal caretakers filled out on a daily basis. Here, the caretakers were asked a range of questions about the presence of a predictor and its severity. The diary (in German) can be found in `documentation/` in the associated online repository.
 
-### Stable individual characterisitcs
+### Stable individual characteristics
 
 These predictors are stable individual differences. As a source, we used the ape handbook at Zoo Leipzig. Figure \@ref(fig:demo) gives an overview of the distribution of the different characteristics in the sample. 
 
@@ -307,11 +307,11 @@ We asked caretakers to order individuals within a given group for their rank. Ti
 
 #### Sickness
 
-As part of the caretakers' daily diary, we asked whether an individual was sick and if yes, how sever the sickness was on a scale from 1 to 7. For each time point, we used the mean of the daily sickness ratings as predictor.  
+As part of the caretakers' daily diary, we asked whether an individual was sick and if yes, how severe the sickness was on a scale from 1 to 7. For each time point, we used the mean of the daily sickness ratings as predictor.  
 
 #### Sociality
 
-We conducted proximity scans for all groups in the early afternoon on every work day (Monday to Friday). That is, we expect 10 scans for each time point. For each individual, we recorded which individuals are within arms reach. Research assistants used a tablet to record their observations. 
+We conducted proximity scans for all groups in the early afternoon on every workday (Monday to Friday). That is, we expect 10 scans for each time point. For each individual, we recorded which individuals are within arms reach. Research assistants used a tablet to record their observations. 
 
 To derive individual specific estimates of sociality for each time point, we fit a variant of a Social Relations Model [@snijders1999social] to the proximity data. These models allow estimating an individual specific sociality index while accounting for the dyadic nature of social interaction. Social relations model usually deal with directed behaviors (e.g. individual *i* is grooming individual *j*). Because the behavior we observed was symmetric, we cannot differentiate between the actor and receiver. @Kajokaite2020.08.04.235788 suggested to speak of a Multiple Membership Relations Model [see also @leckie2019multiple] in such a context, which simply estimates how likely likely an individual is to be observed in proximity to another individual. 
 
@@ -355,7 +355,7 @@ The animal caretakers also noted down if there were any unusual disturbances for
 
 #### Life events
 
-This variable captured whether there were any notable events within the group. Examples were fights in the group or the temporal removal of some individuals for medical procedures. Again, we asked the caretakesr to rate the severity of these events and averaged across them.  
+This variable captured whether there were any notable events within the group. Examples were fights in the group or the temporal removal of some individuals for medical procedures. Again, we asked the caretakers to rate the severity of these events and averaged across them.  
 
 
 ```{r}
@@ -388,11 +388,11 @@ We noted whether or not there was another animal in the same room or the room ad
 
 #### Study on same day
 
-This predictor recorder whether or not the participant had already participated in a different test on the same day. The experimenter took this information from the testing schedule. 
+This predictor recorded whether or not the participant had already participated in a different test on the same day. The experimenter took this information from the testing schedule. 
 
 #### Studies since last time point
 
-Here we counted in how many other studies the participant had taken part since the last time they were tested in that particular task. The experimenter took this information from the testing schedule.  
+Here we counted in how many other studies the participant had taken part in since the last time they were tested in that particular task. The experimenter took this information from the testing schedule.  
 
 # Analytical framework
 
