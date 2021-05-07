@@ -1,0 +1,34 @@
+"files"	"kind"	"peb"	"seb"	"mse"	"cover_min"	"cover_max"	"cover_median"	"abs_bias"	"abs_diff_sd_se"
+"Latent State 2 constructs T 9 free S var"	"S covariance"	0.2581	0.0569	0.431	0.881	0.954	0.928	0.1855	0.0327
+"Latent State 2 constructs T 9 free S var"	"S variance"	0.1167	0.0669	0.8503	0.896	0.942	0.9205	0.3513	0.053
+"Latent State 2 constructs T 9 free S var"	"threshold"	0.1083	0.1756	0.061	0.831	0.912	0.861	0.0692	0.042
+"Latent State T 9 free S var 5 categ"	"mean"	0.0534	0.0329	0.059	0.932	0.967	0.9475	0.0093	0.008
+"Latent State T 9 free S var 5 categ"	"S covariance"	0.0405	0.0394	0.8375	0.916	0.949	0.932	0.1231	0.0349
+"Latent State T 9 free S var 5 categ"	"S variance"	0.0351	0.0584	1.1921	0.923	0.945	0.936	0.1164	0.0609
+"Latent State T 9 free S var 5 categ"	"threshold"	0.0246	0.0058	0.0811	0.939	0.944	0.94	0.026	0.0016
+"Latent State T 9 free S var 7 categ"	"mean"	0.0858	0.0299	0.0566	0.934	0.966	0.9515	0.0147	0.0071
+"Latent State T 9 free S var 7 categ"	"S covariance"	0.0467	0.0248	0.8133	0.916	0.943	0.93	0.1415	0.0217
+"Latent State T 9 free S var 7 categ"	"S variance"	0.0428	0.0468	1.1201	0.925	0.944	0.933	0.1424	0.0475
+"Latent State T 9 free S var 7 categ"	"threshold"	0.0337	0.028	0.0786	0.915	0.929	0.9245	0.0403	0.0078
+"LST 2 constructs T 9 fixed"	"S covariance"	0.0881	0.0136	0.0037	0.947	0.947	0.947	0.0156	8e-04
+"LST 2 constructs T 9 fixed"	"S variance"	0.0285	0.0753	0.01	0.962	0.976	0.969	0.009	0.0069
+"LST 2 constructs T 9 fixed"	"T covariance"	0.0345	0.1074	0.1835	0.94	0.94	0.94	0.0143	0.046
+"LST 2 constructs T 9 fixed"	"T variance"	0.0148	0.0917	0.4616	0.939	0.953	0.946	0.0438	0.062
+"LST 2 constructs T 9 fixed"	"threshold"	0.0531	0.0174	0.0746	0.936	0.949	0.945	0.0368	0.0047
+"LST 2 constructs T 9 free S var"	"S covariance"	0.3383	0.3916	0.0281	0.914	0.995	0.988	0.0466	0.0455
+"LST 2 constructs T 9 free S var"	"S variance"	0.1482	0.3993	0.0545	0.947	0.993	0.986	0.0496	0.0698
+"LST 2 constructs T 9 free S var"	"T covariance"	0.0207	0.1098	0.2171	0.95	0.95	0.95	0.0089	0.0512
+"LST 2 constructs T 9 free S var"	"T variance"	0.008	0.0762	0.5506	0.941	0.95	0.9455	0.0211	0.0565
+"LST 2 constructs T 9 free S var"	"threshold"	0.0521	0.0126	0.0795	0.931	0.951	0.943	0.0372	0.0036
+"LST fixed S var IG prior"	"S variance"	0.0045	0.0045	0.0123	0.948	0.948	0.948	0.0023	5e-04
+"LST fixed S var IG prior"	"T variance"	0.0205	0.0649	0.9272	0.941	0.941	0.941	0.0759	0.0623
+"LST fixed S var IG prior"	"threshold"	0.0088	0.0416	0.0969	0.922	0.934	0.928	0.01	0.013
+"LST T 12 fixed S var"	"S variance"	0.0641	0.018	0.0134	0.951	0.951	0.951	0.0325	0.002
+"LST T 12 fixed S var"	"T variance"	0.1008	0.0896	1.2188	0.928	0.928	0.928	0.3732	0.0931
+"LST T 12 fixed S var"	"threshold"	0.0133	0.0295	0.0994	0.928	0.939	0.9305	0.0189	0.0093
+"LST T 12 free S var"	"S variance"	0.9543	0.233	0.13	0.855	0.945	0.905	0.2225	0.0565
+"LST T 12 free S var"	"T variance"	0.2357	0.019	1.6041	0.85	0.85	0.85	0.7325	0.0197
+"LST T 12 free S var"	"threshold"	0.0597	0.0693	0.1144	0.885	0.925	0.9075	0.101	0.0222
+"LST T 12 free S var IG prior"	"S variance"	0.3668	0.1204	0.0563	0.884	0.995	0.938	0.089	0.0167
+"LST T 12 free S var IG prior"	"T variance"	0.0285	0.0757	0.5638	0.942	0.942	0.942	0.0885	0.0565
+"LST T 12 free S var IG prior"	"threshold"	0.0239	0.0358	0.0802	0.914	0.921	0.9185	0.0401	0.01
