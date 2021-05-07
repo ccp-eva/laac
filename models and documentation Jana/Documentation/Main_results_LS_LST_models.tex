@@ -1,0 +1,114 @@
+\documentclass[a4paper,12pt,openany]{article}
+%\documentclass[a4paper,12pt,openany]{book}
+
+\usepackage{hyperref}    
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}    % Typical maths resource packages
+\usepackage{alphalph}
+\usepackage{graphicx}                           % Packages to allow inclusion of graphics
+                       % For creating hyperlinks in cross references
+%\usepackage[authoryear]{natbib}                 % literature reference style
+\usepackage[font=scriptsize,it,bf, format=hang]{caption}
+\usepackage{subcaption}
+\usepackage{setspace}
+\usepackage{multicol}
+\usepackage{upgreek}
+\usepackage{multirow} 
+\usepackage{float}
+\usepackage{changepage}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{fancybox}
+\usepackage{enumerate}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+ \usepackage{nccmath}
+ \usepackage{adjustbox}
+ \usepackage{arydshln}
+ \usepackage{moresize}
+ \usepackage{booktabs}
+ \usepackage{ngerman}
+ \usepackage{pdflscape}
+
+\usepackage{mathptmx}
+\usepackage{amsthm}
+\usepackage{listings}
+\usepackage{bm}
+
+\usepackage[a4paper,margin=1cm, lmargin=5cm]{geometry}
+\usepackage{tikz} 
+ \usepackage{pgflibraryshapes} 
+\usetikzlibrary{arrows} 
+\usetikzlibrary{positioning} 
+\usetikzlibrary{shapes} 
+\usetikzlibrary{fit} 
+\usetikzlibrary{backgrounds} 
+\usepackage{booktabs}
+\usetikzlibrary{calc}
+
+\usepackage{pdflscape}
+
+% -------------------------------
+% --- some layout definitions ---
+% -------------------------------
+
+% define citation style
+\usepackage[notocbib]{apacite}
+\bibliographystyle{apacite}
+
+% define page size, margin size
+\setlength{\headheight}{1\baselineskip}
+\setlength{\parindent}{0in}
+\voffset=-2cm
+\hoffset=-3cm
+\textheight24cm
+\textwidth15.5cm
+\topmargin1cm
+\oddsidemargin3cm
+\evensidemargin3cm
+
+% define caption spacing
+\captionsetup[table]{skip=0pt, font=scriptsize}
+\captionsetup[figure]{skip=0pt, font=scriptsize}
+
+% define line line spacing = 1
+\renewcommand{\baselinestretch}{1.02}\normalsize
+
+% define second level for `itemizing'
+\renewcommand{\labelitemii}{-}
+
+%% new math commands 
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+\definecolor{lightgray}{gray}{0.8}
+\newcommand{\suchthat}{\;\ifnum\currentgrouptype=16 \middle\fi|\;}
+
+% define Theorem, Definition and Example labeling
+%\theoremstyle{plain}
+%\newtheorem{thm}{Theorem} % reset theorem numbering for each chapter
+%\theoremstyle{definition}
+%\newtheorem{defn}{Definition}[chapter]
+
+%%%%%%%%%%%%%%%%%%%% Main document --------------------------------------
+
+\begin{document}
+
+\pagestyle{plain}
+\setcounter{page}{1}  
+\pagenumbering{arabic}  
+
+
+%%%%%%%%%%%%% Inputs
+
+\input{Results_application}
+\input{Results_simulations}
+
+
+
+% literature
+\bibliography{literature}
+
+\end{document}
