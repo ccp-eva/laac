@@ -1,0 +1,955 @@
+Mplus VERSION 8.4 (Mac)
+MUTHEN & MUTHEN
+05/06/2021  11:33 PM
+
+INPUT INSTRUCTIONS
+
+  DATA:
+
+  File is apes_long_neu.dat;
+
+  VARIABLE:
+
+  NAMES = subject   time_point cause_1    cause_2    cause_3
+  cause_4    cause_5    cause_6    cause_7
+  cause_8    cause_9    cause_10   cause_11
+  cause_12   gaze_1     gaze_2     gaze_3     gaze_4
+  gaze_5     gaze_6     gaze_7     gaze_8
+  inf_1      inf_2      inf_3      inf_4      inf_5
+  inf_6      inf_7      inf_8      inf_9      inf_10
+  inf_11     inf_12     quant_1    quant_2
+  quant_3    quant_4    quant_5    quant_6    quant_7
+  quant_8    quant_9    quant_10   quant_11
+  quant_12   switchF_1  switchF_2  switchF_3  switchF_4
+  switchF_5  switchF_6  switchF_7  switchF_8
+  switchP_1  switchP_2  switchP_3  switchP_4;
+
+
+  USEVARIABLES =  Q1 Q2 I1 I2;
+
+  Categ =  Q1 Q2 I1 I2;
+
+  Cluster = subject;
+  	
+
+  Missing = All(-99);	
+
+
+  DEFINE:
+
+  I1 = inf_1 + inf_3 + inf_5 + inf_7 + inf_9 + inf_11;
+  I2 =  inf_2 + inf_4 + inf_6 + inf_8 + inf_10 + inf_12;
+
+  Q1 = quant_1 + quant_3 + quant_5 + quant_7 + quant_9 + quant_11;
+  Q2 =  quant_2 + quant_4 + quant_6 + quant_8 + quant_10 + quant_12;
+
+
+  IF (Q1==0 OR Q1==1) THEN Q1=2;
+  IF (Q2==0 OR Q2==1) THEN Q2=2;
+
+
+  ANALYSIS:
+
+  	ESTIMATOR = Bayes;
+  	Type = Twolevel;
+  	Biter=(20000);
+  	Thin=10;
+  	Bconvergence = .005;	
+
+  MODEL:
+
+  %WITHIN%
+
+  SQ by Q1@1 Q2@1;
+  SI by I1@1 I2@1;
+  SI with SQ;
+
+
+  %BETWEEN%
+
+  TQ by Q1@1 Q2@1;
+  TI by I1@1 I2@1;
+  Q1@0;
+  Q2@0;
+  I1@0;
+  I2@0;
+
+
+  [I1$1] (tauI1); [I1$2] (tauI2); [I1$3] (tauI3);
+  [I1$4] (tauI4); [I1$5] (tauI5); [I1$6] (tauI6);
+
+  [I2$1] (tauI1); [I2$2] (tauI2); [I2$3] (tauI3);
+  [I2$4] (tauI4); [I2$5] (tauI5); [I2$6] (tauI6);
+
+
+  [Q1$1] (tau1);[Q1$2] (tau2);
+  [Q1$3] (tau3); [Q1$4] (tau4);
+
+  [Q2$1] (tau1); [Q2$2] (tau2);
+  [Q2$3] (tau3); [Q2$4] (tau4);
+
+
+  Output: stdyx tech8;
+  PLOT:   TYPE = PLOT2;
+
+
+
+*** WARNING
+  One or more individual-level variables have no variation within a
+  cluster for the following clusters.
+
+     Variable   Cluster IDs with no within-cluster variation
+
+      Q1          5 21 8
+      I1          40 29
+      I2          40 19
+
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  14
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         484
+
+Number of dependent variables                                    4
+Number of independent variables                                  0
+Number of continuous latent variables                            4
+
+Observed dependent variables
+
+  Binary and ordered categorical (ordinal)
+   Q1          Q2          I1          I2
+
+Continuous latent variables
+   SQ          SI          TQ          TI
+
+Variables with special functions
+
+  Cluster variable      SUBJECT
+
+Estimator                                                    BAYES
+Specifications for Bayesian Estimation
+  Point estimate                                            MEDIAN
+  Number of Markov chain Monte Carlo (MCMC) chains               2
+  Random seed for the first chain                                0
+  Starting value information                           UNPERTURBED
+  Algorithm used for Markov chain Monte Carlo           GIBBS(PX1)
+  Convergence criterion                                  0.500D-02
+  Maximum number of iterations                               50000
+  K-th iteration used for thinning                              10
+Link                                                        PROBIT
+
+Input data file(s)
+  apes_long_neu.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of clusters                         41
+
+       Size (s)    Cluster ID with Size s
+
+          1        40
+          2        36
+          6        17
+          8        5
+          9        6 4 33
+         11        16 28
+         12        31 26 7 19 22 12
+         13        21 8 23 24 9 20 29 30 14 1 34 2 37 39 18 41 32 15
+         14        25 35 27 11 38 3 13 10
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+     Number of missing data patterns             7
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              Q1            Q2            I1            I2
+              ________      ________      ________      ________
+ Q1             0.864
+ Q2             0.860         0.860
+ I1             0.785         0.783         0.921
+ I2             0.779         0.777         0.911         0.911
+
+
+UNIVARIATE PROPORTIONS AND COUNTS FOR CATEGORICAL VARIABLES
+
+    Q1
+      Category 1    0.153           64.000
+      Category 2    0.103           43.000
+      Category 3    0.239          100.000
+      Category 4    0.294          123.000
+      Category 5    0.211           88.000
+    Q2
+      Category 1    0.101           42.000
+      Category 2    0.130           54.000
+      Category 3    0.327          136.000
+      Category 4    0.226           94.000
+      Category 5    0.216           90.000
+    I1
+      Category 1    0.061           27.000
+      Category 2    0.132           59.000
+      Category 3    0.177           79.000
+      Category 4    0.285          127.000
+      Category 5    0.108           48.000
+      Category 6    0.112           50.000
+      Category 7    0.126           56.000
+    I2
+      Category 1    0.088           39.000
+      Category 2    0.134           59.000
+      Category 3    0.152           67.000
+      Category 4    0.245          108.000
+      Category 5    0.127           56.000
+      Category 6    0.102           45.000
+      Category 7    0.152           67.000
+
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     USE THE FBITERATIONS OPTION TO INCREASE THE NUMBER OF ITERATIONS BY A FACTOR
+     OF AT LEAST TWO TO CHECK CONVERGENCE AND THAT THE PSR VALUE DOES NOT INCREASE.
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                              16
+
+Bayesian Posterior Predictive Checking using Chi-Square
+
+          95% Confidence Interval for the Difference Between
+          the Observed and the Replicated Chi-Square Values
+
+                                -16.100            25.863
+
+          Posterior Predictive P-Value              0.341
+
+
+
+MODEL RESULTS
+
+                                Posterior  One-Tailed         95% C.I.
+                    Estimate       S.D.      P-Value   Lower 2.5%  Upper 2.5%  Significance
+
+Within Level
+
+ SQ       BY
+    Q1                 1.000       0.000      0.000       1.000       1.000
+    Q2                 1.000       0.000      0.000       1.000       1.000
+
+ SI       BY
+    I1                 1.000       0.000      0.000       1.000       1.000
+    I2                 1.000       0.000      0.000       1.000       1.000
+
+ SI       WITH
+    SQ                 0.072       0.046      0.052      -0.015       0.164
+
+ Variances
+    SQ                 0.107       0.033      0.000       0.059       0.187      *
+    SI                 0.578       0.123      0.000       0.367       0.849      *
+
+Between Level
+
+ TQ       BY
+    Q1                 1.000       0.000      0.000       1.000       1.000
+    Q2                 1.000       0.000      0.000       1.000       1.000
+
+ TI       BY
+    I1                 1.000       0.000      0.000       1.000       1.000
+    I2                 1.000       0.000      0.000       1.000       1.000
+
+ TI       WITH
+    TQ                 0.656       0.300      0.003       0.187       1.365      *
+
+ Thresholds
+    Q1$1              -1.438       0.152      0.000      -1.726      -1.129      *
+    Q1$2              -0.855       0.148      0.000      -1.134      -0.550      *
+    Q1$3               0.218       0.146      0.057      -0.051       0.524
+    Q1$4               1.240       0.150      0.000       0.960       1.558      *
+    Q2$1              -1.438       0.152      0.000      -1.726      -1.129      *
+    Q2$2              -0.855       0.148      0.000      -1.134      -0.550      *
+    Q2$3               0.218       0.146      0.057      -0.051       0.524
+    Q2$4               1.240       0.150      0.000       0.960       1.558      *
+    I1$1              -2.941       0.326      0.000      -3.556      -2.262      *
+    I1$2              -1.739       0.310      0.000      -2.308      -1.074      *
+    I1$3              -0.784       0.305      0.009      -1.325      -0.124      *
+    I1$4               0.615       0.307      0.012       0.076       1.287      *
+    I1$5               1.468       0.312      0.000       0.912       2.149      *
+    I1$6               2.665       0.330      0.000       2.076       3.386      *
+    I2$1              -2.941       0.326      0.000      -3.556      -2.262      *
+    I2$2              -1.739       0.310      0.000      -2.308      -1.074      *
+    I2$3              -0.784       0.305      0.009      -1.325      -0.124      *
+    I2$4               0.615       0.307      0.012       0.076       1.287      *
+    I2$5               1.468       0.312      0.000       0.912       2.149      *
+    I2$6               2.665       0.330      0.000       2.076       3.386      *
+
+ Variances
+    TQ                 0.735       0.197      0.000       0.459       1.217      *
+    TI                 3.247       0.867      0.000       2.058       5.403      *
+
+ Residual Variances
+    Q1                 0.001       0.000      0.000       0.001       0.001
+    Q2                 0.001       0.000      0.000       0.001       0.001
+    I1                 0.001       0.000      0.000       0.001       0.001
+    I2                 0.001       0.000      0.000       0.001       0.001
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                Posterior  One-Tailed         95% C.I.
+                    Estimate       S.D.      P-Value   Lower 2.5%  Upper 2.5%  Significance
+Within Level
+
+ SQ       BY
+    Q1                 0.311       0.041      0.000       0.237       0.397      *
+    Q2                 0.311       0.041      0.000       0.237       0.397      *
+
+ SI       BY
+    I1                 0.605       0.041      0.000       0.518       0.678      *
+    I2                 0.605       0.041      0.000       0.518       0.678      *
+
+ SI       WITH
+    SQ                 0.294       0.166      0.052      -0.067       0.580
+
+ Variances
+    SQ                 1.000       0.000      0.000       1.000       1.000
+    SI                 1.000       0.000      0.000       1.000       1.000
+
+Between Level
+
+ TQ       BY
+    Q1                 0.999       0.000      0.000       0.999       1.000      *
+    Q2                 0.999       0.000      0.000       0.999       1.000      *
+
+ TI       BY
+    I1                 1.000       0.000      0.000       1.000       1.000      *
+    I2                 1.000       0.000      0.000       1.000       1.000      *
+
+ TI       WITH
+    TQ                 0.436       0.136      0.003       0.135       0.665      *
+
+ Thresholds
+    Q1$1              -1.364       0.143      0.000      -1.635      -1.070      *
+    Q1$2              -0.811       0.140      0.000      -1.075      -0.521      *
+    Q1$3               0.207       0.138      0.057      -0.047       0.498
+    Q1$4               1.176       0.142      0.000       0.911       1.476      *
+    Q2$1              -1.364       0.143      0.000      -1.635      -1.070      *
+    Q2$2              -0.811       0.140      0.000      -1.075      -0.521      *
+    Q2$3               0.207       0.138      0.057      -0.047       0.498
+    Q2$4               1.176       0.142      0.000       0.911       1.476      *
+    I1$1              -2.339       0.252      0.000      -2.796      -1.802      *
+    I1$2              -1.383       0.244      0.000      -1.819      -0.855      *
+    I1$3              -0.624       0.241      0.009      -1.047      -0.100      *
+    I1$4               0.489       0.243      0.012       0.060       1.020      *
+    I1$5               1.166       0.246      0.000       0.733       1.702      *
+    I1$6               2.117       0.254      0.000       1.662       2.666      *
+    I2$1              -2.339       0.252      0.000      -2.796      -1.802      *
+    I2$2              -1.383       0.244      0.000      -1.819      -0.855      *
+    I2$3              -0.624       0.241      0.009      -1.047      -0.100      *
+    I2$4               0.489       0.243      0.012       0.060       1.020      *
+    I2$5               1.166       0.246      0.000       0.733       1.702      *
+    I2$6               2.117       0.254      0.000       1.662       2.666      *
+
+ Variances
+    TQ                 1.000       0.000      0.000       1.000       1.000
+    TI                 1.000       0.000      0.000       1.000       1.000
+
+ Residual Variances
+    Q1                 0.001       0.000      0.000       0.001       0.002      *
+    Q2                 0.001       0.000      0.000       0.001       0.002      *
+    I1                 0.000       0.000      0.000       0.000       0.000      *
+    I2                 0.000       0.000      0.000       0.000       0.000      *
+
+
+R-SQUARE
+
+Within Level
+
+                                Posterior  One-Tailed         95% C.I.
+    Variable        Estimate       S.D.      P-Value   Lower 2.5%  Upper 2.5%
+
+    Q1                 0.097       0.026      0.000       0.056       0.157
+    Q2                 0.097       0.026      0.000       0.056       0.157
+    I1                 0.366       0.048      0.000       0.269       0.459
+    I2                 0.366       0.048      0.000       0.269       0.459
+
+Between Level
+
+                                Posterior  One-Tailed         95% C.I.
+    Variable        Estimate       S.D.      P-Value   Lower 2.5%  Upper 2.5%
+
+    Q1                 0.999       0.000      0.000       0.998       0.999
+    Q2                 0.999       0.000      0.000       0.998       0.999
+    I1                 1.000       0.000      0.000       1.000       1.000
+    I2                 1.000       0.000      0.000       1.000       1.000
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR WITHIN
+
+
+           TAU
+              Q1$1          Q1$2          Q1$3          Q1$4          Q2$1
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           TAU
+              Q2$2          Q2$3          Q2$4          I1$1          I1$2
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           TAU
+              I1$3          I1$4          I1$5          I1$6          I2$1
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           TAU
+              I2$2          I2$3          I2$4          I2$5          I2$6
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           NU
+              Q1            Q2            I1            I2
+              ________      ________      ________      ________
+                    0             0             0             0
+
+
+           LAMBDA
+              SQ            SI
+              ________      ________
+ Q1                 0             0
+ Q2                 0             0
+ I1                 0             0
+ I2                 0             0
+
+
+           THETA
+              Q1            Q2            I1            I2
+              ________      ________      ________      ________
+ Q1                 0
+ Q2                 0             0
+ I1                 0             0             0
+ I2                 0             0             0             0
+
+
+           ALPHA
+              SQ            SI
+              ________      ________
+                    0             0
+
+
+           BETA
+              SQ            SI
+              ________      ________
+ SQ                 0             0
+ SI                 0             0
+
+
+           PSI
+              SQ            SI
+              ________      ________
+ SQ                 1
+ SI                 2             3
+
+
+     PARAMETER SPECIFICATION FOR BETWEEN
+
+
+           TAU
+              Q1$1          Q1$2          Q1$3          Q1$4          Q2$1
+              ________      ________      ________      ________      ________
+                    7             8             9            10             7
+
+
+           TAU
+              Q2$2          Q2$3          Q2$4          I1$1          I1$2
+              ________      ________      ________      ________      ________
+                    8             9            10            11            12
+
+
+           TAU
+              I1$3          I1$4          I1$5          I1$6          I2$1
+              ________      ________      ________      ________      ________
+                   13            14            15            16            11
+
+
+           TAU
+              I2$2          I2$3          I2$4          I2$5          I2$6
+              ________      ________      ________      ________      ________
+                   12            13            14            15            16
+
+
+           NU
+              Q1            Q2            I1            I2
+              ________      ________      ________      ________
+                    0             0             0             0
+
+
+           LAMBDA
+              TQ            TI
+              ________      ________
+ Q1                 0             0
+ Q2                 0             0
+ I1                 0             0
+ I2                 0             0
+
+
+           THETA
+              Q1            Q2            I1            I2
+              ________      ________      ________      ________
+ Q1                 0
+ Q2                 0             0
+ I1                 0             0             0
+ I2                 0             0             0             0
+
+
+           ALPHA
+              TQ            TI
+              ________      ________
+                    0             0
+
+
+           BETA
+              TQ            TI
+              ________      ________
+ TQ                 0             0
+ TI                 0             0
+
+
+           PSI
+              TQ            TI
+              ________      ________
+ TQ                 4
+ TI                 5             6
+
+
+     STARTING VALUES FOR WITHIN
+
+
+           TAU
+              Q1$1          Q1$2          Q1$3          Q1$4          Q2$1
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           TAU
+              Q2$2          Q2$3          Q2$4          I1$1          I1$2
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           TAU
+              I1$3          I1$4          I1$5          I1$6          I2$1
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           TAU
+              I2$2          I2$3          I2$4          I2$5          I2$6
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              Q1            Q2            I1            I2
+              ________      ________      ________      ________
+                0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              SQ            SI
+              ________      ________
+ Q1             1.000         0.000
+ Q2             1.000         0.000
+ I1             0.000         1.000
+ I2             0.000         1.000
+
+
+           THETA
+              Q1            Q2            I1            I2
+              ________      ________      ________      ________
+ Q1             1.000
+ Q2             0.000         1.000
+ I1             0.000         0.000         1.000
+ I2             0.000         0.000         0.000         1.000
+
+
+           ALPHA
+              SQ            SI
+              ________      ________
+                0.000         0.000
+
+
+           BETA
+              SQ            SI
+              ________      ________
+ SQ             0.000         0.000
+ SI             0.000         0.000
+
+
+           PSI
+              SQ            SI
+              ________      ________
+ SQ             1.000
+ SI             0.000         1.000
+
+
+     STARTING VALUES FOR BETWEEN
+
+
+           TAU
+              Q1$1          Q1$2          Q1$3          Q1$4          Q2$1
+              ________      ________      ________      ________      ________
+               -1.082        -0.631         0.059         0.725        -1.082
+
+
+           TAU
+              Q2$2          Q2$3          Q2$4          I1$1          I1$2
+              ________      ________      ________      ________      ________
+               -0.631         0.059         0.725        -1.410        -0.746
+
+
+           TAU
+              I1$3          I1$4          I1$5          I1$6          I2$1
+              ________      ________      ________      ________      ________
+               -0.291         0.313         0.623         1.017        -1.410
+
+
+           TAU
+              I2$2          I2$3          I2$4          I2$5          I2$6
+              ________      ________      ________      ________      ________
+               -0.746        -0.291         0.313         0.623         1.017
+
+
+           NU
+              Q1            Q2            I1            I2
+              ________      ________      ________      ________
+                0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              TQ            TI
+              ________      ________
+ Q1             1.000         0.000
+ Q2             1.000         0.000
+ I1             0.000         1.000
+ I2             0.000         1.000
+
+
+           THETA
+              Q1            Q2            I1            I2
+              ________      ________      ________      ________
+ Q1             0.000
+ Q2             0.000         0.000
+ I1             0.000         0.000         0.000
+ I2             0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              TQ            TI
+              ________      ________
+                0.000         0.000
+
+
+           BETA
+              TQ            TI
+              ________      ________
+ TQ             0.000         0.000
+ TI             0.000         0.000
+
+
+           PSI
+              TQ            TI
+              ________      ________
+ TQ             1.000
+ TI             0.000         1.000
+
+
+
+     PRIORS FOR ALL PARAMETERS            PRIOR MEAN      PRIOR VARIANCE     PRIOR STD. DEV.
+
+     Parameter 1~IW(1.000,3)               infinity            infinity            infinity
+     Parameter 2~IW(0.000,3)               infinity            infinity            infinity
+     Parameter 3~IW(1.000,3)               infinity            infinity            infinity
+     Parameter 4~IW(1.000,3)               infinity            infinity            infinity
+     Parameter 5~IW(0.000,3)               infinity            infinity            infinity
+     Parameter 6~IW(1.000,3)               infinity            infinity            infinity
+     Parameter 7~N(0.000,5.000)              0.0000              5.0000              2.2361
+     Parameter 8~N(0.000,5.000)              0.0000              5.0000              2.2361
+     Parameter 9~N(0.000,5.000)              0.0000              5.0000              2.2361
+     Parameter 10~N(0.000,5.000)             0.0000              5.0000              2.2361
+     Parameter 11~N(0.000,5.000)             0.0000              5.0000              2.2361
+     Parameter 12~N(0.000,5.000)             0.0000              5.0000              2.2361
+     Parameter 13~N(0.000,5.000)             0.0000              5.0000              2.2361
+     Parameter 14~N(0.000,5.000)             0.0000              5.0000              2.2361
+     Parameter 15~N(0.000,5.000)             0.0000              5.0000              2.2361
+     Parameter 16~N(0.000,5.000)             0.0000              5.0000              2.2361
+
+
+TECHNICAL 8 OUTPUT
+
+
+   TECHNICAL 8 OUTPUT FOR BAYES ESTIMATION
+
+     CHAIN    BSEED
+     1        0
+     2        285380
+
+                     POTENTIAL       PARAMETER WITH
+     ITERATION    SCALE REDUCTION      HIGHEST PSR
+     100              2.211               8
+     200              2.600               13
+     300              1.722               15
+     400              1.096               14
+     500              1.163               12
+     600              1.488               13
+     700              1.123               11
+     800              1.065               10
+     900              1.031               10
+     1000             1.099               14
+     1100             1.108               14
+     1200             1.074               14
+     1300             1.047               16
+     1400             1.115               16
+     1500             1.143               15
+     1600             1.162               15
+     1700             1.184               15
+     1800             1.234               15
+     1900             1.235               15
+     2000             1.197               15
+     2100             1.121               15
+     2200             1.030               8
+     2300             1.033               8
+     2400             1.042               8
+     2500             1.038               8
+     2600             1.029               15
+     2700             1.040               15
+     2800             1.034               14
+     2900             1.049               14
+     3000             1.088               12
+     3100             1.092               12
+     3200             1.056               12
+     3300             1.035               7
+     3400             1.046               7
+     3500             1.028               7
+     3600             1.023               7
+     3700             1.013               7
+     3800             1.012               11
+     3900             1.008               11
+     4000             1.008               7
+     4100             1.009               12
+     4200             1.008               7
+     4300             1.008               12
+     4400             1.015               13
+     4500             1.033               15
+     4600             1.041               13
+     4700             1.049               13
+     4800             1.046               13
+     4900             1.036               15
+     5000             1.030               13
+     5100             1.026               15
+     5200             1.017               15
+     5300             1.018               16
+     5400             1.013               16
+     5500             1.005               16
+     5600             1.002               7
+     5700             1.003               3
+     5800             1.003               7
+     5900             1.004               7
+     6000             1.002               7
+     6100             1.003               11
+     6200             1.004               11
+     6300             1.005               11
+     6400             1.002               11
+     6500             1.003               10
+     6600             1.005               9
+     6700             1.005               9
+     6800             1.009               8
+     6900             1.009               9
+     7000             1.007               8
+     7100             1.011               9
+     7200             1.016               9
+     7300             1.015               9
+     7400             1.013               9
+     7500             1.010               9
+     7600             1.012               14
+     7700             1.012               14
+     7800             1.011               14
+     7900             1.011               16
+     8000             1.010               16
+     8100             1.011               16
+     8200             1.010               16
+     8300             1.010               16
+     8400             1.009               16
+     8500             1.008               16
+     8600             1.006               16
+     8700             1.003               16
+     8800             1.001               16
+     8900             1.001               8
+     9000             1.001               8
+     9100             1.001               1
+     9200             1.001               8
+     9300             1.001               16
+     9400             1.001               13
+     9500             1.002               9
+     9600             1.003               8
+     9700             1.003               8
+     9800             1.003               8
+     9900             1.002               15
+     10000            1.003               15
+     10100            1.004               15
+     10200            1.003               15
+     10300            1.001               15
+     10400            1.002               8
+     10500            1.002               8
+     10600            1.002               9
+     10700            1.003               8
+     10800            1.003               9
+     10900            1.001               8
+     11000            1.001               16
+     11100            1.002               10
+     11200            1.003               8
+     11300            1.002               16
+     11400            1.004               16
+     11500            1.005               16
+     11600            1.005               16
+     11700            1.003               16
+     11800            1.003               8
+     11900            1.005               10
+     12000            1.002               10
+     12100            1.002               16
+     12200            1.002               16
+     12300            1.002               3
+     12400            1.001               10
+     12500            1.002               10
+     12600            1.002               3
+     12700            1.002               11
+     12800            1.003               11
+     12900            1.004               11
+     13000            1.006               11
+     13100            1.007               11
+     13200            1.004               11
+     13300            1.002               11
+     13400            1.004               11
+     13500            1.006               11
+     13600            1.007               11
+     13700            1.009               12
+     13800            1.012               12
+     13900            1.015               12
+     14000            1.017               11
+     14100            1.019               12
+     14200            1.019               12
+     14300            1.021               12
+     14400            1.025               12
+     14500            1.028               12
+     14600            1.032               12
+     14700            1.037               12
+     14800            1.036               12
+     14900            1.034               12
+     15000            1.032               12
+     15100            1.032               12
+     15200            1.033               12
+     15300            1.035               12
+     15400            1.035               12
+     15500            1.036               12
+     15600            1.038               12
+     15700            1.042               12
+     15800            1.043               12
+     15900            1.042               12
+     16000            1.040               12
+     16100            1.040               12
+     16200            1.042               12
+     16300            1.042               12
+     16400            1.036               12
+     16500            1.034               12
+     16600            1.036               12
+     16700            1.036               12
+     16800            1.033               12
+     16900            1.037               12
+     17000            1.036               12
+     17100            1.037               12
+     17200            1.036               12
+     17300            1.035               12
+     17400            1.036               12
+     17500            1.033               12
+     17600            1.033               12
+     17700            1.035               12
+     17800            1.039               12
+     17900            1.038               12
+     18000            1.038               12
+     18100            1.033               12
+     18200            1.026               12
+     18300            1.020               11
+     18400            1.016               11
+     18500            1.014               11
+     18600            1.013               11
+     18700            1.012               11
+     18800            1.009               11
+     18900            1.005               11
+     19000            1.003               11
+     19100            1.002               11
+     19200            1.002               3
+     19300            1.001               9
+     19400            1.001               3
+     19500            1.001               16
+     19600            1.001               16
+     19700            1.001               3
+     19800            1.001               16
+     19900            1.002               16
+     20000            1.002               16
+
+
+PLOT INFORMATION
+
+The following plots are available:
+
+  Sample proportions and estimated probabilities
+  Bayesian posterior parameter distributions
+  Bayesian posterior parameter trace plots
+  Bayesian autocorrelation plots
+  Bayesian prior parameter distributions
+  Bayesian posterior predictive checking scatterplots
+  Bayesian posterior predictive checking distribution plots
+
+     Beginning Time:  23:33:44
+        Ending Time:  23:37:07
+       Elapsed Time:  00:03:23
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2019 Muthen & Muthen
