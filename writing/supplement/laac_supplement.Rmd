@@ -717,7 +717,7 @@ Pred(Y_{it}) = \frac{\beta^2 Var(O_{(t-1)}}{Var(T)+\beta^2 Var(O_{(t-1)})+Var(S_
 
 ### Estimation
 
-Models were estimated with MPlus version 8.4, using Bayesian Markov-Chain Monte-Carlo sampling, with the Mplus default priors (also see simulation studies). Using inverse gamma priors [IG(0.001, 0.001); see simulation study] for LST models did not substantially change the parameter estimates. Therefore, only the results with respect to the MPlus default priors are reported.  We used two chains with a minimum of 10,000 iterations per chain, with a thinning of 10 (corresponds to a minimum of 100,000 drawn samples per chain of which every 10th is used for the construction of the posterior distribution). The first half of each chain is discarded as burn-in. Convergence was assumed and estimation stopped when the Potential Scale Reduction (PSR) factor well below a threshold of 1.01 for the first time after the minimum number of iterations was reached.
+Models were estimated with MPlus version 8.4, using Bayesian Markov-Chain Monte-Carlo sampling, with the Mplus default priors (also see simulation studies). Using inverse gamma priors [IG(0.001, 0.001); see simulation study] for LST models did not substantially change the parameter estimates. Therefore, only the results with respect to the MPlus default priors are reported. We used two chains with a minimum of 10,000 iterations per chain, with a thinning of 10 (corresponds to a minimum of 100,000 drawn samples per chain of which every 10th is used for the construction of the posterior distribution). The first half of each chain is discarded as burn-in. Convergence was assumed and estimation stopped when the Potential Scale Reduction (PSR) factor well below a threshold of 1.01 for the first time after the minimum number of iterations was reached.
 
 
 
@@ -727,18 +727,6 @@ Models were estimated with MPlus version 8.4, using Bayesian Markov-Chain Monte-
 
 
 
-
-
-
-
-
-
-
-
-
-Stability, reliability, relations between tasks
-
-### Simulations
 
 ## Projection predictive inference
 
@@ -754,7 +742,7 @@ We built a reference model for each task, resulting in four reference models and
 
 ```{r, cache = T}
 time_plot_1 <- data_task%>%
-  filter(task != "switching_feature",
+ filter(task != "switching_feature",
          task != "switching_place")%>%
   mutate(group = as.character(group), 
          species = ifelse(grepl("chimp",group),"chimpanzee", group), 
@@ -908,6 +896,8 @@ perfplot
 # Summary
 
 # Appendix
+
+## SEM Simulations
 
 
 
