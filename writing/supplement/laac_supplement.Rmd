@@ -396,7 +396,345 @@ Here we counted in how many other studies the participant had taken part in sinc
 
 # Analytical framework
 
+We have two overarching questions. On the one hand, we are interested in the stability and the reliability of the individual task as as well as the relations between them. We use structural equation modeling to address these questions. These models have been developed and are usually used with much larger sample sizes. Thus, we had to make a number of assumptions to be able to fit them to the kind of data that we have, which we mention in the text below.
+
+On the other hand, we 
+
+Not analyse switching task
+
+Two compoennts of the analysis and the different methods used for it
+
 ## Structural equation modelling
+
+Two parallel test halves were build, corresponding to sum scores of half of the trials of the same time point per task. Trials were alternately assigned to the first and the second test half. For tasks repeated 12 times per measurement time point this procedure resulted in two test halves assuming 7 possible values (0 to 6 correctly solved trials), for tasks repeated 8 times per measurement time point test halves could maximally assume 5 possible values (0 to 4 correctly solved trials). Not all categories were observed at all time points and categories had to be collapsed in some cases (see descriptions below). The two test halves served as indicators for a common latent construct per measurement time point, assuming parallel test halves (i.e., factor loadings set to 1 and assuming equal reliabilities). Due to only few observed categories, indicators were modeled as ordered categorical, using a probit link function. The models thereby correspond to Graded response models. For model parsimony, to improve estimation accuracy (see simulation studies) and in order to test for latent mean differences across time, thresholds for all indicators were set equal across time (resulting in the assumption of strict measurement invariance) as well as across test halves.
+
+### Models and coefficients
+
+#### Latent State models
+
+Measurement equation for parcel $i$ at time point $t$:
+
+\begin{equation}
+Y_{it}= S_t + \epsilon_{it}
+(\#eq:eq1)
+\end{equation}
+
+At each time point $t$, a latent state variable $S_t$, underlying the two observed indicators $Y_{1t}$ and $Y_{it}$ is estimated. Latent state variables are allowed to freely correlate across time, with latent (measurement-error free) correlations serving as indirect indicators of stability across time. The model is depicted for 6 measurement time points in Figure \@ref(fig:lsgraph). 
+
+```{r lsgraph, engine='tikz', fig.cap="Latent State model for two indicators and six measurement time points."}
+
+\usetikzlibrary{arrows} 
+\usetikzlibrary{positioning} 
+\usetikzlibrary{shapes} 
+\usetikzlibrary{fit} 
+\usetikzlibrary{backgrounds} 
+\usetikzlibrary{calc}
+
+\resizebox{0.4\columnwidth}{!}{
+\begin{tikzpicture}
+        [manifest/.style={rectangle,draw=black!80,semithick,minimum width=1.5cm,inner sep=
+4pt,text centered},
+        latent/.style={ellipse,draw=black!80,thick,inner sep=2,text centered},
+        on/.style={->,>=stealth',semithick},
+        from/.style={<-,>=stealth',semithick},
+        with1/.style={<->,>=stealth',semithick,bend left=30},
+        with2/.style={<->,>=stealth',semithick,bend right=30},
+        with3/.style={<->,>=stealth',semithick,bend left=50},]
+
+% Latent Variables %
+ \begin{scope}[node distance=1.5]
+                \node[latent] (o1) at (0,0) {$S_{1}$};
+                \node[latent] (o2) [below=of o1] {$S_{2}$};
+                \node[latent] (o3) [below=of o2] {$S_{3}$};
+                \node[latent] (o4) [below=of o3] {$S_{4}$};
+                \node[latent] (o5) [below=of o4] {$S_{5}$};
+                \node[latent] (o6) [below=of o5] {$S_{6}$};
+\end{scope}
+                                                             	                        
+% Manifest % 
+ \foreach \a in {1,...,6} {\node (y1\a) [right = 2 of o\a] (yhelp\a) {};}        
+ \foreach \b in {1,...,6} {\node[manifest] [above = .05 of yhelp\b] (y1\b) {$Y_{1\b}$}
+ 	edge [from] node[above] {1} (o\b);}
+ \foreach \c in {1,...,6} {\node[manifest] [below = .05 of yhelp\c] (y2\c) {$Y_{2\c}$}
+ 	edge [from] node[below] {$1$} (o\c);} 
+
+% Fehler %
+\foreach \a in {1,...,5} {\node (e1\a) [below right = .3 of y1\a] {}
+	edge [on] (y1\a.south east);}
+\foreach \b in {1,...,5} {\node (e2\b) [below right = .3 of y2\b] {}
+	edge [on] (y2\b.south east);}
+
+\node (e16) [below right = .3 of y16] {$\epsilon_{16}$}
+	edge [on] (y16.south east);
+\node (e26) [below right = .3 of y26] {$\epsilon_{26}$}
+	edge [on] (y26.south east);
+
+%correlations%
+\foreach \a in {1,...,5} {
+\draw[<->,>=stealth',semithick] (o\a) to [with2]
+node[align=center,below,yshift= 0mm, pos=0.5] 
+                      {}  (o6);}
+\foreach \a in {1,...,4} {
+\draw[<->,>=stealth',semithick] (o\a) to [with2]
+node[align=center,below,yshift= 0mm, pos=0.5] 
+                      {}  (o5);}
+\foreach \a in {1,...,3} {
+\draw[<->,>=stealth',semithick] (o\a) to [with2]
+node[align=center,below,yshift= 0mm, pos=0.5] 
+                      {}  (o4);}
+\foreach \a in {1,...,2} {
+\draw[<->,>=stealth',semithick] (o\a) to [with2]
+node[align=center,below,yshift= 0mm, pos=0.5] 
+                      {}  (o3);}      
+\draw[<->,>=stealth',semithick] (o1) to [with2]
+node[align=center,below,yshift= 0mm, pos=0.5] 
+                      {}  (o2);                
+
+\end{tikzpicture}
+}
+
+```
+
+#### Latent State Trait (LST) models
+
+Measurement equation for parcel $i$ at time point $t$:
+
+\begin{equation}
+Y_{it}= T+ S_t + \epsilon_{it}
+(\#eq:eq2)
+\end{equation}
+
+where $T$ is a stable latent trait variable, $S_t$ captures time-specific deviations of the respective true score from the stable trait at time $t$, and $\epsilon_{it}$ is a measurement error variable,  with $Var(\epsilon_{it})=1 ~~~\forall i,t$ (probit parameterization; Graded response model). The model is depicted for 6 measurement time points in Figure \@ref(fig:lstgraph).  
+
+
+```{r lstgraph, engine='tikz', fig.cap="Latent State Trait model for two indicators and six measurement time points."}
+
+\usetikzlibrary{arrows} 
+\usetikzlibrary{positioning} 
+\usetikzlibrary{shapes} 
+\usetikzlibrary{fit} 
+\usetikzlibrary{backgrounds} 
+\usetikzlibrary{calc}
+
+\resizebox{0.4\columnwidth}{!}{
+\begin{tikzpicture}
+        [manifest/.style={rectangle,draw=black!80,semithick,minimum width=1.5cm,inner sep=
+4pt,text centered},
+        latent/.style={ellipse,draw=black!80,thick,inner sep=2,text centered},
+        on/.style={->,>=stealth',semithick},
+        from/.style={<-,>=stealth',semithick},
+        with1/.style={<->,>=stealth',semithick,bend left=30},
+        with2/.style={<->,>=stealth',semithick,bend right=30},
+        with3/.style={<->,>=stealth',semithick,bend left=50},]
+        
+% Latent Variables %
+ \begin{scope}[node distance=1.5]
+                \node[latent] (o1) at (0,0) {$S_{1}$};
+                \node[latent] (o2) [below=of o1] {$S_{2}$};
+                \node[latent] (o3) [below=of o2] {$S_{3}$};
+                \node[latent] (o4) [below=of o3] {$S_{4}$};
+                \node[latent] (o5) [below=of o4] {$S_{5}$};
+                \node[latent] (o6) [below=of o5] {$S_{6}$};
+\end{scope}
+                     
+% Trait % 
+\node[latent,node distance=7] (t) [right=of  o4]  {$T_{}$};
+                                             	                        
+% Manifest % 
+ \foreach \a in {1,...,6} {\node (y1\a) [right = 2 of o\a] (yhelp\a) {};}        
+ \foreach \b in {1,...,6} {\node[manifest] [above = .05 of yhelp\b] (y1\b) {$Y_{1\b}$}
+ 	edge [from] node[above] {1} (o\b);}
+ \foreach \c in {1,...,6} {\node[manifest] [below = .05 of yhelp\c] (y2\c) {$Y_{2\c}$}
+ 	edge [from] node[below] {$1$} (o\c);} 
+
+% Fehler %
+\foreach \a in {1,...,5} {\node (e1\a) [below right = .3 of y1\a] {}
+	edge [on] (y1\a.south east);}
+\foreach \b in {1,...,5} {\node (e2\b) [below right = .3 of y2\b] {}
+	edge [on] (y2\b.south east);}
+
+\node (e16) [below right = .3 of y16] {$\epsilon_{16}$}
+	edge [on] (y16.south east);
+\node (e26) [below right = .3 of y26] {$\epsilon_{26}$}
+	edge [on] (y26.south east);
+
+% Pfeile %
+\foreach \a in {1,...,6}
+	\path (y1\a.0) edge [from] (t);
+\foreach \a in {1,...,6}	
+	\path (y2\a.0) edge [from] (t);
+\end{tikzpicture}
+}
+
+```
+
+Note that by assuming strong measurement invariance (i.e., loading parameters are set to 1 at all time points, residual variances are equal to 1 by definition of the Graded response model with a probit link, threshold parameters are set invariant across time points, variances of latent state residual factors are set invariant across time points), the specified LST model (without autoregressive effects) corresponds to a multilevel model with a latent trait factor at the between-level (person-level) and a latent state residual factor at the within-level (time-specific) level.
+
+In order to test for possible mean changes across time, latent state models are estimated in a first step. LST models as single-level models are estimated to test whether measurement invariance assumptions across time can be reasonably assumed. Once measurement invariance can be established, the models can alternatively estimated as multilevel SEMs.
+
+The following variance components can be computed for the presented LST model (without autoregressive effects).
+
+##### Consistency
+
+Proportion of true variance (i.e., measurement-error free variance) that is due to true inter-individual stable trait differences.
+
+\begin{equation}
+Con(Y_{it})=\frac{Var(T)}{Var(T)+Var(S_t)}
+(\#eq:eq3)
+\end{equation}
+
+##### Occasion specificity
+
+Proportion of true variance (i.e., measurement-error free variance) that is due to true inter-individual differences in the state residual variables (i.e. occasion-specific variation).
+
+\begin{equation}
+OS(Y_{it})=1-Con(Y_{it})) = \frac{Var(S_t)}{Var(T)+Var(S_t)}
+(\#eq:eq4)
+\end{equation}
+
+As strong measurement invariance is assumed and $Var(S_t)$ is set equal across time, $OS(Y_{it})$ is constant across time as well as across item parcels $i$. 
+
+#### Latent State Trait (LST) models with autoregressive effects
+
+Model corresponds to model described in @eid2017definition. The model is depicted for 6 measurement time points in Figure \@ref(fig:lstrgraph).
+
+```{r lstrgraph, engine='tikz', fig.cap="Latent State Trait model with autoregressive effects for two indicators and six measurement time points."}
+
+\usetikzlibrary{arrows} 
+\usetikzlibrary{positioning} 
+\usetikzlibrary{shapes} 
+\usetikzlibrary{fit} 
+\usetikzlibrary{backgrounds} 
+\usetikzlibrary{calc}
+
+\resizebox{0.4\columnwidth}{!}{
+\begin{tikzpicture}
+ [manifest/.style={rectangle,draw=black!80,semithick,minimum width=1.5cm,inner sep=
+4pt,text centered},
+        latent/.style={ellipse,draw=black!80,thick,inner sep=2,text centered},
+        on/.style={->,>=stealth',semithick},
+        from/.style={<-,>=stealth',semithick},
+        with1/.style={<->,>=stealth',semithick,bend left=30},
+        with2/.style={<->,>=stealth',semithick,bend right=30},
+        with3/.style={<->,>=stealth',semithick,bend left=50},]
+
+
+% Latent Variables %
+ \begin{scope}[node distance=1.5]
+                \node[latent] (o1) at (0,0) {$S_{1}$};
+                \node[latent] (o2) [below=of o1] {$O_{2}$}
+                edge [from] node[right] {$\beta$} (o1);
+                \node[latent] (o3) [below=of o2] {$O_{3}$}
+                edge [from] node[right] {$\beta$} (o2);
+                \node[latent] (o4) [below=of o3] {$O_{4}$}
+                edge [from] node[right] {$\beta$} (o3);
+                \node[latent] (o5) [below=of o4] {$O_{5}$}
+                edge [from] node[right] {$\beta$} (o4);
+                \node[latent] (o6) [below=of o5] {$O_{6}$}
+                edge [from] node[right] {$\beta$} (o5);
+\end{scope}
+
+\foreach \a in {2,...,6} {\node [below left = .4 of o\a] (zeta\a) {$S_{\a}$}
+	edge [on] (o\a);}
+                     
+% Trait % 
+\node[latent,node distance=7] (t) [right=of  o4]  {$T_{}$};
+                                             	                        
+% Manifest % 
+ \foreach \a in {1,...,6} {\node (y1\a) [right = 2 of o\a] (yhelp\a) {};}        
+ \foreach \b in {1,...,6} {\node[manifest] [above = .05 of yhelp\b] (y1\b) {$Y_{1\b}$}
+ 	edge [from] node[above] {1} (o\b);}
+ \foreach \c in {1,...,6} {\node[manifest] [below = .05 of yhelp\c] (y2\c) {$Y_{2\c}$}
+ 	edge [from] node[below] {$1$} (o\c);} 
+
+% Fehler %
+\foreach \a in {1,...,5} {\node (e1\a) [below right = .3 of y1\a] {}
+	edge [on] (y1\a.south east);}
+\foreach \b in {1,...,5} {\node (e2\b) [below right = .3 of y2\b] {}
+	edge [on] (y2\b.south east);}
+
+\node (e16) [below right = .3 of y16] {$\epsilon_{16}$}
+	edge [on] (y16.south east);
+\node (e26) [below right = .3 of y26] {$\epsilon_{26}$}
+	edge [on] (y26.south east);
+
+% Pfeile %
+\foreach \a in {1,...,6}
+	\path (y1\a.0) edge [from] (t);
+\foreach \a in {1,...,6}	
+	\path (y2\a.0) edge [from] (t);
+\end{tikzpicture}
+}
+
+```
+
+Measurement equation for parcel $i$ at time point $t$:
+
+\begin{equation}
+Y_{it}= T+ O_t + \epsilon_{it}
+(\#eq:eq5)
+\end{equation}
+
+where $T$ is a stable latent trait variable, $O_t$ captures time-specific deviations of the respective true score from the stable trait at time $t$, and $\epsilon_{it}$ is a measurement error variable,  with $Var(\epsilon_{it})=1 ~~~\forall i,t$ (probit parameterization; Graded response model). $O_t$ is assumed to follow an autoregressive process of order 1 across time (within subjects), that is:
+
+\begin{align}
+O_t  &= S_t ~~~~~~~~t = 1 \notag \\
+O_t  &= \beta O_{(t-1)} + S_t~~~~~~~~t > 1 \notag
+\end{align}
+
+where the latent state residual variables $S_t$ capture true occasion-specific inter-individual differences that can not be explained by states at previous measurement time points.
+
+The following variance coefficients can be computed.
+
+##### Consistency
+
+Proportion of true variance (i.e., measurement-error free variance) that is due to true inter-individual stable trait differences.
+
+\begin{equation}
+Con(Y_{it})=\frac{Var(T)}{Var(T)+\beta^2 Var(O_{(t-1)})+Var(S_t)}
+(\#eq:eq6)
+\end{equation}
+
+##### Occasion specificity
+
+Proportion of true variance (i.e., measurement-error free variance) that is due to true inter-individual differences in the state residual variables, that is occasion-specific variation that is not explained by the autoregressive process.
+
+\begin{equation}
+OS(Y_{it}) = \frac{Var(S_t)}{Var(T)+\beta^2 Var(O_{(t-1)})+Var(S_t)}
+(\#eq:eq7)
+\end{equation}
+
+As the proportion of variance explained by the autoregressive process stabilizes over time, all coefficients have converged to a relatively stable value at $t=14$, indicating the long-term proportions of variance that are to be expected.
+
+##### Predictability
+
+Proportion of true variance that is explained by carry-over effects from previous measurement time points.
+
+\begin{equation}
+Pred(Y_{it}) = \frac{\beta^2 Var(O_{(t-1)}}{Var(T)+\beta^2 Var(O_{(t-1)})+Var(S_t)}
+(\#eq:eq8)
+\end{equation}
+
+### Estimation
+
+Models were estimated with MPlus version 8.4, using Bayesian Markov-Chain Monte-Carlo sampling, with the Mplus default priors (also see simulation studies). Using inverse gamma priors [IG(0.001, 0.001); see simulation study] for LST models did not substantially change the parameter estimates. Therefore, only the results with respect to the MPlus default priors are reported.  We used two chains with a minimum of 10,000 iterations per chain, with a thinning of 10 (corresponds to a minimum of 100,000 drawn samples per chain of which every 10th is used for the construction of the posterior distribution). The first half of each chain is discarded as burn-in. Convergence was assumed and estimation stopped when the Potential Scale Reduction (PSR) factor well below a threshold of 1.01 for the first time after the minimum number of iterations was reached.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Stability, reliability, relations between tasks
 
