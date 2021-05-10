@@ -404,7 +404,13 @@ Stability, reliability, relations between tasks
 
 ## Projection predictive inference
 
-predictor selection
+The predictive projection approach developed by @piironen2018projective was used to select a minimal subset of covariates to find a predictive model for cognitive performance. Projective selection can be viewed as a two-step process. The first step revolves around building the best predictive model possible, called the reference model. The reference model is a Bayesian multilevel regression model (repeated measurements nested in apes), including all covariates recorded in this study. In the second step, the goal is to replace the posterior distribution of the reference model with a simpler distribution. This is achieved via a forward stepwise addition of covariates that decrease the Kullback-Leibler divergence from the reference model to the projected model. The result is a list containing the best model for each number of covariates. The final model is selected by inspecting the mean log predictive density. The projected model with the smallest number of covariates shows similar predictive performance as the reference model is chosen.
+
+The advantages of predictive projection are that it provides an excellent tradeoff between model complexity and accuracy @piironen2017comparison. It has also been shown that predictive projection is useful when identifying **all relevant** covariates is of importance. 
+
+The predictive projection technique is implemented in the R package 'projpred' @projpred202.
+
+We built a reference model for each task, resulting in four reference models and four rankings of relevant predictors. 
 
 # Results
 
