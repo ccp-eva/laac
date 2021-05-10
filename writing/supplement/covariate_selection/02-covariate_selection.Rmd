@@ -1,0 +1,231 @@
+---
+title: "Projection Prediction Inference: Covariate Selection"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  bookdown::html_document2:
+    toc: yes
+    toc_float: yes
+    code_folding: show
+    number_sections: no
+  html_document:
+    toc: yes
+    df_print: paged
+---
+
+# Covariate Selection
+
+### load packages
+```{r, cache = F, include = F}
+library(tidyverse)
+library(brms)
+library(projpred)
+library(bayesplot)
+
+# retrieve # of cores
+ncores <- parallel::detectCores()
+
+# for output clarity
+options(scipen = 999)
+```
+
+### load data
+```{r}
+load("tasks_ppi.Rda")
+```
+
+### regression formula
+```{r}
+# covariate needed for projection prediction
+# placed here to compare with formula
+all_fixed_effects <- c("sick_severity",       
+                       "test_day", "test_tp", 
+                       "rel_rank",
+                       "observer", 
+                       "age", "time_in_leipzig", 
+                       "sex", 
+                       "rearing", 
+                       "le_mean", 
+                       "dist_mean",
+                       "time_outdoors", 
+                       "sociality")
+
+fm <- formula(cogn ~ sick_severity +                    
+                test_day + test_tp +                
+                rel_rank + # rank_gmc +
+                observer + 
+                age + time_in_leipzig +
+                sex + 
+                rearing +
+                le_mean + # le_max + # le_present +         
+                dist_mean + # dist_max + # + dist_present +
+                time_outdoors +
+                sociality + # sociality_total
+                # heat_mod + # heat +
+                (1|subject)                         
+              ) 
+
+fm_gaze <- update(fm, . ~ . +day2)  # add day2 covariate to gaze task model
+```
+
+## Reference Model: 2-level Multilevel Model (random intercepts only)
+
+```{r}
+m_cau_2l <- brm(fm, data = t_cau, 
+                warmup = 1e3, iter = 3e3, cores = ncores, chains = 2, 
+                seed = 2021,
+                save_pars = save_pars(all = TRUE)
+                )
+m_inf_2l <- brm(fm, data = t_inf, 
+                warmup = 1e3, iter = 3e3, cores = ncores, chains = 2, 
+                seed = 2021,
+                save_pars = save_pars(all = TRUE)
+                )
+m_quant_2l <- brm(fm, data = t_quant, 
+                  warmup = 1e3, iter = 3e3, cores = ncores, chains = 2, 
+                  seed = 2021,
+                  save_pars = save_pars(all = TRUE)
+                  )
+m_gaze_2l <- brm(fm_gaze, data = t_gaze, 
+                 warmup = 1e3, iter = 3e3, cores = ncores, chains = 2, 
+                 seed = 2021,
+                 save_pars = save_pars(all = TRUE)
+                 )
+```
+
+```{r}
+summary(m_cau_2l)
+summary(m_inf_2l)
+summary(m_quant_2l)
+summary(m_gaze_2l)
+```
+
+## Projection Prediction Inference
+
+### fast selection
+
+- Choosing the relevant covariates is based on inspection elpd/rmse plots.
+- `varsel` is used as a quick inspection tool; `cv_varsel` for final selection
+
+```{r}
+# delay random intercept to last place so that it doesn't soak up all the variance
+s_terms <- c("1", all_fixed_effects, 
+             paste0(paste(all_fixed_effects, collapse = " + "), " + (1 | subject)")) 
+s_terms_gaze <- c("1", c(all_fixed_effects, "day2"), 
+                  paste0(paste(c(all_fixed_effects, "day2"), collapse = " + "), " + (1 | subject)"))
+```
+
+```{r}
+refM_cau <- get_refmodel(m_cau_2l)
+refM_inf <- get_refmodel(m_inf_2l)
+refM_quant <- get_refmodel(m_quant_2l)
+refM_gaze <- get_refmodel(m_gaze_2l)
+```
+
+```{r}
+vs_cau <- varsel(refM_cau, search_terms = s_terms)
+summary(vs_cau); plot(vs_cau, stats = c('elpd', 'rmse'))
+
+randint_ind_vscau <- length(solution_terms(vs_cau))
+relevant_cov_vscau <- c(1, 2, 3, 4, 5, randint_ind_vscau)  # indices for relevant covariates
+
+proj_cau <- project(vs_cau, solution_terms = relevant_cov_vscau)
+mcmc_areas(as.matrix(proj_cau), 
+           pars = solution_terms(vs_cau)[relevant_cov_vscau])
+```
+
+```{r}
+vs_inf <- varsel(refM_inf, search_terms = s_terms)
+summary(vs_inf); plot(vs_inf, stats = c('elpd', 'rmse'))
+
+randint_ind_vsinf <- length(solution_terms(vs_inf))
+relevant_cov_vsinf <- c(1, 2, randint_ind_vsinf)  # indices for relevant covariates
+
+proj_inf <- project(vs_inf, solution_terms = relevant_cov_vsinf)
+mcmc_areas(as.matrix(proj_inf), 
+           pars = solution_terms(vs_inf)[relevant_cov_vsinf])
+```
+
+```{r}
+vs_quant <- varsel(refM_quant, search_terms = s_terms)
+summary(vs_quant); plot(vs_quant, stats = c('elpd', 'rmse'))
+
+randint_ind_vsquant <- length(solution_terms(vs_quant))
+relevant_cov_vsquant <- c(1, 2, 3, 4, 5, 6, 7, randint_ind_vsquant)  # indices for relevant covariates
+
+proj_quant <- project(vs_quant, solution_terms = relevant_cov_vsquant)
+mcmc_areas(as.matrix(proj_quant), 
+           pars = solution_terms(vs_quant)[relevant_cov_vsquant])
+```
+
+```{r}
+vs_gaze <- varsel(refM_gaze, search_terms = s_terms_gaze)
+summary(vs_gaze); plot(vs_gaze, stats = c('elpd', 'rmse'))
+
+randint_ind_vsgaze <- length(solution_terms(vs_gaze))
+relevant_cov_vsgaze <- c(1, 2, 3, 4, 5, 6, 7, randint_ind_vsgaze)  # indices for relevant covariates
+
+proj_gaze <- project(vs_gaze, solution_terms = relevant_cov_vsgaze)
+mcmc_areas(as.matrix(proj_gaze), 
+           pars = solution_terms(vs_gaze)[relevant_cov_vsgaze])
+```
+
+### final covariate selection (cross validated)
+
+```{r}
+cvs_cau <- cv_varsel(refM_cau, search_terms = s_terms, cv_method = "loo", method = "forward")
+summary(cvs_cau); plot(cvs_cau, stats = c('elpd', 'rmse'))
+
+randint_ind_cvscau <- length(solution_terms(cvs_cau))
+relevant_cov_cvscau <- c(1, 2, 3, 4, 5, randint_ind_cvscau)  # indices for relevant covariates
+
+proj_cau_cv <- project(cvs_cau, solution_terms = relevant_cov_cvscau)
+mcmc_areas(as.matrix(proj_cau_cv), 
+           pars = solution_terms(cvs_cau)[relevant_cov_cvscau])
+```
+**relevant** covariates: (1 | subject), sick_severity, dist_mean, time_in_leipzig
+
+```{r}
+cvs_inf <- cv_varsel(refM_inf, search_terms = s_terms, cv_method = "loo", method = "forward")
+summary(cvs_inf); plot(cvs_inf, stats = c('elpd', 'rmse'))
+
+randint_ind_cvsinf <- length(solution_terms(cvs_inf))
+relevant_cov_cvsinf <- c(1, 2, randint_ind_cvsinf)  # indices for relevant covariates
+
+proj_inf_cv <- project(cvs_inf, solution_terms = relevant_cov_cvsinf)
+mcmc_areas(as.matrix(proj_inf_cv), 
+           pars = solution_terms(cvs_inf)[relevant_cov_cvsinf])
+```
+**relevant** covariates: (1 | subject), time_in_leipzig, age
+
+```{r}
+cvs_quant <- cv_varsel(refM_quant, search_terms = s_terms, cv_method = "loo", method = "forward")
+summary(cvs_quant); plot(cvs_quant, stats = c('elpd', 'rmse'))
+
+randint_ind_cvsquant <- length(solution_terms(cvs_quant))
+relevant_cov_cvsquant <- c(1, 2, 3, 4, 5, 6, 7, randint_ind_cvsquant)  # indices for relevant covariates
+
+proj_quant_cv <- project(cvs_quant, solution_terms = relevant_cov_cvsquant)
+mcmc_areas(as.matrix(proj_quant_cv), 
+           pars = solution_terms(cvs_quant)[relevant_cov_cvsquant])
+```
+**relevant** covariates: (1 | subject), time_in_leipzig, rearing, rel_rank, observer, test_tp, sex, sick_severity
+
+```{r}
+cvs_gaze <- cv_varsel(refM_gaze, search_terms = s_terms_gaze, cv_method = "loo", method = "forward")
+summary(cvs_gaze); plot(cvs_gaze, stats = c('elpd', 'rmse'))
+
+randint_ind_cvsgaze <- length(solution_terms(cvs_gaze))
+relevant_cov_cvsgaze <- c(1, 2, 3, 4, 5, 6, 7, randint_ind_cvsgaze)  # indices for relevant covariates
+
+proj_gaze_cv <- project(cvs_gaze, solution_terms = relevant_cov_cvsgaze)
+mcmc_areas(as.matrix(proj_gaze_cv), pars = solution_terms(cvs_gaze)[relevant_cov_cvsgaze])
+```
+**relevant** covariates: (1 | subject), time_outdoors, observer, sick_severity, sex, sociality, rearing, age
+
+
+
+
+
+
+
+
