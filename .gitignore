@@ -2,6 +2,8 @@ writing/CogSci2021/figs/
 
 writing/supplement/laac_supplement_files
 
+writing/supplement/saves/srm.rds
+
 *.log
 .DS_Store
 
