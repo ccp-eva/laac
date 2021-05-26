@@ -17,7 +17,8 @@ output:
     df_print: paged
   pdf_document:
     toc: yes
-bibliography: ../CogSci2021/library.bib
+bibliography: ../library.bib
+csl: apa6.csl
 header-includes: \usepackage{caption} \renewcommand{\thetable}{S\arabic{table}} \renewcommand{\thefigure}{S\arabic{figure}}
 ---
 
@@ -212,7 +213,8 @@ Based on the results of @haun2006evolutionary, we assume that apes have a tenden
 
 ### Delay of gratification
 
-tbd.
+The procedure for this task was adapted from @rosati2007evolutionary. Two small plates including one and two pieces of pellet were presented left and right on the table. E moved the plate with the smaller reward forward allowing the subject to choose immediately, while the plate with the larger reward was moved forward after a delay of 20 seconds. We coded whether the subject selected the larger delayed reward (correct choice) or the smaller immediate reward (incorrect choice) as well as the waiting time in cases where the immediate reward was chosen. Subjects received 12 trials, with the side on which the immediate reward was presented counterbalanced. 
+
 
 ## Data collection
 
@@ -577,19 +579,27 @@ Here we counted in how many other studies the participant had taken part in sinc
 
 # Analytical framework
 
-We have two overarching questions. On the one hand, we are interested in the stability and the reliability of the individual task as as well as the relations between them. We use structural equation modeling to address these questions. These models have been developed and are usually used with much larger sample sizes. Thus, we had to make a number of assumptions to be able to fit them to the kind of data that we have, which we mention in the text below.
+We have two overarching questions. On the one hand, we are interested in the stability and the reliability of the individual tasks as as well as the relations between them. We used structural equation modeling [citation?] to address these questions. These models have been developed and are usually used with much larger sample sizes. Thus, we had to make a number of assumptions to be able to fit them to the kind of data that we have -- we lay out these assumptions in the text below. The Appendix includes simulations that show that these assumptions were justified. 
 
-On the other hand, we 
+The second question was which predictors explain variability in cognitive performance. Here we wanted to see, which of the predictors we recorded were most important to predict performance over time. This is a variable selection problem (selecting a subset of important predictors from a larger pool) and we used Projection Prediction Inference for this [@piironen2018projective]. 
 
-Not analyse switching task
-
-Two compoennts of the analysis and the different methods used for it
+We did not include the switching task from phase 1 in this analysis. There were three main reasons for this. First, group level scores were constantly negative and performance in the feature trials always overlapped with chance. This suggests that, as a group, apes did not successfully switch strategies (see \@ref(fig:perfplot)). Second, the correlations between the different measurement time points were low, suggesting no systematic individual differences (see \@ref(fig:relplot)). Third, the dependent variable (i.e. the score calculated based on performance in the two phases) had a different level of measurement compared to the other tasks. That is, there was only a single score to represent at each time point. All other tasks had multiple trials. This was especially problematic in the context of structural equation modeling (see below). For these reasons we replaced the switching task with the delay of gratification task in phase 2.
 
 ## Structural equation modelling
 
-Two parallel test halves were build, corresponding to sum scores of half of the trials of the same time point per task. Trials were alternately assigned to the first and the second test half. For tasks repeated 12 times per measurement time point this procedure resulted in two test halves assuming 7 possible values (0 to 6 correctly solved trials), for tasks repeated 8 times per measurement time point test halves could maximally assume 5 possible values (0 to 4 correctly solved trials). Not all categories were observed at all time points and categories had to be collapsed in some cases (see descriptions below). The two test halves served as indicators for a common latent construct per measurement time point, assuming parallel test halves (i.e., factor loadings set to 1 and assuming equal reliabilities). Due to only few observed categories, indicators were modeled as ordered categorical, using a probit link function. The models thereby correspond to Graded response models. For model parsimony, to improve estimation accuracy (see simulation studies) and in order to test for latent mean differences across time, thresholds for all indicators were set equal across time (resulting in the assumption of strict measurement invariance) as well as across test halves.
+Structural equation models can be used to assess latent variables (constructs) using one or more observed variables. These latent variables can be combined in a structural model that imputes relations between them. We used the data from each time point as observed variables to estimate a latent construct for each task. Due to the small sample size, we could not combine latent variables in a structured model or use predictors to explain individual differences in these latent variables. Instead, we assessed relations between tasks by simply correlating  latent variables with one another. 
+
+We used SEM to estimate states (time varying) and traits (stable over time). In the present context one can think of traits as a stable psychological ability (e.g. ability to make causal inferences) and states as variable psychological condition (e.g. being attentive). Variation in performance on a given time point can then be partitioned into variance explained by the trait and variance explained by the state. Next we describe the model construction process in more detail.
+
+For each task, two parallel test halves were build, corresponding to sum scores of half of the trials of the same time point per task. Trials were alternately assigned to the first and the second test half. For tasks with 12 trials per time point this procedure resulted in two test halves assuming 7 possible values (0 to 6 correctly solved trials), for tasks with 8 trials per time point, test halves could maximally assume 5 possible values (0 to 4 correctly solved trials). Not all categories were observed at all time points and so sometimes categories had to be collapsed (see descriptions below). The two test halves served as indicators for a common latent construct per time point, assuming parallel test halves (i.e., factor loadings set to 1 and assuming equal reliabilities). Due to only few observed categories, indicators were modeled as ordered categorical, using a probit link function. The models thereby correspond to Graded response models [citation?]. For model parsimony, to improve estimation accuracy (see simulation studies) and in order to test for latent mean differences across time, thresholds for all indicators were set equal across time (resulting in the assumption of strict measurement invariance) as well as across test halves.
 
 ### Models and coefficients
+
+For each task, we constructed three different models which increased in complexity. We started with a Latent State Model (LSM), which estimates a latent state for each time point based on the two test halves. As such, it does not assume an underlying trait. Stability is only indirectly assessed via correlations between states. This model first and foremost served as a baseline to see if the data supports a SEM approach.
+
+Second, we fit a Latent State Trait Model (LSTM). This model estimates time point specific states, but also a time-invariant trait. With this model, we can partition the variance in performance into stable (trait) and variable (state) components.  
+
+Finally, we fit an LSTM model with autoregressive effects. In addition to the LSTM architecture, this model assumes that the states variance at one time point can be used to predict the state variance in the next time point.
 
 #### Latent State models
 
@@ -600,7 +610,7 @@ Y_{it}= S_t + \epsilon_{it}
 (\#eq:eq1)
 \end{equation}
 
-At each time point $t$, a latent state variable $S_t$, underlying the two observed indicators $Y_{1t}$ and $Y_{it}$ is estimated. Latent state variables are allowed to freely correlate across time, with latent (measurement-error free) correlations serving as indirect indicators of stability across time. The model is depicted for 6 measurement time points in Figure \@ref(fig:lsgraph). 
+At each time point $t$, a latent state variable $S_t$, underlying the two observed indicators $Y_{1t}$ and $Y_{2t}$ is estimated. Latent state variables are allowed to freely correlate across time, with latent (measurement-error free) correlations serving as indirect indicators of stability across time. The model is depicted for 6 measurement time points in Figure \@ref(fig:lsgraph). 
 
 ```{r lsgraph, engine='tikz', fig.cap="Latent State model for two indicators and six measurement time points.", out.width = "100%", out.height="30%", fig.align='center'}
 
@@ -683,7 +693,7 @@ Y_{it}= T+ S_t + \epsilon_{it}
 (\#eq:eq2)
 \end{equation}
 
-where $T$ is a stable latent trait variable, $S_t$ captures time-specific deviations of the respective true score from the stable trait at time $t$, and $\epsilon_{it}$ is a measurement error variable,  with $Var(\epsilon_{it})=1 ~~~\forall i,t$ (probit parameterization; Graded response model). The model is depicted for 6 measurement time points in Figure \@ref(fig:lstgraph).  
+where $T$ is a stable latent trait variable, $S_t$ captures time-specific deviations of the respective true score from the stable trait at time $t$, and $\epsilon_{it}$ is a measurement error variable, with $Var(\epsilon_{it})=1 ~~~\forall i,t$ (probit parameterization; Graded response model). The model is depicted for 6 measurement time points in Figure \@ref(fig:lstgraph).  
 
 
 ```{r lstgraph, engine='tikz', fig.cap="Latent State Trait model for two indicators and six measurement time points.", out.width = "100%", out.height="30%", fig.align='center'}
@@ -762,7 +772,7 @@ Con(Y_{it})=\frac{Var(T)}{Var(T)+Var(S_t)}
 
 ##### Occasion specificity
 
-Proportion of true variance (i.e., measurement-error free variance) that is due to true inter-individual differences in the state residual variables (i.e. occasion-specific variation).
+Proportion of true variance (i.e., measurement-error free variance) that is due to true inter-individual differences in the state residual variables (i.e. occasion-specific variation not explained by the trait).
 
 \begin{equation}
 OS(Y_{it})=1-Con(Y_{it})) = \frac{Var(S_t)}{Var(T)+Var(S_t)}
@@ -857,7 +867,7 @@ O_t  &= S_t ~~~~~~~~t = 1 \notag \\
 O_t  &= \beta O_{(t-1)} + S_t~~~~~~~~t > 1 \notag
 \end{align}
 
-where the latent state residual variables $S_t$ capture true occasion-specific inter-individual differences that can not be explained by states at previous measurement time points.
+where the latent state residual variables $S_t$ capture true occasion-specific inter-individual differences that cannot be explained by states at previous measurement time points.
 
 The following variance coefficients can be computed.
 
@@ -914,6 +924,10 @@ The predictive projection technique is implemented in the R package 'projpred' @
 We built a reference model for each task, resulting in four reference models and four rankings of relevant predictors. 
 
 # Results
+
+## Phase 1
+
+### Descriptives
 
 ```{r, cache = T}
 time_plot_1 <- data_task%>%
@@ -1058,11 +1072,80 @@ perfplot <- ggplot()+
 perfplot
 ```
 
-## Phase 1
+
+```{r}
+cor_data <- data_task %>%
+  drop_na(performance)%>%
+  select(subject, task, time_point, performance)%>%
+  pivot_wider(values_from = "performance", names_from = "time_point")%>%
+  ungroup()%>%
+  select(-subject)%>%
+  group_by(task)%>%
+  group_split(.keep = F)%>%
+  setNames(unique(data_task$task))%>%
+  purrr::map(cor_func)%>%
+  melt()%>%
+  mutate(task = factor(L1))%>%
+  filter(task != "switching_place",
+         task != "switching_feature")
+
+cor_data_sum <- cor_data%>%
+  group_by(task)%>%
+  mean_hdci(value)
+  
+# ggplot(cor_data, aes(x = value, col = task, fill = task))+
+#   #geom_histogram(col = "black", fill = "white")+
+#   geom_density(alpha = .3)+
+#   #xlim(-0.5,1)+
+#   #facet_wrap(~task)+
+#   labs(x = "Correlation Coefficient", y = "")+
+#   theme_minimal()+
+#   scale_color_colorblind(name = "Task")+
+#   scale_fill_colorblind(name = "Task")
+
+
+rel_plot <- ggplot(data = cor_data, aes(x = value , y = reorder(task, desc(task)) ,fill = task)) +
+  geom_vline(xintercept = 0, color = "black", size = .5, lty = 2) +
+  geom_density_ridges(rel_min_height = 0.01,col = "black", scale = 2,
+                      alpha = 0.5) +
+  geom_pointintervalh(data = cor_data_sum, size = 1)+
+  labs(x = "Correlation Coefficient",
+       y = element_blank()) +
+  geom_text(data = mutate_if(cor_data_sum, is.numeric, round, 1),
+    aes(label = glue("{value} [{.lower}, {.upper}]"), x= Inf), hjust = "inward", size = 2)+
+  theme_minimal(base_size = 8)+
+  xlim(-0.5,1.5)+
+  guides(fill = F)+
+  scale_fill_colorblind()
+
+rel_plot_dis <- cor_data%>%
+  mutate(time_span = abs(as.numeric(rowname) - as.numeric(time_point)))%>%
+  ggplot(aes(x = time_span, y = value, col = task))+
+  geom_point(alpha = .5, size = 0.75)+
+  geom_smooth(method = "lm", se = F, col = "black", lty = 2, size = .5)+
+  stat_cor(method = "pearson", aes(x = time_span, y = value, label = paste(..r.label..)), inherit.aes = F, size = 2,r.accuracy = 0.01, cor.coef.name = "r")+
+  ylim(0,1)+
+  xlim(1,7)+
+  labs(y = "Correlation Coefficient",
+     x = "Time Span") +
+  facet_grid(~task)+
+  theme_minimal(base_size = 8)+
+  guides (col = F)+
+  scale_colour_colorblind()
+
+
+```
+
+
+```{r relplot, fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=2, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "(A) Distribution of correlations between time points for each task. Dots represent the mean of the distribution with 95\\% HDI. Numbers denote mean and 95\\% HDI. (B) Correlations between re-test reliability and time span (in time points) between the testing time points."}
+ggarrange(rel_plot, rel_plot_dis, widths = c(2,3), labels = c("A","B"), font.label = list(size = 10))
+```
 
 ### Stability
 
 ### Reliability
+
+- raw correlations over time 
 
 ### Relations between tasks
 

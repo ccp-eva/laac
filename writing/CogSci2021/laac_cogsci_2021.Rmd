@@ -1,6 +1,6 @@
 ---
 title: "A Longitudinal Study of Great Ape Cognition: Stability, Reliability and the Influence of Individual Characteristics"
-bibliography: library.bib
+bibliography: ../library.bib
 csl: apa6.csl
 document-params: "10pt, letterpaper"
 
