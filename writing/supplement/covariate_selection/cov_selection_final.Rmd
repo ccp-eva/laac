@@ -181,7 +181,7 @@ fm_gaze <- update(fm, . ~ . +day2)
 
 ## Reference Model: 2-level Multilevel Model (random intercepts only)
 
-```{r}
+```{r, warning = F}
 m_cau_2l <- brm(fm, data = t_cau, 
                 warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
                 seed = 2021,
@@ -202,6 +202,11 @@ m_gaze_2l <- brm(fm_gaze, data = t_gaze,
                  seed = 2021,
                  save_pars = save_pars(all = TRUE)
                  )
+```
+
+```{r, eval = F}
+library(loo)
+lapply(list(m_cau_2l, m_inf_2l, m_quant_2l, m_gaze_2l), loo)
 ```
 
 ```{r}
@@ -246,8 +251,8 @@ summary(vs_inf); plot(vs_inf, stats = c('elpd', 'rmse'))
 randint_ind_vsinf <- length(solution_terms(vs_inf))
 relevant_cov_vsinf <- c(1, 2, 3, 4, 5, randint_ind_vsinf)
 
-# proj_inf <- project(vs_inf, solution_terms = relevant_cov_vsinf)
-# mcmc_areas(as.matrix(proj_inf), pars = solution_terms(vs_inf)[relevant_cov_vsinf])
+#proj_inf <- project(vs_inf, solution_terms = relevant_cov_vsinf, ndraws = 10)
+#mcmc_areas(as.matrix(proj_inf), pars = solution_terms(vs_inf)[relevant_cov_vsinf])
 ```
 
 ```{r, eval = F}
