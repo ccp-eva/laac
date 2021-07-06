@@ -48,8 +48,8 @@ library(tidyboot)
 library(MplusAutomation)
 library(kableExtra)
 library(knitr)
-library(magick)
-library(pdftools)
+#library(magick)
+#library(pdftools)
 library(projpred)
 library(bayesplot)
 library(loo)
@@ -1527,36 +1527,15 @@ ncores <- parallel::detectCores()
 ```
 
 ```{r}
-## Code from Benedikt
-
-fn0 <- function(x, ...) {
-  # helper function
-  # sum over correct choice variable (code)
-  to_return = tibble(cogn = sum(x$code))
-  return(to_return)
-}
-
-code_sum <- data_trial %>%
-  filter(time_point < 15)%>%
-  # contains summed code variable [for each task, time point, session and subject]
-  group_by(time_point, session, subject, task) %>%
-  group_modify(fn0)
-
-apes1_tmp <- data_trial %>%
-  filter(time_point < 15)%>%
-  # helper for merging
-  select(-c(date, trial_session, trial_time_point, code)) %>%
-  unique(by = c("time_point", "session", "subject"))
-
-apes1_new <-
-  as_tibble(merge(apes1_tmp, code_sum, by = c("time_point", "session", "subject", "task"))) %>%
-  mutate(across(c(subject, group, heat, test_day, le_present, dist_present, sex, rearing, observer), as_factor)) %>%
+apes1_new <- read_csv("../../data/ppi_data_phase1.csv")%>%
+  mutate(across(c(subject, group, le_present, dist_present, sex, rearing, observer, test_day), as_factor)) %>%
   mutate(observer = fct_relevel(observer, "no")) %>% 
   jtools::center(.,vars = c("sick_severity",
                             "le_mean",
                             "time_outdoors",
                             "age",
-                            "time_in_leipzig")) %>%
+                            "time_in_leipzig", 
+                            "test_tp")) %>%
   group_by(group, time_point) %>%
   mutate(rank_gmc = rank - mean(rank, na.rm = TRUE)) %>%
   ungroup() %>%
@@ -1585,24 +1564,6 @@ apes1_new <- apes1_new %>%
   ) %>%
   ungroup()
 
-apes1_new <- apes1_new %>%
-  # create coding for heat variable
-  mutate(heat_mod = case_when(
-    sex == "f" & heat == "yes" ~ "_f_fheat",
-    sex == "m" & heat == "yes" ~ "_m_fheat",
-    sex == "f" & heat == "no" ~ "_f_noheat",
-    sex == "m" & heat == "no" ~ "_m_noheat"),
-    heat_mod = as_factor(heat_mod)
-  ) %>% 
-  mutate(heat_mod = fct_relevel(heat_mod, "_f_noheat"))
-
-apes1_new <- apes1_new %>% 
-  select(-heat, -heat_mod)
-
-apes1_new <- apes1_new %>% 
-  # recode rearing categories: hand -> unknown
-  mutate(rearing = fct_recode(rearing, "hand" = "unknown"))
-
 t_cau <- filter(apes1_new, task == "causality")
 t_inf <- filter(apes1_new, task == "inference")
 t_quant <- filter(apes1_new, task == "quantity")
@@ -1623,7 +1584,6 @@ t_gaze <- t_gaze %>%
   group_by(subject) %>%
   filter(!duplicated(tp_mod)) %>%   
   ungroup() 
-
 ```
 
 
@@ -1685,22 +1645,22 @@ m_gaze_2l <- brm(fm_gaze, data = t_gaze,
 ```
 
 ```{r, eval = F}
-# lapply(list(m_cau_2l, m_inf_2l, m_quant_2l, m_gaze_2l), loo)
+lapply(list(m_cau_2l, m_inf_2l, m_quant_2l, m_gaze_2l), loo)
 ```
 
 ```{r}
-# delay random intercept to last place so that it doesn't soak up all the variance
-# s_terms <- c("1", all_fixed_effects, 
-#              paste0(paste(all_fixed_effects, collapse = " + "), " + (1 | subject)")) 
-# s_terms_gaze <- c("1", c(all_fixed_effects, "day2"), 
-#                   paste0(paste(c(all_fixed_effects, "day2"), collapse = " + "), " + (1 | subject)"))
+#delay random intercept to last place so that it doesn't soak up all the variance
+s_terms <- c("1", all_fixed_effects,
+             paste0(paste(all_fixed_effects, collapse = " + "), " + (1 | subject)"))
+s_terms_gaze <- c("1", c(all_fixed_effects, "day2"),
+                  paste0(paste(c(all_fixed_effects, "day2"), collapse = " + "), " + (1 | subject)"))
 ```
 
 ```{r}
-# refM_cau <- get_refmodel(m_cau_2l)
-# refM_inf <- get_refmodel(m_inf_2l)
-# refM_quant <- get_refmodel(m_quant_2l)
-# refM_gaze <- get_refmodel(m_gaze_2l)
+refM_cau <- get_refmodel(m_cau_2l)
+refM_inf <- get_refmodel(m_inf_2l)
+refM_quant <- get_refmodel(m_quant_2l)
+refM_gaze <- get_refmodel(m_gaze_2l)
 ```
 
 #### Causal inference
@@ -1843,6 +1803,34 @@ cvs_gaze <- readRDS("./saves/cvs_gaze.rds")
 # mcmc_areas(as.matrix(proj_gaze_cv), pars = solution_terms(cvs_gaze)[c(1, 2, 3, 4, 5, 6, 7, 15)])
 ```
 **relevant** covariates: (1 | subject), group, rearing, time_outdoors, age, sociality, sex
+
+```{r}
+gvarselp <- summary(cvs_gaze, stats = c('elpd', 'rmse'))%>%
+  arrange(elpd)%>%
+  tibble()%>%
+  mutate(size = as.numeric(factor(elpd)))%>%
+  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+  rowwise()%>%
+  filter(grepl(stat,se_term))%>%
+  select(-se_term)%>%
+  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+         select = ifelse(solution_terms  %in% c("(1 | subject)", "group", "rearing", "time_outdoors", "age","sociality","sex"), "yes", "no"))
+
+saveRDS(gvarselp, "./saves/cvs_gaze_summary.rds")
+
+gvarselp <- readRDS("./saves/cvs_gaze_summary.rds")
+
+gvarselp%>%
+ggplot(aes(x = size, y = value))+
+  geom_line(col = "black", alpha = .5)+
+  geom_pointrange(aes(ymin = value - se, ymax = value + se, col = select), size = 0.5, pch = 4)+
+  facet_grid(stat~., scale = "free_y")+
+  scale_color_manual(name = "relevant", values = c("black", "firebrick"))+
+  scale_x_continuous(labels = unique(gvarselp$solution_terms), breaks = unique(gvarselp$size))+
+  theme_few()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
 
 #### Quantity
 
