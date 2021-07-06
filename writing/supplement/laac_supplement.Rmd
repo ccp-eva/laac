@@ -914,9 +914,17 @@ The goal of this analysis was to select the predictor variables that are importa
 
 The predictive projection approach developed by @piironen2018projective was used to select a minimal subset of predictors to find a predictive model for cognitive performance. Projective selection can be viewed as a two-step process. The first step revolves around building the best predictive model possible, called the reference model. The reference model is a Bayesian multilevel regression model (repeated measurements nested in apes), including all predictors recorded in this study. In the second step, the goal is to replace the posterior distribution of the reference model with a simpler distribution. This is achieved via a forward stepwise addition of predictors that decrease the Kullback-Leibler divergence from the reference model to the projected model. The result is a list containing the best model for each number of predictors The final model is selected by inspecting the mean log-predictive density and/or root-mean squared error. The projected model with the smallest number of predictors that shows similar predictive performance as the reference model is chosen.
 
-Continuous predictors were centered when needed. We transformed the apes rank variable into a relative rank, where a rank with value one depicts a subject with the highest possible rank. For gaze following, we added the predictor `day2`, which simply indicated if the trials were from the second session. All reference models converged well, having no divergent transitions, Rhat values equal 1, and large ESSs for virtually all parameters. 
+Continuous predictors were centered when needed. We transformed the apes rank variable into a relative rank, where a rank with value one depicts a subject with the highest possible rank. For gaze following, we added the predictor `day2`, which simply indicated if the trials were from the second session. All reference models converged well, having no divergent transitions, Rhat values equal 1, and large ESSs for virtually all parameters. We found no evidence for model misspecification since all fitted models have Pareto $k$ values smaller than $0.7$, 
 
-Next, we performed the predictor selection for each reference model separately, thus resulting in four different rankings for the relevant predictors. The predictor selection was executed with the R package `projpred` @projpred202, which implements the aforementioned predictive projection technique. The predictor relevance ranking is measured by the LOO cross-validated mean log-predictive density (`elpd`) and root-mean-squared error (`rmse`). To find the optimal submodel size, we inspected summaries and plots of the calculated `elpd` and `rmse`. The relevant predictors were chosen to "significantly" contribute to the predictive performance of the submodel. Specifically, this means predictors that increased the `elpd` or decrease the `rmse` are selected for the optimal submodel. In contrast, predictors that do not change these statistics meaningfully are left out of the submodel.
+Next, we performed the predictor selection for each reference model separately, thus resulting in four different rankings for the relevant predictors. The predictor selection was executed with the R package `projpred` @projpred202, which implements the aforementioned predictive projection technique. The predictor relevance ranking is measured by the LOO cross-validated mean log-predictive density (`elpd`) and root-mean-squared error (`rmse`). To find the optimal submodel size, we inspected summaries and the plotted trajectories of the calculated `elpd` and `rmse`.
+
+NEW
+We stopped adding covariates to the optimal submodel as soon as the loss statistics levelled off (stayed constant). This is in unison with the recommendation of the authors. Alternatively, one could use the function `suggest_size` as a heuristc decision rule to find the optimal submodel. `suggest_size` chooses the smallest submodel that has an `elpd` within one standard error of the reference model (default rule). The smallest submodel is thus expected to outperform the reference model with at least 16% probability. This is not yet possible for the models we fit due to the delay of the random intercept term. 
+NEW
+
+OLD
+The relevant predictors were chosen to "significantly" contribute to the predictive performance of the submodel. Specifically, this means predictors that increased the `elpd` or decrease the `rmse` are selected for the optimal submodel. In contrast, predictors that do not change these statistics meaningfully are left out of the submodel.
+OLD 
 
 # Results
 
@@ -1621,7 +1629,7 @@ fm_gaze <- update(fm, . ~ . +day2)
 ```
 
 
-```{r, warning = F}
+```{r}
 m_cau_2l <- brm(fm, data = t_cau, 
                 warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
                 seed = 2021,
@@ -1649,7 +1657,7 @@ lapply(list(m_cau_2l, m_inf_2l, m_quant_2l, m_gaze_2l), loo)
 ```
 
 ```{r}
-#delay random intercept to last place so that it doesn't soak up all the variance
+# delay random intercept to last place so that it doesn't soak up all the variance
 s_terms <- c("1", all_fixed_effects,
              paste0(paste(all_fixed_effects, collapse = " + "), " + (1 | subject)"))
 s_terms_gaze <- c("1", c(all_fixed_effects, "day2"),
@@ -1665,18 +1673,7 @@ refM_gaze <- get_refmodel(m_gaze_2l)
 
 #### Causal inference
 
-```{r, eval = F}
-# vs_cau <- varsel(refM_cau, search_terms = s_terms)
-# summary(vs_cau); plot(vs_cau, stats = c('elpd', 'rmse'))
-# 
-# randint_ind_vscau <- length(solution_terms(vs_cau))
-# relevant_cov_vscau <- c(1, 2, 3, 4, 5, randint_ind_vscau)
-
-# proj_cau <- project(vs_cau, solution_terms = relevant_cov_vscau)
-# mcmc_areas(as.matrix(proj_cau), pars = solution_terms(vs_cau)[relevant_cov_vscau])
-```
-
-```{r, warning = F}
+```{r, warning = FALSE}
 cvs_cau <- cv_varsel(refM_cau, 
                      search_terms = s_terms, cv_method = "LOO", method = "forward", 
                      seed = 2020)
@@ -1685,7 +1682,7 @@ saveRDS(cvs_cau,"./saves/cvs_cau.rds")
 
 cvs_cau <- readRDS("./saves/cvs_cau.rds")
 
-#summary(cvs_cau); plot(cvs_cau, stats = c('elpd', 'rmse'))
+# summary(cvs_cau); plot(cvs_cau, stats = c('elpd', 'rmse'))
 # proj_cau_cv <- project(cvs_cau, solution_terms = c(1, 2, 3, 14))
 # mcmc_areas(as.matrix(proj_cau_cv), pars = solution_terms(cvs_cau)[c(1, 2, 3, 14)])
 ```
@@ -1719,19 +1716,7 @@ ggplot(aes(x = size, y = value))+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
 
-
 #### Inference by exclusion
-
-```{r, eval = F}
-# vs_inf <- varsel(refM_inf, search_terms = s_terms)
-# summary(vs_inf); plot(vs_inf, stats = c('elpd', 'rmse'))
-# 
-# randint_ind_vsinf <- length(solution_terms(vs_inf))
-# relevant_cov_vsinf <- c(1, 2, 3, 4, 5, randint_ind_vsinf)
-
-#proj_inf <- project(vs_inf, solution_terms = relevant_cov_vsinf, ndraws = 10)
-#mcmc_areas(as.matrix(proj_inf), pars = solution_terms(vs_inf)[relevant_cov_vsinf])
-```
 
 ```{r, warning = F}
 cvs_inf <- cv_varsel(refM_inf, 
@@ -1741,10 +1726,6 @@ cvs_inf <- cv_varsel(refM_inf,
 saveRDS(cvs_inf,"./saves/cvs_inf.rds")
 
 cvs_inf <- readRDS("./saves/cvs_inf.rds")
-
-#summary(cvs_inf); plot(cvs_inf, stats = c('elpd', 'rmse'))
-# proj_inf_cv <- project(cvs_inf, solution_terms = c(1, 2, 14))
-# mcmc_areas(as.matrix(proj_inf_cv), pars = solution_terms(cvs_inf)[c(1, 2, 14)])
 ```
 **relevant** covariates: (1 | subject), time_in_leipzig, group, age
 
@@ -1778,17 +1759,6 @@ ggplot(aes(x = size, y = value))+
 
 #### Gaze Following
 
-```{r, eval = F}
-# vs_gaze <- varsel(refM_gaze, search_terms = s_terms_gaze)
-# summary(vs_gaze); plot(vs_gaze, stats = c('elpd', 'rmse'))
-# 
-# randint_ind_vsgaze <- length(solution_terms(vs_gaze))
-# relevant_cov_vsgaze <- c(1, 2, 3, 4, 5, randint_ind_vsgaze)
-
-# proj_gaze <- project(vs_gaze, solution_terms = relevant_cov_vsgaze)
-# mcmc_areas(as.matrix(proj_gaze), pars = solution_terms(vs_gaze)[relevant_cov_vsgaze])
-```
-
 ```{r, warning = F}
 cvs_gaze <- cv_varsel(refM_gaze, 
                       search_terms = s_terms_gaze, cv_method = "LOO", method = "forward", 
@@ -1798,7 +1768,7 @@ saveRDS(cvs_gaze,"./saves/cvs_gaze.rds")
 
 cvs_gaze <- readRDS("./saves/cvs_gaze.rds")
 
-#summary(cvs_gaze); plot(cvs_gaze, stats = c('elpd', 'rmse'))
+# summary(cvs_gaze); plot(cvs_gaze, stats = c('elpd', 'rmse'))
 # proj_gaze_cv <- project(cvs_gaze, solution_terms = c(1, 2, 3, 4, 5, 6, 7, 15))
 # mcmc_areas(as.matrix(proj_gaze_cv), pars = solution_terms(cvs_gaze)[c(1, 2, 3, 4, 5, 6, 7, 15)])
 ```
@@ -1834,17 +1804,6 @@ ggplot(aes(x = size, y = value))+
 
 #### Quantity
 
-```{r, eval = F}
-# vs_quant <- varsel(refM_quant, search_terms = s_terms)
-# summary(vs_quant); plot(vs_quant, stats = c('elpd', 'rmse'))
-# 
-# randint_ind_vsquant <- length(solution_terms(vs_quant))
-# relevant_cov_vsquant <- c(1, 2, 3, 4, 5, randint_ind_vsquant)
-
-# proj_quant <- project(vs_quant, solution_terms = relevant_cov_vsquant)
-# mcmc_areas(as.matrix(proj_quant), pars = solution_terms(vs_quant)[relevant_cov_vsquant])
-```
-
 ```{r, warning = F}
 cvs_quant <- cv_varsel(refM_quant, 
                        search_terms = s_terms, cv_method = "LOO", method = "forward", 
@@ -1853,10 +1812,6 @@ cvs_quant <- cv_varsel(refM_quant,
 saveRDS(cvs_quant,"./saves/cvs_quant.rds")
 
 cvs_quant <- readRDS("./saves/cvs_quant.rds")
-
-#summary(cvs_quant); plot(cvs_quant, stats = c('elpd', 'rmse'))
-# proj_quant_cv <- project(cvs_quant, solution_terms = c(1, 2, 3, 15))
-# mcmc_areas(as.matrix(proj_quant_cv), pars = solution_terms(cvs_quant)[c(1, 2, 3, 15)])
 ```
 **relevant** covariates: (1 | subject), time_in_leipzig, rearing, group
 
