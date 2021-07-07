@@ -914,17 +914,11 @@ The goal of this analysis was to select the predictor variables that are importa
 
 The predictive projection approach developed by @piironen2018projective was used to select a minimal subset of predictors to find a predictive model for cognitive performance. Projective selection can be viewed as a two-step process. The first step revolves around building the best predictive model possible, called the reference model. The reference model is a Bayesian multilevel regression model (repeated measurements nested in apes), including all predictors recorded in this study. In the second step, the goal is to replace the posterior distribution of the reference model with a simpler distribution. This is achieved via a forward stepwise addition of predictors that decrease the Kullback-Leibler divergence from the reference model to the projected model. The result is a list containing the best model for each number of predictors The final model is selected by inspecting the mean log-predictive density and/or root-mean squared error. The projected model with the smallest number of predictors that shows similar predictive performance as the reference model is chosen.
 
-Continuous predictors were centered when needed. We transformed the apes rank variable into a relative rank, where a rank with value one depicts a subject with the highest possible rank. For gaze following, we added the predictor `day2`, which simply indicated if the trials were from the second session. All reference models converged well, having no divergent transitions, Rhat values equal 1, and large ESSs for virtually all parameters. We found no evidence for model misspecification since all fitted models have Pareto $k$ values smaller than $0.7$, 
+Continuous predictors were centered when needed. We transformed the apes rank variable into a relative rank, where a rank with value one depicts a subject with the highest possible rank. For gaze following, we added the predictor `day2`, which simply indicated if the trials were from the second session. All reference models converged well, having no divergent transitions, Rhat values equal 1, and large ESSs for virtually all parameters. We found no evidence for model misspecification since all fitted models had Pareto $k$ values smaller than $0.7$, 
 
-Next, we performed the predictor selection for each reference model separately, thus resulting in four different rankings for the relevant predictors. The predictor selection was executed with the R package `projpred` @projpred202, which implements the aforementioned predictive projection technique. The predictor relevance ranking is measured by the LOO cross-validated mean log-predictive density (`elpd`) and root-mean-squared error (`rmse`). To find the optimal submodel size, we inspected summaries and the plotted trajectories of the calculated `elpd` and `rmse`.
+Next, we performed the predictor selection for each reference model separately, thus resulting in four different rankings for the relevant predictors. The predictor selection was executed with the R package `projpred` [@projpred202], which implements the aforementioned predictive projection technique. The predictor relevance ranking is measured by the LOO cross-validated mean log-predictive density (`elpd`) and root-mean-squared error (`rmse`). To find the optimal submodel size, we inspected summaries and the plotted trajectories of the calculated `elpd` and `rmse`.
 
-NEW
-We stopped adding covariates to the optimal submodel as soon as the loss statistics levelled off (stayed constant). This is in unison with the recommendation of the authors. Alternatively, one could use the function `suggest_size` as a heuristc decision rule to find the optimal submodel. `suggest_size` chooses the smallest submodel that has an `elpd` within one standard error of the reference model (default rule). The smallest submodel is thus expected to outperform the reference model with at least 16% probability. This is not yet possible for the models we fit due to the delay of the random intercept term. 
-NEW
-
-OLD
-The relevant predictors were chosen to "significantly" contribute to the predictive performance of the submodel. Specifically, this means predictors that increased the `elpd` or decrease the `rmse` are selected for the optimal submodel. In contrast, predictors that do not change these statistics meaningfully are left out of the submodel.
-OLD 
+We stopped adding covariates to the optimal submodel as soon as the loss statistics levelled off (stayed constant). This is in unison with the recommendations in @projpred202. Alternatively, one could use the function `suggest_size` as a heuristc decision rule to find the optimal submodel. `Suggest_size` chooses the smallest submodel that has an `elpd` within one standard error of the reference model (default rule). The smallest submodel is thus expected to outperform the reference model with at least 16% probability. This is not yet possible for the models we fit due to the delay of the random intercept term. 
 
 # Results
 
@@ -1683,8 +1677,15 @@ saveRDS(cvs_cau,"./saves/cvs_cau.rds")
 cvs_cau <- readRDS("./saves/cvs_cau.rds")
 
 # summary(cvs_cau); plot(cvs_cau, stats = c('elpd', 'rmse'))
-# proj_cau_cv <- project(cvs_cau, solution_terms = c(1, 2, 3, 14))
-# mcmc_areas(as.matrix(proj_cau_cv), pars = solution_terms(cvs_cau)[c(1, 2, 3, 14)])
+proj_cau_cv <- project(cvs_cau,  solution_terms = c(1, 2, 15))
+
+as.matrix(proj_cau_cv)%>%as_tibble()#%>%select(rel_rank, group)
+
+mcmc_areas(as.matrix(proj_cau_cv))
+
+str(proj_cau_cv)
+
+proj_cau_cv$sub_fit
 ```
 **relevant** covariates: (1 | subject), group
 
@@ -1715,6 +1716,29 @@ ggplot(aes(x = size, y = value))+
   theme_few()+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
+
+```{r}
+proj_cau_cv <- project(cvs_cau,  solution_terms = c(1, 9, 14))
+
+proj_samples_cau <- as.matrix(proj_cau_cv)%>%
+  as_tibble()%>%
+  pivot_longer(cols =c(1:9), names_to = "pred", values_to = "value")%>%
+  filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+  mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
+         pred = str_remove(pred,"group"),
+         pred = str_remove(pred,"rel_"),
+         species = ifelse(factor == "group", pred,factor))
+
+ggplot(proj_samples_cau, aes(x = value, y = pred, fill = species)) +
+  geom_vline(xintercept = 0, lty = 2, alpha = .75)+
+  geom_density_ridges(alpha = .5, scale = .7) +
+  facet_wrap(factor~., scales = "free")+
+  scale_fill_colorblind()+
+  guides(fill = F)+
+  theme_minimal()+
+  theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
+```
+
 
 #### Inference by exclusion
 
@@ -1755,6 +1779,27 @@ ggplot(aes(x = size, y = value))+
   scale_x_continuous(labels = unique(ivarselp$solution_terms), breaks = unique(ivarselp$size))+
   theme_few()+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+```{r}
+proj_inf_cv <- project(cvs_inf,  solution_terms = c(1, 2, 3))
+
+proj_samples_inf <- as.matrix(proj_inf_cv)%>%
+  as_tibble()%>%
+  pivot_longer(cols =c(1:9), names_to = "pred", values_to = "value")%>%
+  filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+  mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
+         pred = str_remove(pred,"group"),
+         species = ifelse(factor == "group", pred,factor))
+
+ggplot(proj_samples_inf, aes(x = value, y = pred, fill = species)) +
+  geom_vline(xintercept = 0, lty = 2, alpha = .75)+
+  geom_density_ridges(alpha = .5, scale = .7) +
+  facet_wrap(factor~., scales = "free")+
+  scale_fill_colorblind()+
+  guides(fill = F)+
+  theme_minimal()+
+  theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
 ```
 
 #### Gaze Following
@@ -1802,6 +1847,30 @@ ggplot(aes(x = size, y = value))+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
 
+```{r}
+proj_gaze_cv <- project(cvs_gaze,  solution_terms = c(1:6))
+
+proj_samples_gaze <- as.matrix(proj_gaze_cv)%>%
+  as_tibble()%>%
+  pivot_longer(cols =c(1:14), names_to = "pred", values_to = "value")%>%
+  filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+  mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex","other predictors"))),
+         pred = str_remove(pred,"group"),
+         pred = str_remove(pred,"rearing"),
+         pred = str_remove(pred,"sex"),
+         species = ifelse(factor == "group", pred,factor))
+
+ggplot(proj_samples_gaze, aes(x = value, y = pred, fill = species)) +
+  geom_vline(xintercept = 0, lty = 2, alpha = .75)+
+  geom_density_ridges(alpha = .5, scale = .7) +
+  facet_wrap(factor~., scales = "free", nrow = 1)+
+  scale_fill_colorblind()+
+  guides(fill = F)+
+  theme_minimal()+
+  theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
+  
+```
+
 #### Quantity
 
 ```{r, warning = F}
@@ -1841,6 +1910,30 @@ ggplot(aes(x = size, y = value))+
   scale_x_continuous(labels = unique(qvarselp$solution_terms), breaks = unique(qvarselp$size))+
   theme_few()+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+```{r}
+proj_quant_cv <- project(cvs_quant,  solution_terms = c(1:3))
+
+proj_samples_quant <- as.matrix(proj_quant_cv)%>%
+  as_tibble()%>%
+  pivot_longer(cols =c(1:10), names_to = "pred", values_to = "value")%>%
+  filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+  mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex","other predictors"))),
+         pred = str_remove(pred,"group"),
+         pred = str_remove(pred,"rearing"),
+         pred = str_remove(pred,"sex"),
+         species = ifelse(factor == "group", pred,factor))
+
+ggplot(proj_samples_quant, aes(x = value, y = pred, fill = species)) +
+  geom_vline(xintercept = 0, lty = 2, alpha = .75)+
+  geom_density_ridges(alpha = .5, scale = .7) +
+  facet_wrap(factor~., scales = "free", nrow = 1)+
+  scale_fill_colorblind()+
+  guides(fill = F)+
+  theme_minimal()+
+  theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
+  
 ```
 
 Previous section showed that performance was stable and largely explained by stable / trait differences. This limits how much the predictors can actually explain - and as we will see the most important predictor in all cases was a random intercept term for each individual. 
