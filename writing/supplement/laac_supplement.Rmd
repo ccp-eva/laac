@@ -910,15 +910,15 @@ For each model, we also report the threshold parameters. The Graded Response Mod
 
 ## Projection predictive inference
 
-The goal of this analysis was to select the predictor variables that are important to predict performance in the different cognitive tasks over time. This constitutes a variable selection problem, for which a range of different methods are available. We chose to use projection predictive inference because it provides an excellent trade-off between model complexity and accuracy [@piironen2017comparison], especially when the goal is to identify **all relevant** predictors [@pavone2020using].  
+The goal of this analysis was to select the predictor variables that are important to predict performance in the different cognitive tasks over time. This constitutes a variable selection problem, for which a range of different methods are available. We chose to use projection predictive inference because it provides an excellent trade-off between model complexity and accuracy [@piironen2017comparison], especially when the goal is to identify a minimal subset of predictors that yield a good predictive model [@pavone2020using].
 
 The predictive projection approach developed by @piironen2018projective was used to select a minimal subset of predictors to find a predictive model for cognitive performance. Projective selection can be viewed as a two-step process. The first step revolves around building the best predictive model possible, called the reference model. The reference model is a Bayesian multilevel regression model (repeated measurements nested in apes), including all predictors recorded in this study. In the second step, the goal is to replace the posterior distribution of the reference model with a simpler distribution. This is achieved via a forward stepwise addition of predictors that decrease the Kullback-Leibler divergence from the reference model to the projected model. The result is a list containing the best model for each number of predictors The final model is selected by inspecting the mean log-predictive density and/or root-mean squared error. The projected model with the smallest number of predictors that shows similar predictive performance as the reference model is chosen.
 
-Continuous predictors were centered when needed. We transformed the apes rank variable into a relative rank, where a rank with value one depicts a subject with the highest possible rank. For gaze following, we added the predictor `day2`, which simply indicated if the trials were from the second session. All reference models converged well, having no divergent transitions, Rhat values equal 1, and large ESSs for virtually all parameters. We found no evidence for model misspecification since all fitted models had Pareto $k$ values smaller than $0.7$, 
+Continuous predictors were centered when needed. We transformed the apes rank variable into a relative rank, where a rank with value one depicts a subject with the highest possible rank. For gaze following, we added the predictor `day2`, which simply indicated if the trials were from the second session. All reference models converged well, having no divergent transitions, Rhat values equal 1, and large ESSs for virtually all parameters.
 
-Next, we performed the predictor selection for each reference model separately, thus resulting in four different rankings for the relevant predictors. The predictor selection was executed with the R package `projpred` [@projpred202], which implements the aforementioned predictive projection technique. The predictor relevance ranking is measured by the LOO cross-validated mean log-predictive density (`elpd`) and root-mean-squared error (`rmse`). To find the optimal submodel size, we inspected summaries and the plotted trajectories of the calculated `elpd` and `rmse`.
+Next, we performed the predictor selection for each reference model separately, thus resulting in four different rankings for the relevant predictors. The predictor selection was executed with the R package `projpred` [@projpred202], which implements the aforementioned predictive projection technique. The predictor relevance ranking is measured by the LOO cross-validated mean log-predictive density (`elpd`) and root-mean-squared error (`rmse`). To find the optimal submodel size, we inspected, in unison with the authors' recommendations, summaries and the plotted trajectories of the calculated `elpd` and `rmse`.
 
-We stopped adding covariates to the optimal submodel as soon as the loss statistics levelled off (stayed constant). This is in unison with the recommendations in @projpred202. Alternatively, one could use the function `suggest_size` as a heuristc decision rule to find the optimal submodel. `Suggest_size` chooses the smallest submodel that has an `elpd` within one standard error of the reference model (default rule). The smallest submodel is thus expected to outperform the reference model with at least 16% probability. This is not yet possible for the models we fit due to the delay of the random intercept term. 
+We stopped adding covariates to the optimal submodel as soon as the loss statistics levelled off (stayed constant). Alternatively, one could use the function `suggest_size` as a heuristic decision rule to find the optimal submodel. `Suggest_size` chooses the smallest submodel with an `elpd` within one standard error of the reference model (default rule). The smallest submodel is thus expected to outperform the reference model with at least 16% probability. This is not yet possible for the models we fit due to the delay of the random intercept term. 
 
 # Results
 
@@ -1585,7 +1585,7 @@ kable_classic(full_width = F)%>%
 ncores <- parallel::detectCores()
 ```
 
-```{r}
+```{r, include = FALSE}
 apes1_new <- read_csv("../../data/ppi_data_phase1.csv")%>%
   mutate(across(c(subject, group, le_present, dist_present, sex, rearing, observer, test_day), as_factor)) %>%
   mutate(observer = fct_relevel(observer, "no")) %>% 
@@ -1646,7 +1646,7 @@ t_gaze <- t_gaze %>%
 ```
 
 
-```{r regression formula, include = F}
+```{r, include = F}
 # covariate needed for projection prediction
 # placed here for easy editing of formula
 all_fixed_effects <- c("sick_severity",       
@@ -1682,23 +1682,23 @@ fm_gaze <- update(fm, . ~ . +day2)
 
 ```{r}
 m_cau_2l <- brm(fm, data = t_cau, 
-                warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                seed = 2021,
+                warmup = 2e3, iter = 4e3, cores = ncores, chains = 4, 
+                seed = 2020,
                 save_pars = save_pars(all = TRUE)
                 )
 m_inf_2l <- brm(fm, data = t_inf, 
-                warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                seed = 2021,
+                warmup = 2e3, iter = 4e3, cores = ncores, chains = 4, 
+                seed = 2020,
                 save_pars = save_pars(all = TRUE)
                 )
 m_quant_2l <- brm(fm, data = t_quant, 
-                  warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                  seed = 2021,
+                  warmup = 2e3, iter = 4e3, cores = ncores, chains = 4, 
+                  seed = 2020,
                   save_pars = save_pars(all = TRUE)
                   )
 m_gaze_2l <- brm(fm_gaze, data = t_gaze, 
-                 warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                 seed = 2021,
+                 warmup = 2e3, iter = 4e3, cores = ncores, chains = 4, 
+                 seed = 2020,
                  save_pars = save_pars(all = TRUE)
                  )
 ```
