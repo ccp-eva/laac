@@ -582,13 +582,13 @@ Here we counted in how many other studies the participant had taken part in sinc
 
 # Analytical framework
 
-We have two overarching questions. On the one hand, we are interested in the stability and the reliability of the individual tasks as as well as the relations between them. We used structural equation modeling [Jana: citation?] to address these questions. These models have been developed and are usually used with much larger sample sizes. Thus, we had to make a number of assumptions to be able to fit them to the kind of data that we have -- we lay out these assumptions in the text below. The Appendix includes simulations that show that these assumptions were justified. 
+We have two overarching questions. On the one hand, we are interested in the stability and the reliability of the individual tasks as as well as the relations between them. We used structural equation modeling [Jana: citation?] to address these questions. These models have been developed -- and are usually used -- for much larger sample sizes. Thus, we had to make a number of assumptions to be able to fit them to the kind of data that we have; we lay out these assumptions in the text below. The Appendix includes simulations that show that these assumptions were justified. 
 
 Our second question was, which predictors explain variability in cognitive performance. Here we wanted to see, which of the predictors we recorded were most important to predict performance over time. This is a variable selection problem (selecting a subset of important predictors from a larger pool) and we used Projection Prediction Inference for this [@piironen2018projective]. 
 
 ## Structural equation modelling
 
-Structural equation models can be used to assess latent variables (constructs) using one or more observed variables. These latent variables can be combined in a structural model that imputes relations between them. We used the data from each time point as observed variables to estimate a latent construct for each task. Due to the small sample size, we could not combine latent variables in a structured model or use predictors to explain individual differences in these latent variables. Instead, we assessed relations between tasks by simply correlating latent variables with one another. 
+Structural equation models (SEM) can be used to assess latent variables (constructs) using one or more observed variables. These latent variables can be combined in a structural model that imputes relations between them. We used the data from each time point as observed variables to estimate a latent construct for each task. Due to the small sample size, we could not combine latent variables in a structured model or use predictors to explain individual differences in these latent variables. Instead, we assessed relations between tasks by simply correlating latent variables with one another. 
 
 We used SEM to estimate states (time varying) and traits (stable over time). In the present context, one can think of traits as a stable psychological ability (e.g. ability to make causal inferences) and states as variable psychological condition (e.g. being attentive). Variation in performance on a given time point can then be partitioned into variance explained by the trait and variance explained by the state. Next we describe the model construction process in more detail.
 
@@ -596,7 +596,7 @@ For each task, two parallel test halves were build, corresponding to sum scores 
 
 ### Models and coefficients
 
-For each task, we constructed three different models which increased in complexity. We started with a Latent State Model (LSM), which estimates a latent state for each time point based on the two test halves. As such, it does not assume an underlying trait. Stability is only indirectly assessed via correlations between states. This model first and foremost served as a baseline to see if the data supports a SEM approach.
+For each task, we constructed three different models which increased in complexity. We started with a Latent State Model (LSM), which estimates a latent state for each time point based on the two test halves. As such, it does not assume an underlying trait. Stability of group level performance can be assessed by comparing state means across time points. Stability of individual differences can be assessed by correlating state estimates for the different time points. This model is less restrictive, because correlations between states are freely estimated. In the following models, they are assumed to be the same. 
 
 Second, we fit a Latent State Trait Model (LSTM). This model estimates time point specific states, but also a time-invariant trait. With this model, we can partition the variance in performance into stable (trait) and variable (state) components.  
 
@@ -1178,11 +1178,13 @@ lstarg <- readModels("../../models and documentation Jana/Application/one task m
 
 ## Stability and Reliability
 
-As mentioned above, we fit three different SEM to the data from each task. Each model offers a different perspective on how stable and reliable performance is. We report the results starting with the LS model, followed by the LST model and finally the LST-AR model.  
+As mentioned above, we fit three different SEM to the data from each task. Each model offers a slightly different perspective on how stable and reliable performance is. We report the results starting with the LS model, followed by the LST model and finally the LST-AR model.
 
-In the LS models, we can look at stability by comparing the latent means estimated for each time point to see if they differ substantially from one another. For reliability, we can look at the correlations between the latent state estimates for the different time points. 
+Within the context of SEM, reliability is defined as the proportion of the variance that is error free, that is, variance that is explained by the latent variables (states and/or traits). Reliability is estimated based on the correlations between indicators. Because the two indicators correspond to the two test halves in our case, reliability is basically equivalent to a split-half reliability estimate.
 
-For LST models, we can assess stability by looking at consistency and occasion specificity. A high level of consistency means that a large portion of the variation observed in performance at the different time points can be traced back to variation in the overarching trait. High levels of occasion specificity means the inverse, namely that large portions of the variation in performance is explained by variation in the (residual) state - that is, the variation not explained by the trait. We can quantify reliability as the extend to which our measure of performance is error free, which means, the extend to which performance is explained by variation in the trait and state combined.
+In the LS models, we can look at the stability of group level performance by comparing the latent means estimated for each time point to see if they differ substantially from one another. To assess the stability of individual difference, we can look at the correlations between the latent state estimates for the different time points. 
+
+For LST models, we can assess stability of individual differences by looking at consistency and occasion specificity. A high level of consistency means that a large portion of the variation observed in performance at the different time points can be traced back to variation in the overarching trait. High levels of occasion specificity means the inverse, namely that large portions of the variation in performance is explained by variation in the (residual) state - that is, the variation not explained by the trait. 
 
 LST-AR models use the same metrics as the LST models but in addition they allow us to quantify the temporal predictability of performance based on previous time points. This is captured in the term predictability and quantifies how much of the variation in performance can be explained by the variation in the state at the previous time point.
 
@@ -1292,20 +1294,38 @@ kable_classic(full_width = F)%>%
 
 To get an overview of the results, we first visualized he data. Figure \@ref(fig:perfplot) shows performance at the different time points. From a group level perspective, we can say that performance was consistently above chance (0.5) in the causal inference and quantity tasks. For gaze following, there is no meaningful chance level. We can note, however, that group level performance never went down to zero, which would be expected if apes did not pay attention to the experimenter's gaze. The performance score in the switching task was largely negative, suggesting no successful switching between the two phases. 
 
-For an idea of the stability of individual differences, we correlated performance at the different time points for each task (all possible combinations of time points). Figure \@ref(fig:relplot)A visualizes the distribution of raw correlations between the different time points and \@ref(fig:relplot)B shows the relation between re-test correlations and the time span between time points. Correlations between time points were large and clearly different from zero for quantity, inference and gaze following. For quantity, this distribution was wider and closer to zero, but still clearly positive. For switching, the distribution was even wider and substantially overlapped with zero. For all tasks, correlations between time points were lower for time points that were further apart [Manuel: cite jana uher study]. 
+For an idea of the stability of individual differences, we correlated performance at the different time points for each task (all possible combinations of time points). Figure \@ref(fig:relplot)A visualizes the distribution of raw correlations between the different time points and \@ref(fig:relplot)B shows the relation between re-test correlations and the time span between time points. Correlations between time points were large and clearly different from zero for quantity, inference and gaze following. For quantity, this distribution was wider and closer to zero, but still clearly positive. For switching, the distribution was even wider and substantially overlapped with zero. For all tasks, correlations between time points tended to be lower for time points that were further apart [Manuel: cite jana uher study]. 
 
 Given this pattern, we excluded the switching task from further analysis. There were three main reasons for this. First, group level scores were constantly negative and performance in the feature trials always overlapped with chance. This suggests that, as a group, apes did not successfully switch strategies (see \@ref(fig:perfplot)). Second, the correlations between the different measurement time points were low, suggesting no systematic individual differences (see \@ref(fig:relplot)). Third, the dependent variable (i.e. the score calculated based on performance in the two phases) had a different level of measurement compared to the other tasks. That is, there was only a single score to represent at each time point. All other tasks had multiple trials. This was especially problematic in the context of structural equation modeling (see above). For these reasons we also replaced the switching task with the delay of gratification task in phase 2.
 
 ```{r}
-lse <- bind_rows(lsc$parameters$unstandardized%>%mutate(task = "causality"),
+plse <- bind_rows(lsc$parameters$unstandardized%>%mutate(task = "causality"),
           lsi$parameters$unstandardized%>%mutate(task = "inference"),
           lsq$parameters$unstandardized%>%mutate(task = "quantity"),
           lsg$parameters$unstandardized%>%mutate(task = "gaze_following"))%>%
 filter(paramHeader == "Means")%>%
-  mutate(time_point = factor(as.numeric(gsub("[^0-9.-]", "", param))))%>%
+  mutate(time_point = factor(as.numeric(gsub("[^0-9.-]", "", param))),
+         estimate = "Latent state mean",
+         ref = 0)
+
+plsr <- bind_rows(lsc$parameters$r2%>%mutate(task = "causality"),
+          lsi$parameters$r2%>%mutate(task = "inference"),
+          lsq$parameters$r2%>%mutate(task = "quantity"),
+          lsg$parameters$r2%>%mutate(task = "gaze_following"))%>%
+  slice(which(row_number() %% 2 == 1))%>%
+  mutate(time_point = factor(str_remove(param, "P1")),
+         estimate = "Reliability",
+         ref = NA)
+  
+plser <- 
+  bind_rows(plse, plsr)%>%
   ggplot(aes(x = time_point, y = est, col = task))+
-  geom_hline(yintercept = 0, lty = 2, alpha = .75)+
-  labs(x = "Time point",y = "Latent state estimate")+
+  facet_wrap_custom(estimate~., scales = "free_y", ncol = 1, scale_overrides = list(
+    scale_override(1, scale_y_continuous(limits = c(-5, 1))),
+    scale_override(2, scale_y_continuous(limits = c(0, 1)))
+  ))+
+  geom_hline(aes(yintercept = ref), lty = 2, alpha = .75)+
+  labs(x = "Time point",y = "Estimate")+
   geom_line(aes(group = task),position = position_dodge(width = 0.2), alpha = .75)+
   geom_pointrange(aes(ymin = lower_2.5ci, ymax = upper_2.5ci),position = position_dodge(width = 0.2), alpha = .75)+
   scale_color_colorblind(name = "Task")+
@@ -1313,21 +1333,21 @@ filter(paramHeader == "Means")%>%
 ```
 
 
-```{r lseplot, fig.height = 2, fig.cap = "Latent means for LSM with 95\\% CI. Means at time point 1 are set to 0.", out.width="100%"}
-lse
+```{r lseplot, fig.height = 4, fig.cap = "Latent means and reliability estimates with 95\\% CI for each time point based on LSM. Means at time point 1 are set to 0.", out.width="100%"}
+plser
 ```
 
 #### Causal inference
 
 To fit the models, the response categories of 0 or 1 solved trial had to be collapsed into one category due to sparsity. Furthermore, the thresholds could not be set equal for test-half 2 at time point 3 and 11 as well as test-half 1 at time points 4 and 12 due to a different number of observed categories for the respective test halves and time-point combination. Latent means can still be compared across time for the respective state factors based on the respective other test half. At time point 7 thresholds of both test-halves could not be set measurement invariant across time (due to a divergent number of observed categories). Latent mean differences with respect to the latent state variable at time point 7 should therefore be interpreted with caution.
 
-Figure \@ref(fig:lse) visualizes the latent state means estimated in the LS model. None of the means differed significantly from zero, suggesting that there was no systematic change over time. Figure \@ref(fig:lsc) gives the correlations between the latent states for the different time points. Correlations were generally high, indicating stable and reliable individual differences.
+Figure \@ref(fig:lse) visualizes the reliability and latent state means estimated in the LS model. Reliability was consistently high. None of the means differed significantly from zero, suggesting stable group level performance and no systematic change over time. Figure \@ref(fig:lsc) gives the correlations between the latent states for the different time points. Correlations were generally high, indicating stable individual differences.
 
-In the LSTM, the consistency (i.e., stability) coefficient was estimated to be around .903. This means that around 90% of true inter-individual differences are attributable to stable differences between individuals, while approximately 10% are due to variance in time-point specific deviations from the stable trait. Reliability was high with an estimate of .725 (see Figure \@ref(fig:lsteplot)).
+In the LSTM, the consistency (i.e., stability of individual differences) coefficient was estimated to be around .903. This means that around 90% of true inter-individual differences are attributable to stable differences between individuals, while approximately 10% are due to variance in time-point specific deviations from the stable trait. Reliability (across time points) was estimated to be high with an mean of .725 (see Figure \@ref(fig:lsteplot)).
 
 Figure \@ref(fig:lstareplot) shows the parameters from the LSTM-AR for three time points (2, 3 and 14). Around 82.3% of true interindividual differences at time point 14 go back to stable trait differences, around 10.6% of the inter-individual differences can be explained by carry-over effects from previous time points (i.e. inertia in the within-person process) and only 6.1% of the variance is due to time-specific variance between persons, that is, variance in the time-specific true scores from the stable trait level that could not be predicted by the autoregressive process.
 
-In sum, all models converge on the conclusion that group- and individual-level performance was highly stable over time. As noted above and as can be seen in Figure \@ref(fig:perfplot), performance on a group level was clearly above chance.  
+In sum, all models converge on the conclusion that group- and individual-level performance was highly stable over time. As noted above -- and as can be seen in Figure \@ref(fig:perfplot) -- performance on a group level was clearly above chance.  
 
 ```{r}
 cor <- bind_rows(
@@ -1340,7 +1360,7 @@ cor <- bind_rows(
          paramHeader = factor(as.numeric(str_replace(paramHeader, "S",""))),
          param = factor(as.numeric(str_replace(param, "S",""))))
 
-lsc <- cor%>%
+plsc <- cor%>%
   ggplot(aes(y = paramHeader, x = param, fill = est))+
     geom_tile(color = "white")+
   labs(x = "", y = "")+
@@ -1354,24 +1374,25 @@ lsc <- cor%>%
   theme_few()+
   theme(legend.position = c(0.9,0.85), legend.direction = "vertical", legend.title = element_blank(), legend.background = element_blank())
 ```
+
 ```{r lsplot, fig.height=6, fig.cap = "Correlations between latent state variables based on LSM for the different tasks.", out.width="100%"}
-lsc
+plsc
 ```
 
 #### Inference by exclusion
 
 Thresholds could not be set equal for indicator 2 at time point 6 as well as indicator 1 at time points 7 and 14, due to a different number of observed categories for the respective indicator and time-point combination. Latent means can still be compared across time for the respective state factors based on the other indicator.
 
-None of the latent means estimated in the LS model differed from zero (Figure \@ref(fig:lse)). Correlations between latent states was generally high across time points (Figure \@ref(fig:lsc)). 
+Reliability was high in the LS model and none of the latent means differed from zero (Figure \@ref(fig:lse)). Correlations between latent states was generally high across time points (Figure \@ref(fig:lsc)). 
 
 In the LSTM, consistency was estimated to be around .859 -- around 86% of true inter-individual differences were attributable to stable differences between individuals. Approximately 14% were due to variance in time-point specific deviations from the stable trait. Reliability was high with an estimate of .815 (see Figure \@ref(fig:lsteplot)).
 
 According to the LSTM-AR, around 79.4% of true inter-individual differences at time point 14 went back to stable trait differences and around 8.3% of the inter-individual differences can be explained by carry-over effects from previous time points. Around 11.3% of the variance was due to time-specific variance between individuals.
 
-Taken together, we see a similar pattern as for the causal inference task: Performance was very stable on a group level and so were the differences between individuals. Interestingly, from Figure \@ref(fig:perfplot) we take that group-level performance was at chance. The reliability results, however, suggest that variations around this mean were systematic and that some individuals consistently performed above chance. Thus, despite the fact this task was very difficult for great apes, it seems suitable to measure individual differences. 
+Taken together, we see a similar pattern as for the causal inference task: Performance was very stable on a group level and so were the differences between individuals. Interestingly, from Figure \@ref(fig:perfplot) we take that group-level performance was at chance. The stable individual differences we founf here, suggest that variations around this mean were systematic and therefore that some individuals consistently performed above chance. Thus, despite the fact this task was very difficult for great apes, it seems suitable to measure individual differences. 
 
 ```{r}
-lste <- bind_rows(
+plste <- bind_rows(
   lstc$parameters$unstandardized%>%mutate(task = "causality"),
   lsti$parameters$unstandardized%>%mutate(task = "inference"),
   lstq$parameters$unstandardized%>%mutate(task = "quantity"),
@@ -1392,11 +1413,11 @@ lste <- bind_rows(
 ```
 
 ```{r lsteplot, fig.height = 2.5, fig.cap = "Model parameters (with 95\\% CI) from LSTM for the four tasks.", out.width="100%"}
-lste
+plste
 ```
 
 ```{r}
-lstare<- bind_rows(
+plstare<- bind_rows(
   lstarc$parameters$unstandardized%>%mutate(task = "causality")%>%filter(paramHeader== "New.Additional.Parameters"),
   lstari$parameters$unstandardized%>%mutate(task = "inference")%>%filter(paramHeader== "New.Additional.Parameters"),
   lstarq$parameters$unstandardized%>%mutate(task = "quantity")%>%filter(paramHeader== "New.Additional.Parameters"),
@@ -1428,32 +1449,32 @@ lstare<- bind_rows(
 
 
 ```{r lstareplot, fig.height = 2.5, fig.cap = "Model parameters (with 95\\% CI) from LSTM-AR for the four tasks.", out.width="100%"}
-lstare
+plstare
 ```
 
 #### Gaze following
 
 For gaze following, we had only 8 observed trials per measurement occasion. The highest two categories (3 and 4 correctly solved trials) were collapsed into one category due to sparsity. Thresholds could not be set equal for test half 2 at time point 9 as well as test half 1 and test half 2 at time point 8, due to a different number of observed categories for the respective test half and time point combination. Latent means can still be compared across time with the exception of time point 8.
 
-Latent state means estimated in the LSM varied between -0.990 and -2.153 (for time point 8 the latent state mean -2.77, but, as mentioned above, thresholds for this time point were not measurement invariant). All of the latent state means were significantly lower than zero, suggesting a decrease in gaze following after the second time point (Figure \@ref(fig:lsc)).
+Latent state means estimated in the LSM varied between -0.990 and -2.153 (for time point 8 the latent state mean -2.77, but, as mentioned above, thresholds for this time point were not measurement invariant). All of the latent state means were significantly lower than zero, suggesting a decrease in gaze following after the second time point (Figure \@ref(fig:lseplot)). Reliability was high for all time points. The correlations between latent states for the different time points were generally high, pointing to stable individual differences (Figure \@ref(fig:lsplot)). 
 
 In the LSTM, consistency was estimated to be around .758, that is around 76% of true inter-individual differences are attributable to stable differences between individuals. Approximately 24% of inter-individual differences were due to variance in time point specific deviations from the stable trait. Reliability was high with an estimate of .792.
 
 According to the LSTM-AR, around 85.5% of true inter-individual differences at time point 14 went back to stable trait differences and around 3.3% of the inter-individual differences can be explained by carry-over effects from previous time points. Around 10.9% of the variance was due to time-specific variance between individuals. However, the state residual variance at time point 1 was estimated with great uncertainty (very large CI). Together with the very low predictability estimate, this suggests that this model is not particularly well suited to describe the results. 
 
-In sum, we see a change in gaze following over time Figure \@ref(fig:perfplot). This group level effect did not seem to affect differences between individuals because both the consistency and the reliability estimates were high.
+In sum, we see a change in gaze following over time Figure \@ref(fig:perfplot). This group level effect, however, did not affect differences between individuals, which were systematic across time points.
 
 #### Quantity
 
 The lowest three categories (0, 1 and 2 correctly solved trials) were collapsed due to sparsity. Thresholds could not be set equal for test half 1 at time point 5, due to a different number of observed categories for the respective test half and time-point combination. Latent means can still be compared across time.
 
-Latent state means estimated in the LSM varied very little and all lay between -0.058 and 0.369. None of these state means differed from zero (Figure \@ref(fig:lsc)).
+Latent state means estimated in the LSM varied very little and all lay between -0.058 and 0.369. None of these state means differed from zero (Figure \@ref(fig:lseplot)). Reliability estimates were substantially lower compared to the other tasks.
 
-The consistency coefficient was estimated to be around .964, that is around 96% of true inter-individual differences was attributable to stable differences between individuals and only approximately 3.6% were due to variance in time-point specific deviations from the stable trait. Reliability was rather low with an estimate of .446.
+The consistency coefficient was estimated to be around .964, that is around 96% of true inter-individual differences was attributable to stable differences between individuals and only approximately 3.6% were due to variance in time-point specific deviations from the stable trait. Again, reliability was rather low with an estimate of .446.
 
 According to the LSTM-AR, around 95.8% of true inter-individual differences at time point 14 went back to stable trait differences and only 0.7% of the inter-individual differences can be explained by carry-over effects from previous time points. The remaining 2.9% of the variance was due to time-specific variance between individuals.
 
-Taken together, quantity judgements were very stable over time (see also Figure \@ref(fig:perfplot)). The low reliability estimate suggests that ... 
+Taken together, quantity judgements were very stable over time (see also Figure \@ref(fig:perfplot)). The low reliability estimates suggest, however, that the task is less suited to capture individual differences.
 
 ### Phase 2
 
@@ -1461,11 +1482,11 @@ Taken together, quantity judgements were very stable over time (see also Figure 
 
 ## Relations between tasks
 
-To analyse relations between different tasks (constructs), we estimated six separate Latent- State-Trait models, each modelling the relation between two tasks In these combined models, the sub-models for each task were equivalent to the LST models described above. For ease of model specification, the LST models were estimated as multilevel models. These models are equivalent to the LST models for single tasks under the assumption of strict measurement invariance.
+To analyse relations between different tasks (constructs), we estimated six separate Latent- State-Trait models, each modeling the relation between two tasks In these combined models, the sub-models for each task were equivalent to the LST models described above. For ease of model specification, the LST models were estimated as multilevel models. These models are equivalent to the LST models for single tasks under the assumption of strict measurement invariance. \@ref(fig:xxx)) visualizes the model for two tasks. 
 
 Detailed information on the parameter estimates obtained in LST models for each separate task is provided above. Here we report the results with a focus on the latent correlations only. The parameters of interest were latent correlations between a) the traits belonging to the different tasks, indicating associations between stable latent cognitive ability as estimated by the different tasks, and b) correlations between occasion-specific state residual variables belonging to the same measurement time point, as an indicator of time-specific associations between latent abilities across the two tasks, above and beyond stable inter-individual differences.
 
-Simulation studies suggested that LST models in which latent correlations between time-specific state residual variables were estimated to be time-point specific (i.e., covariances and variances of state residual variables can freely vary across time) did not show good estimation performance under the given conditions (sample size, ordinal indicator variables, etc.). Therefore, we chose a model with fixed correlations between state residual variables across time. That is, a model in which it is assumed that associations between latent time-specific cognitive abilities across two different tasks within each time point is equal at all time points. We think that this assumption is reasonable in the present context The corresponding model showed good estimation performance in a simulation study.
+Simulation studies suggested that LST models in which latent correlations between time-specific state residual variables were estimated to be time-point specific (i.e., covariances and variances of state residual variables can freely vary across time) did not show good estimation performance under the given conditions (sample size, ordinal indicator variables, etc.). Therefore, we chose a model with fixed correlations between state residual variables across time. That is, a model in which it is assumed that associations between latent time-specific cognitive abilities across two different tasks within each time point is equal at all time points. We think that this assumption is reasonable in the present context. As a consequence, there is just one correlation between latent states for each model. The corresponding model showed good estimation performance in a simulation study.
 
 For details on MCMC estimation see section [Estimation](#estimation) above. Because the multi-construct models were considerably more complex (i.e. had more parameters), we increased the minimum number of iterations per Markov chain to 20,000 (with a thinning of 10, that is, 200,000 iterations per chain).
 
@@ -1479,8 +1500,6 @@ lstcq <- readModels("../../models and documentation Jana/Application/two tasks m
 lstig <- readModels("../../models and documentation Jana/Application/two tasks models/test_apes_data_LST_inf_gaze.out")
 lstiq <- readModels("../../models and documentation Jana/Application/two tasks models/test_apes_data_LST_inf_quant.out")
 lstqg <- readModels("../../models and documentation Jana/Application/two tasks models/test_apes_data_LST_quant_gaze.out")
-
-lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")
 ```
 
 ```{r}
@@ -1502,13 +1521,51 @@ rtt <- tibble(
     paste(lstqg$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstqg$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; ")))
 ```
 
+```{r}
+mtmcor <- bind_rows(
+lstcg$parameters$stdyx.standardized,
+lstci$parameters$stdyx.standardized,
+lstcq$parameters$stdyx.standardized,
+lstig$parameters$stdyx.standardized,
+lstiq$parameters$stdyx.standardized,
+lstqg$parameters$stdyx.standardized,
+)%>%
+  filter(grepl(".WITH", paramHeader))%>%
+  mutate(paramHeader = str_replace(paramHeader, "\\.WITH",""),
+         type = ifelse(grepl("S",paramHeader),"State","Trait"),
+         task1 = str_remove_all(paramHeader,"[ST]"),
+         task2 = str_remove_all(param,"[ST]"))%>%
+  filter(!grepl("1", task1),!grepl("2", task1))%>%
+  mutate(task1 = recode(task1, G = "gaze_following", I = "inference", C = "causality", Q = "quantity"),
+         task2 = recode(task2, G = "gaze_following", I = "inference", C = "causality", Q = "quantity"),
+         label = paste0(round(est,2)," \n [", round(lower_2.5ci,2)," ; ", round(upper_2.5ci,2),"]"))
+
+pmtmcor <- mtmcor%>%
+  ggplot(aes(y = task1, x = task2, fill = est, label = label))+
+    geom_tile(color = "white")+
+  labs(x = "", y = "")+
+  scale_fill_gradient2(low = "#CC6677", high = "#117733", mid = "white", 
+   midpoint = 0, limit = c(-1,1), space = "Lab", 
+   name="Correlation")+
+  facet_grid(~type)+
+  geom_text(size = 3, fontface = ifelse(mtmcor$sig == T, 2, 1))+
+  theme_few()+
+  scale_x_discrete(guide = guide_axis(n.dodge = 2))
+```
+
+```{r mtmplot, fig.height=4, fig.cap = "Correlations between latent traits and states of different tasks. Bold correaltionsa re reliably different from zero. There is no trait correlation between quantity and causality becasue the corresponding model showed a poor fit. See main text for details.", out.width="100%"}
+pmtmcor
+```
+
 Model fit indices are shown in Table \@ref(tab:relt). Due to a low PPP value, the model for causality and quantity was modified such that for each task, test-half specific trait factors were estimated on the between-level. The correlations between the two tasks are therefore also reported as test-half specific trait correlations. 
 
-The only correlations for which the 95% CI did not include zero was the state correlation between causality and inference ($r_{sc,si}$ = `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(est)`, 95% CI = [`r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(lower_2.5ci)`; `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(upper_2.5ci)`]) and the trait correlation between inference and quantity ($r_{ti,tq}$ = `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]). Furthermore, one (out of four) of the test-half specific trait correlations between causality and quantity was reliably different from zero ($r_{tc2,tq1}$ = `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]). We do not consider the last result as substantial evidence for a reliable association between the trait estimates in the two tasks and therefore do not interpret it any further. Figure \@ref(fig:xxx) visualizes the results.
+The only correlations for which the 95% CI did not include zero was the state correlation between causality and inference ($r_{sc,si}$ = `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(est)`, 95% CI = [`r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(lower_2.5ci)`; `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(upper_2.5ci)`]) and the trait correlation between inference and quantity ($r_{ti,tq}$ = `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]). 
 
-The negative state correlations between causality and inference may be explained by the intermixed presentation of the two tasks. Remember that causality and inference trials used the same setup and were intermixed. A negative correlation suggests that higher (residual) performance in one task was associated with lower performance in the other task. Responding correctly in the two tasks required opposite choice behaviors. That is, in causality, the ape had to pick the cup the experimenter shook to be correct. In inference, it was the unshaken cup. A negative correlation arises when the participant chooses the same cup (shaken or unshaken) across tasks. Whether such a pattern comes from confusing the two tasks or from applying a deliberate strategy, remains unclear. However, it's noteworthy to point out that the traits were not correlated in the same way, suggesting that ...
+The negative state correlations between causality and inference may be explained by the intermixed presentation of the two tasks. Remember that causality and inference trials used the same setup and were intermixed. A negative correlation suggests that higher (residual) performance in one task was associated with lower performance in the other task. Responding correctly in the two tasks required opposite choice behaviors. That is, in causality, the ape had to pick the cup the experimenter shook to be correct. In inference, it was the unshaken cup. Such a negative correlation arises when sometimes participants respond in the same way (e.g. pick the shaken cup) across tasks. Note, however, that if this were a stable strategy that individuals would consistently use, we would have seen a negative correlation between the trait estimates. The best explanation is thus that there are short periods of inattentiveness during which (some) participants  confuse the two tasks.
 
-The trait correlation between inference and quantity was positive, suggesting that individuals with better quantity judgemnt also have better inferential abilities. 
+The trait correlation between inference and quantity was positive, suggesting that individuals with better quantity judgemnt abilities also have better inferential abilities. 
+
+One (out of four) of the test-half specific trait correlations between causality and quantity was also reliably different from zero ($r_{tc2,tq1}$ = `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]). We do not consider this result to be substantial evidence for a reliable association between the trait estimates in the two tasks and therefore do not interpret it any further. Figure \@ref(fig:mtmplot) shows all correaltions between the different tasks.
 
 ```{r relt}
 kable(rtt, align = c("l", "l", "c", "c"), caption = "Model fit indices for multi-construct models", booktabs=TRUE)%>%
@@ -1691,9 +1748,7 @@ proj_cau_cv$sub_fit
 
 ```{r}
 cvarselp <- summary(cvs_cau, stats = c('elpd', 'rmse'))%>%
-  arrange(elpd)%>%
   tibble()%>%
-  mutate(size = as.numeric(factor(elpd)))%>%
   pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
   pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
   rowwise()%>%
@@ -1715,6 +1770,8 @@ ggplot(aes(x = size, y = value))+
   scale_x_continuous(labels = unique(cvarselp$solution_terms), breaks = unique(cvarselp$size))+
   theme_few()+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+
 ```
 
 ```{r}
@@ -1755,9 +1812,7 @@ cvs_inf <- readRDS("./saves/cvs_inf.rds")
 
 ```{r}
 ivarselp <- summary(cvs_inf, stats = c('elpd', 'rmse'))%>%
-  arrange(elpd)%>%
   tibble()%>%
-  mutate(size = as.numeric(factor(elpd)))%>%
   pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
   pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
   rowwise()%>%
@@ -1821,9 +1876,7 @@ cvs_gaze <- readRDS("./saves/cvs_gaze.rds")
 
 ```{r}
 gvarselp <- summary(cvs_gaze, stats = c('elpd', 'rmse'))%>%
-  arrange(elpd)%>%
   tibble()%>%
-  mutate(size = as.numeric(factor(elpd)))%>%
   pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
   pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
   rowwise()%>%
@@ -1886,9 +1939,7 @@ cvs_quant <- readRDS("./saves/cvs_quant.rds")
 
 ```{r}
 qvarselp <- summary(cvs_quant, stats = c('elpd', 'rmse'))%>%
-  arrange(elpd)%>%
   tibble()%>%
-  mutate(size = as.numeric(factor(elpd)))%>%
   pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
   pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
   rowwise()%>%
