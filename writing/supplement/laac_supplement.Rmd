@@ -53,6 +53,7 @@ library(knitr)
 library(projpred)
 library(bayesplot)
 library(loo)
+library(directlabels)
 
 source("../../utils/custom_facet.R")
 
@@ -1544,13 +1545,15 @@ pmtmcor <- mtmcor%>%
   ggplot(aes(y = task1, x = task2, fill = est, label = label))+
     geom_tile(color = "white")+
   labs(x = "", y = "")+
-  scale_fill_gradient2(low = "#CC6677", high = "#117733", mid = "white", 
+  scale_fill_gradient2(low = "#CC6677", high = "#117733", mid = "#FFE066", 
    midpoint = 0, limit = c(-1,1), space = "Lab", 
    name="Correlation")+
   facet_grid(~type)+
   geom_text(size = 3, fontface = ifelse(mtmcor$sig == T, 2, 1))+
   theme_few()+
-  scale_x_discrete(guide = guide_axis(n.dodge = 2))
+  scale_x_discrete(guide = guide_axis(n.dodge = 2),limits = c("causality", "quantity","gaze_following"))+
+  scale_y_discrete(limits = c( "inference","gaze_following", "quantity"))+
+  theme(legend.position = c(0.9,0.85), legend.direction = "vertical", legend.title = element_blank())
 ```
 
 ```{r mtmplot, fig.height=4, fig.cap = "Correlations between latent traits and states of different tasks. Bold correaltionsa re reliably different from zero. There is no trait correlation between quantity and causality becasue the corresponding model showed a poor fit. See main text for details.", out.width="100%"}
@@ -1579,194 +1582,186 @@ kable_classic(full_width = F)%>%
 
 ## Predictability
 
+selecting relevant predictors to some extend arbitrary, some are clear, towards the end it's more arbitrary - ranking is important and what we can compare across phases. 
+
 ### Phase 1
 
 ```{r}
-ncores <- parallel::detectCores()
+#ncores <- parallel::detectCores()
 ```
 
 ```{r, include = FALSE}
-apes1_new <- read_csv("../../data/ppi_data_phase1.csv")%>%
-  mutate(across(c(subject, group, le_present, dist_present, sex, rearing, observer, test_day), as_factor)) %>%
-  mutate(observer = fct_relevel(observer, "no")) %>% 
-  jtools::center(.,vars = c("sick_severity",
-                            "le_mean",
-                            "time_outdoors",
-                            "age",
-                            "time_in_leipzig", 
-                            "test_tp")) %>%
-  group_by(group, time_point) %>%
-  mutate(rank_gmc = rank - mean(rank, na.rm = TRUE)) %>%
-  ungroup() %>%
-  arrange(time_point)
-
-grp_size <- tibble(
-  # number of apes for each species
-  a_chimp = 20,
-  b_chimp = 6,
-  bonobo = 12,
-  gorilla = 6,
-  orangutan = 6
-)
-
-apes1_new <- apes1_new %>%
-  # create rank variable depending on species
-  group_by(group, time_point) %>%
-  mutate(
-    rel_rank = case_when(
-      group == "a_chimp" ~ percent_rank(grp_size$a_chimp:1)[rank],
-      group == "b_chimp" ~ percent_rank(grp_size$b_chimp:1)[rank],
-      group == "bonobo" ~ percent_rank(grp_size$bonobo:1)[rank],
-      group == "gorilla" ~ percent_rank(grp_size$gorilla:1)[rank],
-      group == "orangutan" ~ percent_rank(grp_size$orangutan:1)[rank]
-    )
-  ) %>%
-  ungroup()
-
-t_cau <- filter(apes1_new, task == "causality")
-t_inf <- filter(apes1_new, task == "inference")
-t_quant <- filter(apes1_new, task == "quantity")
-t_gaze <- filter(apes1_new, task == "gaze_following")
-
-t_gaze <- t_gaze %>%
-  # create dummy variable indicating if session 1 or 2
-  group_by(time_point, session) %>% 
-  mutate(tp_mod = cur_group_id()) %>%
-  ungroup() %>% 
-  mutate(day2 = case_when(session == 1 ~ "no",
-                          session == 2 ~ "yes"),
-         day2 = factor(day2)) %>%
-  select(tp_mod, day2, everything())
-
-t_gaze <- t_gaze %>%
-  # remove duplicates created by day2
-  group_by(subject) %>%
-  filter(!duplicated(tp_mod)) %>%   
-  ungroup() 
+# apes1_new <- read_csv("../../data/ppi_data_phase1.csv")%>%
+#   mutate(across(c(subject, group, le_present, dist_present, sex, rearing, observer, test_day), as_factor)) %>%
+#   mutate(observer = fct_relevel(observer, "no")) %>% 
+#   jtools::center(.,vars = c("sick_severity",
+#                             "le_mean",
+#                             "time_outdoors",
+#                             "age",
+#                             "time_in_leipzig", 
+#                             "test_tp")) %>%
+#   group_by(group, time_point) %>%
+#   mutate(rank_gmc = rank - mean(rank, na.rm = TRUE)) %>%
+#   ungroup() %>%
+#   arrange(time_point)
+# 
+# grp_size <- tibble(
+#   # number of apes for each species
+#   a_chimp = 20,
+#   b_chimp = 6,
+#   bonobo = 12,
+#   gorilla = 6,
+#   orangutan = 6
+# )
+# 
+# apes1_new <- apes1_new %>%
+#   # create rank variable depending on species
+#   group_by(group, time_point) %>%
+#   mutate(
+#     rel_rank = case_when(
+#       group == "a_chimp" ~ percent_rank(grp_size$a_chimp:1)[rank],
+#       group == "b_chimp" ~ percent_rank(grp_size$b_chimp:1)[rank],
+#       group == "bonobo" ~ percent_rank(grp_size$bonobo:1)[rank],
+#       group == "gorilla" ~ percent_rank(grp_size$gorilla:1)[rank],
+#       group == "orangutan" ~ percent_rank(grp_size$orangutan:1)[rank]
+#     )
+#   ) %>%
+#   ungroup()
+# 
+# t_cau <- filter(apes1_new, task == "causality")
+# t_inf <- filter(apes1_new, task == "inference")
+# t_quant <- filter(apes1_new, task == "quantity")
+# t_gaze <- filter(apes1_new, task == "gaze_following")
+# 
+# t_gaze <- t_gaze %>%
+#   # create dummy variable indicating if session 1 or 2
+#   group_by(time_point, session) %>% 
+#   mutate(tp_mod = cur_group_id()) %>%
+#   ungroup() %>% 
+#   mutate(day2 = case_when(session == 1 ~ "no",
+#                           session == 2 ~ "yes"),
+#          day2 = factor(day2)) %>%
+#   select(tp_mod, day2, everything())
+# 
+# t_gaze <- t_gaze %>%
+#   # remove duplicates created by day2
+#   group_by(subject) %>%
+#   filter(!duplicated(tp_mod)) %>%   
+#   ungroup() 
 ```
 
 
 ```{r, include = F}
-# covariate needed for projection prediction
-# placed here for easy editing of formula
-all_fixed_effects <- c("sick_severity",       
-                       "test_day", "test_tp", 
-                       "rel_rank",
-                       "observer", 
-                       "age", "time_in_leipzig", 
-                       "sex", "group",
-                       "rearing", 
-                       "le_mean", 
-                       "dist_mean",
-                       "time_outdoors", 
-                       "sociality")
-
-fm <- formula(cogn ~ sick_severity +                    
-                test_day + test_tp +                
-                rel_rank + # rank_gmc +
-                observer + 
-                age + time_in_leipzig +
-                sex + group +
-                rearing +
-                le_mean + # le_max + # le_present +         
-                dist_mean + # dist_max + # + dist_present +
-                time_outdoors +
-                sociality + # sociality_total
-                # heat_mod + # heat +
-                (1|subject)                         
-              )
-
-fm_gaze <- update(fm, . ~ . +day2)
+# # covariate needed for projection prediction
+# # placed here for easy editing of formula
+# all_fixed_effects <- c("sick_severity",       
+#                        "test_day", "test_tp", 
+#                        "rel_rank",
+#                        "observer", 
+#                        "age", "time_in_leipzig", 
+#                        "sex", "group",
+#                        "rearing", 
+#                        "le_mean", 
+#                        "dist_mean",
+#                        "time_outdoors", 
+#                        "sociality")
+# 
+# fm <- formula(cogn ~ sick_severity +                    
+#                 test_day + test_tp +                
+#                 rel_rank + # rank_gmc +
+#                 observer + 
+#                 age + time_in_leipzig +
+#                 sex + group +
+#                 rearing +
+#                 le_mean + # le_max + # le_present +         
+#                 dist_mean + # dist_max + # + dist_present +
+#                 time_outdoors +
+#                 sociality + # sociality_total
+#                 # heat_mod + # heat +
+#                 (1|subject)                         
+#               )
+# 
+# fm_gaze <- update(fm, . ~ . +day2)
 ```
 
 
 ```{r}
-m_cau_2l <- brm(fm, data = t_cau, 
-                warmup = 2e3, iter = 4e3, cores = ncores, chains = 4, 
-                seed = 2020,
-                save_pars = save_pars(all = TRUE)
-                )
-m_inf_2l <- brm(fm, data = t_inf, 
-                warmup = 2e3, iter = 4e3, cores = ncores, chains = 4, 
-                seed = 2020,
-                save_pars = save_pars(all = TRUE)
-                )
-m_quant_2l <- brm(fm, data = t_quant, 
-                  warmup = 2e3, iter = 4e3, cores = ncores, chains = 4, 
-                  seed = 2020,
-                  save_pars = save_pars(all = TRUE)
-                  )
-m_gaze_2l <- brm(fm_gaze, data = t_gaze, 
-                 warmup = 2e3, iter = 4e3, cores = ncores, chains = 4, 
-                 seed = 2020,
-                 save_pars = save_pars(all = TRUE)
-                 )
+# m_cau_2l <- brm(fm, data = t_cau, 
+#                 warmup = 2e3, iter = 4e3, cores = ncores, chains = 4, 
+#                 seed = 2020,
+#                 save_pars = save_pars(all = TRUE)
+#                 )
+# m_inf_2l <- brm(fm, data = t_inf, 
+#                 warmup = 2e3, iter = 4e3, cores = ncores, chains = 4, 
+#                 seed = 2020,
+#                 save_pars = save_pars(all = TRUE)
+#                 )
+# m_quant_2l <- brm(fm, data = t_quant, 
+#                   warmup = 2e3, iter = 4e3, cores = ncores, chains = 4, 
+#                   seed = 2020,
+#                   save_pars = save_pars(all = TRUE)
+#                   )
+# m_gaze_2l <- brm(fm_gaze, data = t_gaze, 
+#                  warmup = 2e3, iter = 4e3, cores = ncores, chains = 4, 
+#                  seed = 2020,
+#                  save_pars = save_pars(all = TRUE)
+#                  )
 ```
 
 ```{r, eval = F}
-lapply(list(m_cau_2l, m_inf_2l, m_quant_2l, m_gaze_2l), loo)
+#lapply(list(m_cau_2l, m_inf_2l, m_quant_2l, m_gaze_2l), loo)
 ```
 
 ```{r}
 # delay random intercept to last place so that it doesn't soak up all the variance
-s_terms <- c("1", all_fixed_effects,
-             paste0(paste(all_fixed_effects, collapse = " + "), " + (1 | subject)"))
-s_terms_gaze <- c("1", c(all_fixed_effects, "day2"),
-                  paste0(paste(c(all_fixed_effects, "day2"), collapse = " + "), " + (1 | subject)"))
+# s_terms <- c("1", all_fixed_effects,
+#              paste0(paste(all_fixed_effects, collapse = " + "), " + (1 | subject)"))
+# s_terms_gaze <- c("1", c(all_fixed_effects, "day2"),
+#                   paste0(paste(c(all_fixed_effects, "day2"), collapse = " + "), " + (1 | subject)"))
 ```
 
 ```{r}
-refM_cau <- get_refmodel(m_cau_2l)
-refM_inf <- get_refmodel(m_inf_2l)
-refM_quant <- get_refmodel(m_quant_2l)
-refM_gaze <- get_refmodel(m_gaze_2l)
+# refM_cau <- get_refmodel(m_cau_2l)
+# refM_inf <- get_refmodel(m_inf_2l)
+# refM_quant <- get_refmodel(m_quant_2l)
+# refM_gaze <- get_refmodel(m_gaze_2l)
 ```
 
 #### Causal inference
 
 ```{r, warning = FALSE}
-cvs_cau <- cv_varsel(refM_cau, 
-                     search_terms = s_terms, cv_method = "LOO", method = "forward", 
-                     seed = 2020)
-
-saveRDS(cvs_cau,"./saves/cvs_cau.rds")
-
-cvs_cau <- readRDS("./saves/cvs_cau.rds")
-
-# summary(cvs_cau); plot(cvs_cau, stats = c('elpd', 'rmse'))
-proj_cau_cv <- project(cvs_cau,  solution_terms = c(1, 2, 15))
-
-as.matrix(proj_cau_cv)%>%as_tibble()#%>%select(rel_rank, group)
-
-mcmc_areas(as.matrix(proj_cau_cv))
-
-str(proj_cau_cv)
-
-proj_cau_cv$sub_fit
+# cvs_cau <- cv_varsel(refM_cau, 
+#                      search_terms = s_terms, cv_method = "LOO", method = "forward", 
+#                      seed = 2020)
+# 
+# saveRDS(cvs_cau,"./saves/cvs_cau.rds")
+# 
+# cvs_cau <- readRDS("./saves/cvs_cau.rds")
 ```
 **relevant** covariates: (1 | subject), group
 
 ```{r}
-cvarselp <- summary(cvs_cau, stats = c('elpd', 'rmse'))%>%
-  tibble()%>%
-  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
-  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
-  rowwise()%>%
-  filter(grepl(stat,se_term))%>%
-  select(-se_term)%>%
-  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
-         select = ifelse(solution_terms  %in% c("(1 | subject)", "group"), "yes", "no"))
-
-saveRDS(cvarselp, "./saves/cvs_cau_summary.rds")
+# cvarselp <- summary(cvs_cau, stats = c('elpd', 'rmse'))%>%
+#   tibble()%>%
+#   pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+#   pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+#   rowwise()%>%
+#   filter(grepl(stat,se_term))%>%
+#   select(-se_term)%>%
+#   mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+#          select = ifelse(solution_terms  %in% c("(1 | subject)", "group"), "yes", "no"))
+# 
+# saveRDS(cvarselp, "./saves/cvs_cau_summary.rds")
 
 cvarselp <- readRDS("./saves/cvs_cau_summary.rds")
 
-cvarselp%>%
+pcsel <- cvarselp%>%
 ggplot(aes(x = size, y = value))+
   geom_line(col = "black", alpha = .5)+
   geom_pointrange(aes(ymin = value - se, ymax = value + se, col = select), size = 0.5, pch = 4)+
   facet_grid(stat~., scale = "free_y")+
   scale_color_manual(name = "relevant", values = c("black", "firebrick"))+
+  labs(y = "", x = "Predictors")+
   scale_x_continuous(labels = unique(cvarselp$solution_terms), breaks = unique(cvarselp$size))+
   theme_few()+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
@@ -1775,53 +1770,62 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-proj_cau_cv <- project(cvs_cau,  solution_terms = c(1, 9, 14))
+# proj_cau_cv <- project(cvs_cau,  solution_terms = c(1, 14))
+# 
+# proj_samples_cau <- as.matrix(proj_cau_cv)%>%
+#   as_tibble()%>%
+#   pivot_longer(cols =c(1:8), names_to = "pred", values_to = "value")%>%
+#   filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+#   mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
+#          pred = str_remove(pred,"group"),
+#          pred = str_remove(pred,"rel_"),
+#          species = ifelse(factor == "group", pred,factor))
+# 
+# saveRDS(proj_samples_cau,"./saves/proj_cvs_cau.rds")
 
-proj_samples_cau <- as.matrix(proj_cau_cv)%>%
-  as_tibble()%>%
-  pivot_longer(cols =c(1:9), names_to = "pred", values_to = "value")%>%
-  filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
-  mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
-         pred = str_remove(pred,"group"),
-         pred = str_remove(pred,"rel_"),
-         species = ifelse(factor == "group", pred,factor))
+proj_samples_cau <- readRDS("./saves/proj_cvs_cau.rds")
 
-ggplot(proj_samples_cau, aes(x = value, y = pred, fill = species)) +
+pcpro <- ggplot(proj_samples_cau, aes(x = value, y = pred, fill = species)) +
   geom_vline(xintercept = 0, lty = 2, alpha = .75)+
   geom_density_ridges(alpha = .5, scale = .7) +
   facet_wrap(factor~., scales = "free")+
+  labs(y = "", x = "Estimate")+
   scale_fill_colorblind()+
   guides(fill = F)+
   theme_minimal()+
   theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
 ```
 
+```{r cselp, fig.height=4, fig.cap = "Predictor selection for causality. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel model.", out.width="100%"}
+ggarrange(pcsel, pcpro, labels = c("A","B"), widths = c(1.5,1))
+```
+
 
 #### Inference by exclusion
 
 ```{r, warning = F}
-cvs_inf <- cv_varsel(refM_inf, 
-                     search_terms = s_terms, cv_method = "LOO", method = "forward", 
-                     seed = 2020)
-
-saveRDS(cvs_inf,"./saves/cvs_inf.rds")
-
-cvs_inf <- readRDS("./saves/cvs_inf.rds")
+# cvs_inf <- cv_varsel(refM_inf, 
+#                      search_terms = s_terms, cv_method = "LOO", method = "forward", 
+#                      seed = 2020)
+# 
+# saveRDS(cvs_inf,"./saves/cvs_inf.rds")
+# 
+# cvs_inf <- readRDS("./saves/cvs_inf.rds")
 ```
 **relevant** covariates: (1 | subject), time_in_leipzig, group, age
 
 ```{r}
-ivarselp <- summary(cvs_inf, stats = c('elpd', 'rmse'))%>%
-  tibble()%>%
-  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
-  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
-  rowwise()%>%
-  filter(grepl(stat,se_term))%>%
-  select(-se_term)%>%
-  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
-         select = ifelse(solution_terms  %in% c("(1 | subject)", "time_in_leipzig", "group", "age"), "yes", "no"))
-
-saveRDS(ivarselp, "./saves/cvs_inf_summary.rds")
+# ivarselp <- summary(cvs_inf, stats = c('elpd', 'rmse'))%>%
+#   tibble()%>%
+#   pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+#   pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+#   rowwise()%>%
+#   filter(grepl(stat,se_term))%>%
+#   select(-se_term)%>%
+#   mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+#          select = ifelse(solution_terms  %in% c("(1 | subject)", "time_in_leipzig", "group", "age"), "yes", "no"))
+# 
+# saveRDS(ivarselp, "./saves/cvs_inf_summary.rds")
 
 ivarselp <- readRDS("./saves/cvs_inf_summary.rds")
 
@@ -1837,15 +1841,19 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-proj_inf_cv <- project(cvs_inf,  solution_terms = c(1, 2, 3))
+# proj_inf_cv <- project(cvs_inf,  solution_terms = c(1, 2, 3))
+# 
+# proj_samples_inf <- as.matrix(proj_inf_cv)%>%
+#   as_tibble()%>%
+#   pivot_longer(cols =c(1:9), names_to = "pred", values_to = "value")%>%
+#   filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+#   mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
+#          pred = str_remove(pred,"group"),
+#          species = ifelse(factor == "group", pred,factor))
+# 
+# saveRDS(proj_samples_inf,"./saves/proj_cvs_inf.rds")
 
-proj_samples_inf <- as.matrix(proj_inf_cv)%>%
-  as_tibble()%>%
-  pivot_longer(cols =c(1:9), names_to = "pred", values_to = "value")%>%
-  filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
-  mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
-         pred = str_remove(pred,"group"),
-         species = ifelse(factor == "group", pred,factor))
+proj_samples_inf <- readRDS("./saves/proj_cvs_inf.rds")
 
 ggplot(proj_samples_inf, aes(x = value, y = pred, fill = species)) +
   geom_vline(xintercept = 0, lty = 2, alpha = .75)+
@@ -1860,32 +1868,28 @@ ggplot(proj_samples_inf, aes(x = value, y = pred, fill = species)) +
 #### Gaze Following
 
 ```{r, warning = F}
-cvs_gaze <- cv_varsel(refM_gaze, 
-                      search_terms = s_terms_gaze, cv_method = "LOO", method = "forward", 
-                      seed = 2020)
-
-saveRDS(cvs_gaze,"./saves/cvs_gaze.rds")
-
-cvs_gaze <- readRDS("./saves/cvs_gaze.rds")
-
-# summary(cvs_gaze); plot(cvs_gaze, stats = c('elpd', 'rmse'))
-# proj_gaze_cv <- project(cvs_gaze, solution_terms = c(1, 2, 3, 4, 5, 6, 7, 15))
-# mcmc_areas(as.matrix(proj_gaze_cv), pars = solution_terms(cvs_gaze)[c(1, 2, 3, 4, 5, 6, 7, 15)])
+# cvs_gaze <- cv_varsel(refM_gaze, 
+#                       search_terms = s_terms_gaze, cv_method = "LOO", method = "forward", 
+#                       seed = 2020)
+# 
+# saveRDS(cvs_gaze,"./saves/cvs_gaze.rds")
+# 
+# cvs_gaze <- readRDS("./saves/cvs_gaze.rds")
 ```
 **relevant** covariates: (1 | subject), group, rearing, time_outdoors, age, sociality, sex
 
 ```{r}
-gvarselp <- summary(cvs_gaze, stats = c('elpd', 'rmse'))%>%
-  tibble()%>%
-  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
-  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
-  rowwise()%>%
-  filter(grepl(stat,se_term))%>%
-  select(-se_term)%>%
-  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
-         select = ifelse(solution_terms  %in% c("(1 | subject)", "group", "rearing", "time_outdoors", "age","sociality","sex"), "yes", "no"))
-
-saveRDS(gvarselp, "./saves/cvs_gaze_summary.rds")
+# gvarselp <- summary(cvs_gaze, stats = c('elpd', 'rmse'))%>%
+#   tibble()%>%
+#   pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+#   pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+#   rowwise()%>%
+#   filter(grepl(stat,se_term))%>%
+#   select(-se_term)%>%
+#   mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+#          select = ifelse(solution_terms  %in% c("(1 | subject)", "group", "rearing", "time_outdoors", "age","sociality","sex"), "yes", "no"))
+# 
+# saveRDS(gvarselp, "./saves/cvs_gaze_summary.rds")
 
 gvarselp <- readRDS("./saves/cvs_gaze_summary.rds")
 
@@ -1901,17 +1905,21 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-proj_gaze_cv <- project(cvs_gaze,  solution_terms = c(1:6))
+# proj_gaze_cv <- project(cvs_gaze,  solution_terms = c(1:6))
+# 
+# proj_samples_gaze <- as.matrix(proj_gaze_cv)%>%
+#   as_tibble()%>%
+#   pivot_longer(cols =c(1:14), names_to = "pred", values_to = "value")%>%
+#   filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+#   mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex","other predictors"))),
+#          pred = str_remove(pred,"group"),
+#          pred = str_remove(pred,"rearing"),
+#          pred = str_remove(pred,"sex"),
+#          species = ifelse(factor == "group", pred,factor))
+# 
+# saveRDS(proj_samples_gaze,"./saves/proj_cvs_gaze.rds")
 
-proj_samples_gaze <- as.matrix(proj_gaze_cv)%>%
-  as_tibble()%>%
-  pivot_longer(cols =c(1:14), names_to = "pred", values_to = "value")%>%
-  filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
-  mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex","other predictors"))),
-         pred = str_remove(pred,"group"),
-         pred = str_remove(pred,"rearing"),
-         pred = str_remove(pred,"sex"),
-         species = ifelse(factor == "group", pred,factor))
+proj_samples_gaze <- readRDS("./saves/proj_cvs_gaze.rds")
 
 ggplot(proj_samples_gaze, aes(x = value, y = pred, fill = species)) +
   geom_vline(xintercept = 0, lty = 2, alpha = .75)+
@@ -1927,28 +1935,28 @@ ggplot(proj_samples_gaze, aes(x = value, y = pred, fill = species)) +
 #### Quantity
 
 ```{r, warning = F}
-cvs_quant <- cv_varsel(refM_quant, 
-                       search_terms = s_terms, cv_method = "LOO", method = "forward", 
-                       seed = 2020)
-
-saveRDS(cvs_quant,"./saves/cvs_quant.rds")
-
-cvs_quant <- readRDS("./saves/cvs_quant.rds")
+# cvs_quant <- cv_varsel(refM_quant, 
+#                        search_terms = s_terms, cv_method = "LOO", method = "forward", 
+#                        seed = 2020)
+# 
+# saveRDS(cvs_quant,"./saves/cvs_quant.rds")
+# 
+# cvs_quant <- readRDS("./saves/cvs_quant.rds")
 ```
 **relevant** covariates: (1 | subject), time_in_leipzig, rearing, group
 
 ```{r}
-qvarselp <- summary(cvs_quant, stats = c('elpd', 'rmse'))%>%
-  tibble()%>%
-  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
-  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
-  rowwise()%>%
-  filter(grepl(stat,se_term))%>%
-  select(-se_term)%>%
-  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
-         select = ifelse(solution_terms  %in% c("(1 | subject)", "time_in_leipzig", "rearing", "group"), "yes", "no"))
-
-saveRDS(qvarselp, "./saves/cvs_quant_summary.rds")
+# qvarselp <- summary(cvs_quant, stats = c('elpd', 'rmse'))%>%
+#   tibble()%>%
+#   pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+#   pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+#   rowwise()%>%
+#   filter(grepl(stat,se_term))%>%
+#   select(-se_term)%>%
+#   mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+#          select = ifelse(solution_terms  %in% c("(1 | subject)", "time_in_leipzig", "rearing", "group"), "yes", "no"))
+# 
+# saveRDS(qvarselp, "./saves/cvs_quant_summary.rds")
 
 qvarselp <- readRDS("./saves/cvs_quant_summary.rds")
 
@@ -1964,17 +1972,21 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-proj_quant_cv <- project(cvs_quant,  solution_terms = c(1:3))
+# proj_quant_cv <- project(cvs_quant,  solution_terms = c(1:3))
+# 
+# proj_samples_quant <- as.matrix(proj_quant_cv)%>%
+#   as_tibble()%>%
+#   pivot_longer(cols =c(1:10), names_to = "pred", values_to = "value")%>%
+#   filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+#   mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex","other predictors"))),
+#          pred = str_remove(pred,"group"),
+#          pred = str_remove(pred,"rearing"),
+#          pred = str_remove(pred,"sex"),
+#          species = ifelse(factor == "group", pred,factor))
+# 
+# saveRDS(proj_samples_quant,"./saves/proj_cvs_quant.rds")
 
-proj_samples_quant <- as.matrix(proj_quant_cv)%>%
-  as_tibble()%>%
-  pivot_longer(cols =c(1:10), names_to = "pred", values_to = "value")%>%
-  filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
-  mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex","other predictors"))),
-         pred = str_remove(pred,"group"),
-         pred = str_remove(pred,"rearing"),
-         pred = str_remove(pred,"sex"),
-         species = ifelse(factor == "group", pred,factor))
+proj_samples_quant <- readRDS("./saves/proj_cvs_quant.rds")
 
 ggplot(proj_samples_quant, aes(x = value, y = pred, fill = species)) +
   geom_vline(xintercept = 0, lty = 2, alpha = .75)+
@@ -1986,9 +1998,60 @@ ggplot(proj_samples_quant, aes(x = value, y = pred, fill = species)) +
   theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
   
 ```
+#### Overview
 
 Previous section showed that performance was stable and largely explained by stable / trait differences. This limits how much the predictors can actually explain - and as we will see the most important predictor in all cases was a random intercept term for each individual. 
 
+```{r}
+ro <- bind_rows(qvarselp%>%mutate(task = "quantity"),
+          cvarselp%>%mutate(task = "causality"),
+          ivarselp%>%mutate(task = "inference"),
+          gvarselp%>%mutate(task = "gaze_following"),
+)%>%
+  filter(stat == "elpd", 
+         solution_terms != "none",
+         solution_terms != "day2",
+         solution_terms != "(1 | subject)")%>%
+  select(size, solution_terms, task, select)
+
+pro <- ggplot(ro,aes(x = task, y = size, col = solution_terms))+
+  geom_line(aes(group = solution_terms))+
+  geom_point(aes(size = select))+
+  theme_minimal()+
+  scale_y_reverse(breaks = c(1:15))+
+  scale_x_discrete(expand=c(0,0.7)) +
+  guides(col = F, size = F)+
+  geom_dl(aes(label = solution_terms),method = list(dl.trans(x = x + 0.5), "last.points", cex = 0.8))+
+  scale_color_viridis_d()
+
+```
+
+```{r}
+pco <- ro%>%
+  select(size, solution_terms,task)%>%
+  pivot_wider(names_from = "task", values_from = "size")%>%
+  select(-solution_terms)%>%
+  corrr::correlate(method = "spearman", quiet = T)%>%
+  gather(task, cor, -term)%>%
+  mutate(cor = replace(cor, duplicated(cor), NA))%>%
+  drop_na(cor)%>%
+  mutate(cor = round(cor,2))%>%
+  ggplot(aes(y = task, x = term, fill = cor, label = cor))+
+  geom_tile(color = "white")+
+  labs(x = "", y = "")+
+  scale_fill_gradient2(low = "#CC6677", high = "#117733", mid = "#FFE066", 
+  midpoint = 0, limit = c(-1,1), space = "Lab", name="Correlation")+
+  geom_text()+
+  scale_x_discrete(limits = c("gaze_following","inference","causality"))+
+  scale_y_discrete(limits = c("quantity","causality","inference"))+
+  theme_few()+
+  theme(legend.position = c(0.9,0.85), legend.direction = "vertical", legend.title = element_blank())
+  
+```
+
+```{r}
+ggarrange(pro, pco, widths = c(1.5,1))
+```
 
 ### Phase 2
 
