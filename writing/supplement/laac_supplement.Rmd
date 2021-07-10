@@ -3,14 +3,14 @@ title: "tbd..."
 author: "tbd..."
 subtitle: Supplementary material
 output:
-  bookdown::pdf_document2:
-    toc: yes
-    number_sections: no
   bookdown::html_document2:
     toc: yes
     toc_float: yes
     fig_caption: yes
     code_folding: hide
+    number_sections: no
+  bookdown::pdf_document2:
+    toc: yes
     number_sections: no
   html_document:
     toc: yes
@@ -92,7 +92,7 @@ data_trial <- read.csv("../../data/laac_data_trial.csv")
 
 # Overview
 
-... Next we describe the different [tasks](#tasks) we sused ...
+... Next we describe the different [tasks](#tasks) we used ...
 
 tasks - stability, reliability
 
@@ -1549,11 +1549,11 @@ pmtmcor <- mtmcor%>%
    midpoint = 0, limit = c(-1,1), space = "Lab", 
    name="Correlation")+
   facet_grid(~type)+
-  geom_text(size = 3, fontface = ifelse(mtmcor$sig == T, 2, 1))+
+  geom_text(size = 2.8, fontface = ifelse(mtmcor$sig == T, 2, 1))+
   theme_few()+
   scale_x_discrete(guide = guide_axis(n.dodge = 2),limits = c("causality", "quantity","gaze_following"))+
   scale_y_discrete(limits = c( "inference","gaze_following", "quantity"))+
-  theme(legend.position = c(0.9,0.85), legend.direction = "vertical", legend.title = element_blank())
+  theme(legend.position = c(0.92,0.75), legend.direction = "vertical", legend.title = element_blank())
 ```
 
 ```{r mtmplot, fig.height=4, fig.cap = "Correlations between latent traits and states of different tasks. Bold correaltionsa re reliably different from zero. There is no trait correlation between quantity and causality becasue the corresponding model showed a poor fit. See main text for details.", out.width="100%"}
@@ -1765,7 +1765,7 @@ ggplot(aes(x = size, y = value))+
   scale_x_continuous(labels = unique(cvarselp$solution_terms), breaks = unique(cvarselp$size))+
   theme_few()+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
-        legend.position = c(0.2,0.9), legend.direction = "horizontal")
+        legend.position = c(0.5,0.9), legend.direction = "horizontal")
 
 
 ```
@@ -1830,16 +1830,17 @@ ggarrange(pcsel, pcpro, labels = c("A","B"), widths = c(1.5,1))
 
 ivarselp <- readRDS("./saves/cvs_inf_summary.rds")
 
-ivarselp%>%
+pisel <- ivarselp%>%
 ggplot(aes(x = size, y = value))+
   geom_line(col = "black", alpha = .5)+
   geom_pointrange(aes(ymin = value - se, ymax = value + se, col = select), size = 0.5, pch = 4)+
   facet_grid(stat~., scale = "free_y")+
+    labs(y = "", x = "Predictors")+
   scale_color_manual(name = "relevant", values = c("black", "firebrick"))+
   scale_x_continuous(labels = unique(ivarselp$solution_terms), breaks = unique(ivarselp$size))+
   theme_few()+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
-        legend.position = c(0.2,0.9), legend.direction = "horizontal")
+        legend.position = c(0.5,0.9), legend.direction = "horizontal")
 ```
 
 ```{r}
@@ -1857,14 +1858,19 @@ ggplot(aes(x = size, y = value))+
 
 proj_samples_inf <- readRDS("./saves/proj_cvs_inf.rds")
 
-ggplot(proj_samples_inf, aes(x = value, y = pred, fill = species)) +
+pipro <- ggplot(proj_samples_inf, aes(x = value, y = pred, fill = species)) +
   geom_vline(xintercept = 0, lty = 2, alpha = .75)+
   geom_density_ridges(alpha = .5, scale = .7) +
-  facet_wrap(factor~., scales = "free")+
+  facet_wrap(.~factor, scales = "free", ncol = 1)+
   scale_fill_colorblind()+
+    labs(y = "", x = "Estimate")+
   guides(fill = F)+
   theme_minimal()+
   theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
+```
+
+```{r iselp, fig.height=4, fig.cap = "Predictor selection for inference. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel model.", out.width="100%"}
+ggarrange(pisel, pipro, labels = c("A","B"), widths = c(1.5,1))
 ```
 
 #### Gaze Following
@@ -1895,16 +1901,17 @@ ggplot(proj_samples_inf, aes(x = value, y = pred, fill = species)) +
 
 gvarselp <- readRDS("./saves/cvs_gaze_summary.rds")
 
-gvarselp%>%
+pgsel <- gvarselp%>%
 ggplot(aes(x = size, y = value))+
   geom_line(col = "black", alpha = .5)+
   geom_pointrange(aes(ymin = value - se, ymax = value + se, col = select), size = 0.5, pch = 4)+
   facet_grid(stat~., scale = "free_y")+
+      labs(y = "", x = "Predictors")+
   scale_color_manual(name = "relevant", values = c("black", "firebrick"))+
   scale_x_continuous(labels = unique(gvarselp$solution_terms), breaks = unique(gvarselp$size))+
   theme_few()+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
-        legend.position = c(0.2,0.9), legend.direction = "horizontal")
+        legend.position = c(0.5,0.9), legend.direction = "horizontal")
 ```
 
 ```{r}
@@ -1924,15 +1931,20 @@ ggplot(aes(x = size, y = value))+
 
 proj_samples_gaze <- readRDS("./saves/proj_cvs_gaze.rds")
 
-ggplot(proj_samples_gaze, aes(x = value, y = pred, fill = species)) +
+pgpro <- ggplot(proj_samples_gaze, aes(x = value, y = pred, fill = species)) +
   geom_vline(xintercept = 0, lty = 2, alpha = .75)+
   geom_density_ridges(alpha = .5, scale = .7) +
-  facet_wrap(factor~., scales = "free", nrow = 1)+
+  facet_wrap(.~factor, scales = "free", ncol = 4)+
   scale_fill_colorblind()+
+    labs(y = "", x = "Estimate")+
   guides(fill = F)+
   theme_minimal()+
   theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
   
+```
+
+```{r gselp, fig.height=6, fig.cap = "Predictor selection for gaze following. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel model.", out.width="100%"}
+ggarrange(pgsel, pgpro, labels = c("A","B"), nrow = 2, heights = c(1.5,1))
 ```
 
 #### Quantity
@@ -1963,16 +1975,17 @@ ggplot(proj_samples_gaze, aes(x = value, y = pred, fill = species)) +
 
 qvarselp <- readRDS("./saves/cvs_quant_summary.rds")
 
-qvarselp%>%
+pqsel <- qvarselp%>%
 ggplot(aes(x = size, y = value))+
   geom_line(col = "black", alpha = .5)+
   geom_pointrange(aes(ymin = value - se, ymax = value + se, col = select), size = 0.5, pch = 4)+
   facet_grid(stat~., scale = "free_y")+
+        labs(y = "", x = "Predictors")+
   scale_color_manual(name = "relevant", values = c("black", "firebrick"))+
   scale_x_continuous(labels = unique(qvarselp$solution_terms), breaks = unique(qvarselp$size))+
   theme_few()+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
-        legend.position = c(0.2,0.9), legend.direction = "horizontal")
+        legend.position = c(0.5,0.9), legend.direction = "horizontal")
 ```
 
 ```{r}
@@ -1992,16 +2005,22 @@ ggplot(aes(x = size, y = value))+
 
 proj_samples_quant <- readRDS("./saves/proj_cvs_quant.rds")
 
-ggplot(proj_samples_quant, aes(x = value, y = pred, fill = species)) +
+pqpro <- ggplot(proj_samples_quant, aes(x = value, y = pred, fill = species)) +
   geom_vline(xintercept = 0, lty = 2, alpha = .75)+
   geom_density_ridges(alpha = .5, scale = .7) +
-  facet_wrap(factor~., scales = "free", nrow = 1)+
+  facet_wrap(.~factor, scales = "free", ncol = 3)+
   scale_fill_colorblind()+
+    labs(y = "", x = "Estimate")+
   guides(fill = F)+
   theme_minimal()+
   theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
   
 ```
+
+```{r qselp, fig.height=6, fig.cap = "Predictor selection for quantity. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel model.", out.width="100%"}
+ggarrange(pqsel, pqpro, labels = c("A","B"), nrow = 2, heights = c(1.5,1))
+```
+
 #### Overview
 
 Previous section showed that performance was stable and largely explained by stable / trait differences. This limits how much the predictors can actually explain - and as we will see the most important predictor in all cases was a random intercept term for each individual. 
@@ -2022,6 +2041,7 @@ pro <- ggplot(ro,aes(x = task, y = size, col = solution_terms))+
   geom_line(aes(group = solution_terms))+
   geom_point(aes(size = select))+
   theme_minimal()+
+  labs(x = "", y = "Rank")+
   scale_y_reverse(breaks = c(1:15))+
   scale_x_discrete(expand=c(0,0.7)) +
   guides(col = F, size = F)+
@@ -2049,12 +2069,16 @@ pco <- ro%>%
   scale_x_discrete(limits = c("gaze_following","inference","causality"))+
   scale_y_discrete(limits = c("quantity","causality","inference"))+
   theme_few()+
-  theme(legend.position = c(0.9,0.85), legend.direction = "vertical", legend.title = element_blank())
+  theme(legend.position = "right", legend.direction = "vertical", legend.title = element_blank())+
+  coord_fixed()
   
 ```
 
-```{r}
-ggarrange(pro, pco, widths = c(1.5,1), labels = c("A","B"))
+```{r selcomp, fig.height=4, fig.cap = "Predictor ranking for each task. Large dots denote selected predictors.", out.width="100%"}
+pro
+```
+```{r cselcomp, fig.height=3, fig.cap = "Correlations of predictor rankings among the four tasks.", out.width="100%"}
+pco
 ```
 
 ### Phase 2
