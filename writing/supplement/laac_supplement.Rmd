@@ -1764,7 +1764,8 @@ ggplot(aes(x = size, y = value))+
   labs(y = "", x = "Predictors")+
   scale_x_continuous(labels = unique(cvarselp$solution_terms), breaks = unique(cvarselp$size))+
   theme_few()+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        legend.position = c(0.2,0.9), legend.direction = "horizontal")
 
 
 ```
@@ -1837,7 +1838,8 @@ ggplot(aes(x = size, y = value))+
   scale_color_manual(name = "relevant", values = c("black", "firebrick"))+
   scale_x_continuous(labels = unique(ivarselp$solution_terms), breaks = unique(ivarselp$size))+
   theme_few()+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        legend.position = c(0.2,0.9), legend.direction = "horizontal")
 ```
 
 ```{r}
@@ -1901,7 +1903,8 @@ ggplot(aes(x = size, y = value))+
   scale_color_manual(name = "relevant", values = c("black", "firebrick"))+
   scale_x_continuous(labels = unique(gvarselp$solution_terms), breaks = unique(gvarselp$size))+
   theme_few()+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        legend.position = c(0.2,0.9), legend.direction = "horizontal")
 ```
 
 ```{r}
@@ -1968,7 +1971,8 @@ ggplot(aes(x = size, y = value))+
   scale_color_manual(name = "relevant", values = c("black", "firebrick"))+
   scale_x_continuous(labels = unique(qvarselp$solution_terms), breaks = unique(qvarselp$size))+
   theme_few()+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        legend.position = c(0.2,0.9), legend.direction = "horizontal")
 ```
 
 ```{r}
@@ -2050,7 +2054,7 @@ pco <- ro%>%
 ```
 
 ```{r}
-ggarrange(pro, pco, widths = c(1.5,1))
+ggarrange(pro, pco, widths = c(1.5,1), labels = c("A","B"))
 ```
 
 ### Phase 2
