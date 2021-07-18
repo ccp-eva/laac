@@ -3,14 +3,14 @@ title: "tbd..."
 author: "tbd..."
 subtitle: Supplementary material
 output:
-  bookdown::pdf_document2:
-    toc: yes
-    number_sections: no
   bookdown::html_document2:
     toc: yes
     toc_float: yes
     fig_caption: yes
     code_folding: hide
+    number_sections: no
+  bookdown::pdf_document2:
+    toc: yes
     number_sections: no
   html_document:
     toc: yes
@@ -1728,7 +1728,7 @@ pcpro <- ggplot(proj_samples_cau, aes(x = value, y = pred, fill = species)) +
   theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
 ```
 
-```{r cselp, fig.height=4, fig.cap = "Predictor selection for causality. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel.", out.width="100%"}
+```{r cselp, fig.height=3.5, fig.cap = "Predictor selection for causality. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel.", out.width="100%"}
 ggarrange(pcsel, pcpro, labels = c("A","B"), widths = c(1.5,1))
 ```
 
@@ -1800,13 +1800,13 @@ pipro <- ggplot(proj_samples_inf, aes(x = value, y = pred, fill = species)) +
   theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
 ```
 
-```{r iselp, fig.height=4, fig.cap = "Predictor selection for inference. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel.", out.width="100%"}
+```{r iselp, fig.height=3.5, fig.cap = "Predictor selection for inference. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel.", out.width="100%"}
 ggarrange(pisel, pipro, labels = c("A","B"), widths = c(1.5,1))
 ```
 
 Figure \@ref(fig:iselp) visualizes the results. For inference by exclusion, we selected `time_in_leipzig`, `group`, and `age` as relevant predictors in addition to the random intercept term. All three predictors capture to stable individual characteristics. 
 
-Figure \@ref(fig:cselp)B shows the projected posterior distributions for the predictors and suggests that the longer apes lived in Leipzig, the better their performance was. The differences between groups were such that the two chimpanzee groups together with the Gorillas performed on a higher level compared to the Bonobos and Orangutans. With respect to `age`, we found that performance decreased with age.
+Figure \@ref(fig:iselp)B shows the projected posterior distributions for the predictors and suggests that the longer apes lived in Leipzig, the better their performance was. The differences between groups were such that the two chimpanzee groups together with the Gorillas performed on a higher level compared to the Bonobos and Orangutans. With respect to `age`, we found that performance decreased with age.
 
 #### Gaze Following
 
@@ -1884,7 +1884,7 @@ ggarrange(pgsel, pgpro, labels = c("A","B"), nrow = 2, heights = c(1.5,1))
 
 Figure \@ref(fig:gselp) visualizes the results. Gaze following had the most selected predictors of all tasks. In addition to the random intercept term, we selected, `group`, `rearing`, `time_outdoors`, `age`, `sociality`, and `sex`. Again, most of these predictors were stable individual characteristics, with the exception of `time_outdoors` and `sociality`.
 
-Groups differed in that A-chimpanzees were most likely to follow gaze, followed by B-chimpanzees and Bonobos. Gorillas and Orangutans were the least likely to follow the experimenter's gaze. Mother-reared individuals outperformed hand-reared individuals (including those with and unknown rearing history). The more time individuals spent outdoors, the more likely they were to follow gaze. Also, the probability to follow gaze increased with age. Individuals with a lower sociality index had higher rates of gaze following. Finally, females outperformed males. Figure \@ref(fig:cselp)B visualizes these results.
+Groups differed in that A-chimpanzees were most likely to follow gaze, followed by B-chimpanzees and Bonobos. Gorillas and Orangutans were the least likely to follow the experimenter's gaze. Mother-reared individuals outperformed hand-reared individuals (including those with and unknown rearing history). The more time individuals spent outdoors, the more likely they were to follow gaze. Also, the probability to follow gaze increased with age. Individuals with a lower sociality index had higher rates of gaze following. Finally, females outperformed males. Figure \@ref(fig:gselp)B visualizes these results.
 
 #### Quantity
 
@@ -1961,7 +1961,7 @@ ggarrange(pqsel, pqpro, labels = c("A","B"), nrow = 2, heights = c(1.5,1))
 
 Figure \@ref(fig:qselp) visualizes the results. For quantity, we selected three predictors in addition to the random intercept term:`time_in_leipzig`, `rearing`, and `group`. All of these predictors were stable individual characteristics.
 
-The longer individuals had lived in Leipzig, the better they performed in the task. Group differences were such that B-chimpanzees performed best, followed by Bonobos and Gorillas. A-Chimpanzees performed slightly worse, but still better than the Orangutans. Once again, mother reared individuals outperformed those who were hand-reared or whose rearing history was unknown. Figure \@ref(fig:cselp)B visualizes these results.
+The longer individuals had lived in Leipzig, the better they performed in the task. Group differences were such that B-chimpanzees performed best, followed by Bonobos and Gorillas. A-Chimpanzees performed slightly worse, but still better than the Orangutans. Once again, mother reared individuals outperformed those who were hand-reared or whose rearing history was unknown. Figure \@ref(fig:qselp)B visualizes these results.
 
 #### Summary
 
@@ -1985,23 +1985,46 @@ ro <- bind_rows(qvarselp%>%mutate(task = "quantity"),
          solution_terms != "none",
          solution_terms != "day2",
          solution_terms != "(1 | subject)")%>%
-  select(size, solution_terms, task, select)
+  select(size, solution_terms, task, select)%>%
+  group_by(solution_terms)%>%
+  mutate(sum = sum(size))
 
-pro <- ggplot(ro,aes(x = task, y = size, col = solution_terms))+
-  geom_line(aes(group = solution_terms))+
-  geom_point(aes(size = select))+
+# ggplot(ro,aes(x = task, y = size, col = solution_terms))+
+#   geom_line(aes(group = solution_terms))+
+#   geom_point(aes(size = select))+
+#   theme_minimal()+
+#   labs(x = "", y = "Predictor rank based on PPI model")+
+#   scale_y_reverse(breaks = c(1:15))+
+#   scale_x_discrete(expand=c(0,0.7)) +
+#   guides(col = F, size = F)+
+#   geom_dl(aes(label = solution_terms),method = list(dl.trans(x = x + 0.5), "last.points", cex = 0.7))+
+#   scale_color_viridis_d()
+# 
+# ggplot(ro,aes(x = fct_reorder(solution_terms,-sum), y = size, fill = task))+
+#   #geom_line(aes(group = task))+
+#   geom_bar(stat = "identity", position = position_dodge(), alpha = .75)+
+#   theme_minimal()+
+#   labs(x = "", y = "Predictor rank based on PPI model")+
+#   coord_flip()+
+#   scale_fill_viridis_d()
+
+
+pro <- ggplot(ro,aes(x = fct_reorder(solution_terms,sum), y = size, col = task))+
+  #geom_line(aes(group = task))+
+  geom_line(aes(group = task), alpha = .5)+
+  geom_point(aes(pch = select), size = 3)+
+  scale_shape_manual(values=c(1,4))+
   theme_minimal()+
-  labs(x = "", y = "Predictor rank based on PPI model")+
-  scale_y_reverse(breaks = c(1:15))+
-  scale_x_discrete(expand=c(0,0.7)) +
-  guides(col = F, size = F)+
-  geom_dl(aes(label = solution_terms),method = list(dl.trans(x = x + 0.5), "last.points", cex = 0.7))+
-  scale_color_viridis_d()
+  labs(x = "Predictor (ordered by average rank)", y = "Rank based on PPI model")+
+  scale_color_viridis_d()+
+  guides(shape = "none")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
 
 ```{r}
 pco <- ro%>%
+  ungroup()%>%
   select(size, solution_terms,task)%>%
   pivot_wider(names_from = "task", values_from = "size")%>%
   select(-solution_terms)%>%
@@ -2024,7 +2047,7 @@ pco <- ro%>%
   
 ```
 
-```{r selcomp, fig.height=4, fig.cap = "Predictor ranking for each task. Large dots denote selected predictors.", out.width="100%"}
+```{r selcomp, fig.height=3, fig.cap = "Ranking for each predictor and task. Crosses denote selected predictors.", out.width="100%"}
 pro
 ```
 
