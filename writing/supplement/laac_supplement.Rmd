@@ -3,14 +3,14 @@ title: "tbd..."
 author: "tbd..."
 subtitle: Supplementary material
 output:
+  bookdown::pdf_document2:
+    toc: yes
+    number_sections: no
   bookdown::html_document2:
     toc: yes
     toc_float: yes
     fig_caption: yes
     code_folding: hide
-    number_sections: no
-  bookdown::pdf_document2:
-    toc: yes
     number_sections: no
   html_document:
     toc: yes
@@ -592,18 +592,18 @@ Here we counted in how many other studies the participant had taken part in sinc
 
 # Analytical framework
 
-We had two overarching questions. On the one hand, we were interested in the cognitive measures and the relations between them. That is, we asked how stable performance in a given task was on a group-level, how stable individual differences were, how reliable the measures were. We also investiagted relations between the different tasks. We used Structural Equation Modeling [Jana: citation?] to address these questions. These models have been developed -- and are usually used -- for much larger sample sizes. Thus, we had to make a number of assumptions to be able to fit them to the kind of data that we have; we lay out these assumptions in the text below. The [appendix](#appendix) includes simulations that show the models we fit were robust given the assumptions we made. 
+We had two overarching questions. On the one hand, we were interested in the cognitive measures and the relations between them. That is, we asked how stable performance in a given task was on a group-level, how stable individual differences were, how reliable the measures were. We also investiagted relations between the different tasks. We used Structural Equation Modeling [@bollen1989structural; @hoyle2012handbook] to address these questions. These models have been developed -- and are usually used -- for much larger sample sizes. Thus, we had to make a number of assumptions to be able to fit them to the kind of data that we have; we lay out these assumptions in the text below. The [appendix](#appendix) includes simulations that show the models we fit were robust given the assumptions we made. 
 Our second question was, which predictors explain variability in cognitive performance. Here we wanted to see, which of the predictors we recorded were most important to predict performance over time. This is a variable selection problem (selecting a subset of variables from a larger pool) and we used Projection Prediction Inference for this [@piironen2018projective]. 
 
 ## Structural equation modelling
 
 Structural equation models (SEM) can be used to assess latent variables (constructs) using one or more observed variables. These latent variables can be combined in a structural model that imputes relations between them. We used the data from each time point as observed variables to estimate a latent construct for each task. Due to the small sample size, we could not combine all tasks in a single, structured model. Instead, we assessed relations between tasks in pairs. 
 
-We used SEM to estimate states (time varying) and traits (stable over time). In the present context, one can think of a trait as a stable psychological ability (e.g. ability to make causal inferences) and states as variable psychological condition (e.g. being attentive). Variation in performance on a given time point can then be partitioned into variance explained by the trait, variance explained by the state and measurement error. Because the latent variables are estiamted on multiple indicators, they are assumed to be measurement-error free. Next we describe the model construction process in more detail.
+We used SEM to estimate states (time varying) and traits (stable over time). In the present context, one can think of a trait as a stable psychological ability (e.g. ability to make causal inferences) and states as variable psychological condition (e.g. being attentive). Variation in performance on a given time point can then be partitioned into variance explained by the trait, variance explained by the state and measurement error. Because the latent variables are estimated on multiple indicators, they are assumed to be measurement-error free [@steyer1992states; @steyer2015theory; @geiser2020longitudinal]. Next we describe the model construction process in more detail.
 
 For each task, two parallel test halves were build, corresponding to sum scores of half of the trials of the same time point per task. Trials were alternately assigned to the first and the second test half. For tasks with 12 trials per time point this procedure resulted in two test halves assuming 7 possible values (0 to 6 correctly solved trials), for tasks with 8 trials per time point, test halves could maximally assume 5 possible values (0 to 4 correctly solved trials). Not all categories were observed at all time points and so sometimes categories had to be collapsed (see descriptions below). 
 
-The two test halves served as indicators for a common latent construct per time point, assuming parallel test halves (i.e., factor loadings set to 1 and assuming equal reliability). Due to only few observed categories, indicators were modeled as ordered categorical variables, using a probit link function. The models thereby correspond to Graded Response Models [Jana: citation?]. For model parsimony, to improve estimation accuracy (see simulation studies) and in order to test for latent mean differences across time, we assume strict measurement invariance. That is, in each model (task), loading parameters are set to 1 at all time points, residual variances are equal to 1, threshold parameters (i.e. trait level necessary to respond above threshold with 0.50 probability) are set invariant across time points and variances of latent state residual factors are set invariant across time points. In other words, we assume that the indicators (test halves) measure the latent variable in an equivalent and stable manner over time.
+The two test halves served as indicators for a common latent construct per time point, assuming parallel test halves (i.e., factor loadings set to 1 and assuming equal reliability). Due to only few observed categories, indicators were modeled as ordered categorical variables, using a probit link function. The models thereby correspond to Graded Response Models [@samejima1969estimation; @samejima1996graded]. For model parsimony, to improve estimation accuracy (see simulation studies) and in order to test for latent mean differences across time, we assume strict measurement invariance. That is, in each model (task), loading parameters are set to 1 at all time points, residual variances are equal to 1, threshold parameters (i.e. trait level necessary to respond above threshold with 0.50 probability) are set invariant across time points and variances of latent state residual factors are set invariant across time points. In other words, we assume that the indicators (test halves) measure the latent variable in an equivalent and stable manner over time.
 
 ### Models and coefficients
 
@@ -1415,7 +1415,125 @@ Taken together, quantity judgements were very stable over time on the group leve
 
 ## Relations between tasks
 
-To analyse relations between different tasks (constructs), we estimated six separate LST models, each modeling the relation between two tasks In these combined models, the sub-models for each task were equivalent to the LST models described above. For ease of model specification, the LST models were estimated as multilevel models. These models are equivalent to the LST models for single tasks under the assumption of strict measurement invariance. Figure \@ref(fig:xxx) visualizes the model for two tasks. 
+To analyse relations between different tasks (constructs), we estimated six separate LST models, each modeling the relation between two tasks In these combined models, the sub-models for each task were equivalent to the LST models described above. For ease of model specification, the LST models were estimated as multilevel models. These models are equivalent to the LST models for single tasks under the assumption of strict measurement invariance. Figure \@ref(fig:relgraph) visualizes the model for two tasks. 
+
+```{r relgraph, engine='tikz', fig.cap="Latent State Trait models for two tasks with correlations between traits and states for two indicators and six measurement time points.", out.width="80%", fig.align='center'}
+
+\usetikzlibrary{arrows} 
+\usetikzlibrary{positioning} 
+\usetikzlibrary{shapes} 
+\usetikzlibrary{fit} 
+\usetikzlibrary{backgrounds} 
+\usetikzlibrary{calc}
+
+\begin{tikzpicture}
+ [manifest/.style={rectangle,draw=black!80,semithick,minimum width=1.5cm,inner sep=
+4pt,text centered},
+        latent/.style={ellipse,draw=black!80,thick,inner sep=2,text centered},
+        on/.style={->,>=stealth',semithick},
+        from/.style={<-,>=stealth',semithick},
+        with1/.style={<->,>=stealth',semithick,bend left=30},
+        with2/.style={<->,>=stealth',semithick,bend right=30},
+        with3/.style={<->,>=stealth',semithick,bend left=50},]
+
+
+%%%%%%%%%%%%% Konstrukt 1
+   
+% Latent Variables %
+ \begin{scope}[node distance=1.5]
+                \node[latent] (o1) at (0,0) {$S_{21}$};
+                \node[latent] (o2) [below=of o1] {$S_{22}$};
+                \node[latent] (o3) [below=of o2] {$S_{23}$};
+                \node[latent] (o4) [below=of o3] {$S_{24}$};
+                \node[latent] (o5) [below=of o4] {$S_{25}$};
+                \node[latent] (o6) [below=of o5] {$S_{26}$};
+\end{scope}
+                     
+% Trait % 
+\node[latent,node distance=7] (t) [right=of  o4]  {$T_{2}$};
+                                             	                        
+% Manifest % 
+ \foreach \a in {1,...,6} {\node (y1\a) [right = 2 of o\a] (yhelp\a) {};}        
+ \foreach \b in {1,...,6} {\node[manifest] [above = .05 of yhelp\b] (y1\b) {$Y_{12\b}$}
+ 	edge [from] node[above] {1} (o\b);}
+ \foreach \c in {1,...,6} {\node[manifest] [below = .05 of yhelp\c] (y2\c) {$Y_{22\c}$}
+ 	edge [from] node[below] {$1$} (o\c);} 
+
+    
+% Pfeile %
+\foreach \a in {1,...,6}
+	\path (y1\a.0) edge [from] (t);
+\foreach \a in {1,...,6}	
+	\path (y2\a.0) edge [from] (t);
+    
+  % Fehler %
+\foreach \a in {1,...,5} {\node (e1\a) [below right = .3 of y1\a] {}
+	edge [on] (y1\a.south east);}
+\foreach \b in {1,...,5} {\node (e2\b) [below right = .3 of y2\b] {}
+	edge [on] (y2\b.south east);}
+
+\node (e16) [below right = .3 of y16] {$\epsilon_{126}$}
+	edge [on] (y16.south east);
+\node (e26) [below right = .3 of y26] {$\epsilon_{226}$}
+	edge [on] (y26.south east);
+	
+	
+  
+  %%%%%%%%%%%%% Konstrukt 2
+   
+% Latent Variables %
+ \begin{scope}[node distance=1.5]
+                \node[latent] (o11) [left= 2 of o1] {$S_{11}$};
+                \node[latent] (o21) [below=of o11] {$S_{12}$};
+                \node[latent] (o31) [below=of o21] {$S_{13}$};
+                \node[latent] (o41) [below=of o31] {$S_{14}$};
+                \node[latent] (o51) [below=of o41] {$S_{15}$};
+                \node[latent] (o61) [below=of o51] {$S_{16}$};
+\end{scope}
+
+% Manifest % 
+ \foreach \a in {1,...,6} {\node (y11\a) [left = 2 of o\a1] (yhelp\a1) {};}        
+ \foreach \b in {1,...,6} {\node[manifest] [above = .05 of yhelp\b1] (y11\b) {$Y_{11\b}$}
+ 	edge [from] node[above] {1} (o\b1);}
+ \foreach \c in {1,...,6} {\node[manifest] [below = .05 of yhelp\c1] (y21\c) {$Y_{21\c}$}
+ 	edge [from] node[below] {$1$} (o\c1);} 
+
+%Trait%
+\node[latent,node distance=7] (t1) [left=of  o41]  {$T_{1}$};
+
+% Pfeile %
+\foreach \a in {1,...,6}
+	\path (y11\a.180) edge [from] (t1);
+\foreach \a in {1,...,6}	
+	\path (y21\a.180) edge [from] (t1);
+
+
+  % Fehler %
+\foreach \a in {1,...,5} {\node (e11\a) [below left = .3 of y11\a] {}
+	edge [on] (y11\a.south west);}
+\foreach \b in {1,...,5} {\node (e21\b) [below left = .3 of y21\b] {}
+	edge [on] (y21\b.south west);}
+
+\node (e16) [below left = .3 of y116] {$\epsilon_{116}$}
+	edge [on] (y116.south west);
+\node (e26) [below left = .3 of y216] {$\epsilon_{216}$}
+	edge [on] (y216.south west);
+	
+
+%%%%%%%%%%%%% Korrelationen
+\foreach \a in {1,...,6} {\draw[<->,>=stealth',semithick,] (o\a) to [with1] (o\a1);}
+
+\coordinate [below = 6cm of t1] (fit above) {};
+\coordinate [below= 6cm of t] (fit right) {};
+
+\draw[<-,>=stealth',semithick] (t1.south) -- (fit above);
+\draw[semithick] (fit above) -| (fit right);   
+\draw[->,>=stealth',semithick] (fit right) to (t.south);  
+   
+\end{tikzpicture}
+
+```
+
 
 Detailed information on the parameter estimates obtained in LST models for each separate task is provided above. Here we report the results with a focus on the latent correlations only. The parameters of interest were correlations between a) the latent traits, indicating associations between stable cognitive ability as estimated by the different tasks, and b) correlations between state residual variables belonging to the same measurement time point, as an indicator of time-specific associations between latent abilities across the two tasks, above and beyond stable trait differences.
 
