@@ -1020,7 +1020,7 @@ cor_data <- bind_rows(
   mutate(phase = "Phase 1"), 
   
 data_task %>%
-    filter(time_point > 14)%>%
+  filter(time_point > 14)%>%
   arrange(task)%>%
   drop_na(performance)%>%
   select(subject, task, time_point, performance)%>%
@@ -1029,7 +1029,7 @@ data_task %>%
   select(-subject)%>%
   group_by(task)%>%
   group_split(.keep = F)%>%
-  setNames(data_task%>%filter(time_point > 15)%>%arrange(task)%>%distinct(task)%>%pull(task))%>%
+  setNames(data_task%>%filter(time_point > 14)%>%arrange(task)%>%distinct(task)%>%pull(task))%>%
   purrr::map(cor_func)%>%
   melt()%>%
   mutate(task = factor(L1))%>%
@@ -1082,6 +1082,7 @@ rel_plot_dis <- cor_data%>%
   theme_minimal()+
   guides (col = F)+
   scale_colour_colorblind()
+
 
 ```
 
