@@ -181,6 +181,13 @@ The tasks we selected are based on published procedures and are commonly used in
 
 Example videos for each task can be found in the associated online repository in [`videos/`](https://github.com/ccp-eva/laac/tree/master/videos).
 
+
+### Gaze Following
+
+The gaze following task was modeled after @brauer2005all. The experimenter sat opposite the ape and handed over food at a constant pace. That is, the experimenter picked up a piece of food, briefly held it out in front of her face and then handed it over to the participant. After a predetermined (but varying) number of food items had been handed over, the experimenter again picked up a food item, held it in front of her face and then looked up (i.e., moving her head up - see Figure \@ref(fig:setup)C). The experimenter looked to the ceiling, no object of particular interest was placed there. After 10s, the experimenter looked down again, always handed over the food and the trial ended. We coded whether the participant looked up during the 10s interval.
+
+We assume that participants look up becasue they assume that the experimenter's attention is focused on a potentially noteworthy object. 
+
 ### Causal inference
 
 The causal inference task was modeled after @call2004inferences. Two identical cups with a lid were placed left and right on the table (Figure \@ref(fig:setup)A). The experimenter covered the table with the occluder, retrieved a piece of food, showed it to the ape, and hid it in one the cups outside the participant’s view. Next, the experimenter removed the occluder, picked up the baited cup and shook it three times, which produced a rattling sound. Next, the cup was put back in place, the sliding table pushed forwards, and the participant made a choice by pointing to one of the cups. If they picked the baited cup, their choice was coded as correct, and they received the reward. If they chose the empty cup, they did not. Participants received 12 trials. The location of the food was counterbalanced; 6 times in the right cup and 6 times in the left. Causal inference trials were intermixed with inference by exclusion trials.
@@ -193,41 +200,34 @@ Inference by exclusion trials were also modeled after @call2004inferences and fo
 
 We assume that apes reason that the absence of a sound suggests that the shaken cup is empty. Because they saw a piece of food being hidden, they exclude the empty cup and infer that the food is more likely to be in the non-shaken cup. 
 
-### Gaze Following
-
-The gaze following task was modeled after @brauer2005all. The experimenter sat opposite the ape and handed over food at a constant pace. That is, the experimenter picked up a piece of food, briefly held it out in front of her face and then handed it over to the participant. After a predetermined (but varying) number of food items had been handed over, the experimenter again picked up a food item, held it in front of her face and then looked up (i.e., moving her head up - see Figure \@ref(fig:setup)C). The experimenter looked to the ceiling, no object of particular interest was placed there. After 10s, the experimenter looked down again, always handed over the food and the trial ended. We coded whether the participant looked up during the 10s interval.
-
-We assume that participants look up becasue they assume that the experimenter's attention is focused on a potentially noteworthy object. 
-
 ### Quantity discrimination
 
 For this task, we followed the general procedure of @hanus2007discrete. Two small plates were presented left and right on the table (see Figure \@ref(fig:setup)B). The experimenter covered the plates with the occluder and placed 5 small food pieces on one plate and 7 on the other. Then they pushed the sliding table forwards, and the participant made a choice. We coded as correct when the subject chose the plate with the larger quantity. Participants always received the food from the plate they chose. There were 12 trials, 6 with the larger quantity on the right and 6 on the left (order counterbalanced).
 
-We assume that ... [Daniel Hanus....]
-
+We assume that apes identified the larger of the two food amounts based on discrete quantity estimation.
 
 ### Switching
 
 This task was modeled after @haun2006evolutionary. Three differently looking cups (metal cup with handle, red plastic ice cone, red cup without handle - Figure \@ref(fig:setup)D) were placed next to each other on the table. There were two conditions. In the place condition, the experimenter hid a piece of food under one of the cups in full view of the participant. Next, the cups were covered by the occluder and the experimenter switched the position of two cups, while the reward remained in the same location. Next, the experimenter removed the occluder and pushed the table forward. We coded as correct if the participant chose the location where the food was hidden. Participants received four trials in this condition. 
 
-The place condition was run first. The feature condition followed the same procedure, but now the experimenter also moved the reward when switching the cups. The switch between conditions happened without informing the participant in any way. A correct choice in this condition meant choosing the location to which the cup plus the food were moved. Here, participants received eight trials. 
+The place condition was run first. The subsequent feature condition followed the same procedure, but now the experimenter also moved the reward when switching the cups. The switch between conditions happened without informing the participant in any way. A correct choice in this condition meant choosing the location to which the cup plus the food were moved. Here, participants received eight trials. 
 
 The dependent measure of interest for this task was calculated as: `[proportion correct place] - (1 - [proportion correct feature])`.  Positive values in this score mean that participants could quickly switch from choosing based on location to choosing based on feature. High negative values suggest that participants did not or hardly switch strategies.  
 
 Based on the results of @haun2006evolutionary, we assume that apes have a tendency to expect the food to remain in the same location. When this strategy is no longer successful in the feature trials, they have to switch strategies and try a different one. 
 
-The switching task was only used in Phase 1. It did not produce meaningful results and on Phase 2 we therefore replaced it with a delay of gratification task (see below).
+The switching task was only used in Phase 1. It did not produce meaningful results and on Phase 2 we therefore replaced it with a delay of gratification task (see below). [An alle: Sollten wir hier nicht vielleicht noch Details geben, warum die Results nicht meaningful waren?]
 
 ### Delay of gratification
 
-This task replaced the switching task in Phase 1. The procedure was adapted from @rosati2007evolutionary. Two small plates including one and two pieces of pellet were presented left and right on the table. E moved the plate with the smaller reward forward allowing the subject to choose immediately, while the plate with the larger reward was moved forward after a delay of 20 seconds. We coded whether the subject selected the larger delayed reward (correct choice) or the smaller immediate reward (incorrect choice) as well as the waiting time in cases where the immediate reward was chosen. Subjects received 12 trials, with the side on which the immediate reward was presented counterbalanced.
+This task replaced the switching task in Phase 2. The procedure was adapted from @rosati2007evolutionary. Two small plates including one and two pieces of pellet were presented left and right on the table. E moved the plate with the smaller reward forward allowing the subject to choose immediately, while the plate with the larger reward was moved forward after a delay of 20 seconds. We coded whether the subject selected the larger delayed reward (correct choice) or the smaller immediate reward (incorrect choice) as well as the waiting time in cases where the immediate reward was chosen. Subjects received 12 trials, with the side on which the immediate reward was presented counterbalanced.
 
-We assume that, in order to choose the larger reward, apes inhibit choosing the smaller reward.
+We assume that, in order to choose the larger reward, apes inhibit choosing the immediate smaller reward.
 
 
 ## Data collection
 
-One time point meant running all tasks with all participants. Within each time point, the tasks were organized in two sessions (see Figure \@ref(fig:setup)F). Session 1 started with two gaze following trials. Next was a pseudo randomized mix of causal inference and inference by exclusion trials with 12 trials per task, but no more than two trials of the same task in a row. At the end of session 1, there were again two gaze following trials. Sessions 2 also started with two gaze following trials, followed by quantity discrimination and switching. Finally, there were again two gaze following trials. By spreading out or mixing tasks we hoped to keep subjects more attentive and engaged. 
+One time point meant running all tasks with all participants. Within each time point, the tasks were organized in two sessions (see Figure \@ref(fig:setup)F). Session 1 started with two gaze following trials. Next was a pseudo randomized mix of causal inference and inference by exclusion trials with 12 trials per task, but no more than two trials of the same task in a row. At the end of session 1, there were again two gaze following trials. Sessions 2 also started with two gaze following trials, followed by quantity discrimination and switching (phase 1) or Delay of Gratification (Phase 2). Finally, there were again two gaze following trials. By spreading out or mixing tasks we hoped to keep subjects more attentive and engaged. 
 
 The order of tasks was the same for all subjects. So was the positioning of food items within each task. The counterbalancing can be found in the coding sheets in the online repository in `documentation/` [**to be added**]. This exact procedure was repeated at each time point so that the results would be comparable across participants and time points. The two sessions were usually spread out across two adjacent days. For the larger chimpanzee group, they were sometimes spread out across four days. 
 
@@ -265,7 +265,7 @@ Here, we differentiated between, `mother-reared`, `hand-reared` and `unknown`. T
 
 #### Time lived in Leipzig
 
-Absolute time the individual has lived in Leipzig Zoo. All apes living in Leipzig are involved in behavioral research. Thus, we take this measure to be a rough proxy of how much experience an individual has had with cognitive research. Variable name in model: `time_in_leipzig`.
+Absolute time [why not just "time"?] the individual has lived in Leipzig Zoo. All apes living in Leipzig are involved in behavioral research to a certain degree. Thus, we take this measure to be a rough proxy of how much experience an individual has had with cognitive research. Variable name in model: `time_in_leipzig`.
 
 ```{r}
 psex <- data_trial%>%
@@ -507,7 +507,7 @@ ggplot(.,aes(y = mean, x = factor(time_point), col = subject)) +
   labs(x = "Time point", y = "Sociality")
 ```
 
-We conducted proximity scans for all groups in the early afternoon on every workday (Monday to Friday). That is, we expect 10 scans for each time point. For each individual, we recorded which individuals are within arms reach. Research assistants used a tablet to record their observations. 
+We conducted proximity scans for all groups in the early afternoon on every workday (Monday to Friday). That is, we expect 10 scans for each time point. For each individual, we recorded which individuals are within arms reach. Research assistants used a tablet to record their observations with the behavioral coding software ZooMonitor [Reference rein]. 
 
 To derive individual specific estimates of sociality for each time point, we fit a variant of a Social Relations Model [@snijders1999social] to the proximity data. These models allow estimating an individual specific sociality index while accounting for the dyadic nature of social interaction. Social relations model usually deal with directed behaviors (e.g. individual *i* is grooming individual *j*). Because the behavior we observed was symmetric, we cannot differentiate between the actor and receiver. @Kajokaite2020.08.04.235788 suggested to speak of a Multiple Membership Relations Model [see also @leckie2019multiple] in such a context, which simply estimates how likely an individual is to be observed in proximity to another individual. 
 
@@ -593,16 +593,16 @@ Here we counted in how many other studies the participant had taken part in sinc
 
 # Analytical framework
 
-We had two overarching questions. On the one hand, we were interested in the cognitive measures and the relations between them. That is, we asked how stable performance in a given task was on a group-level, how stable individual differences were, how reliable the measures were. We also investiagted relations between the different tasks. We used Structural Equation Modeling [@bollen1989structural; @hoyle2012handbook] to address these questions. These models have been developed -- and are usually used -- for much larger sample sizes. Thus, we had to make a number of assumptions to be able to fit them to the kind of data that we have; we lay out these assumptions in the text below. The [appendix](#appendix) includes simulations that show the models we fit were robust given the assumptions we made. 
-Our second question was, which predictors explain variability in cognitive performance. Here we wanted to see, which of the predictors we recorded were most important to predict performance over time. This is a variable selection problem (selecting a subset of variables from a larger pool) and we used Projection Prediction Inference for this [@piironen2018projective]. 
+We had two overarching questions. On the one hand, we were interested in the cognitive measures and the relations between them. That is, we asked how stable performance in a given task was on a group-level, how stable individual differences were, how reliable the measures were. We also investiagted relations between the different tasks. We used *Structural Equation Modeling* [@bollen1989structural; @hoyle2012handbook] to address these questions. These models have been developed -- and are usually used -- for much larger sample sizes. Thus, we had to make a number of assumptions to be able to fit them to the kind of data that we have; we lay out these assumptions in the text below. The [appendix](#appendix) includes simulations that show the models we fit were robust given the assumptions we made. 
+Our second question was, which predictors explain variability in cognitive performance. Here we wanted to see, which of the predictors we recorded were most important to predict performance over time. This is a variable selection problem (selecting a subset of variables from a larger pool) and we used *Projection Prediction Inference* for this [@piironen2018projective]. 
 
 ## Structural equation modelling
 
 Structural equation models (SEM) can be used to assess latent variables (constructs) using one or more observed variables. These latent variables can be combined in a structural model that imputes relations between them. We used the data from each time point as observed variables to estimate a latent construct for each task. Due to the small sample size, we could not combine all tasks in a single, structured model. Instead, we assessed relations between tasks in pairs. 
 
-We used SEM to estimate states (time varying) and traits (stable over time). In the present context, one can think of a trait as a stable psychological ability (e.g. ability to make causal inferences) and states as variable psychological condition (e.g. being attentive). Variation in performance on a given time point can then be partitioned into variance explained by the trait, variance explained by the state and measurement error. Because the latent variables are estimated on multiple indicators, they are assumed to be measurement-error free [@steyer1992states; @steyer2015theory; @geiser2020longitudinal]. Next we describe the model construction process in more detail.
+We used SEM to estimate traits (stable over time) and states (time varying). In the present context, one can think of a trait as a stable psychological ability (e.g. ability to make causal inferences) and states as variable psychological condition (e.g. being attentive). Variation in performance on a given time point can then be partitioned into variance explained by the trait, variance explained by the state and measurement error. Because the latent variables are estimated on multiple indicators, they are assumed to be measurement-error free [@steyer1992states; @steyer2015theory; @geiser2020longitudinal]. Next we describe the model construction process in more detail.
 
-For each task, two parallel test halves were build, corresponding to sum scores of half of the trials of the same time point per task. Trials were alternately assigned to the first and the second test half. For tasks with 12 trials per time point this procedure resulted in two test halves assuming 7 possible values (0 to 6 correctly solved trials), for tasks with 8 trials per time point, test halves could maximally assume 5 possible values (0 to 4 correctly solved trials). Not all categories were observed at all time points and so sometimes categories had to be collapsed (see descriptions below). 
+For each task, two parallel test halves were build, corresponding to performance sum scores of half of the trials of the same time point per task. Trials were alternately assigned to the first and the second test half. For tasks with 12 trials per time point this procedure resulted in two test halves assuming 7 possible values (0 to 6 correctly solved trials), for tasks with 8 trials per time point, test halves could maximally assume 5 possible values (0 to 4 correctly solved trials). Not all categories were observed at all time points and so sometimes categories had to be collapsed (see descriptions below). 
 
 The two test halves served as indicators for a common latent construct per time point, assuming parallel test halves (i.e., factor loadings set to 1 and assuming equal reliability). Due to only few observed categories, indicators were modeled as ordered categorical variables, using a probit link function. The models thereby correspond to Graded Response Models [@samejima1969estimation; @samejima1996graded]. For model parsimony, to improve estimation accuracy (see simulation studies) and in order to test for latent mean differences across time, we assume strict measurement invariance. That is, in each model (task), loading parameters are set to 1 at all time points, residual variances are equal to 1, threshold parameters (i.e. trait level necessary to respond above threshold with 0.50 probability) are set invariant across time points and variances of latent state residual factors are set invariant across time points. In other words, we assume that the indicators (test halves) measure the latent variable in an equivalent and stable manner over time.
 
@@ -2085,9 +2085,9 @@ The longer individuals had lived in Leipzig, the better they performed in the ta
 
 #### Summary
 
-The most obvious result was that the random intercept term `(1 | subject)` was -- by far -- the predictor that improved the model fit the most. This suggests that a large portion of the variance is explained by stable individual characteristics that we did not capture in our predictors. Most likely, these are the outcomes of idiosyncratic developmental processes, which operate on a much longer time-scale than what we captured in our study. 
+The most obvious result was that the random intercept term `(1 | subject)` was -- by far -- the predictor that improved the model fit the most. This suggests that a large portion of the variance is explained by stable individual characteristics that we did not capture in our predictors. Most likely, these are the outcomes of idiosyncratic developmental processes [or genetic pre-disposition oder?], which operate on a much longer time-scale than what we captured in our study. 
 
-Second, we saw that most of the relevant predictors came from the group of stable individual characteristics. This aligns well with the SEM results, in which we saw that most of the variance in performance could be traced back to stable trait differences between individuals. Following this reasoning, there was very little *systematic* variation between time points, and thus not much the time varying predictors could account for. In line with this interpretation, we selected ztime point specific predictors only for gaze following, the task with the highest occasion specificity estimate according to the LSTM.
+Second, we saw that most of the relevant predictors came from the group of stable individual characteristics. This aligns well with the SEM results, in which we saw that most of the variance in performance could be traced back to stable trait differences between individuals. Following this reasoning, there was very little *systematic* variation between time points, and thus not much the time varying predictors could account for. In line with this interpretation, we selected time point specific predictors only for gaze following, the task with the highest occasion specificity estimate according to the LSTM.
 
 The predictor selected most often was `group`. Differences between groups were, however, variable. The B-chimpanzee group tended to perform best across tasks, but the ranking of the other groups (including the other chimpanzee group) changed from task to task. This speaks against clear species differences in general cognitive performance. Again, the most likely explanation for group differences is an interaction between species specific dispositions and individual- / group-level developmental processes.
 
