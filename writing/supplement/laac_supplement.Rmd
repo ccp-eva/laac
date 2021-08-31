@@ -186,31 +186,31 @@ Example videos for each task can be found in the associated online repository in
 
 ### Gaze Following
 
-The gaze following task was modeled after @brauer2005all. The experimenter sat opposite the ape and handed over food at a constant pace. That is, the experimenter picked up a piece of food, briefly held it out in front of her face and then handed it over to the participant. After a predetermined (but varying) number of food items had been handed over, the experimenter again picked up a food item, held it in front of her face and then looked up (i.e., moving her head up - see Figure \@ref(fig:setup)C). The experimenter looked to the ceiling, no object of particular interest was placed there. After 10s, the experimenter looked down again, always handed over the food and the trial ended. We coded whether the participant looked up during the 10s interval.
+The gaze following task was modeled after @brauer2005all. The experimenter sat opposite the ape and handed over food at a constant pace. That is, the experimenter picked up a piece of food, briefly held it out in front of her face and then handed it over to the participant. After a predetermined (but varying) number of food items had been handed over, the experimenter again picked up a food item, held it in front of her face and then looked up (i.e., moving her head up - see Figure \@ref(fig:setup)C). The experimenter looked to the ceiling, no object of particular interest was placed there. After 10s, the experimenter looked down again, handed over the food and the trial ended. We coded whether the participant looked up during the 10s interval.
 
 We assume that participants look up becasue they assume that the experimenter's attention is focused on a potentially noteworthy object. 
 
 ### Causal inference
 
-The causal inference task was modeled after @call2004inferences. Two identical cups with a lid were placed left and right on the table (Figure \@ref(fig:setup)A). The experimenter covered the table with the occluder, retrieved a piece of food, showed it to the ape, and hid it in one the cups outside the participant’s view. Next, the experimenter removed the occluder, picked up the baited cup and shook it three times, which produced a rattling sound. Next, the cup was put back in place, the sliding table pushed forwards, and the participant made a choice by pointing to one of the cups. If they picked the baited cup, their choice was coded as correct, and they received the reward. If they chose the empty cup, they did not. Participants received 12 trials. The location of the food was counterbalanced; 6 times in the right cup and 6 times in the left. Causal inference trials were intermixed with inference by exclusion trials.
+The causal inference task was modeled after @call2004inferences. Two identical cups with a lid were placed left and right on the table (Figure \@ref(fig:setup)A). The experimenter covered the table with the occluder, retrieved a piece of food, showed it to the ape, and hid it in one the cups outside the participant’s view. Next, the experimenter removed the occluder, picked up the baited cup and shook it three times, which produced a rattling sound. Next, the cup was put back in place, the sliding table pushed forwards, and the participant made a choice by pointing to one of the cups. If they picked the baited cup, their choice was coded as correct, and they received the reward. If they chose the empty cup, they did not. Participants received 12 trials. The location of the food was counterbalanced; six times in the right cup and six times in the left. Causal inference trials were intermixed with inference by exclusion trials (see below).
 
-We assume that apes located the food by reasoning that the food -- a solid object -- caused the rattling sound and therefore must be in the shaken cup. 
+We assume that apes locate the food by reasoning that the food -- a solid object -- causes the rattling sound and therefore must be in the shaken cup.[Manuel: in then hypotheses der anderen Tasks hast du present tense genommen, deshalb hab ich das hier geändert.] 
 
 ### Inference by exclusion
 
-Inference by exclusion trials were also modeled after @call2004inferences and followed a very similar procedure compared to causal inference trials. After covering the two cups with the occluder, the experimenter placed the food in one of the cups and covered both with the lid. Next, they removed the occluder, picked up the empty cup and shook it three times. In contrast to the causal inference trials, this did not produce any sound. The experimenter then pushed the sliding table forward and the participant made a choice by pointing to one of the cups. Correct choice was coded when the baited (non-shaken) cup was chosen. If correct, the food was given to the ape. There were 12 inference by exclusion trials, intermixed with causal inference trials. The order was counterbalanced: 6 times the left cup was baited, 6 times the right. 
+Inference by exclusion trials were also modeled after @call2004inferences and followed a very similar procedure compared to causal inference trials. After covering the two cups with the occluder, the experimenter placed the food in one of the cups and covered both with the lid. Next, they removed the occluder, picked up the empty cup and shook it three times. In contrast to the causal inference trials, this did not produce any sound. The experimenter then pushed the sliding table forward and the participant made a choice by pointing to one of the cups. Correct choice was coded when the baited (non-shaken) cup was chosen. If correct, the food was given to the ape. There were 12 inference by exclusion trials, intermixed with causal inference trials. The order was counterbalanced: six times the left cup was baited, six times the right. 
 
 We assume that apes reason that the absence of a sound suggests that the shaken cup is empty. Because they saw a piece of food being hidden, they exclude the empty cup and infer that the food is more likely to be in the non-shaken cup. 
 
 ### Quantity discrimination
 
-For this task, we followed the general procedure of @hanus2007discrete. Two small plates were presented left and right on the table (see Figure \@ref(fig:setup)B). The experimenter covered the plates with the occluder and placed 5 small food pieces on one plate and 7 on the other. Then they pushed the sliding table forwards, and the participant made a choice. We coded as correct when the subject chose the plate with the larger quantity. Participants always received the food from the plate they chose. There were 12 trials, 6 with the larger quantity on the right and 6 on the left (order counterbalanced).
+For this task, we followed the general procedure of @hanus2007discrete. Two small plates were presented left and right on the table (see Figure \@ref(fig:setup)B). The experimenter covered the plates with the occluder and placed five small food pieces on one plate and seven on the other. Then they pushed the sliding table forwards, and the participant made a choice. We coded as correct when the subject chose the plate with the larger quantity. Participants always received the food from the plate they chose. There were 12 trials, six with the larger quantity on the right and six on the left (order counterbalanced).
 
-We assume that apes identified the larger of the two food amounts based on discrete quantity estimation.
+We assume that apes identify the larger of the two food amounts based on discrete quantity estimation.
 
 ### Switching
 
-This task was modeled after @haun2006evolutionary. Three differently looking cups (metal cup with handle, red plastic ice cone, red cup without handle - Figure \@ref(fig:setup)D) were placed next to each other on the table. There were two conditions. In the place condition, the experimenter hid a piece of food under one of the cups in full view of the participant. Next, the cups were covered by the occluder and the experimenter switched the position of two cups, while the reward remained in the same location. Next, the experimenter removed the occluder and pushed the table forward. We coded as correct if the participant chose the location where the food was hidden. Participants received four trials in this condition. 
+This task was modeled after @haun2006evolutionary. Three differently looking cups (silver metal cup with handle, green plastic ice cone, red cup without handle - Figure \@ref(fig:setup)D) were placed next to each other on the table. There were two conditions. In the place condition, the experimenter hid a piece of food under one of the cups in full view of the participant. Next, the cups were covered by the occluder and the experimenter switched the position of two cups, while the reward remained in the same location. Next, the experimenter removed the occluder and pushed the table forward. We coded as correct if the participant chose the location where the food was hidden. Participants received four trials in this condition. 
 
 The place condition was run first. The subsequent feature condition followed the same procedure, but now the experimenter also moved the reward when switching the cups. The switch between conditions happened without informing the participant in any way. A correct choice in this condition meant choosing the location to which the cup plus the food were moved. Here, participants received eight trials. 
 
@@ -218,7 +218,7 @@ The dependent measure of interest for this task was calculated as: `[proportion 
 
 Based on the results of @haun2006evolutionary, we assume that apes have a tendency to expect the food to remain in the same location. When this strategy is no longer successful in the feature trials, they have to switch strategies and try a different one. 
 
-The switching task was only used in Phase 1. It did not produce meaningful results and on Phase 2 we therefore replaced it with a delay of gratification task (see below). [An alle: Sollten wir hier nicht vielleicht noch Details geben, warum die Results nicht meaningful waren?]
+The switching task was only used in Phase 1. It did not produce meaningful results and on Phase 2 we therefore replaced it with a delay of gratification task (see below). [An alle: Sollten wir hier nicht vielleicht noch Details geben, warum die Results nicht meaningful waren?] [Ja, oder zumindest verweisen auf die Results Section, damit die Leute wissen, dass noch mehr Erklärung dazu kommt.]
 
 ### Delay of gratification
 
@@ -229,7 +229,7 @@ We assume that, in order to choose the larger reward, apes inhibit choosing the 
 
 ## Data collection
 
-One time point meant running all tasks with all participants. Within each time point, the tasks were organized in two sessions (see Figure \@ref(fig:setup)F). Session 1 started with two gaze following trials. Next was a pseudo randomized mix of causal inference and inference by exclusion trials with 12 trials per task, but no more than two trials of the same task in a row. At the end of session 1, there were again two gaze following trials. Sessions 2 also started with two gaze following trials, followed by quantity discrimination and switching (phase 1) or Delay of Gratification (Phase 2). Finally, there were again two gaze following trials. By spreading out or mixing tasks we hoped to keep subjects more attentive and engaged. 
+One time point meant running all tasks with all participants. Within each time point, the tasks were organized in two sessions (see Figure \@ref(fig:setup)F). Session 1 started with two gaze following trials. Next was a pseudo randomized mix of causal inference and inference by exclusion trials with 12 trials per task, but no more than two trials of the same task in a row. At the end of Session 1, there were again two gaze following trials. Session 2 also started with two gaze following trials, followed by quantity discrimination and switching (Phase 1) or Delay of Gratification (Phase 2). Finally, there were again two gaze following trials. By spreading out or mixing tasks we hoped to keep subjects more attentive and engaged. 
 
 The order of tasks was the same for all subjects. So was the positioning of food items within each task. The counterbalancing can be found in the coding sheets in the online repository in `documentation/` [**to be added**]. This exact procedure was repeated at each time point so that the results would be comparable across participants and time points. The two sessions were usually spread out across two adjacent days. For the larger chimpanzee group, they were sometimes spread out across four days. 
 
@@ -239,7 +239,7 @@ We collected data in two phases. Phase 1 started on August 1st, 2020, lasted unt
 
 ## Predictors
 
-In addition to the data from the cognitive tasks, we collected data for a range of predictor variables. The goal here was to find variables that are systematically related to inter- and/or intra-individual variation in cognitive performance. That is, we were interested to see which variables allow us to predict cognitive performance. The second part of the [analysis](#projection-predictive-inference) section, describes the method we used to determine the predictive value of each variable.    
+In addition to the data from the cognitive tasks, we collected data for a range of predictor variables. The goal here was to find variables that are systematically related to inter- and/or intra-individual variation in cognitive performance. That is, we were interested to see which variables allow us to predict cognitive performance. The second part of the [analysis](#projection-predictive-inference) section describes the method we used to determine the predictive value of each variable.    
 
 Predictors could either vary with the individual (stable individual characteristics; e.g. sex or rearing history), vary with individual and time point (variable individual characteristics; e.g. sickness or sociality), vary with group membership (group life; e.g. time spent outdoors or disturbances) or vary with the testing arrangements and thus with individual, time point and session (testing arrangements; e.g. presence of an observer or participation in other tests).
 
@@ -251,11 +251,11 @@ These predictors are stable individual differences. As a source, we used the ape
 
 #### Group
 
-Group the individual belonged to. Groups were composed of individuals from the same species but because there were two chimpanzee groups (A-chimpanzees and B-chimpanzees), group and species are not equivalent. Variable name in model: `group`.
+Group the individual belonged to. Groups were composed of individuals of the same species but because there were two chimpanzee groups (a-chimpanzees and b-chimpanzees), group and species are not equivalent. Variable name in model: `group`.
 
 #### Age
 
-Absolute age of the individual. For some older individuals, only the year of birth was known. In these cases we calculated age with January 1st of that year as the birthday. Variable name in model: `age`.
+Absolute age of the individual. For some older individuals, only the year of birth was known. In these cases we calculated age with January 1st of that year as the birthday. [Manuel: Wahrscheinlich spielt es keine große Rolle, aber wäre es nicht schlauer, bei unbekanntem Geburtstag/Monat den 15.06. zu nehmen? Dann wäre man wahrscheinlich im Schnitt näher an der Realität dran] Variable name in model: `age`.
 
 #### Sex 
 
@@ -337,7 +337,7 @@ These predictors varied by participant and time point.
 
 #### Rank
 
-We asked caretakers to order individuals within a given group for their rank. Ties were allowed. This was done at each time point. An individual's rank was mostly stable (see Figure \@ref(fig:socrel)A) across time points, however, there was some variation. Variable name in model: `rel_rank`.
+We asked caretakers to order individuals within a given group according to their rank. Ties were allowed. This was done at each time point. An individual's rank was mostly stable (see Figure \@ref(fig:socrel)A) across time points, however, there was some variation. Variable name in model: `rel_rank`.
 
 #### Sickness
 
@@ -509,9 +509,9 @@ ggplot(.,aes(y = mean, x = factor(time_point), col = subject)) +
   labs(x = "Time point", y = "Sociality")
 ```
 
-We conducted proximity scans for all groups in the early afternoon on every workday (Monday to Friday). That is, we expect 10 scans for each time point. For each individual, we recorded which individuals are within arms reach. Research assistants used a tablet to record their observations with the behavioral coding software ZooMonitor [Reference rein]. 
+We conducted proximity scans for all groups in the early afternoon on every workday (Monday to Friday). That is, we expect 10 scans for each time point. For each individual, we recorded which individuals were within arms reach. Research assistants used a tablet to record their observations with the behavioral coding software ZooMonitor [Reference rein]. 
 
-To derive individual specific estimates of sociality for each time point, we fit a variant of a Social Relations Model [@snijders1999social] to the proximity data. These models allow estimating an individual specific sociality index while accounting for the dyadic nature of social interaction. Social relations model usually deal with directed behaviors (e.g. individual *i* is grooming individual *j*). Because the behavior we observed was symmetric, we cannot differentiate between the actor and receiver. @Kajokaite2020.08.04.235788 suggested to speak of a Multiple Membership Relations Model [see also @leckie2019multiple] in such a context, which simply estimates how likely an individual is to be observed in proximity to another individual. 
+To derive individual specific estimates of sociality for each time point, we fit a variant of a Social Relations Model [@snijders1999social] to the proximity data. These models allow estimating an individual specific sociality index while accounting for the dyadic nature of social interaction. Social relations models usually deal with directed behaviors (e.g. individual *i* is grooming individual *j*). Because the behavior we observed was symmetric, we cannot differentiate between the actor and receiver. @Kajokaite2020.08.04.235788 suggested to speak of a Multiple Membership Relations Model [see also @leckie2019multiple] in such a context, which simply estimates how likely an individual is to be observed in proximity to another individual. 
 
 In `brms` syntax, our model had the following structure: `count | trials(n) ~ group + (time_point | mm(focal, associates)) + (time_point | dyad)`. The dependent variable `count | trials(n)` is the number of times a dyad has been observed (`count`) at a time point relative to the number of scans taken for that time point (`trials(n)`). The fixed effect `group` estimates group difference in sociality. The random effect `(time_point | mm(focal, associates))` estimates the sociality for each individual. In that, the multi-membership grouping term `mm(focal, associates)` captures the fact that the assignment of the two roles (focal and associate) is arbitrary in the context of a symmetric behavior. The random slope `time_point` (treated as a factor) allowed us to estimate sociality for each time point. Finally, the random effect `(time_point | dyad)` accounts for dyad composition; in some cases a particular dyad composition (e.g. mother and infant) might be sufficient to explain high levels of sociality in an individual.
 
@@ -549,11 +549,11 @@ Each day, the animal caretakers noted in the diary how many hours each group spe
 
 #### Disturbances
 
-The animal caretakers also noted if there were any unusual disturbances for a particular group. Example were construction works in the building, heavy weather conditions or green-keeping activities. In addition, the caretakers rated how disturbing they judged these events to be on a scale from 1 to 7. For each time point, we calculated the mean of these ratings. Variable name in model: `dist_mean`.
+The animal caretakers also noted if there were any unusual disturbances for a particular group. Examples were construction works in the building, heavy weather conditions or green-keeping activities. In addition, the caretakers rated how disturbing they judged these events to be on a scale from 1 to 7. For each time point, we calculated the mean of these ratings. Variable name in model: `dist_mean`.
 
 #### Life events
 
-This variable captured whether there were any notable events within the group. Examples were fights in the group or the temporal removal of some individuals for medical procedures. Again, we asked the caretakers to rate the severity of these events and averaged across them. Variable name in model: `le_mean`.  
+This variable captured whether there were any notable events within the group. Examples were fights in the group or the temporal removal of some individuals for medical procedures. Again, we asked the caretakers to rate the severity of these events and averaged across them [Manuel: Auch Skala von 1-7 oder?]. Variable name in model: `le_mean`.  
 
 
 ```{r}
