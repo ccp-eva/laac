@@ -186,7 +186,7 @@ Example videos for each task can be found in the associated online repository in
 
 ### Gaze Following
 
-The gaze following task was modeled after @brauer2005all. The experimenter sat opposite the ape and handed over food at a constant pace. That is, the experimenter picked up a piece of food, briefly held it out in front of her face and then handed it over to the participant. After a predetermined (but varying) number of food items had been handed over, the experimenter again picked up a food item, held it in front of her face and then looked up (i.e., moving her head up - see Figure \@ref(fig:setup)C). The experimenter looked to the ceiling, no object of particular interest was placed there. After 10s, the experimenter looked down again, handed over the food and the trial ended. We coded whether the participant looked up during the 10s interval.
+The gaze following task was modeled after @brauer2005all. The experimenter sat opposite the ape and handed over food at a constant pace. That is, the experimenter picked up a piece of food, briefly held it out in front of her face and then handed it over to the participant. After a predetermined (but varying) number of food items had been handed over, the experimenter again picked up a food item, held it in front of her face and then looked up (i.e., moving her head up - see Figure \@ref(fig:setup)C). The experimenter looked to the ceiling, no object of particular interest was placed there. After 10s, the experimenter looked down again, handed over the food and the trial ended. We coded whether the participant looked up during the 10s interval. Apes received eight gaze following trials.
 
 We assume that participants look up becasue they assume that the experimenter's attention is focused on a potentially noteworthy object. 
 
@@ -596,7 +596,7 @@ Here we counted in how many other studies the participant had taken part in sinc
 # Analytical framework
 
 We had two overarching questions. On the one hand, we were interested in the cognitive measures and the relations between them. That is, we asked how stable performance in a given task was on a group-level, how stable individual differences were, how reliable the measures were. We also investiagted relations between the different tasks. We used *Structural Equation Modeling* [@bollen1989structural; @hoyle2012handbook] to address these questions. These models have been developed -- and are usually used -- for much larger sample sizes. Thus, we had to make a number of assumptions to be able to fit them to the kind of data that we have; we lay out these assumptions in the text below. The [appendix](#appendix) includes simulations that show the models we fit were robust given the assumptions we made. 
-Our second question was, which predictors explain variability in cognitive performance. Here we wanted to see, which of the predictors we recorded were most important to predict performance over time. This is a variable selection problem (selecting a subset of variables from a larger pool) and we used *Projection Prediction Inference* for this [@piironen2018projective]. 
+Our second question was, which predictors explain variability in cognitive performance. Here we wanted to see which of the predictors we recorded were most important to predict performance over time. This is a variable selection problem (selecting a subset of variables from a larger pool) and we used *Projection Prediction Inference* for this [@piironen2018projective]. 
 
 ## Structural equation modelling
 
@@ -771,7 +771,7 @@ where $T$ is a stable latent trait variable, $S_t$ captures time-specific deviat
 
 As noted above, we assume strong measurement invariance. As a consequence, the specified LST model (without autoregressive effects) corresponds to a multilevel model with a latent trait factor at the between-level (person-level) and a latent state residual factor at the within-level (time-specific) level.
 
-In order to test for possible mean changes across time, latent state models are estimated in a first step. LST models as single-level models are estimated to test whether measurement invariance assumptions across time can be reasonably assumed. Once measurement invariance can be established, the models can alternatively estimated as multilevel SEMs.
+In order to test for possible mean changes across time, latent state models are estimated in a first step. LST models as single-level models are estimated to test whether measurement invariance assumptions across time can be reasonably assumed. Once measurement invariance can be established, the models can alternatively be estimated as multilevel SEMs.
 
 The following variance components can be computed for the presented LST model.
 
@@ -1092,7 +1092,7 @@ rel_plot_dis <- cor_data%>%
 ```{r relplot, out.width="100%", fig.height=6, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "(A) Distribution of correlations between time points for each task. Dots represent the mean of the distribution with 95\\% HDI. Numbers denote mean and 95\\% HDI. (B) Correlations between re-test reliability and time span (in time points) between the testing time points."}
 ggarrange(rel_plot, rel_plot_dis, heights = c(1,1.5), labels = c("A","B"), nrow = 2)
 ```
-
+[Manuel: bei Figure 10 ist die Beschriftung "delay_of_gratification" abgeschnitten]
 ```{r, include=F}
 # latent state models
 lsc <- readModels("../../models and documentation Jana/Application/one task models/test_apes_data_LS_cau.out")
@@ -1229,11 +1229,11 @@ kable_classic(full_width = F)%>%
 
 ### Phase 1
 
-To get an overview of the results, we first visualized he data. Figure \@ref(fig:perfplot) shows performance at the different time points. From a group-level perspective, we can say that performance was consistently above chance (0.5) in the causal inference and quantity tasks. For gaze following, there is no meaningful chance level. We can note, however, that group level performance never went down to zero, which would be expected if apes did not pay attention to the experimenter's gaze. The performance score in the switching task was largely negative, suggesting no successful switching between the two phases. 
+To get an overview of the results, we first visualized the data. Figure \@ref(fig:perfplot) shows performance at the different time points. From a group-level perspective, we can say that performance was consistently above chance (0.5) in the causal inference and quantity tasks. For gaze following, there is no meaningful chance level. We can note, however, that group level performance never went down to zero, which would be expected if apes did not pay attention to the experimenter's gaze. The performance score in the switching task was largely negative, suggesting no successful switching between the two phases. 
 
 For a first glimpse on the stability of individual differences, we correlated performance at the different time points for each task (all possible combinations of time points). Figure \@ref(fig:relplot)A visualizes the distribution of raw correlations between the different time points and \@ref(fig:relplot)B shows the relation between re-test correlations and the time span between time points. Correlations between time points were large and clearly different from zero for quantity, inference and gaze following. For quantity, this distribution was wider and closer to zero, but still clearly positive. For switching, the distribution was even wider and substantially overlapped with zero. For all tasks, correlations between time points tended to be lower for time points that were further apart [@uher2011individual]. 
 
-We excluded the switching task from further analysis for three main reasons. First, group level scores were constantly negative and performance in the feature trials always overlapped with chance. This suggests that, as a group, apes did not successfully switch strategies (see \@ref(fig:perfplot)). Second, the correlations between the different measurement time points were low, suggesting no systematic individual differences (see \@ref(fig:relplot)). Third, the dependent variable (i.e. the score calculated based on performance in the two phases) had a different level of measurement compared to the other tasks. That is, there was only a single score to represent performance at each time point. All other tasks had multiple trials. This was especially problematic in the context of structural equation modeling (see above). For these reasons, we also replaced the switching task with the delay of gratification task in Phase 2.
+We excluded the switching task from further analysis for three main reasons. First, group level scores were constantly negative and performance in the feature trials always overlapped with chance. This suggests that, as a group, apes did not successfully switch strategies (see \@ref(fig:perfplot)). Second, the correlations between the different measurement time points were low, suggesting no systematic individual differences (see \@ref(fig:relplot)). Third, the dependent variable (i.e. the score calculated based on performance in the two phases) had a different level of measurement compared to the other tasks. That is, there was only a single score to represent performance at each time point. All other tasks had multiple trials. This was especially problematic in the context of structural equation modeling (see above). For these reasons, we replaced the switching task with the delay of gratification task in Phase 2.
 
 ```{r}
 plse <- bind_rows(lsc$parameters$unstandardized%>%mutate(task = "causality"),
@@ -1276,9 +1276,9 @@ plser
 
 #### Causal inference
 
-To fit the models, the response categories of 0 or 1 solved trial had to be collapsed into one category due to sparsity. Furthermore, the thresholds could not be set equal for test-half 2 at time point 3 and 11 as well as test-half 1 at time points 4 and 12 due to a different number of observed categories for the respective test halves and time point combination. Latent means can still be compared across time for the state factors based on the respective other test half. At time point 7 thresholds of both test-halves could not be set measurement invariant across time (due to a divergent number of observed categories). Latent mean differences for the latent state variable at time point 7 should therefore be interpreted with caution.
+To fit the models, the response categories of 0 or 1 solved trial had to be collapsed into one category due to sparsity. Furthermore, the thresholds could not be set equal for test-half 2 at time point 3 and 11 as well as test-half 1 at time points 4 and 12 due to a different number of observed categories for the respective test halves and time point combination. Latent means can still be compared across time for the state factors based on the respective other test half. At time point 7, thresholds of both test-halves could not be set measurement invariant across time (due to a divergent number of observed categories). Latent mean differences for the latent state variable at time point 7 should therefore be interpreted with caution.
 
-Figure \@ref(fig:lse) visualizes the and latent state means and reliability estimates from the LS model. Reliability was consistently high. None of the latent means was reliably different from zero, suggesting stable group level performance and no systematic change over time. Figure \@ref(fig:lsc) gives the correlations between the latent states for the different time points. Correlations were generally high, indicating stable individual differences.
+Figure \@ref(fig:lse) visualizes the latent state means and reliability estimates from the LS model. Reliability was consistently high. None of the latent means was reliably different from zero, suggesting stable group level performance and no systematic change over time. Figure \@ref(fig:lsc) gives the correlations between the latent states for the different time points. Correlations were generally high, indicating stable individual differences.
 
 In the LSTM, the consistency (i.e., stability of individual differences) coefficient was estimated to be around .903. This means that around 90% of true inter-individual differences are attributable to stable (trait) differences between individuals, while approximately 10% are due to variance in time point specific deviations from the stable trait. Reliability (across time points) was estimated to be high with an mean of .725 (see Figure \@ref(fig:lsteplot)).
 
@@ -1326,7 +1326,7 @@ In the LSTM, consistency was estimated to be around .859 -- around 86% of true i
 
 According to the LSTM-AR, around 79.4% of true inter-individual differences at time point 14 went back to stable trait differences and around 8.3% of the inter-individual differences can be explained by carry-over effects from previous time points. Around 11.3% of the variance was due to time-specific variance between individuals.
 
-Taken together, we saw a similar pattern as for the causal inference task: Performance was very stable on a group level and so were the differences between individuals. Interestingly, from Figure \@ref(fig:perfplot) we take that group-level performance was at chance. The stable individual differences we found here, suggest that variation around this mean was systematic and therefore that some individuals consistently performed above chance. Thus, despite the fact that this task was very difficult for apes, it was suitable to measure individual differences. 
+Taken together, we saw a similar pattern as for the causal inference task: Performance was very stable on a group level and so were the differences between individuals. Interestingly, from Figure \@ref(fig:perfplot) we take that group-level performance was at chance. The stable individual differences we found here suggest that variation around this mean was systematic and therefore that some individuals consistently performed above chance. Thus, despite the fact that this task was very difficult for apes, it was suitable to measure individual differences. 
 
 ```{r}
 plste <- bind_rows(
@@ -1399,7 +1399,7 @@ In the LSTM, consistency was estimated to be around .758, that is around 76% of 
 
 According to the LSTM-AR, around 85.5% of true inter-individual differences at time point 14 went back to stable trait differences and around 3.3% of the inter-individual differences can be explained by carry-over effects from previous time points. Around 10.9% of the variance was due to time-specific variance between individuals. However, the state residual variance at time point 1 was estimated with great uncertainty (very large CI). Together with the very low predictability estimate, this suggests that this model is not particularly well suited to describe the results. 
 
-In sum, we see a change in gaze following over time Figure \@ref(fig:perfplot). This group-level effect, however, did not affect differences between individuals, which were systematic across time points.
+In sum, we see a change in gaze following over time (Figure \@ref(fig:perfplot)). This group-level effect, however, did not affect differences between individuals, which were systematic across time points.
 
 #### Quantity
 
@@ -1618,7 +1618,7 @@ Model fit indices are shown in Table \@ref(tab:relt). Due to a low PPP value, th
 
 The only correlations for which the 95% CI did not include zero was the state correlation between causality and inference ($r_{sc,si}$ = `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(est)`, 95% CI = [`r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(lower_2.5ci)`; `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(upper_2.5ci)`]) and the trait correlation between inference and quantity ($r_{ti,tq}$ = `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]). 
 
-The negative state correlations between causality and inference may be explained by the way the two tasks were presented. Remember that causality and inference trials used the same setup and were intermixed. A negative correlation suggests that higher (residual) performance in one task was associated with lower performance in the other task. Responding correctly in the two tasks required opposite choice behaviors. That is, in causality, the ape had to pick the cup the experimenter shook to be correct. In inference, it was the unshaken cup. Such a negative correlation arises when sometimes participants respond in the same way (e.g. pick the shaken cup) across tasks. Note, however, that if this were a stable strategy, which individuals would consistently use, we would have seen a negative correlation between the trait estimates. The best explanation is thus that there are short periods of inattentiveness during which (some) participants confuse the two tasks.
+The negative state correlations between causality and inference may be explained by the way the two tasks were presented. Remember that causality and inference trials used the same setup and were intermixed. A negative correlation suggests that higher (residual) performance in one task was associated with lower performance in the other task. Responding correctly in the two tasks required opposite choice behaviors. That is, in causality, the ape had to pick the cup the experimenter shook to be correct. In inference, it was the unshaken cup. Such a negative correlation arises when sometimes participants respond in the same way (e.g. pick the shaken cup) across tasks. Note, however, that if this were a stable strategy which individuals would consistently use, we would have seen a negative correlation between the trait estimates. The best explanation is thus that there are short periods of inattentiveness during which (some) participants confused the two tasks.
 
 The trait correlation between inference and quantity was positive, suggesting that individuals with better quantity judgment abilities also have better inferential abilities. 
 
@@ -1636,7 +1636,7 @@ kable_classic(full_width = F)%>%
 
 ## Predictability
 
-The output of the projection predictive inference models is a ranking of the different predictors with respect to how much they improve a model's fit. Predictors ranked first improve the fit the most, while later predictors yield smaller improvements (if any). The selection of "relevant" predictors is based on plotting the loss statistics and looking for a point at which it levels off. As such, the selection is to some extend arbitrary. Than ranking, however, is not. When we compare the results from the two phases, we not just look at which subset of predictors is selected, but also at the overall ranking.
+The output of the projection predictive inference models is a ranking of the different predictors with respect to how much they improve a model's fit. Predictors ranked first improve the fit the most, while later predictors yield smaller improvements (if any). The selection of "relevant" predictors is based on plotting the loss statistics and looking for a point at which it levels off. As such, the selection is to some extend arbitrary. The ranking, however, is not. When we compare the results from the two phases, we not just look at which subset of predictors is selected, but also at the overall ranking.
 
 ### Phase 1
 
@@ -1854,7 +1854,7 @@ pcpro <- ggplot(proj_samples_cau, aes(x = value, y = pred, fill = species)) +
 ggarrange(pcsel, pcpro, labels = c("A","B"), widths = c(1.5,1))
 ```
 
-Figure \@ref(fig:cselp) visualizes the results. Out of the 13 predictor variables we analysed, we selected only `group` to be relevant in addition to the random intercept term. When inspecting the projected posterior distribution for `group`, we saw substantial differences between the groups: Orangutans and the B-chimpanzee group performed best, followed by Bonobos and finally the Gorillas and the A-chimpanzee group (see Figure \@ref(fig:cselp)B).
+Figure \@ref(fig:cselp) visualizes the results. Out of the 13 predictor variables we analysed, we selected only `group` to be relevant in addition to the random intercept term. When inspecting the projected posterior distribution for `group`, we saw substantial differences between the groups: Orangutans and the b-chimpanzee group performed best, followed by bonobos and finally the gorillas and the a-chimpanzee group (see Figure \@ref(fig:cselp)B). 
 
 #### Inference by exclusion
 
@@ -1928,7 +1928,7 @@ ggarrange(pisel, pipro, labels = c("A","B"), widths = c(1.5,1))
 
 Figure \@ref(fig:iselp) visualizes the results. For inference by exclusion, we selected `time_in_leipzig`, `group`, and `age` as relevant predictors in addition to the random intercept term. All three predictors capture to stable individual characteristics. 
 
-Figure \@ref(fig:iselp)B shows the projected posterior distributions for the predictors and suggests that the longer apes lived in Leipzig, the better their performance was. The differences between groups were such that the two chimpanzee groups together with the Gorillas performed on a higher level compared to the Bonobos and Orangutans. With respect to `age`, we found that performance decreased with age.
+Figure \@ref(fig:iselp)B shows the projected posterior distributions for the predictors and suggests that the longer apes lived in Leipzig, the better their performance was. The differences between groups were such that the two chimpanzee groups together with the gorillas performed on a higher level compared to the bonobos and orangutans. With respect to `age`, we found that performance decreased with age.
 
 #### Gaze Following
 
@@ -2006,7 +2006,7 @@ ggarrange(pgsel, pgpro, labels = c("A","B"), nrow = 2, heights = c(1.5,1))
 
 Figure \@ref(fig:gselp) visualizes the results. Gaze following had the most selected predictors of all tasks. In addition to the random intercept term, we selected, `group`, `rearing`, `time_outdoors`, `age`, `sociality`, and `sex`. Again, most of these predictors were stable individual characteristics, with the exception of `time_outdoors` and `sociality`.
 
-Groups differed in that A-chimpanzees were most likely to follow gaze, followed by B-chimpanzees and Bonobos. Gorillas and Orangutans were the least likely to follow the experimenter's gaze. Mother-reared individuals outperformed hand-reared individuals (including those with and unknown rearing history). The more time individuals spent outdoors, the more likely they were to follow gaze. Also, the probability to follow gaze increased with age. Individuals with a lower sociality index had higher rates of gaze following. Finally, females outperformed males. Figure \@ref(fig:gselp)B visualizes these results.
+Groups differed in that a-chimpanzees were most likely to follow gaze, followed by b-chimpanzees and bonobos. Gorillas and orangutans were the least likely to follow the experimenter's gaze. Mother-reared individuals outperformed hand-reared individuals (including those with an unknown rearing history). The more time individuals spent outdoors, the more likely they were to follow gaze. Also, the probability to follow gaze increased with age. Individuals with a lower sociality index had higher rates of gaze following. Finally, females outperformed males. Figure \@ref(fig:gselp)B visualizes these results.
 
 #### Quantity
 
@@ -2083,17 +2083,17 @@ ggarrange(pqsel, pqpro, labels = c("A","B"), nrow = 2, heights = c(1.5,1))
 
 Figure \@ref(fig:qselp) visualizes the results. For quantity, we selected three predictors in addition to the random intercept term:`time_in_leipzig`, `rearing`, and `group`. All of these predictors were stable individual characteristics.
 
-The longer individuals had lived in Leipzig, the better they performed in the task. Group differences were such that B-chimpanzees performed best, followed by Bonobos and Gorillas. A-Chimpanzees performed slightly worse, but still better than the Orangutans. Once again, mother reared individuals outperformed those who were hand-reared or whose rearing history was unknown. Figure \@ref(fig:qselp)B visualizes these results.
+The longer individuals had lived in Leipzig, the better they performed in the task. Group differences were such that b-chimpanzees performed best, followed by bonobos and gorillas. A-Chimpanzees performed slightly worse, but still better than the orangutans. Once again, mother reared individuals outperformed those who were hand-reared or whose rearing history was unknown. Figure \@ref(fig:qselp)B visualizes these results.
 
 #### Summary
 
 The most obvious result was that the random intercept term `(1 | subject)` was -- by far -- the predictor that improved the model fit the most. This suggests that a large portion of the variance is explained by stable individual characteristics that we did not capture in our predictors. Most likely, these are the outcomes of idiosyncratic developmental processes [or genetic pre-disposition oder?], which operate on a much longer time-scale than what we captured in our study. 
 
-Second, we saw that most of the relevant predictors came from the group of stable individual characteristics. This aligns well with the SEM results, in which we saw that most of the variance in performance could be traced back to stable trait differences between individuals. Following this reasoning, there was very little *systematic* variation between time points, and thus not much the time varying predictors could account for. In line with this interpretation, we selected time point specific predictors only for gaze following, the task with the highest occasion specificity estimate according to the LSTM.
+Second, we saw that most of the relevant predictors came from the group of stable individual characteristics. This aligns well with the SEM results, in which we saw that most of the variance in performance could be traced back to stable trait differences between individuals. Following this reasoning, there was very little *systematic* variation between time points, and thus not much the time-varying predictors could account for. In line with this interpretation, we selected time point specific predictors only for gaze following, the task with the highest occasion specificity estimate according to the LSTM.
 
-The predictor selected most often was `group`. Differences between groups were, however, variable. The B-chimpanzee group tended to perform best across tasks, but the ranking of the other groups (including the other chimpanzee group) changed from task to task. This speaks against clear species differences in general cognitive performance. Again, the most likely explanation for group differences is an interaction between species specific dispositions and individual- / group-level developmental processes.
+The predictor selected most often was `group`. Differences between groups were, however, variable. The b-chimpanzee group tended to perform best across tasks, but the ranking of the other groups (including the other chimpanzee group) changed from task to task. This speaks against clear species differences in general cognitive performance. Again, the most likely explanation for group differences is an interaction between species specific dispositions and individual- / group-level developmental processes.
 
-The predictors that were selected more than once influenced performance in a systematic way. Whenever rearing history was selected to be relevant, mother-reared individuals outperformed others. The more time an individual had lived in Leipzig, the better performance was. An exception was `age`, which had a positive estimate for gaze_following but a negative one for inference. 
+The predictors that were selected more than once influenced performance in a systematic way. Whenever rearing history was selected to be relevant, mother-reared individuals outperformed others. The more time an individual had lived in Leipzig, the better performance was. An exception was `age`, which had a positive estimate for gaze following but a negative one for inference. 
 
 When zooming out, we found no clear ranking of predictors across tasks (see Figure \@ref(fig:selcomp)). It is important to note, however, that for higher ranks, the difference between ranks in the loss statistic is very small and the ordering to some extend arbitrary. But even if we focus only on the five highest-ranked predictors per task, we see a lot of variation across tasks -- with `group` being a notable exception.
 
