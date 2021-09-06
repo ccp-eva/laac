@@ -101,7 +101,6 @@ The [appendix](#appendix) contains results from simulations studies we conducted
 
 # Methods
 
-#test#
 ## Participants
 
 ```{r}
@@ -137,8 +136,8 @@ participants <- data_trial%>%
    mutate(shade = time_point %% 2 == 0)
    
 ```
-A total of `r sum(participants$n)` great apes participated at least once in one of the tasks. This included `r participants%>%filter(species == "bonobo")%>%pull(n)%>%sum()` Bonobos (`r participants%>%filter(species == "bonobo", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "bonobo", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "bonobo", sex == "f")%>%pull(maxage)`), `r participants%>%filter(species == "chimpanzee")%>%pull(n)%>%sum()` Chimpanzees (`r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(maxage)`), `r participants%>%filter(species == "gorilla")%>%pull(n)%>%sum()` Gorillas (`r participants%>%filter(species == "gorilla", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "gorilla", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "gorilla", sex == "f")%>%pull(maxage)`), and `r participants%>%filter(species == "gorilla")%>%pull(n)%>%sum()` Orangutans (`r participants%>%filter(species == "orangutan", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "orangutan", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "orangutan", sex == "f")%>%pull(maxage)`). The sample size at the different time points ranged from `r min(tpn$n)` to `r max(tpn$n)`for the different species. Figure \@ref(fig:sample) visualizes the sample size across time points. We tried to test all apes at all time points but this was not always possible due to a lack of motivation or construction works. All apes participate in cognitive research on a regular basis. Many of them have ample experience with the very tasks we used in the current study.
-[Manuel: fürs Paper wärs glaub ich gut, bei einer Zeit zu bleiben. Im vorherigen Absatz bist du im present tense (apes participate), im nächsten im past tense (apes were housed).]
+A total of `r sum(participants$n)` great apes participated at least once in one of the tasks. This included `r participants%>%filter(species == "bonobo")%>%pull(n)%>%sum()` Bonobos (`r participants%>%filter(species == "bonobo", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "bonobo", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "bonobo", sex == "f")%>%pull(maxage)`), `r participants%>%filter(species == "chimpanzee")%>%pull(n)%>%sum()` Chimpanzees (`r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "chimpanzee", sex == "f")%>%pull(maxage)`), `r participants%>%filter(species == "gorilla")%>%pull(n)%>%sum()` Gorillas (`r participants%>%filter(species == "gorilla", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "gorilla", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "gorilla", sex == "f")%>%pull(maxage)`), and `r participants%>%filter(species == "gorilla")%>%pull(n)%>%sum()` Orangutans (`r participants%>%filter(species == "orangutan", sex == "f")%>%pull(n)` females, age `r participants%>%filter(species == "orangutan", sex == "f")%>%pull(minage)` to `r participants%>%filter(species == "orangutan", sex == "f")%>%pull(maxage)`). The sample size at the different time points ranged from `r min(tpn$n)` to `r max(tpn$n)`for the different species. Figure \@ref(fig:sample) visualizes the sample size across time points. We tried to test all apes at all time points but this was not always possible due to a lack of motivation or construction works. All apes participated in cognitive research on a regular basis. Many of them had ample experience with the very tasks we used in the current study.
+
 Apes were housed at the Wolfgang Köhler Primate Research Center located in Zoo Leipzig, Germany. They lived in groups, with one group per species and two chimpanzee groups (group A and B). Research was noninvasive and strictly adhered to the legal requirements in Germany. Animal husbandry and research complied with the European Association of Zoos and Aquaria Minimum Standards for the Accommodation and Care of Animals in Zoos and Aquaria as well as the World Association of Zoos and Aquariums Ethical Guidelines for the Conduct of Research on Animals by Zoos and Aquariums. Participation was voluntary, all food was given in addition to the daily diet, and water was available ad libitum throughout the study. The study was approved by an internal ethics committee at the Max Planck Institute for Evolutionary Anthropology.
 
 ```{r sample, out.width="100%", fig.height = 3, fig.cap = "Sample size by species across the different time points. Time point specific predictor variables were collected during the time between two time points (shaded regions) to predict the next."}
@@ -171,18 +170,15 @@ ggplot(tpn, aes(x = date, y = n, col = group))+
 
 Apes were tested in familiar sleeping or observation rooms by a single experimenter. Whenever possible, they were tested individually. The basic setup comprised a sliding table positioned in front of a clear Plexiglas panel with three holes in it. The experimenter sat on a small stool and used an occluder to cover the sliding table (see Figure \@ref(fig:setup)).
 
-```{r setup, include = T, fig.cap = "Setup used for the six tasks. A) Causal reasoning and inference by exclusion. B) Quantity discrimination. C) Gaze following. D) Switching. E) Delay of gratification. F) Order of Task Presentation", out.width="100%"}
+```{r setup, include = T, fig.cap = "Setup used for the six tasks. A) Gaze following. B) Causal reasoning and inference by exclusion. C) Quantity discrimination. D) Switching. E) Delay of gratification. F) Order of task presentation and trial numbers", out.width="100%"}
 knitr::include_graphics("figures/setup.png") 
-[Manuel: Vielleicht sollten wir die Bilder in der Reihenfolge des exp. Ablaufs darstellen. A) Gaze Following, B) Causality & Inference, C) Quantities, D) Switching, E) DoG]
-[Manuel: In der Figure legend fehlt die Beschreibung für F), die Task-Reihenfolge]
 ```
 
 ## Tasks
 
-The tasks we selected are based on published procedures and are commonly used in the field of comparative psychology. The original publications often include control conditions to rule out alternative, cognitively less demanding ways to solve the tasks. [Manuel: non-cognitive explanations würde ich nicht sagen, weil die alternativen Lösungswege ja auch Kognition erfordern.] We did not include such controls here and only ran the experimental conditions. For each task, we refer to the publication we used to model our procedure. We ask the reader to read these papers if they want to know more about control conditions and/or a detailed discussion of the nature of the underlying cognitive mechanisms.
+The tasks we selected are based on published procedures and are commonly used in the field of comparative psychology. The original publications often include control conditions to rule out alternative, cognitively less demanding ways to solve the tasks. We did not include such controls here and only ran the experimental conditions. For each task, we refer to the publication we used to model our procedure. We ask the reader to read these papers if they want to know more about control conditions and/or a detailed discussion of the nature of the underlying cognitive mechanisms.
 
 Example videos for each task can be found in the associated online repository in [`videos/`](https://github.com/ccp-eva/laac/tree/master/videos).
-
 
 ### Gaze Following
 
@@ -194,7 +190,7 @@ We assume that participants look up becasue they assume that the experimenter's 
 
 The causal inference task was modeled after @call2004inferences. Two identical cups with a lid were placed left and right on the table (Figure \@ref(fig:setup)A). The experimenter covered the table with the occluder, retrieved a piece of food, showed it to the ape, and hid it in one the cups outside the participant’s view. Next, the experimenter removed the occluder, picked up the baited cup and shook it three times, which produced a rattling sound. Next, the cup was put back in place, the sliding table pushed forwards, and the participant made a choice by pointing to one of the cups. If they picked the baited cup, their choice was coded as correct, and they received the reward. If they chose the empty cup, they did not. Participants received 12 trials. The location of the food was counterbalanced; six times in the right cup and six times in the left. Causal inference trials were intermixed with inference by exclusion trials (see below).
 
-We assume that apes locate the food by reasoning that the food -- a solid object -- causes the rattling sound and therefore must be in the shaken cup.[Manuel: in then hypotheses der anderen Tasks hast du present tense genommen, deshalb hab ich das hier geändert.] 
+We assume that apes locate the food by reasoning that the food -- a solid object -- causes the rattling sound and therefore must be in the shaken cup.
 
 ### Inference by exclusion
 
@@ -218,7 +214,7 @@ The dependent measure of interest for this task was calculated as: `[proportion 
 
 Based on the results of @haun2006evolutionary, we assume that apes have a tendency to expect the food to remain in the same location. When this strategy is no longer successful in the feature trials, they have to switch strategies and try a different one. 
 
-The switching task was only used in Phase 1. It did not produce meaningful results and on Phase 2 we therefore replaced it with a delay of gratification task (see below). [An alle: Sollten wir hier nicht vielleicht noch Details geben, warum die Results nicht meaningful waren?] [Ja, oder zumindest verweisen auf die Results Section, damit die Leute wissen, dass noch mehr Erklärung dazu kommt.]
+The switching task was only used in Phase 1. It did not produce meaningful results (see results for Phase 1 in [Stability and Reliability](#stability-and-reliability) below) and for Phase 2 we therefore replaced it with a delay of gratification task (see below).
 
 ### Delay of gratification
 
@@ -255,7 +251,7 @@ Group the individual belonged to. Groups were composed of individuals of the sam
 
 #### Age
 
-Absolute age of the individual. For some older individuals, only the year of birth was known. In these cases we calculated age with January 1st of that year as the birthday. [Manuel: Wahrscheinlich spielt es keine große Rolle, aber wäre es nicht schlauer, bei unbekanntem Geburtstag/Monat den 15.06. zu nehmen? Dann wäre man wahrscheinlich im Schnitt näher an der Realität dran] Variable name in model: `age`.
+Absolute age of the individual. For some older individuals, only the year of birth was known. In these cases we calculated age with January 1st of that year as the birthday. Variable name in model: `age`.
 
 #### Sex 
 
@@ -267,10 +263,11 @@ Here, we differentiated between, `mother-reared`, `hand-reared` and `unknown`. T
 
 #### Time lived in Leipzig
 
-Absolute time [why not just "time"?] the individual has lived in Leipzig Zoo. All apes living in Leipzig are involved in behavioral research to a certain degree. Thus, we take this measure to be a rough proxy of how much experience an individual has had with cognitive research. Variable name in model: `time_in_leipzig`.
+Absolute time the individual has lived in Leipzig Zoo. All apes living in Leipzig are involved in behavioral research to a certain degree. Thus, we take this measure to be a rough proxy of how much experience an individual has had with cognitive research. Variable name in model: `time_in_leipzig`.
 
 ```{r}
 psex <- data_trial%>%
+  filter(!is.na(sex))%>%
      mutate(group = as.character(group), 
          species = ifelse(grepl("chimp",group),"chimpanzee", group), 
          species = factor(species))%>%
@@ -284,6 +281,7 @@ psex <- data_trial%>%
   coord_flip()
 
 prearing <- data_trial%>%
+  filter(!is.na(rearing))%>%
      mutate(group = as.character(group), 
          species = ifelse(grepl("chimp",group),"chimpanzee", group), 
          species = factor(species))%>%
@@ -297,6 +295,7 @@ prearing <- data_trial%>%
   coord_flip()
 
 page <- data_trial%>%
+  filter(!is.na(age))%>%
      mutate(group = as.character(group), 
          species = ifelse(grepl("chimp",group),"chimpanzee", group), 
          species = factor(species))%>%
@@ -311,6 +310,7 @@ page <- data_trial%>%
   guides(fill = F, col = F)
 
 pleipzig <- data_trial%>%
+  filter(!is.na(time_in_leipzig))%>%
      mutate(group = as.character(group), 
          species = ifelse(grepl("chimp",group),"chimpanzee", group), 
          species = factor(species))%>%
@@ -323,7 +323,7 @@ pleipzig <- data_trial%>%
   scale_fill_ptol(name = "Group")+
   scale_color_ptol(name = "Group")+
   guides(fill = F, col = F)
-  
+
 ```
 
 ```{r demo, out.width="100%", fig.height = 4.5, fig.cap = "Stable individual characteristics. A) participant sex, B) age distribution by species, C) rearing history, D) time lived in leipzig by species."}
@@ -509,7 +509,7 @@ ggplot(.,aes(y = mean, x = factor(time_point), col = subject)) +
   labs(x = "Time point", y = "Sociality")
 ```
 
-We conducted proximity scans for all groups in the early afternoon on every workday (Monday to Friday). That is, we expect 10 scans for each time point. For each individual, we recorded which individuals were within arms reach. Research assistants used a tablet to record their observations with the behavioral coding software ZooMonitor [Reference rein]. 
+We conducted proximity scans for all groups in the early afternoon on every workday (Monday to Friday). That is, we expect 10 scans for each time point. For each individual, we recorded which individuals were within arms reach. Research assistants used a tablet to record their observations with the behavioral coding software ZooMonitor [@wark2019monitoring]. 
 
 To derive individual specific estimates of sociality for each time point, we fit a variant of a Social Relations Model [@snijders1999social] to the proximity data. These models allow estimating an individual specific sociality index while accounting for the dyadic nature of social interaction. Social relations models usually deal with directed behaviors (e.g. individual *i* is grooming individual *j*). Because the behavior we observed was symmetric, we cannot differentiate between the actor and receiver. @Kajokaite2020.08.04.235788 suggested to speak of a Multiple Membership Relations Model [see also @leckie2019multiple] in such a context, which simply estimates how likely an individual is to be observed in proximity to another individual. 
 
@@ -553,7 +553,7 @@ The animal caretakers also noted if there were any unusual disturbances for a pa
 
 #### Life events
 
-This variable captured whether there were any notable events within the group. Examples were fights in the group or the temporal removal of some individuals for medical procedures. Again, we asked the caretakers to rate the severity of these events and averaged across them [Manuel: Auch Skala von 1-7 oder?]. Variable name in model: `le_mean`.  
+This variable captured whether there were any notable events within the group. Examples were fights in the group or the temporal removal of some individuals for medical procedures. Again, we asked the caretakers to rate the severity of these events on a scale from 1 to 7 and averaged across them. Variable name in model: `le_mean`.  
 
 
 ```{r}
@@ -936,7 +936,7 @@ We stopped adding covariates to the optimal submodel as soon as the loss statist
 
 # Results
 
-```{r, cache = T}
+```{r}
 time_plot_1 <- data_task%>%
  filter(task != "switching_feature",
          task != "switching_place")%>%
@@ -1092,7 +1092,6 @@ rel_plot_dis <- cor_data%>%
 ```{r relplot, out.width="100%", fig.height=6, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "(A) Distribution of correlations between time points for each task. Dots represent the mean of the distribution with 95\\% HDI. Numbers denote mean and 95\\% HDI. (B) Correlations between re-test reliability and time span (in time points) between the testing time points."}
 ggarrange(rel_plot, rel_plot_dis, heights = c(1,1.5), labels = c("A","B"), nrow = 2)
 ```
-[Manuel: bei Figure 10 ist die Beschriftung "delay_of_gratification" abgeschnitten]
 ```{r, include=F}
 # latent state models
 lsc <- readModels("../../models and documentation Jana/Application/one task models/test_apes_data_LS_cau.out")
@@ -2087,7 +2086,7 @@ The longer individuals had lived in Leipzig, the better they performed in the ta
 
 #### Summary
 
-The most obvious result was that the random intercept term `(1 | subject)` was -- by far -- the predictor that improved the model fit the most. This suggests that a large portion of the variance is explained by stable individual characteristics that we did not capture in our predictors. Most likely, these are the outcomes of idiosyncratic developmental processes [or genetic pre-disposition oder?], which operate on a much longer time-scale than what we captured in our study. 
+The most obvious result was that the random intercept term `(1 | subject)` was -- by far -- the predictor that improved the model fit the most. This suggests that a large portion of the variance is explained by stable individual characteristics that we did not capture in our predictors. Most likely, these are the outcomes of idiosyncratic developmental processes or genetic pre-dispositions, which operate on a much longer time-scale than what we captured in our study. 
 
 Second, we saw that most of the relevant predictors came from the group of stable individual characteristics. This aligns well with the SEM results, in which we saw that most of the variance in performance could be traced back to stable trait differences between individuals. Following this reasoning, there was very little *systematic* variation between time points, and thus not much the time-varying predictors could account for. In line with this interpretation, we selected time point specific predictors only for gaze following, the task with the highest occasion specificity estimate according to the LSTM.
 
