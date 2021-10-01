@@ -3,14 +3,14 @@ title: "tbd..."
 author: "tbd..."
 subtitle: Supplementary material
 output:
-  bookdown::pdf_document2:
-    toc: yes
-    number_sections: no
   bookdown::html_document2:
     toc: yes
     toc_float: yes
     fig_caption: yes
     code_folding: hide
+    number_sections: no
+  bookdown::pdf_document2:
+    toc: yes
     number_sections: no
   html_document:
     toc: yes
@@ -1085,7 +1085,6 @@ rel_plot_dis <- cor_data%>%
   theme_minimal()+
   guides (col = F)+
   scale_colour_colorblind()
-
 
 ```
 
