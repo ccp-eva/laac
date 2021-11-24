@@ -932,7 +932,7 @@ Continuous predictors were centered when needed. We transformed the apes rank va
 
 Next, we performed the predictor selection for each reference model separately, thus resulting in four different rankings for the relevant predictors. The predictor selection was executed with the R package `projpred` [@projpred202], which implements the aforementioned predictive projection technique. The predictor relevance ranking is measured by the LOO cross-validated mean log-predictive density (`elpd`) and root-mean-squared error (`rmse`). To find the optimal submodel size, we inspected -- in line with the authors` recommendations -- summaries and the plotted trajectories of the calculated `elpd` and `rmse`.
 
-The order of relevance for the predictors and the random intercept (together called terms) is created by performing forward search. The term that decreases the KL divergence between the reference model's predictions and the projection's the most goes into the ranking. Forward search is then repeated N times to get a more robust selection. We chose the final model by inspecting the predictive utility of each projection. To be precise, we chose the model with p terms where p depicts the number of terms at the cutoff between the term that increases the elpd and the term that does not increase the elpd by any significant amount. [Manuel: Ist das verständlicher? Benedikt: es ist nicht ganz klar wie man dadurch zum ranking der einzelnen predictors commt - vll kannst du da noch was dazu schreiben]. Alternatively, one could have uses the function `suggest_size` as a heuristic decision rule to find the optimal submodel. `Suggest_size` chooses the smallest submodel with an `elpd` within one standard error of the reference model (default rule). The smallest submodel is thus expected to outperform the reference model with at least 16% probability. However, this is not yet possible for the models we fit due to the delay of the random intercept term. 
+The order of relevance for the predictors and the random intercept (together called terms) is created by performing forward search. The term that decreases the KL divergence between the reference model's predictions and the projection's predictions the most goes into the ranking. Forward search is then repeated N times to get a more robust selection. We chose the final model by inspecting the predictive utility of each projection. To be precise, we chose the model with *p* terms where *p* gives the number of terms at the cutoff between the term that increases the elpd and the term that does not increase the elpd by any significant amount. Alternatively, one could have uses the function `suggest_size` as a heuristic decision rule to find the optimal submodel. `Suggest_size` chooses the smallest submodel with an `elpd` within one standard error of the reference model (default rule). The smallest submodel is thus expected to outperform the reference model with at least 16% probability. However, this is not yet possible for the models we fit due to the delay of the random intercept term. 
 
 # Results
 
@@ -1091,6 +1091,7 @@ rel_plot_dis <- cor_data%>%
 ```{r relplot, out.width="100%", fig.height=6, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "(A) Distribution of correlations between time points for each task. Dots represent the mean of the distribution with 95\\% HDI. Numbers denote mean and 95\\% HDI. (B) Correlations between re-test reliability and time span (in time points) between the testing time points."}
 ggarrange(rel_plot, rel_plot_dis, heights = c(1,1.5), labels = c("A","B"), nrow = 2)
 ```
+
 ```{r, include=F}
 # latent state models
 lsc <- readModels("../../models and documentation Jana/Application/one task models/test_apes_data_LS_cau.out")
@@ -1634,7 +1635,7 @@ kable_classic(full_width = F)%>%
 
 ## Predictability
 
-The output of the projection predictive inference models is a ranking of the different predictors with respect to how much they improve a model's fit. Predictors ranked first improve the fit the most, while later predictors yield smaller improvements (if any). The selection of "relevant" predictors is based on plotting the loss statistics and looking for a point at which it levels off. As such, the selection is to some extend arbitrary. The ranking, however, is not. When we compare the results from the two phases, we not just look at which subset of predictors is selected, but also at the overall ranking.
+The output of the projection predictive inference models is a ranking of the different predictors with respect to how much they improve a model's fit. Predictors ranked first improve the fit the most, while later predictors yield smaller improvements (if any). The selection of "relevant" predictors is based on plotting the loss statistics and looking for a point at which it levels off (see [above](#projection-predictive-inference) for more details). As such, the selection is to some extend arbitrary. The ranking, however, is not. When we compare the results from the two phases, we not just look at which subset of predictors is selected, but also at the overall ranking.
 
 ### Phase 1
 
