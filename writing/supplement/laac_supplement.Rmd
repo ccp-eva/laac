@@ -346,116 +346,116 @@ As part of the caretakers' daily diary, we asked whether an individual was sick 
 #### Sociality
 
 ```{r}
-# ## get date ranges for each time point
-# raw_data_date <- p1_data_trial %>%
-#   mutate(date = ifelse(group == "b_chimp" & time_point == "13" & date == "20210203", "20210223", date))%>%
-#   mutate(date = as.Date(as.character(date), format="%Y%m%d"))%>%
-#   select(date, time_point,group)%>%
-#   group_by(group,time_point)%>%
-#   summarise(end_date = min(date))%>%
-#   mutate(time_point = as.numeric(time_point))%>%
-#   dplyr::arrange(group,-time_point)%>%
-#   mutate(start_date = ifelse(time_point == 1, as.character(as.Date("2020-08-01", format="%Y-%m-%d")), as.character(end_date[-1])))%>%
-#   #mutate(dif = time_length(interval(start_date, end_date), "days"))
-#   mutate(end_date = as.Date(end_date-1, format = "%Y-%m-%d"),
-#          start_date = as.Date(start_date, format = "%Y-%m-%d"),
-#          time_point = factor(time_point))%>%
-#   group_by(time_point, group)%>%
-#   summarise(date = seq(start_date, end_date, by = "days"))%>%
-#   dplyr::rename(species = group)%>%
-#   mutate(species = paste(str_replace(species,"_","-"),"s",sep =""))
+## get date ranges for each time point
+raw_data_date <- data_trial %>%
+  mutate(date = ifelse(group == "b_chimp" & time_point == "13" & date == "20210203", "20210223", date))%>%
+  mutate(date = as.Date(as.character(date), format="%Y%m%d"))%>%
+  select(date, time_point,group)%>%
+  group_by(group,time_point)%>%
+  summarise(end_date = min(date))%>%
+  mutate(time_point = as.numeric(time_point))%>%
+  dplyr::arrange(group,-time_point)%>%
+  mutate(start_date = ifelse(time_point == 1, as.character(as.Date("2020-08-01", format="%Y-%m-%d")), as.character(end_date[-1])))%>%
+  #mutate(dif = time_length(interval(start_date, end_date), "days"))
+  mutate(end_date = as.Date(end_date-1, format = "%Y-%m-%d"),
+         start_date = as.Date(start_date, format = "%Y-%m-%d"),
+         time_point = factor(time_point))%>%
+  group_by(time_point, group)%>%
+  summarise(date = seq(start_date, end_date, by = "days"))%>%
+  dplyr::rename(species = group)%>%
+  mutate(species = paste(str_replace(species,"_","-"),"s",sep =""))
 # 
 # ## get a list of all possible dyady for all possible time points
-# dyads <- list.files(path = "../../data/social_network_data",
-#                        pattern = "*.csv",
-#                        full.names = T)%>%
-#   map_df(~read_csv(.))%>%
-#   mutate(species = tolower(str_remove(`Configuration Name`, "LAAC ")),
-#          session = SessionID,
-#          date = as.Date(substr(as.character(DateTime),0,10),format="%Y-%m-%d"),
-#          focal = `Focal Name`,
-#          associates = `All Occurrence Behavior Social Modifier`)%>%
-#   #filter(date2 != "2020-08-21")%>%
-#   transform(associates = strsplit(associates,","))%>%
-#   unnest(associates)%>%
-#   select(species,focal,associates)%>%
-#   gather(type, focal, -species)%>%
-#   filter(!is.na(focal))%>%
-#   distinct(species, focal)%>%
-#   mutate(associates = focal)%>%
-#   group_by(species)%>%
-#   tidyr::expand(focal,associates,c(1:14))%>%
-#   mutate(time_point = factor(`c(1:14)`))%>%
-#   select(-`c(1:14)`)%>%
-#   filter(focal != associates)
+dyads <- list.files(path = "../../data/social_network_data",
+                       pattern = "*.csv",
+                       full.names = T)%>%
+  map_df(~read_csv(.))%>%
+  mutate(species = tolower(str_remove(`Configuration Name`, "LAAC ")),
+         session = SessionID,
+         date = as.Date(substr(as.character(DateTime),0,10),format="%Y-%m-%d"),
+         focal = `Focal Name`,
+         associates = `All Occurrence Behavior Social Modifier`)%>%
+  #filter(date2 != "2020-08-21")%>%
+  transform(associates = strsplit(associates,","))%>%
+  unnest(associates)%>%
+  select(species,focal,associates)%>%
+  gather(type, focal, -species)%>%
+  filter(!is.na(focal))%>%
+  distinct(species, focal)%>%
+  mutate(associates = focal)%>%
+  group_by(species)%>%
+  tidyr::expand(focal,associates,c(1:28))%>%
+  mutate(time_point = factor(`c(1:28)`))%>%
+  select(-`c(1:28)`)%>%
+  filter(focal != associates)
 # 
 # ## read in the data from the observational scans
-# obs_data <- list.files(path = "../../data/social_network_data",
-#                        pattern = "*.csv",
-#                        full.names = T)%>%
-#   map_df(~read_csv(.))%>%
-#   mutate(species = tolower(str_remove(`Configuration Name`, "LAAC ")),
-#          session = SessionID,
-#          date = as.Date(substr(as.character(DateTime),0,10),format="%Y-%m-%d"),
-#          focal = `Focal Name`,
-#          associates = `All Occurrence Behavior Social Modifier`)%>%
-#   #filter(date2 != "2020-08-21")%>%
-#   transform(associates = strsplit(associates,","))%>%
-#   unnest(associates)%>%
-#   select(species,session,date, focal,associates)%>%
-#   left_join(raw_data_date)%>%
-#   group_by(species,time_point)%>%
-#   mutate(n = length(unique(date)))%>% #compute the number of observations
-#   group_by(species,focal, associates,time_point)%>%
-#   summarise(count = n(), # count how often a combination of focal and associate occurred for a time point
-#             n = max(n))%>%# include the number of observations for that time point
-#   mutate(count = ifelse(is.na(associates),0,count))%>%
-#   rowwise() %>%
-#   filter(!is.na(associates))%>% # remove rows without associates
-#   ungroup()
+obs_data <- list.files(path = "../../data/social_network_data",
+                       pattern = "*.csv",
+                       full.names = T)%>%
+  map_df(~read_csv(.))%>%
+  mutate(species = tolower(str_remove(`Configuration Name`, "LAAC ")),
+         session = SessionID,
+         date = as.Date(substr(as.character(DateTime),0,10),format="%Y-%m-%d"),
+         focal = `Focal Name`,
+         associates = `All Occurrence Behavior Social Modifier`)%>%
+  #filter(date2 != "2020-08-21")%>%
+  transform(associates = strsplit(associates,","))%>%
+  unnest(associates)%>%
+  select(species,session,date, focal,associates)%>%
+  left_join(raw_data_date)%>%
+  group_by(species,time_point)%>%
+  mutate(n = length(unique(date)))%>% #compute the number of observations
+  group_by(species,focal, associates,time_point)%>%
+  summarise(count = n(), # count how often a combination of focal and associate occurred for a time point
+            n = max(n))%>%# include the number of observations for that time point
+  mutate(count = ifelse(is.na(associates),0,count))%>%
+  rowwise() %>%
+  filter(!is.na(associates))%>% # remove rows without associates
+  ungroup()
 #   
 # ## merge scan data with the dyads
-# raw_srm_data <- dyads %>%
-#   left_join(obs_data)%>%
-#   group_by(species, time_point)%>%
-#   mutate(n = max(n, na.rm = T))%>%
-#   filter(n != "-Inf")%>%
-#   mutate(count = ifelse(is.na(count),0,count))%>%
-#   rowwise() %>%
-#   mutate(dyad = paste(sort(c(focal, associates)), collapse = "_"))%>% # create ordered dyad column
-#   ungroup()
+raw_srm_data <- dyads %>%
+  left_join(obs_data)%>%
+  group_by(species, time_point)%>%
+  mutate(n = max(n, na.rm = T))%>%
+  filter(n != "-Inf")%>%
+  mutate(count = ifelse(is.na(count),0,count))%>%
+  rowwise() %>%
+  mutate(dyad = paste(sort(c(focal, associates)), collapse = "_"))%>% # create ordered dyad column
+  ungroup()
 # 
 # ## prepare data for model run
-# srm_model_data <- raw_srm_data%>%
-#   group_by(time_point)%>%
-#   distinct(dyad, .keep_all = T)%>% # remove duplicate dyads to avoid counting same dyad twice
-#   ungroup()%>%
-#   filter(!count > n) # remove rows with more counts than observations
+srm_model_data <- raw_srm_data%>%
+  group_by(time_point)%>%
+  distinct(dyad, .keep_all = T)%>% # remove duplicate dyads to avoid counting same dyad twice
+  ungroup()%>%
+  filter(!count > n) # remove rows with more counts than observations
 # 
 # ## run social relations model
 # 
 # ### specify priors
-# prior <-  c(prior(normal(0,2), class = Intercept),
-#             prior(normal(0,2), class = b),
-#             prior(normal(0,1), class = sd)
-#             )
-# 
-# ### run model 
-# srm <-  brm(count | trials(n) ~ species + (0 + time_point | mm(focal, associates)) + ( 0 + time_point | dyad),
-#            family = binomial(link = "logit"),
-#            data = srm_model_data,
-#            prior = prior,
-#            #control = list(adapt_delta = 0.95, max_treedepth = 20),
-#            iter = 5000, cores = 4, chains = 4)
-# 
-# ### save output 
-# saveRDS(srm, "./saves/srm.rds")
+prior <-  c(prior(normal(0,2), class = Intercept),
+            prior(normal(0,2), class = b),
+            prior(normal(0,1), class = sd)
+            )
+
+### run model
+srm <-  brm(count | trials(n) ~ species + (0 + time_point | mm(focal, associates)) + ( 0 + time_point | dyad),
+           family = binomial(link = "logit"),
+           data = srm_model_data,
+           prior = prior,
+           control = list(adapt_delta = 0.95, max_treedepth = 20),
+           iter = 6000, cores = 6, chains = 6)
+
+### save output
+saveRDS(srm, "./saves/srm.rds")
 # 
 # ### load model results(too large to put on GitHub)
 # srm <-  readRDS("./saves/srm.rds")
 # 
 # 
-# ### get species infor for each subject
+# ### get species info for each subject
 # subject_data <-  raw_srm_data%>%
 #   ungroup()%>%
 #   select(species, focal, associates)%>%
@@ -571,6 +571,7 @@ plife <- data_trial%>%
   labs(x = "Time Point", y = "")+
   scale_color_ptol(name = "Group")+
   theme_minimal()
+
 ```
 
 ```{r glife, out.width="100%", fig.height = 3, fig.cap = "Variation in group life related measures across groups and time points."}
@@ -1149,6 +1150,7 @@ rel_plot_dis <- cor_data%>%
 ```{r relplot, out.width="100%", fig.height=6, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "(A) Distribution of correlations between time points for each task. Dots represent the mean of the distribution with 95\\% HDI. Numbers denote mean and 95\\% HDI. (B) Correlations between re-test reliability and time span (in time points) between the testing time points."}
 ggarrange(rel_plot, rel_plot_dis, heights = c(1,1.5), labels = c("A","B"), nrow = 2)
 ```
+
 ```{r, include=F}
 # latent state models
 lsc <- readModels("../../models and documentation Jana/Application/one task models/test_apes_data_LS_cau.out")
