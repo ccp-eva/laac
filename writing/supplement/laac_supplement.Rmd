@@ -276,6 +276,7 @@ psex <- data_trial%>%
   ggplot(aes(x = group, y = Frequency, fill = sex))+
   geom_histogram(stat = "identity", position = position_dodge(), col = "black")+
   theme_minimal(base_size = 8)+
+  labs(x="", y = "Frequency")+
   scale_fill_grey(name = "Sex")+
   theme(legend.position = c(0.8,0.7), legend.key.size = unit(0.3, "cm"))+
   coord_flip()
@@ -288,8 +289,9 @@ prearing <- data_trial%>%
   group_by(group, rearing,.drop=FALSE)%>%
   summarise(Frequency = length(unique(subject)))%>%
   ggplot(aes(x = group, y = Frequency, fill = rearing))+
-  geom_histogram(stat = "identity", position = position_dodge(), col = "black")+
+  geom_histogram(stat = "identity", position = position_dodge(preserve = "single"), col = "black")+
   theme_minimal(base_size = 8)+
+  labs(x="", y = "Frequency")+
   scale_fill_viridis_d(name = "Rearing history")+
   theme(legend.position = c(0.8,0.7), legend.key.size = unit(0.3, "cm"))+
   coord_flip()
@@ -305,6 +307,7 @@ page <- data_trial%>%
   geom_jitter(aes( col = group),alpha = .75, height = 0, width = .05, pch = "|", size = 5)+
   geom_density_ridges(col = "black", alpha = .5)+
   theme_minimal(base_size = 8)+
+    labs(y="", x = "Subject age")+
   scale_fill_ptol(name = "Group")+
   scale_color_ptol(name = "Group")+
   guides(fill = F, col = F)
@@ -320,6 +323,7 @@ pleipzig <- data_trial%>%
   geom_jitter(aes( col = group),alpha = .75, height = 0, width = .05, pch = "|", size = 5)+
   geom_density_ridges(col = "black", alpha = .5)+
   theme_minimal(base_size = 8)+
+    labs(y="", x = "Time lived in Leipzig")+
   scale_fill_ptol(name = "Group")+
   scale_color_ptol(name = "Group")+
   guides(fill = F, col = F)
@@ -441,50 +445,71 @@ prior <-  c(prior(normal(0,2), class = Intercept),
             )
 
 ### run model
-srm <-  brm(count | trials(n) ~ species + (0 + time_point | mm(focal, associates)) + ( 0 + time_point | dyad),
+
+#### phase 1
+srm_1 <-  brm(count | trials(n) ~ species + (0 + time_point | mm(focal, associates)) + ( 0 + time_point | dyad),
            family = binomial(link = "logit"),
-           data = srm_model_data,
+           data = srm_model_data%>%filter(as.numeric(time_point) < 15),
            prior = prior,
            control = list(adapt_delta = 0.95, max_treedepth = 20),
-           iter = 6000, cores = 6, chains = 6)
+           iter = 5000, cores = 5, chains = 5)
+
+#### phase 2
+srm_2 <-  brm(count | trials(n) ~ species + (0 + time_point | mm(focal, associates)) + ( 0 + time_point | dyad),
+           family = binomial(link = "logit"),
+           data = srm_model_data%>%filter(as.numeric(time_point) > 14),
+           prior = prior,
+           control = list(adapt_delta = 0.95, max_treedepth = 20),
+           iter = 5000, cores = 5, chains = 5)
 
 ### save output
-saveRDS(srm, "./saves/srm.rds")
-# 
-# ### load model results(too large to put on GitHub)
-# srm <-  readRDS("./saves/srm.rds")
-# 
-# 
-# ### get species info for each subject
-# subject_data <-  raw_srm_data%>%
-#   ungroup()%>%
-#   select(species, focal, associates)%>%
-#   gather(role, subject,-species)%>%
-#   distinct(subject, .keep_all = T)%>%
-#   select(-role)%>%
-#   arrange(species)%>%
-#   mutate(subject = tolower(subject))%>%
-#   mutate_at(.vars = vars(ends_with("s")),
-#             .funs = funs(sub("s", "", .)))%>%
-#   mutate(species = str_replace(species, "-", "_"))
-# 
-# ## extract model estimates for each subject 
-# subject_draws <-  spread_draws(srm, r_mmfocalassociates[subject,time_point])%>% # extract posterior draws for each subject and time point
-#   dplyr::rename(estimate = r_mmfocalassociates)%>%
-#   mutate(subject = tolower(subject))%>% 
-#   left_join(subject_data) # merge with subject information to get species in
-# 
-# ## summaries subject draws to put on GitHub
-# subject_estimates <- subject_draws%>%
-#   ungroup()%>%
-#   mutate(time_point = as.numeric(str_remove(time_point, "time_point")))%>%
-#   group_by(species, subject,time_point)%>%
-#   summarise(mean = estimate_mode(estimate),
-#             uci = hdi_upper(estimate),
-#             lci = hdi_lower(estimate))
-# 
-# ## save subject draws to put on GitHub
-# write_csv(subject_estimates, "./saves/srm_estimates.csv")
+saveRDS(srm_1, "./saves/srm_1.rds")
+saveRDS(srm_2, "./saves/srm_2.rds")
+
+### load model results(too large to put on GitHub)
+srm_1 <-  readRDS("./saves/srm_1.rds")
+srm_2 <-  readRDS("./saves/srm_2.rds")
+
+
+### get species info for each subject
+subject_data <-  raw_srm_data%>%
+  ungroup()%>%
+  select(species, focal, associates)%>%
+  gather(role, subject,-species)%>%
+  distinct(subject, .keep_all = T)%>%
+  select(-role)%>%
+  arrange(species)%>%
+  mutate(subject = tolower(subject))%>%
+  mutate_at(.vars = vars(ends_with("s")),
+            .funs = funs(sub("s", "", .)))%>%
+  mutate(species = str_replace(species, "-", "_"))
+
+## extract model estimates for each subject
+### phase 1
+subject_draws_1 <-  spread_draws(srm_1, r_mmfocalassociates[subject,time_point])%>% # extract posterior draws for each subject and time point
+  dplyr::rename(estimate = r_mmfocalassociates)%>%
+  mutate(subject = tolower(subject))%>%
+  left_join(subject_data) # merge with subject information to get species in
+
+### phase 2
+subject_draws_2 <-  spread_draws(srm_2, r_mmfocalassociates[subject,time_point])%>% # extract posterior draws for each subject and time point
+  dplyr::rename(estimate = r_mmfocalassociates)%>%
+  mutate(subject = tolower(subject))%>%
+  left_join(subject_data) # merge with subject information to get species in
+
+## summaries subject draws to put on GitHub
+subject_estimates <- bind_rows(
+  subject_draws_1,
+  subject_draws_2)%>%
+  ungroup()%>%
+  mutate(time_point = as.numeric(str_remove(time_point, "time_point")))%>%
+  group_by(species, subject,time_point)%>%
+  summarise(mean = estimate_mode(estimate),
+            uci = hdi_upper(estimate),
+            lci = hdi_lower(estimate))
+
+## save subject draws to put on GitHub
+write_csv(subject_estimates, "./saves/srm_estimates.csv")
 
 subject_estimates <- read_csv("./saves/srm_estimates.csv")
 
@@ -497,16 +522,17 @@ plot_est <-  subject_estimates%>%
 
 
 psrm <- plot_est%>%
-  filter(#species == "gorilla" | 
-           species == "orangutan")%>%
+  filter(species == "orangutan" 
+         )%>%
 ggplot(.,aes(y = mean, x = factor(time_point), col = subject)) +
   geom_point(alpha = .5)+
+  geom_vline(xintercept = 14.5)+
   #geom_pointrange(aes(y = mean, ymin = lci, ymax = uci), alpha = .5, position = position_dodge(width = .5))+
   geom_line(aes(group = subject),alpha = .5)+
   facet_grid(~species)+
   theme_minimal()+
   scale_color_viridis_d(name ="Subject")+
-  labs(x = "Time point", y = "Sociality")
+  labs(x = "Time point", y = "Sociality estimate")
 ```
 
 We conducted proximity scans for all groups in the early afternoon on every workday (Monday to Friday). That is, we expect 10 scans for each time point. For each individual, we recorded which individuals were within arms reach. Research assistants used a tablet to record their observations with the behavioral coding software ZooMonitor [@wark2019monitoring]. 
@@ -527,7 +553,7 @@ prank <- data_trial%>%
   ggplot(aes(x = sd, y = group, fill = group))+
   geom_jitter(aes(col = group), height = 0, width = .05, pch = "|", size = 5)+
   geom_density_ridges(alpha = .5, col = "black")+
-  labs(x ="Variability in rank (sd)")+
+  labs(x ="Variability in rank (sd)", y = "")+
   theme_minimal()+
   scale_fill_ptol()+
   scale_colour_ptol()+
@@ -536,7 +562,7 @@ prank <- data_trial%>%
 ```
 
 ```{r socrel, out.width="100%", fig.height = 2.5, fig.cap = "Variable individual characteristics. A) variability in rank (caretaker ratings) for each subject and species, B) sociality estimates for orangutans based on Multiple Membership Relations Model."}
-ggarrange(prank,psrm, labels = c("A","B"), widths = c(1,1.3))
+ggarrange(prank,psrm, labels = c("A","B"), widths = c(1,1.5))
 ```
 
 ### Group life
