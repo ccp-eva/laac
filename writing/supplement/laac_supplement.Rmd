@@ -231,7 +231,7 @@ The order of tasks was the same for all subjects. So was the positioning of food
 
 The interval between two time points was planned to be two weeks. However, it was not always possible to follow this schedule so that some intervals were longer or shorter. Figure \@ref(fig:sample) visualizes the intervals between time points. 
 
-We collected data in two phases. Phase 1 started on August 1st, 2020, lasted until March 5th, 2021 and included 14 time points (see Figure \@ref(fig:sample)). Phase 2 started on May 26th, 2021 and lasted until ... and had ... time points.
+We collected data in two phases. Phase 1 started on August 1st, 2020, lasted until March 5th, 2021 and included 14 time points. Phase 2 started on May 26th, 2021 and lasted until December 4th, 2021 and also had 14 time points (see Figure \@ref(fig:sample)).
 
 ## Predictors
 
@@ -351,165 +351,165 @@ As part of the caretakers' daily diary, we asked whether an individual was sick 
 
 ```{r}
 ## get date ranges for each time point
-raw_data_date <- data_trial %>%
-  mutate(date = ifelse(group == "b_chimp" & time_point == "13" & date == "20210203", "20210223", date))%>%
-  mutate(date = as.Date(as.character(date), format="%Y%m%d"))%>%
-  select(date, time_point,group)%>%
-  group_by(group,time_point)%>%
-  summarise(end_date = min(date))%>%
-  mutate(time_point = as.numeric(time_point))%>%
-  dplyr::arrange(group,-time_point)%>%
-  mutate(start_date = ifelse(time_point == 1, as.character(as.Date("2020-08-01", format="%Y-%m-%d")), as.character(end_date[-1])))%>%
-  #mutate(dif = time_length(interval(start_date, end_date), "days"))
-  mutate(end_date = as.Date(end_date-1, format = "%Y-%m-%d"),
-         start_date = as.Date(start_date, format = "%Y-%m-%d"),
-         time_point = factor(time_point))%>%
-  group_by(time_point, group)%>%
-  summarise(date = seq(start_date, end_date, by = "days"))%>%
-  dplyr::rename(species = group)%>%
-  mutate(species = paste(str_replace(species,"_","-"),"s",sep =""))
+# raw_data_date <- data_trial %>%
+#   mutate(date = ifelse(group == "b_chimp" & time_point == "13" & date == "20210203", "20210223", date))%>%
+#   mutate(date = as.Date(as.character(date), format="%Y%m%d"))%>%
+#   select(date, time_point,group)%>%
+#   group_by(group,time_point)%>%
+#   summarise(end_date = min(date))%>%
+#   mutate(time_point = as.numeric(time_point))%>%
+#   dplyr::arrange(group,-time_point)%>%
+#   mutate(start_date = ifelse(time_point == 1, as.character(as.Date("2020-08-01", format="%Y-%m-%d")), as.character(end_date[-1])))%>%
+#   #mutate(dif = time_length(interval(start_date, end_date), "days"))
+#   mutate(end_date = as.Date(end_date-1, format = "%Y-%m-%d"),
+#          start_date = as.Date(start_date, format = "%Y-%m-%d"),
+#          time_point = factor(time_point))%>%
+#   group_by(time_point, group)%>%
+#   summarise(date = seq(start_date, end_date, by = "days"))%>%
+#   dplyr::rename(species = group)%>%
+#   mutate(species = paste(str_replace(species,"_","-"),"s",sep =""))
+# # 
+# # ## get a list of all possible dyady for all possible time points
+# dyads <- list.files(path = "../../data/social_network_data",
+#                        pattern = "*.csv",
+#                        full.names = T)%>%
+#   map_df(~read_csv(.))%>%
+#   mutate(species = tolower(str_remove(`Configuration Name`, "LAAC ")),
+#          session = SessionID,
+#          date = as.Date(substr(as.character(DateTime),0,10),format="%Y-%m-%d"),
+#          focal = `Focal Name`,
+#          associates = `All Occurrence Behavior Social Modifier`)%>%
+#   #filter(date2 != "2020-08-21")%>%
+#   transform(associates = strsplit(associates,","))%>%
+#   unnest(associates)%>%
+#   select(species,focal,associates)%>%
+#   gather(type, focal, -species)%>%
+#   filter(!is.na(focal))%>%
+#   distinct(species, focal)%>%
+#   mutate(associates = focal)%>%
+#   group_by(species)%>%
+#   tidyr::expand(focal,associates,c(1:28))%>%
+#   mutate(time_point = factor(`c(1:28)`))%>%
+#   select(-`c(1:28)`)%>%
+#   filter(focal != associates)
+# # 
+# # ## read in the data from the observational scans
+# obs_data <- list.files(path = "../../data/social_network_data",
+#                        pattern = "*.csv",
+#                        full.names = T)%>%
+#   map_df(~read_csv(.))%>%
+#   mutate(species = tolower(str_remove(`Configuration Name`, "LAAC ")),
+#          session = SessionID,
+#          date = as.Date(substr(as.character(DateTime),0,10),format="%Y-%m-%d"),
+#          focal = `Focal Name`,
+#          associates = `All Occurrence Behavior Social Modifier`)%>%
+#   #filter(date2 != "2020-08-21")%>%
+#   transform(associates = strsplit(associates,","))%>%
+#   unnest(associates)%>%
+#   select(species,session,date, focal,associates)%>%
+#   left_join(raw_data_date)%>%
+#   group_by(species,time_point)%>%
+#   mutate(n = length(unique(date)))%>% #compute the number of observations
+#   group_by(species,focal, associates,time_point)%>%
+#   summarise(count = n(), # count how often a combination of focal and associate occurred for a time point
+#             n = max(n))%>%# include the number of observations for that time point
+#   mutate(count = ifelse(is.na(associates),0,count))%>%
+#   rowwise() %>%
+#   filter(!is.na(associates))%>% # remove rows without associates
+#   ungroup()
+# #   
+# # ## merge scan data with the dyads
+# raw_srm_data <- dyads %>%
+#   left_join(obs_data)%>%
+#   group_by(species, time_point)%>%
+#   mutate(n = max(n, na.rm = T))%>%
+#   filter(n != "-Inf")%>%
+#   mutate(count = ifelse(is.na(count),0,count))%>%
+#   rowwise() %>%
+#   mutate(dyad = paste(sort(c(focal, associates)), collapse = "_"))%>% # create ordered dyad column
+#   ungroup()
+# # 
+# # ## prepare data for model run
+# srm_model_data <- raw_srm_data%>%
+#   group_by(time_point)%>%
+#   distinct(dyad, .keep_all = T)%>% # remove duplicate dyads to avoid counting same dyad twice
+#   ungroup()%>%
+#   filter(!count > n) # remove rows with more counts than observations
+# # 
+# # ## run social relations model
+# # 
+# # ### specify priors
+# prior <-  c(prior(normal(0,2), class = Intercept),
+#             prior(normal(0,2), class = b),
+#             prior(normal(0,1), class = sd)
+#             )
 # 
-# ## get a list of all possible dyady for all possible time points
-dyads <- list.files(path = "../../data/social_network_data",
-                       pattern = "*.csv",
-                       full.names = T)%>%
-  map_df(~read_csv(.))%>%
-  mutate(species = tolower(str_remove(`Configuration Name`, "LAAC ")),
-         session = SessionID,
-         date = as.Date(substr(as.character(DateTime),0,10),format="%Y-%m-%d"),
-         focal = `Focal Name`,
-         associates = `All Occurrence Behavior Social Modifier`)%>%
-  #filter(date2 != "2020-08-21")%>%
-  transform(associates = strsplit(associates,","))%>%
-  unnest(associates)%>%
-  select(species,focal,associates)%>%
-  gather(type, focal, -species)%>%
-  filter(!is.na(focal))%>%
-  distinct(species, focal)%>%
-  mutate(associates = focal)%>%
-  group_by(species)%>%
-  tidyr::expand(focal,associates,c(1:28))%>%
-  mutate(time_point = factor(`c(1:28)`))%>%
-  select(-`c(1:28)`)%>%
-  filter(focal != associates)
+# ### run model
 # 
-# ## read in the data from the observational scans
-obs_data <- list.files(path = "../../data/social_network_data",
-                       pattern = "*.csv",
-                       full.names = T)%>%
-  map_df(~read_csv(.))%>%
-  mutate(species = tolower(str_remove(`Configuration Name`, "LAAC ")),
-         session = SessionID,
-         date = as.Date(substr(as.character(DateTime),0,10),format="%Y-%m-%d"),
-         focal = `Focal Name`,
-         associates = `All Occurrence Behavior Social Modifier`)%>%
-  #filter(date2 != "2020-08-21")%>%
-  transform(associates = strsplit(associates,","))%>%
-  unnest(associates)%>%
-  select(species,session,date, focal,associates)%>%
-  left_join(raw_data_date)%>%
-  group_by(species,time_point)%>%
-  mutate(n = length(unique(date)))%>% #compute the number of observations
-  group_by(species,focal, associates,time_point)%>%
-  summarise(count = n(), # count how often a combination of focal and associate occurred for a time point
-            n = max(n))%>%# include the number of observations for that time point
-  mutate(count = ifelse(is.na(associates),0,count))%>%
-  rowwise() %>%
-  filter(!is.na(associates))%>% # remove rows without associates
-  ungroup()
-#   
-# ## merge scan data with the dyads
-raw_srm_data <- dyads %>%
-  left_join(obs_data)%>%
-  group_by(species, time_point)%>%
-  mutate(n = max(n, na.rm = T))%>%
-  filter(n != "-Inf")%>%
-  mutate(count = ifelse(is.na(count),0,count))%>%
-  rowwise() %>%
-  mutate(dyad = paste(sort(c(focal, associates)), collapse = "_"))%>% # create ordered dyad column
-  ungroup()
+# #### phase 1
+# srm_1 <-  brm(count | trials(n) ~ species + (0 + time_point | mm(focal, associates)) + ( 0 + time_point | dyad),
+#            family = binomial(link = "logit"),
+#            data = srm_model_data%>%filter(as.numeric(time_point) < 15),
+#            prior = prior,
+#            control = list(adapt_delta = 0.95, max_treedepth = 20),
+#            iter = 5000, cores = 5, chains = 5)
 # 
-# ## prepare data for model run
-srm_model_data <- raw_srm_data%>%
-  group_by(time_point)%>%
-  distinct(dyad, .keep_all = T)%>% # remove duplicate dyads to avoid counting same dyad twice
-  ungroup()%>%
-  filter(!count > n) # remove rows with more counts than observations
+# #### phase 2
+# srm_2 <-  brm(count | trials(n) ~ species + (0 + time_point | mm(focal, associates)) + ( 0 + time_point | dyad),
+#            family = binomial(link = "logit"),
+#            data = srm_model_data%>%filter(as.numeric(time_point) > 14),
+#            prior = prior,
+#            control = list(adapt_delta = 0.95, max_treedepth = 20),
+#            iter = 5000, cores = 5, chains = 5)
 # 
-# ## run social relations model
+# ### save output
+# saveRDS(srm_1, "./saves/srm_1.rds")
+# saveRDS(srm_2, "./saves/srm_2.rds")
 # 
-# ### specify priors
-prior <-  c(prior(normal(0,2), class = Intercept),
-            prior(normal(0,2), class = b),
-            prior(normal(0,1), class = sd)
-            )
-
-### run model
-
-#### phase 1
-srm_1 <-  brm(count | trials(n) ~ species + (0 + time_point | mm(focal, associates)) + ( 0 + time_point | dyad),
-           family = binomial(link = "logit"),
-           data = srm_model_data%>%filter(as.numeric(time_point) < 15),
-           prior = prior,
-           control = list(adapt_delta = 0.95, max_treedepth = 20),
-           iter = 5000, cores = 5, chains = 5)
-
-#### phase 2
-srm_2 <-  brm(count | trials(n) ~ species + (0 + time_point | mm(focal, associates)) + ( 0 + time_point | dyad),
-           family = binomial(link = "logit"),
-           data = srm_model_data%>%filter(as.numeric(time_point) > 14),
-           prior = prior,
-           control = list(adapt_delta = 0.95, max_treedepth = 20),
-           iter = 5000, cores = 5, chains = 5)
-
-### save output
-saveRDS(srm_1, "./saves/srm_1.rds")
-saveRDS(srm_2, "./saves/srm_2.rds")
-
-### load model results(too large to put on GitHub)
-srm_1 <-  readRDS("./saves/srm_1.rds")
-srm_2 <-  readRDS("./saves/srm_2.rds")
-
-
-### get species info for each subject
-subject_data <-  raw_srm_data%>%
-  ungroup()%>%
-  select(species, focal, associates)%>%
-  gather(role, subject,-species)%>%
-  distinct(subject, .keep_all = T)%>%
-  select(-role)%>%
-  arrange(species)%>%
-  mutate(subject = tolower(subject))%>%
-  mutate_at(.vars = vars(ends_with("s")),
-            .funs = funs(sub("s", "", .)))%>%
-  mutate(species = str_replace(species, "-", "_"))
-
-## extract model estimates for each subject
-### phase 1
-subject_draws_1 <-  spread_draws(srm_1, r_mmfocalassociates[subject,time_point])%>% # extract posterior draws for each subject and time point
-  dplyr::rename(estimate = r_mmfocalassociates)%>%
-  mutate(subject = tolower(subject))%>%
-  left_join(subject_data) # merge with subject information to get species in
-
-### phase 2
-subject_draws_2 <-  spread_draws(srm_2, r_mmfocalassociates[subject,time_point])%>% # extract posterior draws for each subject and time point
-  dplyr::rename(estimate = r_mmfocalassociates)%>%
-  mutate(subject = tolower(subject))%>%
-  left_join(subject_data) # merge with subject information to get species in
-
-## summaries subject draws to put on GitHub
-subject_estimates <- bind_rows(
-  subject_draws_1,
-  subject_draws_2)%>%
-  ungroup()%>%
-  mutate(time_point = as.numeric(str_remove(time_point, "time_point")))%>%
-  group_by(species, subject,time_point)%>%
-  summarise(mean = estimate_mode(estimate),
-            uci = hdi_upper(estimate),
-            lci = hdi_lower(estimate))
-
-## save subject draws to put on GitHub
-write_csv(subject_estimates, "./saves/srm_estimates.csv")
+# ### load model results(too large to put on GitHub)
+# srm_1 <-  readRDS("./saves/srm_1.rds")
+# srm_2 <-  readRDS("./saves/srm_2.rds")
+# 
+# 
+# ### get species info for each subject
+# subject_data <-  raw_srm_data%>%
+#   ungroup()%>%
+#   select(species, focal, associates)%>%
+#   gather(role, subject,-species)%>%
+#   distinct(subject, .keep_all = T)%>%
+#   select(-role)%>%
+#   arrange(species)%>%
+#   mutate(subject = tolower(subject))%>%
+#   mutate_at(.vars = vars(ends_with("s")),
+#             .funs = funs(sub("s", "", .)))%>%
+#   mutate(species = str_replace(species, "-", "_"))
+# 
+# ## extract model estimates for each subject
+# ### phase 1
+# subject_draws_1 <-  spread_draws(srm_1, r_mmfocalassociates[subject,time_point])%>% # extract posterior draws for each subject and time point
+#   dplyr::rename(estimate = r_mmfocalassociates)%>%
+#   mutate(subject = tolower(subject))%>%
+#   left_join(subject_data) # merge with subject information to get species in
+# 
+# ### phase 2
+# subject_draws_2 <-  spread_draws(srm_2, r_mmfocalassociates[subject,time_point])%>% # extract posterior draws for each subject and time point
+#   dplyr::rename(estimate = r_mmfocalassociates)%>%
+#   mutate(subject = tolower(subject))%>%
+#   left_join(subject_data) # merge with subject information to get species in
+# 
+# ## summaries subject draws to put on GitHub
+# subject_estimates <- bind_rows(
+#   subject_draws_1,
+#   subject_draws_2)%>%
+#   ungroup()%>%
+#   mutate(time_point = as.numeric(str_remove(time_point, "time_point")))%>%
+#   group_by(species, subject,time_point)%>%
+#   summarise(mean = estimate_mode(estimate),
+#             uci = hdi_upper(estimate),
+#             lci = hdi_lower(estimate))
+# 
+# ## save subject draws to put on GitHub
+# write_csv(subject_estimates, "./saves/srm_estimates.csv")
 
 subject_estimates <- read_csv("./saves/srm_estimates.csv")
 
@@ -634,21 +634,17 @@ We used SEM to estimate traits (stable over time) and states (time varying). In 
 
 At each time point, we observed several identical trials per individual per task. Using the individual trials (8 to 12 dichotomous items, depending on the task) as indicators for a latent ability factor per time point (i.e., assuming a Rasch model per time point) in a longitudinal SEM resulted in estimation problems due to many empty cells in the bivariate distributions across time and / or tasks. Therefore we decided to model sum scores of the repeated trials, given that each trial per task was an identical repetition of the same task.
 
-To separate reliable from unreliable variance components and obtain reliability estimates of the resulting sum score variables, we build two sum score variables per task per time point. That is, for each task, two parallel test halves were build, corresponding to performance sum scores of half of the trials of the same time point per task. Trials were alternately assigned to the first and the second test half. For tasks with 12 trials per time point this procedure resulted in two test halves assuming 7 possible values (0 to 6 correctly solved trials), for tasks with 8 trials per time point, test halves could maximally assume 5 possible values (0 to 4 correctly solved trials). [Manuel: den folgenden Satz würde ich an dieser Stelle rausnehmen, da die Zusammenfassung von Kategorien im Ansatz der Analyse kategorialer Variablen stattfindet, welche bisher noch gar nicht angesprochen wurde. Not all categories were observed at all time points and so sometimes categories had to be collapsed (see descriptions below)]. 
+To separate reliable from unreliable variance components and obtain reliability estimates of the resulting sum score variables, we build two sum score variables per task per time point. That is, for each task, two parallel test halves were build, corresponding to performance sum scores of half of the trials of the same time point per task. Trials were alternately assigned to the first and the second test half. For tasks with 12 trials per time point this procedure resulted in two test halves assuming 7 possible values (0 to 6 correctly solved trials), for tasks with 8 trials per time point, test halves could maximally assume 5 possible values (0 to 4 correctly solved trials). 
 
 The two test halves served as indicators for a common latent construct per time point, assuming parallel test halves (i.e., factor loadings set to 1 and assuming equal reliability). Due to only few different observed values and skewed distributions of the sum score variables, indicators were modeled as ordered categorical variables, using a probit link function. The models thereby correspond to normal-ogive graded response models [@samejima1969estimation; @samejima1996graded]. That is, the models assume a continuous latent ability underlying the discrete responses, with an increasing probability of more correctly solved trials with increasing ability.
 
-For model parsimony, to improve estimation accuracy (see simulation studies) and in order to test for latent mean differences across time, we assume strict factorial (or measurement) invariance across time [Manuel: passende Quellen wären hier:
-Meredith, W. (1993). Measurement invariance, factor analysis and factorial invariance.
-Psychometrika, 58, 525–543. doi: 10.1007/BF02294825
-Millsap, R. E., \& Yun-Tein, J. (2004). Assessing factorial invariance in ordered categorical measures. Multivariate Behavioral Research, 39, 479–515. doi: 10.1207/S15327906MBR39034.]. 
+For model parsimony, to improve estimation accuracy (see simulation studies) and in order to test for latent mean differences across time, we assume strict factorial (or measurement) invariance across time [@meredith1993measurement; @millsap2004assessing]. 
 That is, in each model (task), loading parameters are set to 1 at all time points, residual variances are equal to 1 (by definition of the graded response model as detailed below), and threshold parameters (see below for details) are set invariant across time points. In other words, we assume that the indicators (test halves) measure the latent variable in an equivalent and stable manner over time.
 
-[Manuel: den Satz zu equal state residual variances hab ich nach unten verschoben, da nur für das LST und nicht das LS Modell gültig. ].
 
 ### Models and coefficients
 
-For each task, we constructed three different models which increased in complexity. We started with a latent state (LS) model, which estimates a latent state for each time point based on the two test halves. Stability of group level performance can be assessed by comparing latent state means across time points. Stability of individual differences can be assessed by correlating latent state variables across different time points. [Manuel: hab den Absatz zu less restrictive than LST zum LST Modell verschoben, da dort im direkten Vergleich besser verständlich]
+For each task, we constructed three different models which increased in complexity. We started with a latent state (LS) model, which estimates a latent state for each time point based on the two test halves. Stability of group level performance can be assessed by comparing latent state means across time points. Stability of individual differences can be assessed by correlating latent state variables across different time points.
 
 Second, we fit a latent state-trait (LST) model. In LST models, true inter-individual differences are decomposed into a latent trait variable and time-specific deviations of the true score from the latent trait (state residual variable). In the following LST models, we assume stable latent trait variables across time (no trait change). The model allows us to partition the true variance in performance into stable (trait) and variable (state residual) components. Assuming a stable latent trait variable, the LST model is more restrictive than the LS model with respect to the implied covariance matrix, as correlations between true scores are not freely estimated across time points but assumed to be the same for different time lags.   
 
@@ -661,32 +657,25 @@ In the following we chose a factor analytical representation of the graded respo
 \begin{equation}
 Y_{it}=
 \begin{cases} 
-0~ &$for$~~~Y_{it}^*\le \kappa_{1it} \\
-s~~~~~~~~~ &$for$~~~\kappa_{sit}<Y_{it}^*\le \kappa_{(s+1)it}~~~~~with~~0 < s < k_{it}-1\\
-k_{it} - 1~~~ &$for$~~~ \kappa_{(k_{it}-1)it}<Y_{it}^*
+0~ & for ~~~Y_{it}^*\le \kappa_{1it} \\
+s~~~~~~~~~ & for ~~~\kappa_{sit}<Y_{it}^*\le \kappa_{(s+1)it}~~~~~with~~0 < s < k_{it}-1\\
+k_{it} - 1~~~ & for ~~~ \kappa_{(k_{it}-1)it}<Y_{it}^*
 \end{cases}
+(\#eq:eq0-1)
 \end{equation}
 
-where $\kappa_{sit}$ denote threshold parameters [Manuel: Referenz hier einfügen:
-Muthen, B. O. (1984). A general structural equation model with dichotomous, ordered categorical
-and continuous latent variable indicators. Psychometrika, 49, 115-132.]
+where $\kappa_{sit}$ denote threshold parameters [@muthen1984general].
 
 The graded response model assumes that the different categories of responses (in our case the number of correct trials per test half) form an ordered scale. Which category an individual scores depends on their latent ability. Because the latent variable is continuous but the response is discrete, there are thresholds on the latent ability that mark the transition between response categories. The threshold parameters $\kappa_{sit}$ correspond to the level of the latent ability necessary to respond in category $s$ or higher with 0.50 probability. 
 
-In latent state models, these continuous latent variables $Y^*_{it}$ are decomposed into a latent state variable $S_t$ and a measurement error variable $\epsilon_{it}$ (see, for instance, [Manuel: Eid, M., \& Kutscher, T. (2014). Statistical models for analyzing stability and change in
-happiness. In K. M. Sheldon \& R. E. Lucas (Eds.), Stability of happiness: Theories
-and evidence on whether happiness can change (pp. 261–297). London: Elsevier]):
+In latent state models, these continuous latent variables $Y^*_{it}$ are decomposed into a latent state variable $S_t$ and a measurement error variable $\epsilon_{it}$ [see, for instance @eid2014statistical]:
 
 \begin{equation}
 Y^*_{it}= S_t + \epsilon_{it}
 (\#eq:eq1)
 \end{equation}
 
-with $\epsilon_{it} \sim N(0,1)$ $\forall~ i,t$ (probit parameterization; normal-ogive graded response model). See Takane \& De Leeuw (1987) for the equivalence of the normal-ogive graded response model and the factor model with ordinal indicators.
-
-[Manuel: Takane, Y., \& De Leeuw, J. (1987). On the relationship between item response theory and
-factor analysis of discretized variables. Psychometrika, 52, 393–408. doi: 10.1007/
-BF02294363; ]
+with $\epsilon_{it} \sim N(0,1)$ $\forall~ i,t$ (probit parameterization; normal-ogive graded response model). See @takane1987relationship for the equivalence of the normal-ogive graded response model and the factor model with ordinal indicators.
 
 At each time point $t$, the two latent variables $Y^*_{1t}$ and $Y^*_{2t}$ are assumed to capture a common latent state variable $S_t$. Latent state variables are allowed to freely correlate across time, with latent (measurement-error free) correlations serving as indirect indicators of stability across time. The model is depicted for six measurement time points in Figure \@ref(fig:lsgraph). 
 
@@ -696,9 +685,8 @@ As an estimate of reliability, the proportion of true score variance relative to
 
 \begin{equation}
 Rel(Y^*_{it})=\frac{Var(S_t)}{Var(S_t)+Var(\epsilon_{it})}=\frac{Var(S_t)}{Var(S_t)+1}
+(\#eq:eq1-1)
 \end{equation}
-
-[Manuel: das bringt vermutlich deine Nummerierung der Gleichungen durcheinander, entschuldige, hab das label erstmal rausgenommen.]
 
 ```{r lsgraph, engine='tikz', fig.cap="Latent State model for two indicators and six measurement time points.", out.width="25%", fig.align='center'}
 
@@ -784,7 +772,7 @@ Y^*_{it}= T + \zeta_t + \epsilon_{it}
 
 Here, $T$ is a stable (time-invariant) latent trait variable, capturing stable interindividual differences between individuals. The state residual variable $\zeta_t$ captures time-specific deviations of the respective true score from the trait variable at time $t$, and thereby captures deviations from the trait due to situation or person-situation interaction effects. $\epsilon_{it}$ denotes a measurement error variable, with $\epsilon_{it} \sim N(0,1)$ $\forall~ i,t$. The model is depicted for 6 measurement time points in Figure \@ref(fig:lstgraph).  
 
-```{r lstgraph, engine='tikz', fig.cap="Latent State-Trait model for two indicators and six measurement time points.", out.width="30%", fig.align='center'}
+```{r lstgraph, engine='tikz', fig.cap="Latent State-Trait model for two indicators and six measurement time points. All factor loadings of the latent trait factor $T$ are fixed to 1 (not displayed in the figure)", out.width="30%", fig.align='center'}
 
 \usetikzlibrary{arrows} 
 \usetikzlibrary{positioning} 
@@ -843,11 +831,7 @@ Here, $T$ is a stable (time-invariant) latent trait variable, capturing stable i
 
 ```
 
-[Manuel: Könnten wir in die Figure oben eine Note mit einfügen? Bitte in Figure Note anmerken: All factor loadings of the latent trait factor $T$ are fixed to 1 (not displayed in the figure).]
-
 As noted above, we assume strict factorial (measurement) invariance. Additionally, for reasons of parsimony, we assume that the variances of the state residual variances are invariant across time. As a consequence, the specified LST model corresponds to a multilevel model with a latent trait factor at the between-level (person-level) and a latent state residual factor at the within-level (time-specific) level.
-
-[Manuel: die folgenden zwei sätze würde ich rausnehmen, da hier eigentlich irrelevant: LST models as single-level models are estimated to test whether measurement invariance assumptions across time can be reasonably assumed. Once measurement invariance can be established, the models can alternatively be estimated as multilevel SEMs.]
 
 The following variance components can be computed for the presented LST model.
 
@@ -875,7 +859,7 @@ As state residual variances $Var(\zeta_t)$ were set equal across time, $OS(Y^*_{
 
 The following model is a restrictive variant of the model described in @eid2017definition. The model is depicted for six measurement time points in Figure \@ref(fig:lstrgraph).
 
-```{r lstrgraph, engine='tikz', fig.cap="Latent State-Trait model with autoregressive effects for two indicators and six measurement time points.", out.width="35%", fig.align='center'}
+```{r lstrgraph, engine='tikz', fig.cap="Latent State-Trait model with autoregressive effects for two indicators and six measurement time points. All factor loadings of the latent trait factor $T$ are fixed to 1 (not displayed in the figure)", out.width="35%", fig.align='center'}
 
 \usetikzlibrary{arrows} 
 \usetikzlibrary{positioning} 
@@ -943,9 +927,6 @@ The following model is a restrictive variant of the model described in @eid2017d
 
 ```
 
-[Manuel: auch hier bitte folgenden Satz in einer figure Note mit einfügen? All factor loadings of the latent trait factor $T$ are fixed to 1 (not displayed in the figure).]
-
-
 Measurement equation for parcel $i$ at time point $t$:
 
 \begin{equation}
@@ -999,17 +980,11 @@ To investigate associations between cognitive performance in different tasks, th
 
 ### Estimation
 
-Models were estimated with MPlus version 8.4 [Manuel: hier müssten wir das Handbuch zitieren: Muthen, L.K. and Muthen, B.O. (1998-2017). Mplus User’s Guide. Eighth Edition. Los Angeles, CA:Muthen & Muthen], using Bayesian Markov-Chain Monte-Carlo sampling, with the Mplus default priors (see simulation studies in the [appendix](#appendix)). Using inverse gamma priors `IG(0.001, 0.001)` for LST models did not substantially change the parameter estimates (see simulation study). Therefore, only the results using the MPlus default priors are reported. We used two chains with a minimum of 10,000 iterations per chain, with a thinning of 10 (corresponds to a minimum of 100,000 drawn samples per chain of which every 10th is used for the construction of the posterior distribution). The first half of each chain is discarded as burn-in. Convergence was assumed and estimation stopped when the Potential Scale Reduction (PSR) factor was well below a threshold of 1.01 for the first time after the minimum number of iterations was reached.
+Models were estimated with MPlus version 8.4 [@muthen1998mplus], using Bayesian Markov-Chain Monte-Carlo sampling, with the Mplus default priors (see simulation studies in the [appendix](#appendix)). Using inverse gamma priors `IG(0.001, 0.001)` for LST models did not substantially change the parameter estimates (see simulation study). Therefore, only the results using the MPlus default priors are reported. We used two chains with a minimum of 10,000 iterations per chain, with a thinning of 10 (corresponds to a minimum of 100,000 drawn samples per chain of which every 10th is used for the construction of the posterior distribution). The first half of each chain is discarded as burn-in. Convergence was assumed and estimation stopped when the Potential Scale Reduction (PSR) factor was well below a threshold of 1.01 for the first time after the minimum number of iterations was reached.
 
-Model fit was evaluated by computing Posterior Predicted P-values (PPP). The PPP is computed via the following steps: For a given MCMC iteration, a new data set is generated based on the model and the parameters of that iteration. Then a discrepancy function (e.g. likelihood ratio chi-square test) is applied to the real data as well as the newly generated data set to compute a fit index. The indices for the data and the generated data are then compared in size. If the value for the data is larger, it is scored as 1 and if not, as 0. [Manuel: wenn die fit function der chi-quadrat wert ist, dann wird geschaut, ob der Wert für die echten Daten kleiner ist als für die replizierten Daten (kleiner = besserer fit), also genau anders herum.] Averaging across these scores for the different iterations yields the PPP. Thus, values around .5 suggest a good model fit (no systematic difference between real and generated data) and very high and very low values suggest a poor model fit and / or model misspecification. In addition, we report the 95% CI of the difference between predicted and observed chi-square values, which should be centered around 0 for a good model fit.
-
-[Jana: sind das die werte die via die discrepancy function berechnet werden? oder wie werden die berechnet?] [Manuel: Ja, die predicted und observed chi-square values werden verglichen und in den PPP umgerechnet wie oben beschrieben, wobei PPP = Prob (chi-square real data < chi-square replicated data); die Verteilung der Differenzen aus den beiden ist ein zusätzlicher Indikator, dessen KI die 0 überdecken sollte; hier noch eine ergänzende Beschreibung: PPP is the probability that the newly generated data are more extreme than the observed data, as measured by a specific test statistic or discrepancy function, in this case the chi-square fit function (that is, the likelihood ratio test between the specified structural equation model and an unrestricted mean and variance covariance model), see Asparouhov \& Muthen, 2010).
+Model fit was evaluated by computing Posterior Predicted P-values (PPP). PPP is the probability that the newly generated data are more extreme than the observed data, as measured by a specific test statistic or discrepancy function, in this case the chi-square fit function (that is, the likelihood ratio test between the specified structural equation model and an unrestricted mean and variance covariance model), see @asparouhov2010bayesian. The PPP is computed via the following steps: For a given MCMC iteration, a new data set is generated based on the model and the parameters of that iteration. Then the likelihood ratio chi-square test is applied to the real data as well as the newly generated data set to compute a fit index. The indices for the data and the generated data are then compared in size. If the value for the data is smaller, it is scored as 1 and if not, as 0. Averaging across these scores for the different iterations yields the PPP. Thus, values around .5 suggest a good model fit (no systematic difference between real and generated data) and very high and very low values suggest a poor model fit and / or model misspecification. In addition, we report the 95% CI of the difference between predicted and observed chi-square values, which should be centered around 0 for a good model fit.
 
 In Mplus, every 10th iteration after burn-in is used to compute the PPP and the underlying continuous response variables $Y^*$ are used to compute the PPP in case of ordinal data.
-
-Referenz: Asparouhov, T., \& Muthen, B. (2010). Bayesian analysis in Mplus: Technical implementation
-(Mplus technical report, Version 3). Retrieved from http://www.statmodel.com/download/Bayes3.pdf ]
-
 
 ## Projection predictive inference
 
@@ -1017,7 +992,7 @@ The goal of this analysis was to select the predictor variables that are importa
 
 The predictive projection approach was developed by @piironen2018projective. It is used to select a minimal subset of predictors that allow to generate an accurate predictive model for cognitive performance. Projective selection can be viewed as a two-step process. The first step consists of building the best predictive model possible, called the reference model. The reference model is a Bayesian multilevel regression model (repeated measurements nested in apes), including all available predictors. In the second step, the goal is to replace the posterior distribution of the reference model with a simpler distribution. This is achieved via a forward step wise addition of predictors that decrease the Kullback-Leibler (KL) divergence from the reference model to the projected model. The result is a list containing the best model for each number of predictors. The final model is selected by inspecting the mean log-predictive density and/or root-mean squared error. The projected model with the smallest number of predictors that shows similar predictive performance as the reference model is chosen.
 
-We built four different (Bayesian multilevel regression) reference models and ran them through the above predictor selection process for the following four tasks: Gaze following, causal inference, inference by exclusion, and quantity discrimination. The dependent variable for each task was the cognitive performance of the apes, that is, how well they executed the tasks with success. [Manuel. Benedikt: Ergänzung noch einfügen? (number of correctly solved trials per time point and task)]
+We built four different (Bayesian multilevel regression) reference models and ran them through the above predictor selection process for the following four tasks: Gaze following, causal inference, inference by exclusion, and quantity discrimination. The dependent variable for each task was the cognitive performance of the apes, that is, the number of correctly solved trials per time point and task.
 Continuous predictors were centered when needed. We transformed the apes rank variable into a relative rank, where a rank with value one depicts a subject with the highest possible rank. For gaze following, we added the predictor `day2`, which simply indicated if the trials were from the second session or the first. All reference models converged well, having no divergent transitions, R-hat values equal to 1, and large ESSs for virtually all parameters. The R-hat value is a diagnostic value to investigate the convergence of the model and refers to the same concept as the potential scale reduction (PSR) factor defined above. R-hat values close to 1 indicate that the chains have mixed well (the estimates of the chains agree with each other), while values above 1 indicate that the chains did not converge to the same value. For chains of autocorrelated samples, the effective sample size (ESS) is an estimate for the number of independent samples within a chain containing the same amount of information about the dependent variable.
 
 Next, we performed the predictor selection for each reference model separately, thus resulting in four different rankings for the relevant predictors. The predictor selection was executed with the R package `projpred` [@projpred202], which implements the aforementioned predictive projection technique. The predictor relevance ranking is measured by the LOO cross-validated mean log-predictive density (`elpd`) and root-mean-squared error (`rmse`). To find the optimal submodel size, we inspected -- in line with the authors' recommendations -- summaries and the plotted trajectories of the calculated `elpd` and `rmse`.
@@ -1073,13 +1048,12 @@ perfplot <- ggplot()+
   ))+
   geom_vline(xintercept = 14.5)+
   geom_hline(data = time_plot_2,aes(yintercept = chance), lty = 2, col = "black", alpha = .75)+
-  geom_point(data = time_plot_1, aes(x = time_point, y = mean,  col = group), alpha = .6)+
-  geom_line(data = time_plot_1, aes(x = time_point, y = mean, col = group, group = group), alpha = .6)+
-  geom_pointrange(data = time_plot_2, aes(x = time_point, y = mean, ymin = ci_lower, ymax = ci_upper),pch = 4)+
-  geom_line(data = time_plot_2, aes(x = time_point, y = mean, group = task))+
-  theme_minimal()+
+  geom_point(data = time_plot_1, aes(x = time_point, y = mean,  col = group), alpha = .6, size = 0.75)+
+  geom_line(data = time_plot_1, aes(x = time_point, y = mean, col = group, group = group), alpha = .6, size = 0.5)+
+  geom_pointrange(data = time_plot_2, aes(x = time_point, y = mean, ymin = ci_lower, ymax = ci_upper),pch = 4, size = 0.5, alpha = .6)+
+  geom_line(data = time_plot_2, aes(x = time_point, y = mean, group = task), size = 0.5, alpha = .5)+
+  theme_minimal(base_size = 8)+
   labs(x = "Time Point", y = "Performance")+
-  theme_minimal()+
   guides(size = F)+
   scale_shape(name = "Switching Phase")+
   scale_color_ptol(name = "Group")+
@@ -1178,7 +1152,7 @@ rel_plot_dis <- cor_data%>%
 
 ```
 
-```{r relplot, out.width="100%", fig.height=6, fig.align = "center", set.cap.width=T, num.cols.cap=2, fig.cap = "(A) Distribution of correlations between time points for each task. Dots represent the mean of the distribution with 95\\% HDI. Numbers denote mean and 95\\% HDI. (B) Correlations between re-test reliability and time span (in time points) between the testing time points."}
+```{r relplot, out.width="100%", fig.height=6, set.cap.width=T, num.cols.cap=2, fig.cap = "(A) Distribution of correlations between time points for each task. Dots represent the mean of the distribution with 95\\% HDI. Numbers denote mean and 95\\% HDI. (B) Correlations between re-test reliability and time span (in time points) between the testing time points."}
 ggarrange(rel_plot, rel_plot_dis, heights = c(1,1.5), labels = c("A","B"), nrow = 2)
 ```
 
@@ -1214,10 +1188,17 @@ For LST models, we can assess stability of individual differences by looking at 
 
 LST-AR models extend LST models by accounting for potential carry-over effects between temporally adjacent observations. The autoregressive effects thereby capture accumulated situational effects, that is, effects of previously experienced situations on subsequent trait levels [@eid2017definition]. For instance, a person that experiences a great success at work at time $t$ may not only show greater job satisfaction as compared to their habitual trait level at that point in time, but an increase in job satisfaction that lasts across a prolonged time period (i.e., change in the habitual trait level at time $t'$ with $t' > t$ due to the positive experience at time $t$). LST-AR models allow us to quantify the temporal predictability of performance based on occasion-specific variance in the previous time points. This is captured in the (autoregressive) predictability coefficient and quantifies how much of the variation in performance can be explained by the variation in the occasion-specific variables at the previous time point (note that the names of the coefficients used here slightly differ from those used in @eid2017definition). 
 
-[Jana: Hast Du hier ein Beispiel aus der Menschenliteratur was das sein könnte. Es ist ja nicht trait, also nicht komplett stabil, sondern was, dass nur naheliegede Zeitpunkte betrifft. Eine Sache die ich mir denken könnte wäre, z.b. Unaufmerksamkeit aufgrund von Krankheit. Trifft es das?]. [Manuel: Jein. Unaufmerksamkeit sollte vermutlich eher nur zu dem Zeitpunkt wirken an dem sie vorhanden ist, und nicht darüber hinaus (es sei denn sie demotiviert wegen damit verbundener höherer Trefferquote etc). Ich habe den Absatz dementsprechend umformuliert und ein Bsp eingefügt. Ich hoffe es ist so verständlich?]
+We ran the same models for the data from Phase 1 and Phase 2. We first report the results for each task separately for the two phases and then compare how they differ between phases.
 
+### Phase 1
 
-We ran the same models for the data from Phase 1 and Phase 2. We first report the results for each task separately for the two phases and then compare how they differ between phases. All models showed acceptable fit indices (see Table \@ref(tab:semt)). The threshold parameters for each model are shown in (see Table \@ref(tab:thresht)).
+To get an overview of the results, we first visualized the data. Figure \@ref(fig:perfplot) shows performance at the different time points. From a group-level perspective, we can say that performance was consistently above chance (0.5) in the causal inference and quantity tasks. For gaze following, there is no meaningful chance level. We can note, however, that group level performance never went down to zero, which would be expected if apes did not pay attention to the experimenter's gaze. The performance score in the switching task was largely negative, suggesting no successful switching between the two phases. 
+
+For a first glimpse on the stability of individual differences, we correlated performance at the different time points for each task (all possible combinations of time points). Figure \@ref(fig:relplot)A visualizes the distribution of raw correlations between the different time points and \@ref(fig:relplot)B shows the relation between re-test correlations and the time span between time points. Correlations between time points were large and clearly different from zero for quantity, inference and gaze following. For quantity, this distribution was wider and closer to zero, but still clearly positive. For switching, the distribution was even wider and substantially overlapped with zero. For all tasks, correlations between time points tended to be lower for time points that were further apart [@uher2011individual]. 
+
+We excluded the switching task from further analysis for two reasons. First, group level scores were constantly negative and performance in the feature trials always overlapped with chance. This suggests that, as a group, apes did not successfully switch strategies (see Figure \@ref(fig:perfplot)). Second, the correlations between the different measurement time points were low, suggesting no systematic individual differences (see Figure \@ref(fig:relplot)).
+
+Next, we report the SEM results for the different tasks and the relations between them. All models showed acceptable fit indices (see Table \@ref(tab:semt)). The threshold parameters for each model are shown in (see Table \@ref(tab:thresht)).
 
 ```{r}
 mot <- bind_rows(
@@ -1319,13 +1300,11 @@ kable_classic(full_width = F)%>%
       footnote(c("LSM = Latent state model", "LSTM = Latent state-trait model", "LSTM-AR = LST model with autoregressive component", "T1-6 = Threshold parameters for response categories"))
 ```
 
-### Phase 1
+#### Causal inference
 
-To get an overview of the results, we first visualized the data. Figure \@ref(fig:perfplot) shows performance at the different time points. From a group-level perspective, we can say that performance was consistently above chance (0.5) in the causal inference and quantity tasks. For gaze following, there is no meaningful chance level. We can note, however, that group level performance never went down to zero, which would be expected if apes did not pay attention to the experimenter's gaze. The performance score in the switching task was largely negative, suggesting no successful switching between the two phases. 
+To fit the models, the response categories of 0 or 1 solved trial had to be collapsed into one category due to sparsity. Furthermore, the thresholds could not be set equal for test-half 2 at time point 3 and 11 as well as test-half 1 at time points 4 and 12 due to a different number of observed categories for the respective test halves and time point combination. Latent means can still be compared across time for the state factors based on the respective other test half. At time point 7, thresholds of both test-halves could not be set invariant across time (due to a divergent number of observed categories). Latent mean differences for the latent state variable at time point 7 should therefore be interpreted with caution.
 
-For a first glimpse on the stability of individual differences, we correlated performance at the different time points for each task (all possible combinations of time points). Figure \@ref(fig:relplot)A visualizes the distribution of raw correlations between the different time points and \@ref(fig:relplot)B shows the relation between re-test correlations and the time span between time points. Correlations between time points were large and clearly different from zero for quantity, inference and gaze following. For quantity, this distribution was wider and closer to zero, but still clearly positive. For switching, the distribution was even wider and substantially overlapped with zero. For all tasks, correlations between time points tended to be lower for time points that were further apart [@uher2011individual]. 
-
-We excluded the switching task from further analysis for three main reasons. First, group level scores were constantly negative and performance in the feature trials always overlapped with chance. This suggests that, as a group, apes did not successfully switch strategies (see Figure \@ref(fig:perfplot)). Second, the correlations between the different measurement time points were low, suggesting no systematic individual differences (see Figure \@ref(fig:relplot)). Third, the dependent variable (i.e. the score calculated based on performance in the two phases) had a different level of measurement compared to the other tasks. That is, there was only a single score to represent performance at each time point. All other tasks had multiple trials. This was especially problematic in the context of structural equation modeling (see above). For these reasons, we replaced the switching task with the delay of gratification task in Phase 2. [Manuel: ich würde eher nicht mit der Analysmethode SEM argumentieren, sondern vorrangig inhaltlich (i.e., no successive switching and low systematic variance). Ansonsten fragt sich der Leser, warum wir  diese task nicht einfach anders als die anderen tasks ausgewertet haben?]
+Figure \@ref(fig:lseplot) visualizes the latent state means and reliability estimates from the LS model. Reliability was consistently high. None of the latent means was significantly different from zero, suggesting stable group level performance and no systematic mean change over time. Figure \@ref(fig:lsplot) gives the correlations between the latent states for the different time points. Correlations were generally high, indicating stable individual differences.
 
 ```{r}
 plse <- bind_rows(lsc$parameters$unstandardized%>%mutate(task = "causality"),
@@ -1365,12 +1344,6 @@ plser <-
 ```{r lseplot, fig.height = 4, fig.cap = "Latent means and reliability estimates with 95\\% CI for each time point based on LSM. Means at time point 1 are set to 0.", out.width="100%"}
 plser
 ```
-
-#### Causal inference
-
-To fit the models, the response categories of 0 or 1 solved trial had to be collapsed into one category due to sparsity. Furthermore, the thresholds could not be set equal for test-half 2 at time point 3 and 11 as well as test-half 1 at time points 4 and 12 due to a different number of observed categories for the respective test halves and time point combination. Latent means can still be compared across time for the state factors based on the respective other test half. At time point 7, thresholds of both test-halves could not be set invariant across time (due to a divergent number of observed categories). Latent mean differences for the latent state variable at time point 7 should therefore be interpreted with caution.
-
-Figure \@ref(fig:lse) [Manuel: das Figure label scheint  nicht zu stimmen] visualizes the latent state means and reliability estimates from the LS model. Reliability was consistently high. None of the latent means was significantly different from zero, suggesting stable group level performance and no systematic mean change over time. Figure \@ref(fig:lsc) [Manuel: hier auch nicht] gives the correlations between the latent states for the different time points. Correlations were generally high, indicating stable individual differences.
 
 In the LSTM, the consistency coefficient was estimated to be around .903. This means that around 90% of true inter-individual differences are attributable to stable (trait) differences between individuals, while approximately 10% are due to variance in time point specific deviations from the stable trait. Reliability (across time points) was estimated to be high with a mean of .725 (see Figure \@ref(fig:lsteplot)).
 
@@ -1489,7 +1462,7 @@ Latent state means estimated in the LSM varied between -0.990 and -2.153 (for ti
 
 In the LSTM, consistency was estimated to be around .758, that is around 76% of true inter-individual differences are attributable to stable differences between individuals. Approximately 24% of inter-individual differences were due to variance in time point specific deviations from the stable trait. Reliability was high with an estimate of .792.
 
-According to the LSTM-AR, around 85.5% of true inter-individual differences at time point 14 went back to stable trait differences and around 3.3% of true inter-individual differences can be explained by carry-over effects from previous time points. Around 10.9% of the variance was due to time-specific variance between individuals. However, the state residual variance at time point 1 was estimated with great uncertainty (very large CI). Together with the very low predictability estimate, this suggests that this model is not particularly well suited to describe the results. [Manuel: zum letzten Satz: Ich bin mir nicht sicher, ob wir diese Interpretation so stehen lassen sollten. Das Modell passt laut PPP gut auf die Daten, der AR Effekt ist auch signifikant. Eventuell reicht eben die Stichprobengröße nicht, um die State Residual Varianz zu t=1 mit größerer Genauigkeit zu schätzen. Was im Ergebnis auffällt ist die vergleichsweise große Varianz des State Residuums zu t=1, was anzeigt, dass dieser Zeitpunkt von den anderen verschieden zu sein scheint. Das spiegelt sich auch in den Korrelationen im LS Modell etwas wieder, man sieht in Figure 12 ganz gut, dass diese über die Zeit zunehmen. Eventuell ist das eine Art Gewöhnungseffekt? Bei t=1 schauen die Affen noch häufiger hinterher, danach haben sie verstanden, dass es meist nichts zu sehen gibt, die Anzahl der gaze follows nimmt im Mittel ab und Unterschiede zwischen den Individuen werden geringer? wenn man sich die Rohwerte anschaut, sieht man dass pro Testhälfte ca. 2/3 der Affen ab t=5 kein einziges mal mehr mit dem Blick folgen; wenn es immer die gleichen sind die es weiterhin tun / nicht mehr tun erklärt sich auch die Stabilität.]
+According to the LSTM-AR, around 85.5% of true inter-individual differences at time point 14 went back to stable trait differences and around 3.3% of true inter-individual differences can be explained by carry-over effects from previous time points. Around 10.9% of the variance was due to time-specific variance between individuals. However, earlier time points showed a different pattern. Time point 2 had a significantly higher predictability, which declined thereafter. For consistency, this pattern was reversed (Figure \@ref(fig:lstareplot). Taken together, this suggests a habituation effect of the sort that initially, more individuals followed gaze but this number quickly declined to a habitual level where only a few -- but mostly the same -- individuals followed gaze.[Jana: Was Du sagst macht Sinn, ich hab mal versucht es umzufomulieren. Macht das Sinn? Kannst gerne ergänzen wenn Du willst. Hier nochmal dein Kommentar - Manuel: zum letzten Satz: Ich bin mir nicht sicher, ob wir diese Interpretation so stehen lassen sollten. Das Modell passt laut PPP gut auf die Daten, der AR Effekt ist auch signifikant. Eventuell reicht eben die Stichprobengröße nicht, um die State Residual Varianz zu t=1 mit größerer Genauigkeit zu schätzen. Was im Ergebnis auffällt ist die vergleichsweise große Varianz des State Residuums zu t=1, was anzeigt, dass dieser Zeitpunkt von den anderen verschieden zu sein scheint. Das spiegelt sich auch in den Korrelationen im LS Modell etwas wieder, man sieht in Figure 12 ganz gut, dass diese über die Zeit zunehmen. Eventuell ist das eine Art Gewöhnungseffekt? Bei t=1 schauen die Affen noch häufiger hinterher, danach haben sie verstanden, dass es meist nichts zu sehen gibt, die Anzahl der gaze follows nimmt im Mittel ab und Unterschiede zwischen den Individuen werden geringer? wenn man sich die Rohwerte anschaut, sieht man dass pro Testhälfte ca. 2/3 der Affen ab t=5 kein einziges mal mehr mit dem Blick folgen; wenn es immer die gleichen sind die es weiterhin tun / nicht mehr tun erklärt sich auch die Stabilität.]
 
 In sum, we see a change in gaze following over time (Figure \@ref(fig:perfplot)). This group-level effect, however, did not affect differences between individuals, which were systematic across time points. 
 
@@ -1506,6 +1479,20 @@ According to the LSTM-AR, around 95.8% of true inter-individual differences at t
 Taken together, quantity judgments were very stable over time on the group level (see also Figure \@ref(fig:perfplot)). The low reliability estimates suggest, however, that the task is less suited to capture individual differences.
 
 ### Phase 2
+
+For a visual overview of group-level performance in the different tasks see Figure \@ref(fig:perfplot). The pattern observed in Phase 1 was similar in Phase 2 for causality and quantity. The rate of gaze following remained on the low level reached at the end of Phase 1. For inference, there was an increase in performance over time, which already began to show itself at the end of Phase 1. Taken together, there was a lot of continuity between Phase 1 and 2. The newly added delay of gratification task produced fairly variable results -- with no ceiling or floor effect.
+
+Correlations between time points was similar in Phase 1 and 2 for all tasks (Figure \@ref(fig:relplot)). Performance in the delay of gratification task proofed to be stable between individuals. Next, we present the results from the SEMs separate for each task.
+
+#### Causal inference
+
+#### Inference by exclusion
+
+#### Gaze following
+
+#### Quantity
+
+#### Delay of gratification
 
 ### Comparison between phases
 
@@ -1679,7 +1666,7 @@ lstqg$parameters$stdyx.standardized,
 )%>%
   filter(grepl(".WITH", paramHeader))%>%
   mutate(paramHeader = str_replace(paramHeader, "\\.WITH",""),
-         type = ifelse(grepl("S",paramHeader),"State","Trait"),
+         type = ifelse(grepl("S",paramHeader),"State residual","Trait"),
          task1 = str_remove_all(paramHeader,"[ST]"),
          task2 = str_remove_all(param,"[ST]"))%>%
   filter(!grepl("1", task1),!grepl("2", task1))%>%
@@ -1702,12 +1689,9 @@ pmtmcor <- mtmcor%>%
   theme(legend.position = c(0.92,0.75), legend.direction = "vertical", legend.title = element_blank())
 ```
 
-```{r mtmplot, fig.height=4, fig.cap = "Correlations between latent traits and latent state residual variables, respectively, of different tasks. Bold correlations are different from zero as judged by the 95\\% CI. There is no trait correlation between quantity and causality because the corresponding model showed a poor fit. See main text for details.", out.width="100%"}
+```{r mtmplot, fig.height=4, fig.cap = "Correlations between latent traits and latent state residual variables, respectively, of different tasks. Bold correlations are different from zero as judged by the 95\\% CI. The trait correlations between quantity and causality are not displayed, see main text for details. See main text for details.", out.width="100%"}
 pmtmcor
 ```
-
-[Manuel: bzgl. der figure note: die Korrelation zwischen quantity und causality wurde ja aber geschätzt, und das genutzte Modell zeigte guten Fit (wie in der Tabelle zu sehen). Vielleicht umformulieren zu: "The trait correlations between quantity and causality are not displayed, see main text for details ?"
-bzgl. der Figure selbst: könntest du aus "State" in der Überschrift bitte "State Residual" machen? States sind die aus dem LS Modell...]
 
 Model fit indices are shown in Table \@ref(tab:relt). Due to a low PPP value, the model for causality and quantity was modified such that for each task, test-half specific trait factors were estimated on the between-level. The correlations between the two tasks are therefore also reported as test-half specific trait correlations. 
 
