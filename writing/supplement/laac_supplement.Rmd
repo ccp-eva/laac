@@ -3,14 +3,14 @@ title: "tbd..."
 author: "tbd..."
 subtitle: Supplementary material
 output:
-  bookdown::pdf_document2:
-    toc: yes
-    number_sections: no
   bookdown::html_document2:
     toc: yes
     toc_float: yes
     fig_caption: yes
     code_folding: hide
+    number_sections: no
+  bookdown::pdf_document2:
+    toc: yes
     number_sections: no
   html_document:
     toc: yes
@@ -44,6 +44,7 @@ library(ggthemes)
 library(ggpubr)
 library(reshape)
 library(ggExtra)
+library(tidybayes)
 library(tidyboot)
 library(MplusAutomation)
 library(kableExtra)
@@ -151,7 +152,7 @@ ggplot(tpn, aes(x = date, y = n, col = group))+
   geom_rect(aes(xmin = as.Date("2020-08-01"), xmax = as.Date("2021-03-05"), ymin = 0, ymax = 44),fill = NA, col = "darkgrey")+
   geom_rect(aes(xmin = as.Date("2021-05-10"), xmax = max(date), ymin = 0, ymax = 44),fill = NA, col = "darkgrey")+
   annotate(geom="text", x=as.Date("2020-11-14"), y=46, label="Phase 1", color="black", size=4)+
-  annotate(geom="text", x=as.Date("2021-06-01"), y=46, label="Phase 2", color="black", size=4)+
+  annotate(geom="text", x=as.Date("2021-09-14"), y=46, label="Phase 2", color="black", size=4)+
   geom_point(alpha = .6)+
   geom_line(alpha = .6)+
   geom_point(aes(y = total_n), col = "black", alpha = .6)+
@@ -1127,7 +1128,7 @@ rel_plot <- ggplot(data = cor_data, aes(x = value , y = reorder(task, desc(task)
   geom_vline(xintercept = 0, color = "black", size = .5, lty = 2) +
   geom_density_ridges(rel_min_height = 0.01,col = "black", scale = 2,
                       alpha = 0.5) +
-  geom_pointintervalh(data = cor_data_sum, size = 1)+
+  geom_pointinterval(data = cor_data_sum, aes(xmin = .lower, xmax = .upper), size = 1)+
   labs(x = "Correlation Coefficient",
        y = element_blank()) +
   #geom_text(data = mutate_if(cor_data_sum, is.numeric, round, 2),
@@ -1237,7 +1238,7 @@ mot <- bind_rows(
 ```
 
 ```{r semt}
-kable(mot, align = c("l", "l", "c", "c"), caption = "Model fit indices", booktabs=TRUE)%>%
+kable(mot, align = c("l", "l", "c", "c"), caption = "Model fit indices phase 1", booktabs=TRUE)%>%
 kable_classic(full_width = F)%>%
       footnote(c("LSM = Latent state model", "LSTM = Latent state-trait model", "LSTM-AR = LST model with autoregressive component", "PPP = Posterior predictive p-value", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values"))
 ```
@@ -1297,7 +1298,7 @@ thresh <- bind_rows(
 ```
 
 ```{r thresht}
-kable(thresh, caption = "Threshold parameters", align = c("l", "l", "c", "c", "c", "c", "c", "c"), booktabs=TRUE)%>%
+kable(thresh, caption = "Threshold parameters phase 1", align = c("l", "l", "c", "c", "c", "c", "c", "c"), booktabs=TRUE)%>%
 kable_classic(full_width = F)%>%
       footnote(c("LSM = Latent state model", "LSTM = Latent state-trait model", "LSTM-AR = LST model with autoregressive component", "T1-6 = Threshold parameters for response categories"))
 ```
@@ -1343,7 +1344,7 @@ plser <-
 ```
 
 
-```{r lseplot, fig.height = 4, fig.cap = "Latent means and reliability estimates with 95\\% CI for each time point based on LSM. Means at time point 1 are set to 0.", out.width="100%"}
+```{r lseplot, fig.height = 4, fig.cap = "Phase 1: latent means and reliability estimates with 95\\% CI for each time point based on LSM. Means at time point 1 are set to 0.", out.width="100%"}
 plser
 ```
 
@@ -1379,7 +1380,7 @@ plsc <- cor%>%
   theme(legend.position = c(0.9,0.85), legend.direction = "vertical", legend.title = element_blank(), legend.background = element_blank())
 ```
 
-```{r lsplot, fig.height=6, fig.cap = "Correlations between latent state variables based on LSM for the different tasks.", out.width="100%"}
+```{r lsplot, fig.height=6, fig.cap = "Phase 1: correlations between latent state variables based on LSM for the different tasks.", out.width="100%"}
 plsc
 ```
 
@@ -1416,7 +1417,7 @@ plste <- bind_rows(
   scale_color_colorblind(name = "Task")
 ```
 
-```{r lsteplot, fig.height = 2.5, fig.cap = "Model parameters (with 95\\% CI) from LSTM for the four tasks.", out.width="100%"}
+```{r lsteplot, fig.height = 2.5, fig.cap = "Phase 1: model parameters (with 95\\% CI) from LSTM for the four tasks.", out.width="100%"}
 plste
 ```
 
@@ -1452,7 +1453,7 @@ plstare<- bind_rows(
 ```
 
 
-```{r lstareplot, fig.height = 2.5, fig.cap = "Model parameters (with 95\\% CI) from LSTM-AR for the four tasks.", out.width="100%"}
+```{r lstareplot, fig.height = 2.5, fig.cap = "Phase 1: model parameters (with 95\\% CI) from LSTM-AR for the four tasks.", out.width="100%"}
 plstare
 ```
 
@@ -1482,13 +1483,295 @@ Taken together, quantity judgments were very stable over time on the group level
 
 ### Phase 2
 
+```{r, include=F}
+# latent state models
+lsc2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LS_cau.out")
+lsi2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LS_inf.out")
+lsq2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LS_quant.out")
+lsg2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LS_gaze.out")
+lsd2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LS_delay.out")
+
+# latent state trait models
+lstc2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_cau_equSvar.out")
+lsti2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_inf_equSvar.out")
+lstq2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_quant_equSvar.out")
+lstg2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_gaze_equSvar.out")
+lstd2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_delay_equSvar.out")
+
+# latent state trait models with auto regressive component
+lstarc2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_cau_equSvar_AR1.out")
+lstari2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_inf_equSvar_AR1.out")
+lstarq2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_quant_equSvar_AR1.out")
+lstarg2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_gaze_equSvar_AR1.out")
+lstard2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_delay_equSvar_AR1.out")
+```
+
 For a visual overview of group-level performance in the different tasks see Figure \@ref(fig:perfplot). The pattern observed in Phase 1 was similar in Phase 2 for causality and quantity. The rate of gaze following remained on the low level reached at the end of Phase 1. For inference, there was an increase in performance over time, which already began to show itself at the end of Phase 1. Taken together, there was a lot of continuity between Phase 1 and 2. The newly added delay of gratification task produced fairly variable results -- with no ceiling or floor effect.
 
 Correlations between time points was similar in Phase 1 and 2 for all tasks (Figure \@ref(fig:relplot)). Performance in the delay of gratification task proofed to be stable between individuals. Next, we present the results from the SEMs separate for each task.
 
+```{r}
+mot2 <- bind_rows(
+  tibble(
+  Task = c("causality", "", ""),
+  Model = c("LSM","LSTM","LSTM-AR"),
+  PPP = c(lsc2$summaries$PostPred_PValue,lstc2$summaries$PostPred_PValue,lstarc2$summaries$PostPred_PValue),
+  `Chi 95% CI` = c(paste(lsc2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsc2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+                           paste(lstc2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsc2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+                           paste(lstarc2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstarc2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "))),
+  tibble(
+  Task = c("inference", "", ""),
+  Model = c("LSM","LSTM","LSTM-AR"),
+  PPP = c(lsi2$summaries$PostPred_PValue,lsti2$summaries$PostPred_PValue,lstari2$summaries$PostPred_PValue),
+  `Chi 95% CI` = c(paste(lsi2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsi2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+                           paste(lsti2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsi2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+                           paste(lstari2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstari2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "))),
+  tibble(
+  Task = c("gaze_following", "", ""),
+  Model = c("LSM","LSTM","LSTM-AR"),
+  PPP = c(lsg2$summaries$PostPred_PValue,lstg2$summaries$PostPred_PValue,lstarg2$summaries$PostPred_PValue),
+  `Chi 95% CI` = c(paste(lsg2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsg2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+                           paste(lstg2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsg2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+                           paste(lstarg2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstarg2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "))),
+  tibble(
+  Task = c("quantitiy", "", ""),
+  Model = c("LSM","LSTM","LSTM-AR"),
+  PPP = c(lsq2$summaries$PostPred_PValue,lstq2$summaries$PostPred_PValue,lstarq2$summaries$PostPred_PValue),
+  `Chi 95% CI` = c(paste(lsq2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsq2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+                           paste(lstq2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsq2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+                           paste(lstarq2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstarq2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "))),
+    tibble(
+  Task = c("delay of gratification", "", ""),
+  Model = c("LSM","LSTM","LSTM-AR"),
+  PPP = c(lsd2$summaries$PostPred_PValue,lstd2$summaries$PostPred_PValue,lstarq2$summaries$PostPred_PValue),
+  `Chi 95% CI` = c(paste(lsd2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsd2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+                           paste(lstd2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsd2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+                           paste(lstard2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstard2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; ")))
+)
+
+```
+
+```{r semt2}
+kable(mot2, align = c("l", "l", "c", "c"), caption = "Model fit indices phase 2", booktabs=TRUE)%>%
+kable_classic(full_width = F)%>%
+      footnote(c("LSM = Latent state model", "LSTM = Latent state-trait model", "LSTM-AR = LST model with autoregressive component", "PPP = Posterior predictive p-value", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values"))
+```
+
+```{r}
+thresh2 <- bind_rows(
+  bind_rows(
+    lsc2$parameters$unstandardized%>%mutate(Model = "LSM", Task = "causality"),
+    lstc2$parameters$unstandardized%>%mutate(Model = "LSTM", Task = ""),
+    lstarc2$parameters$unstandardized%>%mutate(Model = "LSTM-AR", Task = ""))%>%
+    filter(paramHeader=="Thresholds")%>%
+    select(Task, Model, param, est)%>%
+    filter(grepl("P11\\$",param))%>%
+    separate(param,into = c("tp","Threshold"), sep = "\\$")%>%
+    mutate(Threshold = paste("T", Threshold, sep = ""))%>%
+    select(-tp)%>%
+    pivot_wider(names_from = Threshold, values_from = est),
+  
+    bind_rows(
+    lsi2$parameters$unstandardized%>%mutate(Model = "LSM", Task = "inference"),
+    lsti2$parameters$unstandardized%>%mutate(Model = "LSTM", Task = ""),
+    lstari2$parameters$unstandardized%>%mutate(Model = "LSTM-AR", Task = ""))%>%
+    filter(paramHeader=="Thresholds")%>%
+    select(Task, Model, param, est)%>%
+    filter(grepl("P11\\$",param))%>%
+    separate(param,into = c("tp","Threshold"), sep = "\\$")%>%
+    mutate(Threshold = paste("T", Threshold, sep = ""))%>%
+    select(-tp)%>%
+    pivot_wider(names_from = Threshold, values_from = est),
+  
+    bind_rows(
+    lsg2$parameters$unstandardized%>%mutate(Model = "LSM", Task = "gaze_following"),
+    lstg2$parameters$unstandardized%>%mutate(Model = "LSTM", Task = ""),
+    lstarg2$parameters$unstandardized%>%mutate(Model = "LSTM-AR", Task = ""))%>%
+    filter(paramHeader=="Thresholds")%>%
+    select(Task, Model, param, est)%>%
+    filter(grepl("P11\\$",param))%>%
+    separate(param,into = c("tp","Threshold"), sep = "\\$")%>%
+    mutate(Threshold = paste("T", Threshold, sep = ""))%>%
+    select(-tp)%>%
+    pivot_wider(names_from = Threshold, values_from = est),
+  
+    bind_rows(
+    lsq2$parameters$unstandardized%>%mutate(Model = "LSM", Task = "quantitiy"),
+    lstq2$parameters$unstandardized%>%mutate(Model = "LSTM", Task = ""),
+    lstarq2$parameters$unstandardized%>%mutate(Model = "LSTM-AR", Task = ""))%>%
+    filter(paramHeader=="Thresholds")%>%
+    select(Task, Model, param, est)%>%
+    filter(grepl("P11\\$",param))%>%
+    separate(param,into = c("tp","Threshold"), sep = "\\$")%>%
+    mutate(Threshold = paste("T", Threshold, sep = ""))%>%
+    select(-tp)%>%
+    pivot_wider(names_from = Threshold, values_from = est),
+  
+    bind_rows(
+    lsd2$parameters$unstandardized%>%mutate(Model = "LSM", Task = "delay_of_gratification"),
+    lstd2$parameters$unstandardized%>%mutate(Model = "LSTM", Task = ""),
+    lstard2$parameters$unstandardized%>%mutate(Model = "LSTM-AR", Task = ""))%>%
+    filter(paramHeader=="Thresholds")%>%
+    select(Task, Model, param, est)%>%
+    filter(grepl("P11\\$",param))%>%
+    separate(param,into = c("tp","Threshold"), sep = "\\$")%>%
+    mutate(Threshold = paste("T", Threshold, sep = ""))%>%
+    select(-tp)%>%
+    pivot_wider(names_from = Threshold, values_from = est)
+)
+
+
+```
+
+```{r thresht2}
+kable(thresh2, caption = "Threshold parameters phase 2", align = c("l", "l", "c", "c", "c", "c", "c", "c"), booktabs=TRUE)%>%
+kable_classic(full_width = F)%>%
+      footnote(c("LSM = Latent state model", "LSTM = Latent state-trait model", "LSTM-AR = LST model with autoregressive component", "T1-6 = Threshold parameters for response categories"))
+```
+
 #### Causal inference
 
+```{r}
+plse2 <- bind_rows(lsc2$parameters$unstandardized%>%mutate(task = "causality"),
+          lsi2$parameters$unstandardized%>%mutate(task = "inference"),
+          lsq2$parameters$unstandardized%>%mutate(task = "quantity"),
+          lsg2$parameters$unstandardized%>%mutate(task = "gaze_following"),
+          lsd2$parameters$unstandardized%>%mutate(task = "delay_of_gratification"))%>%
+filter(paramHeader == "Means")%>%
+  mutate(time_point = factor(as.numeric(gsub("[^0-9.-]", "", param))),
+         estimate = "Latent state mean",
+         ref = 0)%>%
+  mutate(task = factor(task, levels = c("causality", "gaze_following", "inference", "quantity", "delay_of_gratification")))
+
+plsr2 <- bind_rows(lsc2$parameters$r2%>%mutate(task = "causality"),
+          lsi2$parameters$r2%>%mutate(task = "inference"),
+          lsq2$parameters$r2%>%mutate(task = "quantity"),
+          lsg2$parameters$r2%>%mutate(task = "gaze_following"),
+          lsd2$parameters$r2%>%mutate(task = "delay_of_gratification"))%>%
+  slice(which(row_number() %% 2 == 1))%>%
+  mutate(time_point = factor(str_remove(param, "P1")),
+         estimate = "Reliability",
+         ref = NA)%>%
+  mutate(task = factor(task, levels = c("causality", "gaze_following", "inference", "quantity", "delay_of_gratification")))
+  
+plser2 <- 
+  bind_rows(plse2, plsr2)%>%
+  ggplot(aes(x = time_point, y = est, col = task))+
+  facet_wrap_custom(estimate~., scales = "free_y", ncol = 1, scale_overrides = list(
+    scale_override(1, scale_y_continuous(limits = c(-5, 1))),
+    scale_override(2, scale_y_continuous(limits = c(0, 1)))
+  ))+
+  geom_hline(aes(yintercept = ref), lty = 2, alpha = .75)+
+  labs(x = "Time point",y = "Estimate")+
+  geom_line(aes(group = task),position = position_dodge(width = 0.2), alpha = .75)+
+  geom_pointrange(aes(ymin = lower_2.5ci, ymax = upper_2.5ci),position = position_dodge(width = 0.2), alpha = .75)+
+  scale_color_colorblind(name = "Task")+
+  theme_minimal()
+```
+
+
+```{r lseplot2, fig.height = 4, fig.cap = "Phase 2: latent means and reliability estimates with 95\\% CI for each time point based on LSM. Means at time point 1 are set to 0.", out.width="100%"}
+plser2
+```
+
+```{r}
+cor2 <- bind_rows(
+  lsc2$parameters$stdyx.standardized%>%filter(grepl("WITH",paramHeader))%>%mutate(task = "causality"),
+  lsi2$parameters$stdyx.standardized%>%filter(grepl("WITH",paramHeader))%>%mutate(task = "inference"),
+  lsq2$parameters$stdyx.standardized%>%filter(grepl("WITH",paramHeader))%>%mutate(task = "quantity"),
+  lsg2$parameters$stdyx.standardized%>%filter(grepl("WITH",paramHeader))%>%mutate(task = "gaze_following"),
+    lsd2$parameters$stdyx.standardized%>%filter(grepl("WITH",paramHeader))%>%mutate(task = "delay_of_gratification")
+)%>%
+  mutate(paramHeader = str_replace(paramHeader, "\\.WITH",""),
+         paramHeader = factor(as.numeric(str_replace(paramHeader, "S",""))),
+         param = factor(as.numeric(str_replace(param, "S",""))))
+
+plsc2 <- cor2%>%
+  ggplot(aes(y = paramHeader, x = param, fill = est))+
+    geom_tile(color = "white")+
+  labs(x = "", y = "")+
+  scale_fill_gradient2(low = "#CC6677", high = "#117733", mid = "#FFE066", 
+   midpoint = 0.5, limit = c(0,1), space = "Lab", 
+   name="Correlation")+
+  geom_text(aes(label = round(est, 2)), size = 2)+
+  scale_y_discrete(limits=rev, breaks = c(2,14))+
+  scale_x_discrete(breaks = c(1,13))+
+  facet_wrap(~task, ncol = 2)+
+  theme_few()+
+  theme(legend.position = c(0.7,0.15), legend.direction = "horizontal", legend.title = element_blank(), legend.background = element_blank())
+```
+
+```{r lsplot2, fig.height=6, fig.cap = "Phase 2: correlations between latent state variables based on LSM for the different tasks.", out.width="100%"}
+plsc2
+```
+
 #### Inference by exclusion
+
+```{r}
+plste2 <- bind_rows(
+  lstc2$parameters$unstandardized%>%mutate(task = "causality"),
+  lsti2$parameters$unstandardized%>%mutate(task = "inference"),
+  lstq2$parameters$unstandardized%>%mutate(task = "quantity"),
+  lstg2$parameters$unstandardized%>%mutate(task = "gaze_following"),
+  lstd2$parameters$unstandardized%>%mutate(task = "delay_of_gratification")
+  )%>%
+  mutate(task = factor(task, levels = c("causality", "gaze_following", "inference", "quantity", "delay_of_gratification")))%>%
+  filter(paramHeader== "New.Additional.Parameters",
+         !grepl("DIF",param))%>%
+  mutate(param = recode(param, CON1 = "Consistency", OCC1 = "Occasion specificity", REL1 = "Reliability"))%>%
+  ggplot(aes(x = param, y = est, col = task))+
+    geom_pointrange(aes(ymin = lower_2.5ci, ymax = upper_2.5ci), position = position_dodge(width = .9))+
+  theme_minimal()+
+  ylim(0,1)+
+  facet_grid(~param, scales = "free_x")+
+  labs(x = "", y = "Model estiamte")+
+  scale_x_discrete(limits=rev)+
+  theme(axis.text.x = element_blank(), legend.position = "bottom")+
+  scale_color_colorblind(name = "Task")
+```
+
+```{r lsteplot2, fig.height = 2.5, fig.cap = "Phase 2: model parameters (with 95\\% CI) from LSTM for the four tasks.", out.width="100%"}
+plste2
+```
+
+```{r}
+plstare2<- bind_rows(
+  lstarc2$parameters$unstandardized%>%mutate(task = "causality")%>%filter(paramHeader== "New.Additional.Parameters"),
+  lstari2$parameters$unstandardized%>%mutate(task = "inference")%>%filter(paramHeader== "New.Additional.Parameters"),
+  lstarq2$parameters$unstandardized%>%mutate(task = "quantity")%>%filter(paramHeader== "New.Additional.Parameters"),
+  lstarg2$parameters$unstandardized%>%mutate(task = "gaze_following")%>%filter(paramHeader== "New.Additional.Parameters"),
+  lstard2$parameters$unstandardized%>%mutate(task = "delay_of_gratification")%>%filter(paramHeader== "New.Additional.Parameters"),
+  lstarc2$parameters$r2%>%filter(grepl("P",param))%>%mutate(param = str_replace(param,"P1","REL"))%>%filter(param == "REL2"|param == "REL3" |param == "REL14")%>%mutate(task = "causality"),
+  lstari2$parameters$r2%>%filter(grepl("P",param))%>%mutate(param = str_replace(param,"P1","REL"))%>%filter(param == "REL2"|param == "REL3" |param == "REL14")%>%mutate(task = "inference"),
+  lstarq2$parameters$r2%>%filter(grepl("P",param))%>%mutate(param = str_replace(param,"P1","REL"))%>%filter(param == "REL2"|param == "REL3" |param == "REL14")%>%mutate(task = "quantity"),
+  lstarg2$parameters$r2%>%filter(grepl("P",param))%>%mutate(param = str_replace(param,"P1","REL"))%>%filter(param == "REL2"|param == "REL3" |param == "REL14")%>%mutate(task = "gaze_following"),
+  lstard2$parameters$r2%>%filter(grepl("P",param))%>%mutate(param = str_replace(param,"P1","REL"))%>%filter(param == "REL2"|param == "REL3" |param == "REL14")%>%mutate(task = "delay_of_gratification")
+  )%>%
+  filter(!grepl("DIF",param), 
+         param != "CON1")%>%
+  separate(param, 
+           into = c("param", "time_point"), 
+           sep = "(?<=[A-Za-z])(?=[0-9])"
+           )%>%
+  filter(time_point != "4")%>%
+  mutate(time_point = as.numeric(time_point),
+         param = recode(param, CON = "Consistency", OSP = "Occasion specificity", REL = "Reliability", PRED = "Predictability"))%>%
+   mutate(task = factor(task, levels = c("causality", "gaze_following", "inference", "quantity", "delay_of_gratification")))%>%
+  ggplot(aes(x = factor(time_point), y = est, col = task))+
+    geom_pointrange(aes(ymin = lower_2.5ci, ymax = upper_2.5ci), position = position_dodge(width = .2))+
+  geom_line(aes(group = task), position = position_dodge(width = 0.2))+
+  theme_minimal()+
+  ylim(0,1)+
+  labs(x = "Time point", y = "Estiamte")+
+  facet_grid(~param)+
+  scale_color_colorblind(name = "Task")+
+  theme(legend.position = "bottom")
+```
+
+
+```{r lstareplot2, fig.height = 2.5, fig.cap = "Phase 2: model parameters (with 95\\% CI) from LSTM-AR for the four tasks.", out.width="100%"}
+plstare2
+```
 
 #### Gaze following
 
@@ -1497,6 +1780,48 @@ Correlations between time points was similar in Phase 1 and 2 for all tasks (Fig
 #### Delay of gratification
 
 ### Comparison between phases
+
+```{r}
+plstdif <- bind_rows(
+bind_rows(
+  lstc$parameters$unstandardized%>%mutate(task = "causality"),
+  lsti$parameters$unstandardized%>%mutate(task = "inference"),
+  lstq$parameters$unstandardized%>%mutate(task = "quantity"),
+  lstg$parameters$unstandardized%>%mutate(task = "gaze_following")
+  )%>%
+  filter(paramHeader== "New.Additional.Parameters",
+         !grepl("DIF",param))%>%
+  mutate(param = recode(param, CON1 = "Consistency", OCC1 = "Occasion specificity", REL1 = "Reliability"))%>%mutate(phase = "Phase 1"),
+bind_rows(
+  lstc2$parameters$unstandardized%>%mutate(task = "causality"),
+  lsti2$parameters$unstandardized%>%mutate(task = "inference"),
+  lstq2$parameters$unstandardized%>%mutate(task = "quantity"),
+  lstg2$parameters$unstandardized%>%mutate(task = "gaze_following")
+  )%>%
+  filter(paramHeader== "New.Additional.Parameters",
+         !grepl("DIF",param))%>%
+  mutate(param = recode(param, CON1 = "Consistency", OCC1 = "Occasion specificity", REL1 = "Reliability"))%>%mutate(phase = "Phase 2")
+)%>%
+  select(phase,param, task,est)%>%
+  pivot_wider(names_from = phase, values_from = est)%>%
+  mutate(dif = `Phase 1` - `Phase 2`)%>%
+  ggplot(aes(x = task, y = dif, col = task))+
+  geom_hline(yintercept = 0, lty = 2, alpha = .75)+
+  geom_segment(aes(x = task, y = 0, xend = task, yend = dif), alpha = .5, col = "black")+
+  facet_grid(~param, scales = "free_x")+
+  geom_point(size = 2)+
+  ylim(-0.25, 0.25)+
+  theme_minimal()+
+  labs(x = "", y = "Difference in model estiamte btw. phases")+
+  scale_x_discrete(limits=rev)+
+  theme(axis.text.x = element_blank(), legend.position = "bottom")+
+  scale_color_colorblind(name = "Task")
+  
+```
+
+```{r lstdifplot2, fig.height = 2.5, fig.cap = "Difference between model LSTM estimates for phase 1 and phase 2.", out.width="100%"}
+plstdif
+```
 
 ## Relations between tasks
 
@@ -1691,7 +2016,7 @@ pmtmcor <- mtmcor%>%
   theme(legend.position = c(0.92,0.75), legend.direction = "vertical", legend.title = element_blank())
 ```
 
-```{r mtmplot, fig.height=4, fig.cap = "Correlations between latent traits and latent state residual variables, respectively, of different tasks. Bold correlations are different from zero as judged by the 95\\% CI. The trait correlations between quantity and causality are not displayed, see main text for details. See main text for details.", out.width="100%"}
+```{r mtmplot, fig.height=4, fig.cap = "Phase 1: correlations between latent traits and latent state residual variables, respectively, of different tasks. Bold correlations are different from zero as judged by the 95\\% CI. The trait correlations between quantity and causality are not displayed, see main text for details. See main text for details.", out.width="100%"}
 pmtmcor
 ```
 
@@ -1703,17 +2028,145 @@ The negative state correlations between causality and inference may be explained
 
 The trait correlation between inference and quantity was positive, suggesting that individuals with better quantity judgment abilities also have better inferential abilities. 
 
-One (out of four) of the test-half specific trait correlations between causality and quantity was also reliably different from zero ($r_{tc2,tq1}$ = `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]). We do not consider this result to be substantial evidence for a substantive association between the trait estimates in the two tasks and therefore do not interpret it any further. Figure \@ref(fig:mtmplot) shows all correlations between the different tasks.
+One (out of four) of the test-half specific trait correlations between causality and quantity was also reliably different from zero ($r_{tc2,tq1}$ = `r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(est)`, 95% CI = [`r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(lower_2.5ci)`; `r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(upper_2.5ci)`]). We do not consider this result to be substantial evidence for a substantive association between the trait estimates in the two tasks and therefore do not interpret it any further. Figure \@ref(fig:mtmplot) shows all correlations between the different tasks.
 
 ```{r relt}
-kable(rtt, align = c("l", "l", "c", "c"), caption = "Model fit indices for multi-construct models", booktabs=TRUE)%>%
+kable(rtt, align = c("l", "l", "c", "c"), caption = "Model fit indices for multi-construct models phase 1", booktabs=TRUE)%>%
 kable_classic(full_width = F)%>%
       footnote(c("PPP = Posterior predictive p-value", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values"))
 ```
 
 ### Phase 2
+```{r, include=F}
+# latent state models
+lstcg2 <- readModels("../../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_cau_gaze.out")
+lstci2 <- readModels("../../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_cau_inf.out")
+lstcq2 <- readModels("../../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_cau_quant_indspec.out")
+lstcd2 <- readModels("../../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_cau_delay.out")
+
+lstig2 <- readModels("../../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_inf_gaze.out")
+lstiq2 <- readModels("../../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_inf_quant.out")
+lstid2 <- readModels("../../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_inf_delay.out")
+
+lstqg2 <- readModels("../../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_quant_gaze.out")
+lstqd2 <- readModels("../../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_quant_delay.out")
+
+lstgd2 <- readModels("../../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_gaze_delay.out")
+
+```
+
+```{r}
+rtt2 <- tibble(
+  Task1 = c("causality", "", "","", "inference", "","", "quantitiy","","gaze following"),
+  Task2 = c("gaze following","inference","quantitiy","delay of gratification", "gaze following","quantitiy","delay of gratification","gaze following","delay of gratification","delay of gratification"),
+  PPP = c(lstcg2$summaries$PostPred_PValue,
+          lstci2$summaries$PostPred_PValue,
+          lstcq2$summaries$PostPred_PValue,
+          lstcd2$summaries$PostPred_PValue,
+          lstig2$summaries$PostPred_PValue,
+          lstiq2$summaries$PostPred_PValue,
+          lstid2$summaries$PostPred_PValue,
+          lstqg2$summaries$PostPred_PValue,
+          lstqd2$summaries$PostPred_PValue,
+          lstgd2$summaries$PostPred_PValue),
+  `Chi 95% CI` = c(
+    paste(lstcg2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstcg2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+    paste(lstci2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstci2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+    paste(lstcq2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstcq2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+    paste(lstcd2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstcd2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+    
+    paste(lstig2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstig2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+    paste(lstcq2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstcq2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+    paste(lstid2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstid2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+        
+    paste(lstqg2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstqg2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+    paste(lstqd2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstqd2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+    
+    paste(lstgd2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstgd2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; ")
+    ))
+```
+
+```{r}
+mtmcor2 <- bind_rows(
+lstcg2$parameters$stdyx.standardized,
+lstci2$parameters$stdyx.standardized,
+lstcq2$parameters$stdyx.standardized,
+lstcd2$parameters$stdyx.standardized,
+lstig2$parameters$stdyx.standardized,
+lstiq2$parameters$stdyx.standardized,
+lstid2$parameters$stdyx.standardized,
+lstqg2$parameters$stdyx.standardized,
+lstqd2$parameters$stdyx.standardized,
+lstgd2$parameters$stdyx.standardized,
+)%>%
+  filter(grepl(".WITH", paramHeader))%>%
+  mutate(paramHeader = str_replace(paramHeader, "\\.WITH",""),
+         type = ifelse(grepl("S",paramHeader),"State residual","Trait"),
+         task1 = str_remove_all(paramHeader,"[ST]"),
+         task2 = str_remove_all(param,"[ST]"))%>%
+  filter(!grepl("1", task1),!grepl("2", task1))%>%
+  mutate(task1 = recode(task1, G = "gaze_following", I = "inference", C = "causality", Q = "quantity", D = "delay_of_grat."),
+         task2 = recode(task2, G = "gaze_following", I = "inference", C = "causality", Q = "quantity", D = "delay_of_grat."),
+         label = paste0(round(est,2)," \n [", round(lower_2.5ci,2)," ; ", round(upper_2.5ci,2),"]"))
+  
+
+pmtmcor2 <- mtmcor2%>%
+  ggplot(aes(y = task1, x = task2, fill = est, label = label))+
+    geom_tile(color = "white")+
+  labs(x = "", y = "")+
+  scale_fill_gradient2(low = "#CC6677", high = "#117733", mid = "#FFE066", 
+   midpoint = 0, limit = c(-1,1), space = "Lab", 
+   name="Correlation")+
+  facet_grid(~type)+
+  geom_text(size = 2.2, fontface = ifelse(mtmcor2$sig == T, 2, 1))+
+  theme_few()+
+  scale_x_discrete(guide = guide_axis(n.dodge = 2),limits = c("causality", "quantity","gaze_following", "delay_of_grat."))+
+  scale_y_discrete(limits = c( "inference","delay_of_grat.","gaze_following", "quantity"))+
+  theme(legend.position = c(0.92,0.75), legend.direction = "vertical", legend.title = element_blank())
+```
+
+```{r mtmplot2, fig.height=4, fig.cap = "Phase 2: correlations between latent traits and latent state residual variables, respectively, of different tasks. Bold correlations are different from zero as judged by the 95\\% CI.", out.width="100%"}
+pmtmcor2
+```
+
+
+```{r relt2}
+kable(rtt2, align = c("l", "l", "c", "c"), caption = "Model fit indices for multi-construct models phase 2", booktabs=TRUE)%>%
+kable_classic(full_width = F)%>%
+      footnote(c("PPP = Posterior predictive p-value", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values"))
+```
 
 ### Comparison between phases
+
+```{r}
+mtmcorc <- bind_rows(
+  mtmcor%>%mutate(phase = "Phase 1"),
+  mtmcor2%>%mutate(phase = "Phase 2"))%>%
+  select(type, task1, task2,phase, est)%>%
+  pivot_wider(names_from = "phase", values_from = "est")%>%
+  mutate(dif = `Phase 1` - `Phase 2`)%>%
+  filter(task1 != "delay_of_gratification", task2 != "delay_of_gratification")%>%
+  pivot_longer(cols = c("Phase 1", "Phase 2"), names_to = "phase", values_to = "est")
+
+pmtmcorc <- mtmcorc%>%
+  ggplot(aes(y = task1, x = task2))+
+   geom_tile(color = "white", aes(fill = dif))+
+  geom_point(aes(size = est, pch = phase), alpha = .75)+
+  facet_grid(~type)+
+    labs(x = "", y = "")+
+  scale_fill_gradient2(low = "#CC6677", high = "#117733", mid = "#FFE066", 
+   midpoint = 0, limit = c(-.5,.5), space = "Lab", 
+   name="Difference \nbtw. correlations")+
+  scale_shape_manual(values=c(0,1), name = "Phase")+
+  guides(size = F)+
+  theme_few()+
+  scale_x_discrete(guide = guide_axis(n.dodge = 2),limits = c("causality", "quantity","gaze_following"))+
+  scale_y_discrete(limits = c( "inference","gaze_following", "quantity"))
+```
+
+```{r mtmplotc, fig.height=4, fig.cap = "Differences between phases in correlations between latent traits and latent state residual variables for the different tasks. Shapes show correlations for each phase, with the size proportional to the correlation.", out.width="100%"}
+pmtmcorc
+```
 
 ## Predictability
 

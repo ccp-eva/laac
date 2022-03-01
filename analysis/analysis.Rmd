@@ -1,0 +1,204 @@
+---
+title: "Analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ggthemes)
+library(brms)
+library(geomtextpath)
+```
+
+# Development
+
+```{r}
+# read in data files
+data_task <- read.csv("../data/laac_data_task.csv") 
+data_trial <- read.csv("../data/laac_data_trial.csv") 
+```
+
+
+```{r}
+dev_data <- data_task%>%
+  filter(!grepl("switching", task))%>%
+  filter(age < 10 | age > 40)%>%
+  mutate(age_group = ifelse(age < 10, "young", "old"))
+
+dev_data_model <- data_trial%>%
+  filter(!grepl("switching", task))%>%
+  filter(age < 10 | age > 40)%>%
+  mutate(time_point = time_point -1)%>%
+  group_by(time_point, task)%>%
+  mutate(trial_time_point = scale(trial_time_point))
+```
+
+```{r}
+c_dev_model<-brm(code~trial_time_point+(time_point|subject), 
+               data=dev_data_model%>%filter(task == "causality"), 
+               family=bernoulli(),
+               chains = 4,
+               iter= 2000,
+               cores= 4)
+
+g_dev_model<-brm(code~trial_time_point+(time_point|subject), 
+               data=dev_data_model%>%filter(task == "gaze_following"), 
+               family=bernoulli(),
+               chains = 4,
+               iter= 2000,
+               cores= 4)
+
+q_dev_model<-brm(code~trial_time_point+(time_point|subject), 
+               data=dev_data_model%>%filter(task == "quantity"), 
+               family=bernoulli(),
+               chains = 4,
+               iter= 2000,
+               cores= 4)
+
+i_dev_model<-brm(code~trial_time_point+(time_point|subject), 
+               data=dev_data_model%>%filter(task == "inference"), 
+               family=bernoulli(),
+               chains = 4,
+               iter= 2000,
+               cores= 4)
+```
+
+```{r}
+nd <- tibble(time_point = c(rep(0:max(dev_data_model$time_point), each=length(unique(dev_data_model$subject)))),
+              trial_time_point = 0,
+              subject = c(rep(unique(dev_data_model$subject),length(unique(dev_data_model$time_point))))
+)
+              
+
+
+f <- bind_rows(
+  fitted(c_dev_model, newdata = nd) %>%
+  as_tibble() %>% 
+  bind_cols(nd)%>%
+  mutate(task = "causality"),
+    fitted(g_dev_model, newdata = nd) %>%
+  as_tibble() %>% 
+  bind_cols(nd)%>%
+  mutate(task = "gaze_following"),
+    fitted(q_dev_model, newdata = nd) %>%
+  as_tibble() %>% 
+  bind_cols(nd)%>%
+  mutate(task = "quantity"),
+    fitted(i_dev_model, newdata = nd) %>%
+  as_tibble() %>% 
+  bind_cols(nd)%>%
+  mutate(task = "inference")
+)%>%
+  mutate(time_point = time_point + 1)%>%
+  left_join(dev_data)
+
+```
+
+
+```{r}
+f %>%
+  filter(!is.na(age_group),
+         age_group == "young")%>%
+  ggplot(aes(x = time_point, y = performance, col = task, group = task))+
+  geom_point(alpha = .25)+
+  #geom_smooth(aes(x = time_point, y = Estimate, ymin = Q2.5, ymax = Q97.5, col = task), stat = "identity", alpha = .25)+
+  geom_textsmooth(aes(x = time_point, y = Estimate, ymin = Q2.5, ymax = Q97.5, col = task, label = task), stat = "identity")+
+  theme_minimal()+
+  facet_wrap(~subject)+
+  ggtitle("Age > 40")+
+  guides(col = F)+
+  scale_color_ptol()
+```
+
+
+```{r}
+age_data_model <- dev_data_model%>%
+  ungroup()%>%
+  mutate(age = age-mean(age))
+
+c_age_model<-brm(code~1+(age|subject), 
+               data=age_data_model%>%filter(task == "causality"), 
+               family=bernoulli(),
+               chains = 4,
+               iter= 2000,
+               cores= 4)
+
+g_age_model<-brm(code~1+(age|subject), 
+               data=age_data_model%>%filter(task == "gaze_following"), 
+               family=bernoulli(),
+               chains = 4,
+               iter= 2000,
+               cores= 4)
+
+q_age_model<-brm(code~1+(age|subject), 
+               data=age_data_model%>%filter(task == "quantity"), 
+               family=bernoulli(),
+               chains = 4,
+               iter= 2000,
+               cores= 4)
+
+i_age_model<-brm(code~1+(age|subject), 
+               data=age_data_model%>%filter(task == "inference"), 
+               family=bernoulli(),
+               chains = 4,
+               iter= 2000,
+               cores= 4)
+         
+```
+
+
+```{r}
+fa <- bind_rows(
+  fitted(c_age_model, newdata = age_data_model%>%filter(task == "causality")) %>%
+  as_tibble() %>% 
+  bind_cols(age_data_model%>%filter(task == "causality"))%>%
+  mutate(age = age+mean(dev_data_model$age))
+)%>%
+  left_join(dev_data%>%select(subject, time_point, age_group, task, performance))
+
+```
+
+```{r}
+fa %>%
+  filter(age < 10)%>%
+  ggplot(aes(x = age, y = performance, col = group, group = subject))+
+  geom_point(data = dev_data%>%filter(task =="causality", age < 10), alpha = .25)+
+  #geom_smooth(aes(x = time_point, y = Estimate, ymin = Q2.5, ymax = Q97.5, col = task), stat = "identity", alpha = .25)+
+  geom_textsmooth(aes(x = age, y = Estimate, ymin = Q2.5, ymax = Q97.5, col = group, label = subject), stat = "identity")+
+  theme_minimal()+
+  #facet_wrap(~task, ncol = 1)+
+  ggtitle("Age < 10")+
+  #guides(col = F)+
+  scale_color_ptol()
+```
+
+```{r}
+
+dev_mean <- data_task%>%
+  filter(!grepl("switching", task),
+         task != "gaze_following")%>%
+  mutate(age_group = ifelse(age < 10, "young", "old"))%>%
+  group_by(group, task)%>%
+  summarise(mean = mean(performance, na.rm = T))
+
+
+dev_data%>%
+  filter(age_group == "young",
+         !is.na(age_group),
+         task != "gaze_following")%>%
+  ggplot( aes(x = age, y = performance, col = group))+
+  geom_point( alpha = .25)+
+  geom_hline(data = dev_mean, aes(yintercept = mean, col = group), size = 1)+
+  #geom_smooth(aes(col = subject, lty = task))+
+  geom_textsmooth(aes(label = subject, group = subject, col = group), method = "glm", method.args = list(family = "binomial"), size = 2)+
+  theme_minimal()+
+  facet_grid(task~.)+
+  ggtitle("Age < 10")+
+  guides(label = F)+
+  scale_color_colorblind()
+```
+
+```{r}
+ggsave("../visuals/dev_young.jpg", width = 6, height = 4, scale = 1.5)
+```
+
