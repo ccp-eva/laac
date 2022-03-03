@@ -3,14 +3,14 @@ title: "tbd..."
 author: "tbd..."
 subtitle: Supplementary material
 output:
+  bookdown::pdf_document2:
+    toc: yes
+    number_sections: no
   bookdown::html_document2:
     toc: yes
     toc_float: yes
     fig_caption: yes
     code_folding: hide
-    number_sections: no
-  bookdown::pdf_document2:
-    toc: yes
     number_sections: no
   html_document:
     toc: yes
@@ -1422,7 +1422,7 @@ plste
 ```
 
 ```{r}
-plstare<- bind_rows(
+lstare<- bind_rows(
   lstarc$parameters$unstandardized%>%mutate(task = "causality")%>%filter(paramHeader== "New.Additional.Parameters"),
   lstari$parameters$unstandardized%>%mutate(task = "inference")%>%filter(paramHeader== "New.Additional.Parameters"),
   lstarq$parameters$unstandardized%>%mutate(task = "quantity")%>%filter(paramHeader== "New.Additional.Parameters"),
@@ -1440,8 +1440,9 @@ plstare<- bind_rows(
            )%>%
   filter(time_point != "4")%>%
   mutate(time_point = as.numeric(time_point),
-         param = recode(param, CON = "Consistency", OSP = "Occasion specificity", REL = "Reliability", PRED = "Predictability"))%>%
-  ggplot(aes(x = factor(time_point), y = est, col = task))+
+         param = recode(param, CON = "Consistency", OSP = "Occasion specificity", REL = "Reliability", PRED = "Predictability"))
+
+plstare <- ggplot(lstare, aes(x = factor(time_point), y = est, col = task))+
     geom_pointrange(aes(ymin = lower_2.5ci, ymax = upper_2.5ci), position = position_dodge(width = .2))+
   geom_line(aes(group = task), position = position_dodge(width = 0.2))+
   theme_minimal()+
@@ -1508,7 +1509,7 @@ lstard2 <- readModels("../../models and documentation Jana/Application/Testphase
 
 For a visual overview of group-level performance in the different tasks see Figure \@ref(fig:perfplot). The pattern observed in Phase 1 was similar in Phase 2 for causality and quantity. The rate of gaze following remained on the low level reached at the end of Phase 1. For inference, there was an increase in performance over time, which already began to show itself at the end of Phase 1. Taken together, there was a lot of continuity between Phase 1 and 2. The newly added delay of gratification task produced fairly variable results -- with no ceiling or floor effect.
 
-Correlations between time points was similar in Phase 1 and 2 for all tasks (Figure \@ref(fig:relplot)). Performance in the delay of gratification task proofed to be stable between individuals. Next, we present the results from the SEMs separate for each task.
+Correlations between time points was similar in Phase 1 and 2 for all tasks (Figure \@ref(fig:relplot)). Performance in the delay of gratification task proofed to be stable between individuals. Next, we present the results from the SEMs separate for each task. All models showed acceptable fit indices, except for the inference LST and LST-AR models (see Table \@ref(tab:semt2)). The threshold parameters for each model are shown in (see Table \@ref(tab:thresht2)).
 
 ```{r}
 mot2 <- bind_rows(
@@ -1631,6 +1632,16 @@ kable_classic(full_width = F)%>%
 
 #### Causal inference
 
+... model fitting stuff ...
+
+Figure \@ref(fig:lseplot2) visualizes the latent state means and reliability estimates from the LS model. Reliability was consistently high. Except for time point 2, none of the latent means was significantly different from zero, suggesting stable group level performance and no systematic mean change over time. Figure \@ref(fig:lsplot2) gives the correlations between the latent states for the different time points. Correlations were generally high -- indicating stable individual differences -- with a trend towards lower correlations for time points further apart. 
+
+In the LSTM, the consistency coefficient was estimated to be around .912. This means that around 91% of true inter-individual differences are attributable to stable (trait) differences between individuals, while approximately 9% are due to variance in time point specific deviations from the stable trait. Reliability (across time points) was estimated to be high with a mean of .726 (see Figure \@ref(fig:lsteplot2)).
+
+Figure \@ref(fig:lstareplot2) shows the parameters from the LSTM-AR for three time points (2, 3 and 14). It shows that consistency increased while predictability decreased over time. At time point 2, 54% of true interindividual differences go back to stable trait differences (time point 14: 69%) while around 43% of true inter-individual differences can be explained by carry-over effects from previous time points (time point 14: 27%). The variance due to time-specific variation was consistently low.
+
+In sum, the different models suggest that group- and individual-level performance was relatively stable over time, with a notable exception in the earlier time points fo phase 2. As noted above -- and as can be seen in Figure \@ref(fig:perfplot) -- performance on a group level was clearly above chance.  
+
 ```{r}
 plse2 <- bind_rows(lsc2$parameters$unstandardized%>%mutate(task = "causality"),
           lsi2$parameters$unstandardized%>%mutate(task = "inference"),
@@ -1705,6 +1716,9 @@ plsc2 <- cor2%>%
 plsc2
 ```
 
+
+
+
 #### Inference by exclusion
 
 ```{r}
@@ -1735,7 +1749,7 @@ plste2
 ```
 
 ```{r}
-plstare2<- bind_rows(
+lstare2<- bind_rows(
   lstarc2$parameters$unstandardized%>%mutate(task = "causality")%>%filter(paramHeader== "New.Additional.Parameters"),
   lstari2$parameters$unstandardized%>%mutate(task = "inference")%>%filter(paramHeader== "New.Additional.Parameters"),
   lstarq2$parameters$unstandardized%>%mutate(task = "quantity")%>%filter(paramHeader== "New.Additional.Parameters"),
@@ -1756,8 +1770,9 @@ plstare2<- bind_rows(
   filter(time_point != "4")%>%
   mutate(time_point = as.numeric(time_point),
          param = recode(param, CON = "Consistency", OSP = "Occasion specificity", REL = "Reliability", PRED = "Predictability"))%>%
-   mutate(task = factor(task, levels = c("causality", "gaze_following", "inference", "quantity", "delay_of_gratification")))%>%
-  ggplot(aes(x = factor(time_point), y = est, col = task))+
+   mutate(task = factor(task, levels = c("causality", "gaze_following", "inference", "quantity", "delay_of_gratification")))
+
+  plstare2 <- ggplot(lstare2,aes(x = factor(time_point), y = est, col = task))+
     geom_pointrange(aes(ymin = lower_2.5ci, ymax = upper_2.5ci), position = position_dodge(width = .2))+
   geom_line(aes(group = task), position = position_dodge(width = 0.2))+
   theme_minimal()+
@@ -1775,11 +1790,68 @@ plstare2
 
 #### Gaze following
 
+... model fitting stuff ...
+
+None of the latent state means -- except for time point 14 -- were significantly different from zero, suggesting a stable level of gaze following in Phase 2 (Figure \@ref(fig:lseplot2)). Reliability was generally high, but variable, ranging between `r min(plsr2%>%filter(task == "gaze_following")%>%pull(est))` and `r max(plsr2%>%filter(task == "gaze_following")%>%pull(est))`. The correlations between latent states for the different time points were generally high, pointing to stable individual differences (Figure \@ref(fig:lsplot2)). 
+
+In the LSTM, consistency was estimated to be around 0.769, that is around 77% of true inter-individual differences are attributable to stable differences between individuals. Approximately 23% of inter-individual differences were due to variance in time point specific deviations from the stable trait. Reliability was high with an estimate of 0.77.
+
+In the LSTM-AR, the estimates for consistency, predictability and occasion specificity were stable over time. Around 73% of true inter-individual differences at time point 14 went back to stable trait differences and around 4% of true inter-individual differences can be explained by carry-over effects from previous time points. Around 21% of the variance was due to time-specific variance between individuals (Figure \@ref(fig:lstareplot2). In sum, gaze following in Phase 2 was stable over time with systematic and stable differences between individuals (Figure \@ref(fig:perfplot)).
+
 #### Quantity
+
+... model fitting stuff ...
+
+Like for gaze following, none of the latent state means differed from zero, except for time point 14. Reliability estimates were substantially lower compared to the other tasks (Figure \@ref(fig:lseplot)). Correlations between time points were generally high, but somewhat lower compared to gaze following or causal inference. 
+
+in the LST model, The consistency coefficient was estimated to be 0.939, that is around 94% of true inter-individual differences was attributable to stable differences between individuals. Only 6% inter-indivual differences were due to variance in time-point specific deviations from the stable trait. Reliability was once again low with an estimate of 0.436.
+
+The LSTM-AR showed stable estimates for consistency, predictability and occasion specificity. In general, consistency and predictability estimates were close to one another. At time point 2, around 50% of true inter-individual differences went back to stable trait differences (time point 14: 48%) while 43% could be explained by carry-over effects from previous time points (time point 14: 45%). The remaining 7% of the variance was due to time-specific variance between individuals (same for time point 14).
+
+Taken together, quantity judgments were stable over time on the group level but less so on an individual level (see also Figure \@ref(fig:perfplot)).
 
 #### Delay of gratification
 
+... model fitting stuff ...
+
+Three of the latent state means were significantly different from zero (time point 4, 5 and 8). However, there was no clear temporal pattern in that the latent means steadily de- or increased (Figure \@ref(fig:lsplot2)). Reliability was very high and stable. The correlations between latent means for the different time points were generally high, with time point 4 being a notable exception with lower correlations with time points further away (Figure \@ref(fig:lsplot2)). 
+
+In the LSTM, consistency was estimated to be around 0.772, that is around 77% of true inter-individual differences are attributable to stable differences between individuals. Approximately 23% of inter-individual differences were due to variance in time point specific deviations from the stable trait. Reliability was very high with an estimate of 0.891.
+
+In the LSTM-AR, the estimates for consistency, predictability and occasion specificity were stable over time. Around 73% of true inter-individual differences at time point 14 went back to stable trait differences and around 5% of true inter-individual differences can be explained by carry-over effects from previous time points. Around 21% of the variance was due to time-specific variance between individuals (Figure \@ref(fig:lstareplot2)). 
+
+In sum, delay of gratification showed some variation in group level performance. However, differences between individuals were highly stable over time (Figure \@ref(fig:perfplot)).
+
 ### Comparison between phases
+
+For the comparison between the two phases, we will focus on the four tasks that were included in both: causal inference, gaze following, inference by exclusion and quantity. 
+
+For the causal inference task, the raw performance in Figure \@ref(fig:perfplot) shows no marked difference between the two phases. Similarly, we see no systematic difference between the two phases when looking at the latent state means estimated by the LSM (Figure \@ref(fig:lsdifplot)). This suggests stable group-level performance across the two phases. The LSTM estimates for consistency, occasion specificity and reliability were also very similar for the two phases (Figure \@ref(fig:lstdifplot)), which indicates that individual differences were structured similarly in the two phases. We see a more pronounced difference in the results of the LST-AR model in that consistency is considerably lower while predictability is higher in Phase 2 compared to 1. The reason ... 
+
+
+```{r}
+plsdif <- bind_rows(
+  plse%>%mutate(phase = "Phase 1"),
+  plse2%>%mutate(phase = "Phase 2")
+)%>%
+  mutate(time_point = as.numeric(time_point))%>%
+  filter(task != "delay_of_gratification")%>%
+  ggplot(aes(x = time_point, y = est, col = phase))+
+  facet_wrap(~task, nrow = 1)+
+  geom_hline(aes(yintercept = ref), lty = 2, alpha = .75)+
+  labs(x = "Time point",y = "Latent state mean")+
+  geom_line(aes(group = phase),position = position_dodge(width = 0.2), alpha = .75)+
+  geom_pointrange(aes(ymin = lower_2.5ci, ymax = upper_2.5ci),position = position_dodge(width = 0.2), alpha = .75, size = .25)+
+  scale_x_continuous(breaks = c(1,14))+
+  scale_color_discrete(name = "Phase")+
+  theme_few()
+```
+
+```{r lsdifplot, fig.height = 2.5, fig.cap = "Difference between model LSTM estimates for phase 1 and phase 2.", out.width="100%"}
+plsdif
+```
+
+The gaze following task showed notable differences between the two phases. The initial decline in gaze following in the beginning of Phase 1 did not repeat itself in Phase 2. Performance in Phase 2 seemed to pick up where it left off at the end of Phase 1 (Figure \@ref(fig:perfplot)). The LSM mean estimates for the different time points follow a similar pattern (Figure \@ref(fig:lsdifplot)). Despite this difference in group-level variability, the near-identical LSTM estimates for consistency and occasion specificity showed that individual differences were structured in a similar way across the two phases (Figure \@ref(fig:lstdifplot)). In contrast to the other tasks, consistency and predictability -- as estimated by the LST-AR model -- were similar to the estimates of Phase 1.  
 
 ```{r}
 plstdif <- bind_rows(
@@ -1811,21 +1883,46 @@ bind_rows(
   facet_grid(~param, scales = "free_x")+
   geom_point(size = 2)+
   ylim(-0.25, 0.25)+
-  theme_minimal()+
-  labs(x = "", y = "Difference in model estiamte btw. phases")+
+  theme_few()+
+  labs(x = "", y = "Difference in model \nestiamte btw. phases")+
   scale_x_discrete(limits=rev)+
-  theme(axis.text.x = element_blank(), legend.position = "bottom")+
+  theme(axis.text.x = element_blank(), legend.position = "right")+
   scale_color_colorblind(name = "Task")
   
 ```
 
-```{r lstdifplot2, fig.height = 2.5, fig.cap = "Difference between model LSTM estimates for phase 1 and phase 2.", out.width="100%"}
+```{r lstdifplot, fig.height = 2, fig.cap = "Difference between model LSTM estimates for phase 1 and phase 2.", out.width="100%"}
 plstdif
+```
+
+Inference by exclusion ...
+
+Raw performance in the quantity task did not show a markedly different pattern in the two phases (Figure \@ref(fig:perfplot)). This was once again also reflected in the latent state means estimated by the LSM (Figure \@ref(fig:lsdifplot)) and suggests stable group-level performance across the two phases. The three LSTM estimates for consistency, occasion specificity and reliability were also very similar for the two phases, which indicates that individual differences were measured and structured in a similar way in the two phases (Figure \@ref(fig:lstdifplot)). In the LST-AR model we saw the now familiar pattern of lower consistency and higher predictability. The source of this difference is likely ...
+
+```{r}
+plstardif <- bind_rows(
+  lstare%>%mutate(phase = "Phase 1"),
+  lstare2%>%mutate(phase = "Phase 2")
+)%>%
+  filter(task != "delay_of_gratification", 
+         param != "Reliability")%>%
+  ggplot(aes(x = factor(time_point), y = est, col = phase))+
+  facet_grid(param~task)+
+  labs(x = "Time point",y = "Estimate")+
+  geom_line(aes(group = phase),position = position_dodge(width = 0.2), alpha = .75)+
+  geom_pointrange(aes(ymin = lower_2.5ci, ymax = upper_2.5ci),position = position_dodge(width = 0.2), alpha = .75, size = .25)+
+  scale_color_discrete(name = "Phase")+
+  theme_few()
+
+```
+
+```{r lstardifplot, fig.height = 4, fig.cap = "Difference between model LSTM-AR estimates for phase 1 and phase 2.", out.width="100%"}
+plstardif
 ```
 
 ## Relations between tasks
 
-To analyse relations between different tasks (constructs), we estimated six separate LST models, each modeling the relation between two tasks. In these combined models, the sub-models for each task were equivalent to the LST models described above. For ease of model specification, the LST models were estimated as multilevel models. These models are equivalent to the LST models for single tasks under the assumption of strict factorial invariance. Figure \@ref(fig:relgraph) visualizes the model for two tasks. 
+To analyse relations between different tasks (constructs), we estimated separate LST models, each modeling the relation between two tasks. In these combined models, the sub-models for each task were equivalent to the LST models described above. For ease of model specification, the LST models were estimated as multilevel models. These models are equivalent to the LST models for single tasks under the assumption of strict factorial invariance. Figure \@ref(fig:relgraph) visualizes the model for two tasks. 
 
 ```{r relgraph, engine='tikz', fig.cap="Latent State-Trait models for two tasks with correlations between traits and states for two indicators and six measurement time points.", out.width="80%", fig.align='center'}
 
@@ -1944,7 +2041,6 @@ To analyse relations between different tasks (constructs), we estimated six sepa
 
 ```
 
-
 Detailed information on the parameter estimates obtained in LST models for each separate task is provided above. Here we report the results with a focus on the latent correlations only. The parameters of interest were correlations between a) the latent traits, indicating associations between stable cognitive ability as estimated by the different tasks, and b) correlations between state residual variables belonging to the same measurement time point, as an indicator of time-specific associations between latent abilities across the two tasks, above and beyond stable trait differences.
 
 Simulation studies suggested that LST models in which latent correlations between time-specific state residual variables were estimated to be time-point specific (i.e. covariances and variances of state residual variables can freely vary across time) did not show good estimation performance under the given conditions (sample size, ordinal indicator variables, etc.). Therefore, we chose a model with fixed correlations between state residual variables across time. That is, a model in which we assumed that associations between latent time-specific cognitive abilities across two different tasks within each time point are equal at all time points. We think that this assumption is reasonable in the present context. As a consequence, just one correlation between latent state residual variables is estimated for each model. The corresponding model showed good estimation performance under the given sample sizes in a simulation study.
@@ -1982,6 +2078,21 @@ rtt <- tibble(
     paste(lstqg$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstqg$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; ")))
 ```
 
+```{r relt}
+kable(rtt, align = c("l", "l", "c", "c"), caption = "Model fit indices for multi-construct models phase 1", booktabs=TRUE)%>%
+kable_classic(full_width = F)%>%
+      footnote(c("PPP = Posterior predictive p-value", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values"))
+```
+
+Model fit indices are shown in Table \@ref(tab:relt). Due to a low PPP value, the model for causality and quantity was modified such that for each task, test-half specific trait factors were estimated on the between-level. The correlations between the two tasks are therefore also reported as test-half specific trait correlations. 
+
+The only correlations for which the 95% CI did not include zero were the state residual correlation between causality and inference ($r_{sc,si}$ = `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(est)`, 95% CI = [`r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(lower_2.5ci)`; `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(upper_2.5ci)`]) and the trait correlation between inference and quantity ($r_{ti,tq}$ = `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]). 
+
+The negative state correlations between causality and inference may be explained by the way the two tasks were presented. Remember that causality and inference trials used the same setup and were intermixed. A negative correlation suggests that higher (residual) performance in one task was associated with lower performance in the other task. Responding correctly in the two tasks required opposite choice behaviors. That is, in causality, the ape had to pick the cup the experimenter shook to be correct. In inference, it was the unshaken cup. Such a negative correlation arises when sometimes participants respond in the same way (e.g. pick the shaken cup) across tasks. Note, however, that if this were a stable strategy which individuals would consistently use, we would have seen a negative correlation between the trait estimates. The best explanation is thus that there are short periods of inattentiveness during which (some) participants confused the two tasks.
+
+The trait correlation between inference and quantity was positive, suggesting that individuals with better quantity judgment abilities also have better inferential abilities. 
+
+One (out of four) of the test-half specific trait correlations between causality and quantity was also reliably different from zero ($r_{tc_2,tq_1}$ = `r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(est)`, 95% CI = [`r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(lower_2.5ci)`; `r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(upper_2.5ci)`]). We do not consider this result to be substantial evidence for a substantive association between the trait estimates in the two tasks and therefore do not interpret it any further. Figure \@ref(fig:mtmplot) shows all correlations between the different tasks.
 ```{r}
 mtmcor <- bind_rows(
 lstcg$parameters$stdyx.standardized,
@@ -2020,23 +2131,8 @@ pmtmcor <- mtmcor%>%
 pmtmcor
 ```
 
-Model fit indices are shown in Table \@ref(tab:relt). Due to a low PPP value, the model for causality and quantity was modified such that for each task, test-half specific trait factors were estimated on the between-level. The correlations between the two tasks are therefore also reported as test-half specific trait correlations. 
-
-The only correlations for which the 95% CI did not include zero were the state residual correlation between causality and inference ($r_{sc,si}$ = `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(est)`, 95% CI = [`r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(lower_2.5ci)`; `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(upper_2.5ci)`]) and the trait correlation between inference and quantity ($r_{ti,tq}$ = `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]). 
-
-The negative state correlations between causality and inference may be explained by the way the two tasks were presented. Remember that causality and inference trials used the same setup and were intermixed. A negative correlation suggests that higher (residual) performance in one task was associated with lower performance in the other task. Responding correctly in the two tasks required opposite choice behaviors. That is, in causality, the ape had to pick the cup the experimenter shook to be correct. In inference, it was the unshaken cup. Such a negative correlation arises when sometimes participants respond in the same way (e.g. pick the shaken cup) across tasks. Note, however, that if this were a stable strategy which individuals would consistently use, we would have seen a negative correlation between the trait estimates. The best explanation is thus that there are short periods of inattentiveness during which (some) participants confused the two tasks.
-
-The trait correlation between inference and quantity was positive, suggesting that individuals with better quantity judgment abilities also have better inferential abilities. 
-
-One (out of four) of the test-half specific trait correlations between causality and quantity was also reliably different from zero ($r_{tc2,tq1}$ = `r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(est)`, 95% CI = [`r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(lower_2.5ci)`; `r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(upper_2.5ci)`]). We do not consider this result to be substantial evidence for a substantive association between the trait estimates in the two tasks and therefore do not interpret it any further. Figure \@ref(fig:mtmplot) shows all correlations between the different tasks.
-
-```{r relt}
-kable(rtt, align = c("l", "l", "c", "c"), caption = "Model fit indices for multi-construct models phase 1", booktabs=TRUE)%>%
-kable_classic(full_width = F)%>%
-      footnote(c("PPP = Posterior predictive p-value", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values"))
-```
-
 ### Phase 2
+
 ```{r, include=F}
 # latent state models
 lstcg2 <- readModels("../../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_cau_gaze.out")
@@ -2125,18 +2221,29 @@ pmtmcor2 <- mtmcor2%>%
   theme(legend.position = c(0.92,0.75), legend.direction = "vertical", legend.title = element_blank())
 ```
 
-```{r mtmplot2, fig.height=4, fig.cap = "Phase 2: correlations between latent traits and latent state residual variables, respectively, of different tasks. Bold correlations are different from zero as judged by the 95\\% CI.", out.width="100%"}
-pmtmcor2
-```
-
-
 ```{r relt2}
 kable(rtt2, align = c("l", "l", "c", "c"), caption = "Model fit indices for multi-construct models phase 2", booktabs=TRUE)%>%
 kable_classic(full_width = F)%>%
       footnote(c("PPP = Posterior predictive p-value", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values"))
 ```
 
+Model fit indices are shown in Table \@ref(tab:relt2). Like in Phase 1, due to a low PPP value, the model for causality and quantity was modified such that for each task, test-half specific trait factors were estimated on the between-level. The correlations between the two tasks are therefore also reported as test-half specific trait correlations. 
+
+For the state residuals, two correlations were estimated to have 95% CIs that did not include 0: inference by exclusion and quantity ($r_{si,sq}$ = `r lstiq2$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(est)`, 95% CI = [`r lstiq2$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(lower_2.5ci)`; `r lstiq2$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(upper_2.5ci)`]) as well as inference by exclusion and delay of gratification ($r_{si,sd}$ = `r lstid2$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(est)`, 95% CI = [`r lstid2$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(lower_2.5ci)`; `r lstid2$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(upper_2.5ci)`]). In both cases, the relation was positive, suggesting that time points on which an individual had a higher proportion of variance not explained by the trait in one task, the same individual showed a similar result in the other task (and vice versa). Such a pattern arises when time point specific states (e.g., motivation, attentiveness) affect both tasks to a similar extent.
+
+Five of nine trait correlations were significantly different from 0: quantity and inference by exclusion ($r_{ti,tq}$ = `r lstiq2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]); quantity and delay of gratification ($r_{td,tq}$ = `r lstqd2$parameters$stdyx.standardized%>%filter(paramHeader == "TD.WITH")%>%pull(est)`, 95% CI = [`r lstqd2$parameters$stdyx.standardized%>%filter(paramHeader == "TD.WITH")%>%pull(lower_2.5ci)`; `r lstqd2$parameters$stdyx.standardized%>%filter(paramHeader == "TD.WITH")%>%pull(upper_2.5ci)`]); quantity and gaze following ($r_{tg,tq}$ = `r lstqg2$parameters$stdyx.standardized%>%filter(paramHeader == "TG.WITH")%>%pull(est)`, 95% CI = [`r lstqg2$parameters$stdyx.standardized%>%filter(paramHeader == "TG.WITH")%>%pull(lower_2.5ci)`; `r lstqg2$parameters$stdyx.standardized%>%filter(paramHeader == "TG.WITH")%>%pull(upper_2.5ci)`]); inference by exclusion and causality ($r_{tc,ti}$ = `r lstci2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstci2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstci2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]); inference by exclusion and delay of gratification ($r_{ti,td}$ = `r lstid2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstid2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstid2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]). Thus, quantity and inference by exclusion were included in three of these models, delay of gratification in two and causality and gaze following in one. All of the correlations were positive, indicating that higher trait estimates in one task go together with higher trait estimates in the respective other. 
+
+Two (out of four) of the test-half specific trait correlations between causality and quantity were also reliably different from zero ($r_{tc_1,tq_2}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(upper_2.5ci)`]; $r_{tc_2,tq_2}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(upper_2.5ci)`]). Given that a third correlation was also of similar magnitude, we consider this to be at least suggestive evidence that individuals with higher quantitative abilities were also better at making causal inferences. Figure \@ref(fig:mtmplot2) shows all correlations between the different tasks.
+
+```{r mtmplot2, fig.height=4, fig.cap = "Phase 2: correlations between latent traits and latent state residual variables, respectively, of different tasks. Bold correlations are different from zero as judged by the 95\\% CI.", out.width="100%"}
+pmtmcor2
+```
+
 ### Comparison between phases
+
+The most notable difference between the two Phases was that we see a lot more substantial trait correlations in Phase 2 compared to Phase 1. The only significant trait correlation from Phase 1 also turned out to be significant in Phase 2 (quantity and inference by exclusion). These results suggest some commonalities between the tasks -- with gaze following being an exception (see Figure \@ref(fig:mtmplot2) and \@ref(fig:mtmplotc)). However, the sample size we studied here is still comparatively small for individual differences research looking for correlations between traits. Larger samples are needed to corroborate these findings. 
+
+The significant *negative* state residual correlation between causal inference and inference found in Phase 1 was not present in Phase 2. This suggests a de-coupling between the two tasks in that apes were less likely to confuse the two tasks with one another.
 
 ```{r}
 mtmcorc <- bind_rows(
@@ -2150,21 +2257,19 @@ mtmcorc <- bind_rows(
 
 pmtmcorc <- mtmcorc%>%
   ggplot(aes(y = task1, x = task2))+
-   geom_tile(color = "white", aes(fill = dif))+
-  geom_point(aes(size = est, pch = phase), alpha = .75)+
+   #geom_tile(color = "white", aes(fill = dif))+
+  geom_point(aes(size = est, col = phase), alpha = .75, pch = 1, stroke = 1.5)+
   facet_grid(~type)+
-    labs(x = "", y = "")+
-  scale_fill_gradient2(low = "#CC6677", high = "#117733", mid = "#FFE066", 
-   midpoint = 0, limit = c(-.5,.5), space = "Lab", 
-   name="Difference \nbtw. correlations")+
-  scale_shape_manual(values=c(0,1), name = "Phase")+
-  guides(size = F)+
-  theme_few()+
+  labs(x = "", y = "")+
+  scale_color_discrete(name = "")+
+  scale_size(name = "Correlation", limits = c(-.56, .5))+
+  theme_few(base_size = 10)+
   scale_x_discrete(guide = guide_axis(n.dodge = 2),limits = c("causality", "quantity","gaze_following"))+
-  scale_y_discrete(limits = c( "inference","gaze_following", "quantity"))
+  scale_y_discrete(limits = c( "inference","gaze_following", "quantity"))+
+  theme(legend.box = "horizontal")
 ```
 
-```{r mtmplotc, fig.height=4, fig.cap = "Differences between phases in correlations between latent traits and latent state residual variables for the different tasks. Shapes show correlations for each phase, with the size proportional to the correlation.", out.width="100%"}
+```{r mtmplotc, fig.height=2.5, fig.cap = "Differences between phases in correlations between latent traits and latent state residual variables for the different tasks.", out.width="100%"}
 pmtmcorc
 ```
 
