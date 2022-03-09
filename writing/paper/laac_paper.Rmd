@@ -1,0 +1,276 @@
+---
+title             : "The title"
+shorttitle        : "Title"
+
+author: 
+  - name          : "First Author"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : "Postal address"
+    email         : "my@email.com"
+    role:         # Contributorship roles (e.g., CRediT, https://casrai.org/credit/)
+      - Conceptualization
+      - Writing - Original Draft Preparation
+      - Writing - Review & Editing
+  - name          : "Ernst-August Doelle"
+    affiliation   : "1,2"
+    role:
+      - Writing - Review & Editing
+
+affiliation:
+  - id            : "1"
+    institution   : "Wilhelm-Wundt-University"
+  - id            : "2"
+    institution   : "Konstanz Business School"
+
+authornote: |
+  Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
+
+  Enter author note here.
+
+abstract: |
+  One or two sentences providing a **basic introduction** to the field,  comprehensible to a scientist in any discipline.
+  
+  Two to three sentences of **more detailed background**, comprehensible  to scientists in related disciplines.
+  
+  One sentence clearly stating the **general problem** being addressed by  this particular study.
+  
+  One sentence summarizing the main result (with the words "**here we show**" or their equivalent).
+  
+  Two or three sentences explaining what the **main result** reveals in direct comparison to what was thought to be the case previously, or how the  main result adds to previous knowledge.
+  
+  One or two sentences to put the results into a more **general context**.
+  
+  Two or three sentences to provide a **broader perspective**, readily comprehensible to a scientist in any discipline.
+  
+  <!-- https://tinyurl.com/ybremelq -->
+  
+keywords          : "keywords"
+wordcount         : "X"
+
+bibliography      : ../library.bib
+
+floatsintext      : no
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+linenumbers       : yes
+mask              : no
+draft             : no
+
+documentclass     : "apa6"
+classoption       : "man"
+output            : papaja::apa6_pdf
+---
+
+```{r setup, include = FALSE}
+library("papaja")
+library(png)
+library(grid)
+library(xtable)
+library(tidyverse)
+library(tidybayes)
+library(ggridges)
+library(glue)
+library(brms)
+library(stringr)
+library(forcats)
+library(ggthemes)
+library(ggpubr)
+library(reshape)
+library(ggExtra)
+library(tidyboot)
+library(MplusAutomation)
+library(kableExtra)
+library(knitr)
+#library(magick)
+#library(pdftools)
+library(projpred)
+library(bayesplot)
+library(loo)
+library(directlabels)
+
+source("../../utils/custom_facet.R")
+
+cor_func <- function(x) {
+  x %>%
+    corrr::correlate()%>%
+    gather(time_point, cor, -term)%>%
+    mutate(cor = replace(cor, duplicated(cor), NA))%>%
+    drop_na(cor)
+}
+
+library(coda)
+
+estimate_mode <- function(s) {
+  d <- density(s)
+  return(d$x[which.max(d$y)])
+}
+
+hdi_upper<- function(s){
+  m <- HPDinterval(mcmc(s))
+  return(m["var1","upper"])
+}
+
+hdi_lower<- function(s){
+  m <- HPDinterval(mcmc(s))
+  return(m["var1","lower"])
+}
+```
+
+predicting the structure of great ape cognition; 
+
+structure and predictability of great ape cognition; 
+
+who’s smart and why in great apes? 
+
+great ape cognition: stability, predictability
+
+# Introduction
+
+In their quest for understanding the evolution of the human mind, psychologists and cognitive scientists face one major obstacle: cognition does not fossilize. Instead of directly studying the cognitive abilities of our extinct ancestors, we have to rely on backward inferences. We can study fossilized skulls and crania to approximate brain size and structure and use this information to infer cognitive abilities. Alternatively, we can study the material culture left behind by our ancestors and try to infer its cognitive complexity experimentally. Yet, the archeological record is sparse and only goes back so far in time. Thus, the most fruitful approach is the comparative method. By studying extant species of primates, we make backward inferences about the last common ancestor. If species A and B both show cognitive ability X, the last common ancestor of A and B most likely also had ability X []. To make inferences about the most recent events in human cognitive evolution, we have to study the great apes. 
+
+Using the comparative method in this way requires a strong great ape baseline. That is, we need a robust understanding of the great ape mind in order to map out how it differs from that of humans. What does a strong baseline entail? First, group-level results should be relatively stable so that the conclusions we draw -- and the abilities we ascribe to great apes -- do not change over time. Second,  T Recently, a number of concerns have been voiced, questioning the solidity of our understanding of the great ape baseline []. It is unclear if the conventional methods that are being used in comparative research measure stable properties of great ape cognition [farrar, ljerka, stevens ..].
+
+a comprehensive understanding entails: stable group level results, stable individual differences and an understanding of what causes them. Group level stability asks how representative the results of one experiment are. Discussed and studied in the context of replications. 
+
+research into originator the human mind needs a strong great ape baseline. the assumption is that great apes are representative of the lca. without this baseline, our inferences are flawed. To understand means to know the structure of the mind and what predicts that structure - the causes of individual differences. (cite christoph phil trans paper, Martin (Cognitive test batteries in animal cognition research: evaluating the past, present and future of comparative psychometrics)). Völter and colleagues convincingly argued that knowing what differs is the basis to understanding what evolves
+
+check:
+Thornton A, Lukas D (2012) Individual variation in cognitive performance: developmental and evolutionary perspectives. Philos Trans R Soc Lond B Biol Sci 367:2773–2783.
+
+Banerjee K, Chabris CF, Johnson VE et al (2009) General intelligence in another primate: individual differences across cognitive task performance in a New World monkey (Saguinus oedipus). PLoS ONE 4:e5883. doi:10.1371/journal.pone.0005883
+
+Linking cognition with fitness in a wild
+primate: fitness correlates of problem solving performance and spatial learning
+ability
+
+Esther: are there geniuses among the apes
+
+Heroic efforst in individual differences research in primate cognition. Esther, Christoph, Beran "Self-Control in Chimpanzees Relates to General Intelligence", Hopkins (Chimpanzee intelligence is heritable). Despite their enormous contribution to the field, these studies suffer from three shortcomings. First, it is unclear if the results are stable. that is if the same individuals were tested again, would be get the same results. Realtedly, it is unclear if individual differences are stable, that is, if we were to test the same individuals again, would they be ranked in the same way. Finally, and most importantly, it is unclear where the individual differences that were observed come from. What causes them and thus, what is responsible for the structure of the great ape mind as we observe it. Schubinger and colleagues (Validity of Cognitive Tests for Non-human Animals: Pitfalls and Prospects) recently reviewed the animal cognition literature and suggest that oftentime
+
+Here we provide strong evidence fot this baseline. Furthermore, we identify what predicts the structure we observe
+
+# Results
+
+```{r}
+# read in data files
+data_task <- read.csv("../../data/laac_data_task.csv")%>%
+  mutate(task = recode(task,
+    gaze_following = "Gaze following",
+    causality = "Causal inference",
+    inference = "Inference by exclusion",
+    delay_of_gratification = "Delay of gratification",
+    quantity = "Quantity discrimination",
+    switching = "Strategy switching"
+  ))
+
+data_trial <- read.csv("../../data/laac_data_trial.csv") %>%
+  mutate(task = recode(task,
+    gaze_following = "Gaze following",
+    causality = "Causal inference",
+    inference = "Inference by exclusion",
+    delay_of_gratification = "Delay of gratification",
+    quantity = "Quantity discrimination",
+    switching = "Strategy switching"
+  ))
+```
+
+For one-and-a-half years, every two weeks we administered a set of five cognitive tasks (see Figure \@ref(fig:setup))) to the same large population of great apes (*N* = `r length(unique(data_task$subject))`). The tasks spanned across a range of different cognitive domains (social cognition, causal cognition, numerical reasoning, executive functions) and were based on published procedures widely used in the field of comparative psychology. Data collection was split into two phases. After Phase 1 (14 data collection time points), we analysed the data and registered the results (OSF link). Phase 2 lasted for another 14 time points and replicated and extended Phase 1. 
+
+```{r setup, include = T, fig.cap = "Setup used for the six tasks. A) Gaze following: the experimenter looked to the ceiling. We coded if the ape followed gaze. B) Causal reasoning: food was hidden in one of two cup, the baited cup was shaken (food produced a sound) and apes had to choose the shaken cup to get food. Inference by exclusion: food was hidden in one of two cups. The empty cup was shaken (no sound) so primates had to choose the non-shaken cup to get food. C) Quantity discrimination: Small pieces of food were presented on two plates (5 . D) Strategy switching. E) Delay of gratification. F) Order of task presentation and trial numbers", out.width="100%"}
+knitr::include_graphics("../supplement/figures/setup.png") 
+```
+
+## Stability of group-level performance
+
+Group-level performance was remarkably stable across the entire data collection period (see Figure \@ref(fig:perfplot)). 
+
+
+
+```{r}
+time_plot_1 <- data_task%>%
+ filter(task != "switching_feature",
+         task != "switching_place")%>%
+  mutate(group = as.character(group), 
+         species = ifelse(grepl("chimp",group),"chimpanzee", group), 
+         species = factor(species),
+         group = factor(group))%>%
+  drop_na(performance)%>%
+  #mutate(time_point = factor(time_point))%>%
+  group_by(group, task,time_point, species)%>%
+  summarise(mean = mean(performance,na.rm = TRUE))
+
+time_plot_2 <- data_task%>%
+    filter(task != "switching_feature",
+         task != "switching_place")%>%
+  mutate(group = as.character(group), 
+         species = ifelse(grepl("chimp",group),"chimpanzee", group), 
+         species = factor(species),
+         group = factor(group))%>%
+  drop_na(performance)%>%
+  #mutate(time_point = factor(time_point))%>%
+  group_by(task, time_point)%>%
+  tidyboot_mean(col = performance, na.rm = TRUE)%>%
+  mutate(n = n(),
+         chance = ifelse(task == "Strategy switching", 1/3, ifelse(task == "Gaze following" | task == "Delay of gratification", NA,0.5)))
+```
+
+```{r}
+perfplot <- ggplot()+
+  facet_wrap_custom(task~., scales = "free_y", ncol = 2, scale_overrides = list(
+    scale_override(1, scale_y_continuous(limits = c(0, 1))),
+    scale_override(2, scale_y_continuous(limits = c(0, 1))),
+    scale_override(3, scale_y_continuous(limits = c(0, 1))),
+    scale_override(4, scale_y_continuous(limits = c(0, 1))),
+    scale_override(5, scale_y_continuous(limits = c(0, 1))),
+    scale_override(6, scale_y_continuous(limits = c(-1, 1)))
+  ))+
+  geom_vline(xintercept = 14.5)+
+  geom_hline(data = time_plot_2,aes(yintercept = chance), lty = 2, col = "black", alpha = .75)+
+  geom_point(data = time_plot_1, aes(x = time_point, y = mean,  col = group), alpha = .6, size = 0.75)+
+  geom_line(data = time_plot_1, aes(x = time_point, y = mean, col = group, group = group), alpha = .6, size = 0.5)+
+  geom_pointrange(data = time_plot_2, aes(x = time_point, y = mean, ymin = ci_lower, ymax = ci_upper),pch = 4, size = 0.5, alpha = .6)+
+  geom_line(data = time_plot_2, aes(x = time_point, y = mean, group = task), size = 0.5, alpha = .5)+
+  theme_minimal(base_size = 8)+
+  labs(x = "Time Point", y = "Performance")+
+  guides(size = F)+
+  #scale_shape(name = "Switching Phase")+
+  scale_color_ptol(name = "Group")+
+  theme(legend.position = "right", legend.direction = "vertical")
+```
+
+```{r perfplot, fig.height=6, fig.cap = "Results from the five cognitive tasks across time points. Black crosses show mean performance at each time point across species (with 95\\% CI). Colored dots show mean performance by species. Dashed line shows the chance level whenever applicable. The vertical back line marks the transition between phase 1 and 2.", out.width="100%"}
+# ggarrange(perfcaus, perfinf, perfquant, perfgaze, perfswitch, common.legend = T, ncol= 1,  labels = c("A","B","C","D","E"), legend = "right")
+
+perfplot
+```
+
+## Reliability of individual differences
+
+## Structure of individual differences
+
+## Predictability of individual differences
+
+# Discussion
+
+# Methods
+
+## Participants
+
+## Material
+
+## Procedure
+
+## Data analysis
+
+\newpage
+
+# References
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+<div id="refs" custom-style="Bibliography"></div>
+\endgroup
