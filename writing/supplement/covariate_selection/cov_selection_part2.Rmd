@@ -239,7 +239,7 @@ library(loo)
 lapply(list(m_cau_2l, m_inf_2l, m_quant_2l, m_gaze_2l, m_grat_2l), loo)
 ```
 
-```{r}
+```{r, warning = F}
 summary(m_cau_2l)
 summary(m_inf_2l)
 summary(m_quant_2l)
@@ -351,7 +351,22 @@ summary(cvs_quant); plot(cvs_quant, stats = c('elpd', 'rmse'))
 ```
 **relevant** covariates: (1 | subject), rel_rank, rearing, time_in_leipzig, group, time_outdoors
 
-```{r, eval = F}
+
+
+
+```{r}
+fm_gaze <- update(fm, . ~ . +day2 -test_day -(1|subject))
+m_gaze_2l <- brm(fm_gaze, data = t_gaze, 
+                 warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                 seed = 2021,
+                 save_pars = save_pars(all = TRUE)
+                 )
+s_terms_gaze <- c("1", c(tmp, "day2"), 
+                  paste0(paste(c(tmp, "day2"), collapse = " + "))) 
+refM_gaze <- get_refmodel(m_gaze_2l)
+```
+
+```{r, warning = F}
 cvs_gaze <- cv_varsel(refM_gaze, 
                       search_terms = s_terms_gaze, cv_method = "LOO", method = "forward", 
                       seed = 2020)
@@ -359,7 +374,11 @@ summary(cvs_gaze); plot(cvs_gaze, stats = c('elpd', 'rmse'))
 # proj_gaze_cv <- project(cvs_gaze, solution_terms = c(1, 2, 3, 4, 5, 6, 7, 15))
 # mcmc_areas(as.matrix(proj_gaze_cv), pars = solution_terms(cvs_gaze)[c(1, 2, 3, 4, 5, 6, 7, 15)])
 ```
-**relevant** covariates: 
+**relevant** covariates: group, sex (random intercept removed due to convergence issues)
+
+
+
+
 
 ```{r, warning = F}
 cvs_grat <- cv_varsel(refM_grat, 
