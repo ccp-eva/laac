@@ -4,6 +4,8 @@ writing/supplement/laac_supplement_files
 
 writing/supplement/saves/srm.rds
 
+videos/bonobo_pilot/*
+
 *.log
 .DS_Store
 
