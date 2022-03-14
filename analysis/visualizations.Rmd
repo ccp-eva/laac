@@ -1,0 +1,543 @@
+---
+title: "Visualizations"
+output: html_document
+date: '2022-03-08'
+---
+
+```{r setup, include = FALSE}
+library("papaja")
+library(png)
+library(grid)
+library(xtable)
+library(tidyverse)
+library(tidybayes)
+library(ggridges)
+library(glue)
+library(brms)
+library(stringr)
+library(forcats)
+library(ggthemes)
+library(ggpubr)
+library(reshape)
+library(ggExtra)
+library(tidyboot)
+library(MplusAutomation)
+library(kableExtra)
+library(knitr)
+#library(magick)
+#library(pdftools)
+library(projpred)
+library(bayesplot)
+library(loo)
+library(directlabels)
+library(ggside)
+library(cowplot)
+
+#source("../../utils/custom_facet.R")
+
+cor_func <- function(x) {
+  x %>%
+    corrr::correlate()%>%
+    gather(time_point, cor, -term)%>%
+    mutate(cor = replace(cor, duplicated(cor), NA))%>%
+    drop_na(cor)
+}
+
+library(coda)
+
+estimate_mode <- function(s) {
+  d <- density(s)
+  return(d$x[which.max(d$y)])
+}
+
+hdi_upper<- function(s){
+  m <- HPDinterval(mcmc(s))
+  return(m["var1","upper"])
+}
+
+hdi_lower<- function(s){
+  m <- HPDinterval(mcmc(s))
+  return(m["var1","lower"])
+}
+```
+
+```{r}
+# read in data files
+data_task <- read.csv("../data/laac_data_task.csv")%>%
+  filter(!grepl("switch", task))%>%
+  mutate(task = recode(task,
+    gaze_following = "Gaze following",
+    causality = "Causal inference",
+    inference = "Inference by exclusion",
+    delay_of_gratification = "Delay of gratification",
+    quantity = "Quantity discrimination",
+    switching = "Strategy switching"
+  ))%>%
+  mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification")))%>%
+  mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification")))%>%
+  mutate(group = recode(group,
+    a_chimp = "Chimpanzee group A",
+    b_chimp = "Chimpanzee group B",
+    bonobo = "Bonobo",
+    orangutan = "Orangutan",
+    gorilla = "Gorilla"
+  ))
+
+data_trial <- read.csv("../data/laac_data_trial.csv") %>%
+  filter(!grepl("switch", task))%>%
+  mutate(task = recode(task,
+    gaze_following = "Gaze following",
+    causality = "Causal inference",
+    inference = "Inference by exclusion",
+    delay_of_gratification = "Delay of gratification",
+    quantity = "Quantity discrimination",
+    switching = "Strategy switching"
+  ))%>%
+  mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification")))%>%
+  mutate(group = recode(group,
+    a_chimp = "Chimpanzee group A",
+    b_chimp = "Chimpanzee group B",
+    bonobo = "Bonobo",
+    orangutan = "Orangutan",
+    gorilla = "Gorilla"
+  ))
+```
+
+# Overview performance paper
+
+```{r}
+time_plot_1 <- data_task%>%
+ filter(!grepl("switch", task))%>%
+  mutate(group = as.character(group), 
+         species = ifelse(grepl("chimp",group),"chimpanzee", group), 
+         species = factor(species),
+         group = factor(group))%>%
+  drop_na(performance)%>%
+  #mutate(time_point = factor(time_point))%>%
+  group_by(group, task,time_point, species)%>%
+  summarise(mean = mean(performance,na.rm = TRUE))
+
+time_plot_2 <- data_task%>%
+filter(!grepl("switch", task))%>%
+  mutate(group = as.character(group), 
+         species = ifelse(grepl("chimp",group),"chimpanzee", group), 
+         species = factor(species),
+         group = factor(group))%>%
+  drop_na(performance)%>%
+  #mutate(time_point = factor(time_point))%>%
+  group_by(task, time_point)%>%
+  tidyboot_mean(col = performance, na.rm = TRUE)%>%
+  mutate(n = n(),
+         chance = ifelse(task == "Gaze following" | task == "Delay of gratification", NA,0.5))
+```
+
+```{r}
+ggplot()+
+  facet_wrap(~task)+
+  geom_vline(xintercept = 14.5, size = 1)+
+  geom_hline(data = time_plot_2,aes(yintercept = chance), lty = 3, col = "black", alpha = .75)+
+  geom_point(data = time_plot_1, aes(x = time_point, y = mean,  col = group), alpha = .6, size = 0.75)+
+  geom_line(data = time_plot_1%>%filter(time_point<15), aes(x = time_point, y = mean, col = group, group = group), alpha = .6, size = 0.5)+
+  geom_line(data = time_plot_1%>%filter(time_point>14), aes(x = time_point, y = mean, col = group, group = group), alpha = .6, size = 0.5)+
+  geom_line(data = time_plot_2%>%filter(time_point<15), aes(x = time_point, y = mean, group = task), size = 0.5, alpha = .5)+
+  geom_line(data = time_plot_2%>%filter(time_point>14), aes(x = time_point, y = mean, group = task), size = 0.5, alpha = .5)+
+  theme_few()+
+  geom_pointrange(data = time_plot_2, aes(x = time_point, y = mean, ymin = ci_lower, ymax = ci_upper),pch = 4, size = 0.5, alpha = .75)+
+  scale_x_continuous(breaks = c(1,14,15,28), labels = c(1,14,1,14), minor_breaks = (1:28))+
+  labs(x = "Time Point", y = "Proportion correct responses")+
+  guides(size = F)+
+  #scale_shape(name = "Switching Phase")+
+  scale_color_ptol(name = "Group")+
+  theme(legend.position = c(0.8,0.2), legend.direction = "vertical")#+
+  #theme(panel.border = element_rect(color = "black",fill = NA,size = 0.25))
+```
+
+```{r}
+ggsave("../writing/paper/figures/performance.png", width = 12, height = 4, scale = 1.2, bg = "white")
+```
+
+# Reliability paper
+
+```{r}
+cor_data <- bind_rows(
+    data_task %>%
+    filter(time_point < 15)%>%
+  arrange(task)%>%
+  drop_na(performance)%>%
+  select(subject, task, time_point, performance)%>%
+  pivot_wider(values_from = "performance", names_from = "time_point")%>%
+  ungroup()%>%
+  select(-subject)%>%
+  group_by(task)%>%
+  group_split(.keep = F)%>%
+  setNames(data_task%>%filter(time_point < 15)%>%arrange(task)%>%distinct(task)%>%pull(task))%>%
+  purrr::map(cor_func)%>%
+  melt()%>%
+  mutate(task = factor(L1))%>%
+  mutate(phase = "Phase 1"), 
+  
+data_task %>%
+  filter(time_point > 14)%>%
+  arrange(task)%>%
+  drop_na(performance)%>%
+  select(subject, task, time_point, performance)%>%
+  pivot_wider(values_from = "performance", names_from = "time_point")%>%
+  ungroup()%>%
+  select(-subject)%>%
+  group_by(task)%>%
+  group_split(.keep = F)%>%
+  setNames(data_task%>%filter(time_point > 14)%>%arrange(task)%>%distinct(task)%>%pull(task))%>%
+  purrr::map(cor_func)%>%
+  melt()%>%
+  mutate(task = factor(L1))%>%
+  mutate(phase = "Phase 2")
+  
+  )%>%
+  mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification")))
+
+cor_data_sum <- cor_data%>%
+  group_by(phase, task)%>%
+  mean_hdci(value)%>%
+  mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification")))
+  
+# ggplot(cor_data, aes(x = value, col = task, fill = task))+
+#   #geom_histogram(col = "black", fill = "white")+
+#   geom_density(alpha = .3)+
+#   #xlim(-0.5,1)+
+#   #facet_wrap(~task)+
+#   labs(x = "Correlation Coefficient", y = "")+
+#   theme_minimal()+
+#   scale_color_colorblind(name = "Task")+
+#   scale_fill_colorblind(name = "Task")
+
+
+ggplot(data = cor_data, aes(x = value , y = reorder(phase, desc(phase)) ,fill = phase)) +
+  geom_vline(xintercept = 0, color = "black", size = .5, lty = 2) +
+  geom_density_ridges(rel_min_height = 0.01,col = "black", scale = 1.5,
+                      alpha = 0.5) +
+  geom_pointinterval(data = cor_data_sum, aes(xmin = .lower, xmax = .upper), size = 1)+
+  labs(x = "Re-test correlation",
+       y = element_blank()) +
+  #geom_text(data = mutate_if(cor_data_sum, is.numeric, round, 2),
+   # aes(label = glue("{value} [{.lower}, {.upper}]"), x= Inf), hjust = "inward")+
+  theme_minimal()+
+  facet_grid(~task)+
+  xlim(-0.1,1)+
+  #guides(fill = F)+
+  scale_fill_colorblind(name= "")+
+  theme(panel.border = element_rect(color = "black",fill = NA,size = .25))
+
+cor_data%>%
+  mutate(time_span = abs(as.numeric(term) - as.numeric(time_point)))%>%
+  ggplot(aes(y = time_span, x = value, col = phase))+
+  geom_xsidedensity(aes(x = value, fill = phase),col = "black",alpha = 0.5)+
+  geom_point(alpha = .5, size = 0.75)+
+  geom_smooth(method = "lm", aes(col = phase),lty = 2, se = T, size = .5)+
+  stat_cor(method = "pearson", aes(y = time_span, x = value, col = phase, label = paste(..r.label..)), inherit.aes = F,r.accuracy = 0.01, cor.coef.name = "r", show.legend = FALSE)+
+  xlim(-0.1,1)+
+  labs(x = "Re-test correlation",
+     y = "Distance btw. time points") +
+  facet_grid(~task)+
+  theme_few()+
+  #guides (col = F)+
+  scale_colour_colorblind(name= "")+
+  scale_fill_colorblind(name= "")+
+  ggside(collapse = "x", x.pos = "top", scales = "free_x")+
+  theme(#panel.border = element_rect(color = "black",fill = NA,size = .25),
+        ggside.panel.border = element_blank(),
+        ggside.panel.scale.x = .5,
+        axis.title.y = element_text(hjust = -0.1),
+        legend.position = c(0.05,0.9))+
+  theme_ggside_void()
+
+
+```
+
+```{r}
+ggsave("../writing/paper/figures/reliability.png", width = 10, height = 2.5, scale = 1.25, bg = "white")
+```
+
+# LSTm paper
+
+```{r}
+# Phase 1: latent state trait models
+lstc <- readModels("../models and documentation Jana/Application/one task models/test_apes_data_LST_cau_equSvar.out")
+lsti <- readModels("../models and documentation Jana/Application/one task models/test_apes_data_LST_inf_equSvar.out")
+lstq <- readModels("../models and documentation Jana/Application/one task models/test_apes_data_LST_quant_equSvar.out")
+lstg <- readModels("../models and documentation Jana/Application/one task models/test_apes_data_LST_gaze_equSvar.out")
+
+# Phase 2: latent state trait models
+lstc2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_cau_equSvar.out")
+lsti2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_inf_equSvar.out")
+lstq2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_quant_equSvar.out")
+lstg2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_gaze_equSvar.out")
+lstd2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_delay_equSvar.out")
+
+lstcg <- readModels("../models and documentation Jana/Application/two tasks models/test_apes_data_LST_cau_gaze.out")
+lstci <- readModels("../models and documentation Jana/Application/two tasks models/test_apes_data_LST_cau_inf.out")
+lstcq <- readModels("../models and documentation Jana/Application/two tasks models/test_apes_data_LST_cau_quant_indspec.out")
+lstig <- readModels("../models and documentation Jana/Application/two tasks models/test_apes_data_LST_inf_gaze.out")
+lstiq <- readModels("../models and documentation Jana/Application/two tasks models/test_apes_data_LST_inf_quant.out")
+lstqg <- readModels("../models and documentation Jana/Application/two tasks models/test_apes_data_LST_quant_gaze.out")
+
+lstcg2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_cau_gaze.out")
+lstci2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_cau_inf.out")
+lstcq2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_cau_quant_indspec.out")
+lstcd2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_cau_delay.out")
+
+lstig2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_inf_gaze.out")
+lstiq2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_inf_quant.out")
+lstid2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_inf_delay.out")
+
+lstqg2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_quant_gaze.out")
+lstqd2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_quant_delay.out")
+
+lstgd2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_gaze_delay.out")
+```
+
+```{r}
+lst <- bind_rows(
+  lstc$parameters$unstandardized%>%mutate(task = "causality", phase = "Phase 1"),
+  lsti$parameters$unstandardized%>%mutate(task = "inference", phase = "Phase 1"),
+  lstq$parameters$unstandardized%>%mutate(task = "quantity", phase = "Phase 1"),
+  lstg$parameters$unstandardized%>%mutate(task = "gaze_following", phase = "Phase 1"),
+  
+  lstc2$parameters$unstandardized%>%mutate(task = "causality", phase = "Phase 2"),
+  lsti2$parameters$unstandardized%>%mutate(task = "inference", phase = "Phase 2"),
+  lstq2$parameters$unstandardized%>%mutate(task = "quantity", phase = "Phase 2"),
+  lstg2$parameters$unstandardized%>%mutate(task = "gaze_following", phase = "Phase 2"),
+  lstd2$parameters$unstandardized%>%mutate(task = "delay_of_gratification", phase = "Phase 2")
+  )%>%
+  filter(paramHeader== "New.Additional.Parameters",
+         !grepl("DIF",param))%>%
+  mutate(param = recode(param, CON1 = "Consistency", OCC1 = "Occasion specificity", REL1 = "Reliability"))%>%
+  mutate(task = recode(task,
+    gaze_following = "Gaze following",
+    causality = "Causal inference",
+    inference = "Inference by exclusion",
+    delay_of_gratification = "Delay of gratification",
+    quantity = "Quantity discrimination",
+    switching = "Strategy switching"
+  ))%>%
+  mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification")))
+
+
+plstmpar <- ggplot(lst,aes(x = param, y = est, col = task, pch = phase))+
+    geom_pointrange(aes(ymin = lower_2.5ci, ymax = upper_2.5ci), position = position_dodge(width = .7))+
+  theme_few()+
+  ylim(0,1)+
+  #facet_wrap(~task)+
+  labs(x = "", y = "LST model estimate")+
+  scale_color_viridis_d(name = "")+
+  scale_shape(name = "")+
+  #theme(legend.position = "bottom", legend.box = "vertical")+
+  theme(legend.text=element_text(size=7), legend.key.size = unit(0.4,"cm"),legend.position = c(0.2,0.3), legend.box = "vertical", legend.spacing.x = unit(0, 'cm'), legend.spacing.y = unit(0, 'cm'))
+```
+
+```{r}
+lstmcor <- bind_rows(
+  bind_rows(
+lstcg2$parameters$stdyx.standardized,
+lstci2$parameters$stdyx.standardized,
+lstcq2$parameters$stdyx.standardized,
+lstcd2$parameters$stdyx.standardized,
+lstig2$parameters$stdyx.standardized,
+lstiq2$parameters$stdyx.standardized,
+lstid2$parameters$stdyx.standardized,
+lstqg2$parameters$stdyx.standardized,
+lstqd2$parameters$stdyx.standardized,
+lstgd2$parameters$stdyx.standardized,
+)%>%mutate(phase = "Phase 2"),
+
+bind_rows(
+lstcg$parameters$stdyx.standardized,
+lstci$parameters$stdyx.standardized,
+lstcq$parameters$stdyx.standardized,
+lstig$parameters$stdyx.standardized,
+lstiq$parameters$stdyx.standardized,
+lstqg$parameters$stdyx.standardized,
+)%>%mutate(phase = "Phase 1")
+)%>%
+  filter(grepl(".WITH", paramHeader))%>%
+  mutate(paramHeader = str_replace(paramHeader, "\\.WITH",""),
+         type = ifelse(grepl("S",paramHeader),"State residual","Trait"),
+         task1 = str_remove_all(paramHeader,"[ST]"),
+         task2 = str_remove_all(param,"[ST]"))%>%
+  filter(!grepl("1", task1),!grepl("2", task1))%>%
+  mutate(task1 = recode(task1, G = "Gaze following", I = "Inference by exclusion", C = "Causal inference", Q = "Quantity discrimination", D = "Delay of grat."),
+         task2 = recode(task2, G = "Gaze following", I = "Inference by exclusion", C = "Causal inference", Q = "Quantity discrimination", D = "Delay of grat."),
+         label = paste0(round(est,2)," \n [", round(lower_2.5ci,2)," ; ", round(upper_2.5ci,2),"]"))%>%
+  filter(type == "Trait")
+
+pmtm <- lstmcor%>%
+  ggplot(aes(y = task1, x = task2, fill = est, label = label))+
+    geom_tile(color = "white")+
+  labs(x = "", y = "")+
+  scale_fill_gradient2(low = "#CC6677", high = "#117733", mid = "#FFE066", 
+   midpoint = 0, limit = c(-1,1), space = "Lab", 
+   name="Correlation")+
+  facet_grid(~phase)+
+  geom_text(size = 2.5, fontface = ifelse(lstmcor$sig == T, 2, 1))+
+  theme_few()+
+  scale_x_discrete(guide = guide_axis(n.dodge = 2),limits = c("Causal inference", "Quantity discrimination","Gaze following", "Delay of grat."))+
+  scale_y_discrete(limits = c( "Inference by exclusion","Delay of grat.","Gaze following", "Quantity discrimination"))+
+  theme(legend.text=element_text(size=7),legend.key.size = unit(0.5,"cm"), 
+        legend.position = c(0.92,0.75), 
+        legend.direction = "vertical", legend.title = element_blank())
+```
+
+```{r}
+ggarrange(plstmpar, pmtm, widths = c(1,2), labels = c("A","B"))
+```
+
+
+```{r}
+ggsave("../writing/paper/figures/lstm.png", width = 10, height = 3, scale = 1.25, bg = "white")
+```
+
+# PPI 
+
+```{r}
+qvarselp <- readRDS("../writing/supplement/saves/cvs_quant_summary.rds")
+cvarselp <- readRDS("../writing/supplement/saves/cvs_cau_summary.rds")
+ivarselp <- readRDS("../writing/supplement/saves/cvs_inf_summary.rds")
+gvarselp <- readRDS("../writing/supplement/saves/cvs_gaze_summary.rds")
+
+
+ro <- bind_rows(qvarselp%>%mutate(task = "quantity")%>%mutate(phase = "Phase 1"),
+          cvarselp%>%mutate(task = "causality")%>%mutate(phase = "Phase 1"),
+          ivarselp%>%mutate(task = "inference")%>%mutate(phase = "Phase 1"),
+          gvarselp%>%mutate(task = "gaze_following")%>%mutate(phase = "Phase 1"),
+)%>%
+  filter(stat == "elpd", 
+         solution_terms != "none",
+         solution_terms != "day2",
+         solution_terms != "(1 | subject)")%>%
+  select(size, solution_terms, task,phase, select)%>%
+  group_by(solution_terms)%>%
+  mutate(sum = sum(size))%>%
+  mutate(task = recode(task,
+    gaze_following = "Gaze following",
+    causality = "Causal inference",
+    inference = "Inference by exclusion",
+    delay_of_gratification = "Delay of gratification",
+    quantity = "Quantity discrimination",
+    switching = "Strategy switching"
+  ))%>%
+  mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification"),labels = c("Gaze \nfollowing", "Causal \ninference","Inference \nby exclusion" ,"Quantity \ndiscrimination", "Delay of \ngratification")))%>%
+  mutate(type = ifelse(
+    solution_terms == "time_in_leipzig" | solution_terms == "rearing" | solution_terms == "group" | solution_terms == "sex"| solution_terms == "age", "Stable characteristic", ifelse(
+      solution_terms == "rel_rank" | solution_terms == "sick_severity" | solution_terms == "sociality" ,"Variable characteristic", ifelse(
+        solution_terms == "time_outdoors" | solution_terms == "dist_mean" | solution_terms == "le_mean", "Group life", "Testing arrangement"
+      )
+    )
+  ))%>%
+  mutate(solution_terms = recode(solution_terms,
+    time_in_leipzig = "Time spent in research",
+    rearing = "Rearing history",
+    group = "Group",
+    observer = "Observer present",
+    sex = "Sex",
+    rel_rank = "Rank",
+    age = "Age",
+    sick_severity = "Sickness severity",
+    test_tp = "Study participation (day)",
+    test_day = "Study participation (time point)",
+    time_outdoors = "Time spent outdoors",
+    dist_mean = "Disturbance",
+    le_mean = "Life event",
+    sociality = "Sociality"
+  ))
+
+
+p1 <- ggplot(ro,aes(x = fct_reorder(solution_terms,sum), y = size, lty = phase, col = type ))+
+  #geom_line(aes(group = task))+
+  geom_line(aes(group = phase), alpha = .5, col = "black")+
+  geom_point(aes(pch = select), size = 3, stroke = 1)+
+  theme_few()+
+  facet_grid(task~.)+
+  labs(x = "", y = "Rank based on PPI model")+
+  scale_color_brewer(palette="Set1", name = "")+
+  scale_linetype(name = "")+
+  scale_shape_manual(name = "", values =  c(1,4), labels = c("Irrelevant", "Relevant"))+
+  scale_y_reverse(breaks = c(14,10,5,1), limits = c(15,0))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.box = "horizontal",
+        legend.direction = "vertical",
+        legend.position = "top", 
+        legend.spacing.y = unit(0, 'cm'),
+        #legend.spacing.x = unit(0, 'cm')
+        )
+```
+
+```{r}
+proj_samples_gaze <- bind_rows(
+  readRDS("../writing/supplement/saves/proj_cvs_gaze.rds")%>%mutate(task = "Gaze following", phase = "Phase 1"),
+  readRDS("../writing/supplement/saves/proj_cvs_cau.rds")%>%mutate(task = "Causal inference", phase = "Phase 1"),
+  readRDS("../writing/supplement/saves/proj_cvs_inf.rds")%>%mutate(task = "Inference by exclusion", phase = "Phase 1"),
+  readRDS("../writing/supplement/saves/proj_cvs_quant.rds")%>%mutate(task = "Quantity discrimination", phase = "Phase 1"),
+)%>%
+  group_by(phase,task,factor, pred)%>%
+  summarise(mean = mean(value),
+            lci = hdi_lower(value),
+            uci = hdi_upper(value))%>%
+  mutate(pred = recode(pred,
+    time_in_leipzig = "Time spent in research",
+    rearing = "Rearing history",
+    group = "Group",
+    observer = "Observer present",
+    sex = "Sex",
+    rel_rank = "Rank",
+    age = "Age",
+    sick_severity = "Sickness severity",
+    test_tp = "Study participation (day)",
+    test_day = "Study participation (time point)",
+    time_outdoors = "Time spent outdoors",
+    dist_mean = "Disturbance",
+    le_mean = "Life event",
+    sociality = "Sociality",
+    a_chimp = "Chimpanzee group A",
+    b_chimp = "Chimpanzee group B",
+    bonobo = "Bonobo",
+    orangutan = "Orangutan",
+    gorilla = "Gorilla",
+    f = "Female", 
+    m = "Male",
+    hand = "Hand-reared",
+    mother = "Mother-reared"
+  ))%>%
+  mutate(factor = recode(factor,
+                         group = "Group",
+                         rearing = "Rearing \nhistory",
+                         sex = "Sex",
+                         `other predictors` = ""))%>%
+  mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification"),labels = c("Gaze \nfollowing", "Causal \ninference","Inference \nby exclusion" ,"Quantity \ndiscrimination", "Delay of \ngratification")))
+
+
+p2 <- ggplot(proj_samples_gaze, aes(x = pred, y = mean, col = phase)) +
+  geom_hline(yintercept = 0, lty = 3, alpha = .75)+
+  geom_pointrange(aes(ymin = lci, ymax = uci), pch = 4, size = 0.25)+
+  facet_grid(task~factor, scales = "free", space = "free_x")+
+  labs(y = "Model estimate", x = "")+
+  theme_few()+
+  scale_color_colorblind(name = "")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+                legend.direction = "vertical",
+        legend.position = "top", 
+        legend.spacing.y = unit(0, 'cm'),)
+ 
+```
+
+```{r}
+df <- data.frame()
+pe <- ggplot(df) + geom_blank()+theme_void()
+
+ggarrange(p1,
+ggarrange(pe, p2,pe , ncol = 1, heights = c(0.08,1,0.04)), 
+widths = c(1.5,1))
+```
+
+
+```{r}
+ggsave("../writing/paper/figures/ppi3.png", width = 10, height = 6, scale = 1.25, bg = "white")
+```
