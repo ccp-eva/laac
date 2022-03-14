@@ -153,7 +153,7 @@ ggplot()+
 ```
 
 ```{r}
-ggsave("../writing/paper/figures/performance.png", width = 12, height = 4, scale = 1.2, bg = "white")
+ggsave("../writing/paper/figures/performance.png", width = 10, height = 4, scale = 1.2, bg = "white")
 ```
 
 # Reliability paper
@@ -254,24 +254,43 @@ cor_data%>%
 ```
 
 ```{r}
-ggsave("../writing/paper/figures/reliability.png", width = 10, height = 2.5, scale = 1.25, bg = "white")
+ggsave("../writing/paper/figures/reliability.png", width = 10, height = 3.5, scale = 1.25, bg = "white")
 ```
 
-# LSTm paper
+# SEM paper
 
 ```{r}
-# Phase 1: latent state trait models
+# Phase 1: 
+
+#latent state trait models
 lstc <- readModels("../models and documentation Jana/Application/one task models/test_apes_data_LST_cau_equSvar.out")
 lsti <- readModels("../models and documentation Jana/Application/one task models/test_apes_data_LST_inf_equSvar.out")
 lstq <- readModels("../models and documentation Jana/Application/one task models/test_apes_data_LST_quant_equSvar.out")
 lstg <- readModels("../models and documentation Jana/Application/one task models/test_apes_data_LST_gaze_equSvar.out")
 
-# Phase 2: latent state trait models
+# latent state trait models with auto regressive component
+lstarc <- readModels("../models and documentation Jana/Application/one task models/test_apes_data_LST_cau_equSvar_AR1.out")
+lstari <- readModels("../models and documentation Jana/Application/one task models/test_apes_data_LST_inf_equSvar_AR1.out")
+lstarq <- readModels("../models and documentation Jana/Application/one task models/test_apes_data_LST_quant_equSvar_AR1.out")
+lstarg <- readModels("../models and documentation Jana/Application/one task models/test_apes_data_LST_gaze_equSvar_AR1.out")
+
+# Phase 2: 
+
+# latent state trait models
 lstc2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_cau_equSvar.out")
 lsti2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_inf_equSvar.out")
 lstq2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_quant_equSvar.out")
 lstg2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_gaze_equSvar.out")
 lstd2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_delay_equSvar.out")
+
+# latent state trait models with auto regressive component
+lstarc2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_cau_equSvar_AR1.out")
+lstari2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_inf_equSvar_AR1.out")
+lstarq2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_quant_equSvar_AR1.out")
+lstarg2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_gaze_equSvar_AR1.out")
+lstard2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_delay_equSvar_AR1.out")
+
+# Relations between tasks
 
 lstcg <- readModels("../models and documentation Jana/Application/two tasks models/test_apes_data_LST_cau_gaze.out")
 lstci <- readModels("../models and documentation Jana/Application/two tasks models/test_apes_data_LST_cau_inf.out")
@@ -335,6 +354,101 @@ plstmpar <- ggplot(lst,aes(x = param, y = est, col = task, pch = phase))+
 ```
 
 ```{r}
+lstar <- bind_rows(
+  lstarc$parameters$unstandardized%>%mutate(task = "causality", phase = "Phase 1")%>%filter(paramHeader== "New.Additional.Parameters"),
+  lstari$parameters$unstandardized%>%mutate(task = "inference", phase = "Phase 1")%>%filter(paramHeader== "New.Additional.Parameters"),
+  lstarq$parameters$unstandardized%>%mutate(task = "quantity", phase = "Phase 1")%>%filter(paramHeader== "New.Additional.Parameters"),
+  lstarg$parameters$unstandardized%>%mutate(task = "gaze_following", phase = "Phase 1")%>%filter(paramHeader== "New.Additional.Parameters"),
+  
+  lstarc$parameters$r2%>%filter(grepl("P",param))%>%mutate(param = str_replace(param,"P1","REL"))%>%filter(param == "REL2"|param == "REL3" |param == "REL14")%>%mutate(task = "causality", phase = "Phase 1"),
+  lstari$parameters$r2%>%filter(grepl("P",param))%>%mutate(param = str_replace(param,"P1","REL"))%>%filter(param == "REL2"|param == "REL3" |param == "REL14")%>%mutate(task = "inference", phase = "Phase 1"),
+  lstarq$parameters$r2%>%filter(grepl("P",param))%>%mutate(param = str_replace(param,"P1","REL"))%>%filter(param == "REL2"|param == "REL3" |param == "REL14")%>%mutate(task = "quantity", phase = "Phase 1"),
+  lstarg$parameters$r2%>%filter(grepl("P",param))%>%mutate(param = str_replace(param,"P1","REL"))%>%filter(param == "REL2"|param == "REL3" |param == "REL14")%>%mutate(task = "gaze_following", phase = "Phase 1"),
+  
+  lstarc2$parameters$unstandardized%>%mutate(task = "causality", phase = "Phase 2")%>%filter(paramHeader== "New.Additional.Parameters"),
+  lstari2$parameters$unstandardized%>%mutate(task = "inference", phase = "Phase 2")%>%filter(paramHeader== "New.Additional.Parameters"),
+  lstarq2$parameters$unstandardized%>%mutate(task = "quantity", phase = "Phase 2")%>%filter(paramHeader== "New.Additional.Parameters"),
+  lstarg2$parameters$unstandardized%>%mutate(task = "gaze_following", phase = "Phase 2")%>%filter(paramHeader== "New.Additional.Parameters"),
+  lstard2$parameters$unstandardized%>%mutate(task = "delay_of_gratification", phase = "Phase 2")%>%filter(paramHeader== "New.Additional.Parameters"),
+  
+  lstarc2$parameters$r2%>%filter(grepl("P",param))%>%mutate(param = str_replace(param,"P1","REL"))%>%filter(param == "REL2"|param == "REL3" |param == "REL14")%>%mutate(task = "causality", phase = "Phase 2"),
+  lstari2$parameters$r2%>%filter(grepl("P",param))%>%mutate(param = str_replace(param,"P1","REL"))%>%filter(param == "REL2"|param == "REL3" |param == "REL14")%>%mutate(task = "inference", phase = "Phase 2"),
+  lstarq2$parameters$r2%>%filter(grepl("P",param))%>%mutate(param = str_replace(param,"P1","REL"))%>%filter(param == "REL2"|param == "REL3" |param == "REL14")%>%mutate(task = "quantity", phase = "Phase 2"),
+  lstarg2$parameters$r2%>%filter(grepl("P",param))%>%mutate(param = str_replace(param,"P1","REL"))%>%filter(param == "REL2"|param == "REL3" |param == "REL14")%>%mutate(task = "gaze_following", phase = "Phase 2"),
+  lstard2$parameters$r2%>%filter(grepl("P",param))%>%mutate(param = str_replace(param,"P1","REL"))%>%filter(param == "REL2"|param == "REL3" |param == "REL14")%>%mutate(task = "delay_of_gratification", phase = "Phase 2")
+  )%>%
+  filter(!grepl("DIF",param), 
+         param != "CON1")%>%
+  separate(param, 
+           into = c("param", "time_point"), 
+           sep = "(?<=[A-Za-z])(?=[0-9])"
+           )%>%
+  filter(time_point == "14")%>%
+  mutate(time_point = as.numeric(time_point),
+         param = recode(param, CON = "Consistency", OSP = "Occasion specificity", REL = "Reliability", PRED = "Predictability"))%>%
+  mutate(task = recode(task,
+    gaze_following = "Gaze following",
+    causality = "Causal inference",
+    inference = "Inference by exclusion",
+    delay_of_gratification = "Delay of gratification",
+    quantity = "Quantity discrimination",
+    switching = "Strategy switching"
+  ))%>%
+  mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification")))
+
+
+plstarmpar <- ggplot(lstar,aes(x = param, y = est, col = phase, pch = phase))+
+    geom_pointrange(aes(ymin = lower_2.5ci, ymax = upper_2.5ci), position = position_dodge(width = .7))+
+  theme_few()+
+  ylim(0,1)+
+  facet_wrap(~task)+
+  labs(x = "", y = "Model estimate")+
+  scale_color_colorblind(name = "")+
+  scale_x_discrete(guide = guide_axis(n.dodge = 2))+
+  scale_shape(name = "")+
+  #theme(legend.position = "bottom", legend.box = "vertical")+
+  theme(#legend.text=element_text(size=7), legend.key.size = unit(0.4,"cm"),
+    legend.position = c(0.8,0.2), legend.box = "vertical", legend.spacing.x = unit(0, 'cm'), legend.spacing.y = unit(0, 'cm'))
+```
+
+```{r}
+lstar_beta <- bind_rows(
+  lstarc$parameters$unstandardized%>%mutate(task = "causality", phase = "Phase 1")%>%filter(paramHeader== "S14.ON"),
+  lstari$parameters$unstandardized%>%mutate(task = "inference", phase = "Phase 1")%>%filter(paramHeader== "S14.ON"),
+  lstarq$parameters$unstandardized%>%mutate(task = "quantity", phase = "Phase 1")%>%filter(paramHeader== "S14.ON"),
+  lstarg$parameters$unstandardized%>%mutate(task = "gaze_following", phase = "Phase 1")%>%filter(paramHeader== "S14.ON"),
+
+  lstarc2$parameters$unstandardized%>%mutate(task = "causality", phase = "Phase 2")%>%filter(paramHeader== "S14.ON"),
+  lstari2$parameters$unstandardized%>%mutate(task = "inference", phase = "Phase 2")%>%filter(paramHeader== "S14.ON"),
+  lstarq2$parameters$unstandardized%>%mutate(task = "quantity", phase = "Phase 2")%>%filter(paramHeader== "S14.ON"),
+  lstarg2$parameters$unstandardized%>%mutate(task = "gaze_following", phase = "Phase 2")%>%filter(paramHeader== "S14.ON"),
+  lstard2$parameters$unstandardized%>%mutate(task = "delay_of_gratification", phase = "Phase 2")%>%filter(paramHeader== "S14.ON")
+  )%>%
+  mutate(task = recode(task,
+    gaze_following = "Gaze following",
+    causality = "Causal inference",
+    inference = "Inference by exclusion",
+    delay_of_gratification = "Delay of gratification",
+    quantity = "Quantity discrimination",
+    switching = "Strategy switching"
+  ))%>%
+  mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification")))
+
+ggplot(lstar_beta,aes(x = task, y = est, col = phase, pch = phase))+
+    geom_pointrange(aes(ymin = lower_2.5ci, ymax = upper_2.5ci), position = position_dodge(width = .7))+
+  geom_hline(yintercept = 0,lty = 3, alpha = .75)+
+  theme_few()+
+  ylim(-2,2)+
+  #facet_wrap(~task)+
+  labs(x = "", y = "LST model estimate")+
+  scale_color_colorblind(name = "")+
+  scale_shape(name = "")
+  #theme(legend.position = "bottom", legend.box = "vertical")+
+  theme(legend.text=element_text(size=7), legend.key.size = unit(0.4,"cm"),legend.position = c(0.4,0.7), legend.box = "vertical", legend.spacing.x = unit(0, 'cm'), legend.spacing.y = unit(0, 'cm'))
+```
+
+
+```{r}
 lstmcor <- bind_rows(
   bind_rows(
 lstcg2$parameters$stdyx.standardized,
@@ -386,13 +500,14 @@ pmtm <- lstmcor%>%
         legend.direction = "vertical", legend.title = element_blank())
 ```
 
+
 ```{r}
-ggarrange(plstmpar, pmtm, widths = c(1,2), labels = c("A","B"))
+ggarrange(plstarmpar, pmtm, widths = c(1,1), labels = c("A","B"))
 ```
 
 
 ```{r}
-ggsave("../writing/paper/figures/lstm.png", width = 10, height = 3, scale = 1.25, bg = "white")
+ggsave("../writing/paper/figures/lstm.png", width = 10, height = 3, scale = 1.5, bg = "white")
 ```
 
 # PPI 
@@ -471,7 +586,7 @@ p1 <- ggplot(ro,aes(x = fct_reorder(solution_terms,sum), y = size, lty = phase, 
 ```
 
 ```{r}
-proj_samples_gaze <- bind_rows(
+proj_samples <- bind_rows(
   readRDS("../writing/supplement/saves/proj_cvs_gaze.rds")%>%mutate(task = "Gaze following", phase = "Phase 1"),
   readRDS("../writing/supplement/saves/proj_cvs_cau.rds")%>%mutate(task = "Causal inference", phase = "Phase 1"),
   readRDS("../writing/supplement/saves/proj_cvs_inf.rds")%>%mutate(task = "Inference by exclusion", phase = "Phase 1"),
@@ -514,7 +629,7 @@ proj_samples_gaze <- bind_rows(
   mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification"),labels = c("Gaze \nfollowing", "Causal \ninference","Inference \nby exclusion" ,"Quantity \ndiscrimination", "Delay of \ngratification")))
 
 
-p2 <- ggplot(proj_samples_gaze, aes(x = pred, y = mean, col = phase)) +
+p2 <- ggplot(proj_samples, aes(x = pred, y = mean, col = phase)) +
   geom_hline(yintercept = 0, lty = 3, alpha = .75)+
   geom_pointrange(aes(ymin = lci, ymax = uci), pch = 4, size = 0.25)+
   facet_grid(task~factor, scales = "free", space = "free_x")+
