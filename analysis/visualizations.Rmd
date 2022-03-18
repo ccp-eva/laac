@@ -132,6 +132,31 @@ filter(!grepl("switch", task))%>%
 ```
 
 ```{r}
+time_plot_0 <- data_task%>%
+ filter(task == "Inference by exclusion",
+        time_point > 14)%>%
+  mutate(group = as.character(group), 
+         species = ifelse(grepl("chimp",group),"chimpanzee", group), 
+         species = factor(species),
+         group = factor(group))%>%
+  drop_na(performance)
+
+ggplot(time_plot_0, aes(x = time_point, y = performance,  col = group))+
+  geom_hline(yintercept = 0.5, lty = 3, col = "black", alpha = .75)+
+  geom_point(  alpha = .6, size = 0.75)+
+  geom_line(aes(group = subject), alpha = .6, size = 0.5)+
+  labs(x = "Time Point", y = "Proportion correct responses")+
+  guides(size = F)+
+  #geom_smooth(aes(group = subject), se = F)+
+  facet_wrap(~subject)+
+  theme_few()
+  #scale_shape(name = "Switching Phase")+
+  scale_color_ptol(name = "Group")+
+  theme(legend.position = c(0.8,0.2), legend.direction = "vertical")
+```
+
+
+```{r}
 ggplot()+
   facet_wrap(~task)+
   geom_vline(xintercept = 14.5, size = 1)+
@@ -283,15 +308,19 @@ lstq2 <- readModels("../models and documentation Jana/Application/Testphase 2/on
 lstg2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_gaze_equSvar.out")
 lstd2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_delay_equSvar.out")
 
+lsti2p2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_inf_equSvar_2phases.out")
+
+
+
 # latent state trait models with auto regressive component
-lstarc2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_cau_equSvar_AR1.out")
-lstari2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_inf_equSvar_AR1.out")
-lstarq2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_quant_equSvar_AR1.out")
-lstarg2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_gaze_equSvar_AR1.out")
-lstard2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_delay_equSvar_AR1.out")
+#lstarc2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_cau_equSvar_AR1.out")
+#lstari2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_inf_equSvar_AR1.out")
+#lstarq2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_quant_equSvar_AR1.out")
+#lstarg2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_gaze_equSvar_AR1.out")
+#lstard2 <- readModels("../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_delay_equSvar_AR1.out")
 
 # Relations between tasks
-
+## Phase 1
 lstcg <- readModels("../models and documentation Jana/Application/two tasks models/test_apes_data_LST_cau_gaze.out")
 lstci <- readModels("../models and documentation Jana/Application/two tasks models/test_apes_data_LST_cau_inf.out")
 lstcq <- readModels("../models and documentation Jana/Application/two tasks models/test_apes_data_LST_cau_quant_indspec.out")
@@ -299,14 +328,19 @@ lstig <- readModels("../models and documentation Jana/Application/two tasks mode
 lstiq <- readModels("../models and documentation Jana/Application/two tasks models/test_apes_data_LST_inf_quant.out")
 lstqg <- readModels("../models and documentation Jana/Application/two tasks models/test_apes_data_LST_quant_gaze.out")
 
+## Phase 2
 lstcg2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_cau_gaze.out")
-lstci2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_cau_inf.out")
+lstci2p1 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_cau_inf_phase1.out")
+lstci2p2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_cau_inf_phase2.out")
 lstcq2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_cau_quant_indspec.out")
 lstcd2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_cau_delay.out")
 
-lstig2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_inf_gaze.out")
-lstiq2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_inf_quant.out")
-lstid2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_inf_delay.out")
+lstig2p1 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_inf_gaze_phase1.out")
+lstig2p2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_inf_gaze_phase2.out")
+lstiq2p1 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_inf_quant_phase1.out")
+lstiq2p2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_inf_quant_phase2.out")
+lstid2p1 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_inf_delay_phase1.out")
+lstid2p2<- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_inf_delay_phase2.out")
 
 lstqg2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_quant_gaze.out")
 lstqd2 <- readModels("../models and documentation Jana/Application/Testphase 2/two construct models/test_apes_data_LST_quant_delay.out")
@@ -322,7 +356,7 @@ lst <- bind_rows(
   lstg$parameters$unstandardized%>%mutate(task = "gaze_following", phase = "Phase 1"),
   
   lstc2$parameters$unstandardized%>%mutate(task = "causality", phase = "Phase 2"),
-  lsti2$parameters$unstandardized%>%mutate(task = "inference", phase = "Phase 2"),
+  #lsti2$parameters$unstandardized%>%mutate(task = "inference", phase = "Phase 2"),
   lstq2$parameters$unstandardized%>%mutate(task = "quantity", phase = "Phase 2"),
   lstg2$parameters$unstandardized%>%mutate(task = "gaze_following", phase = "Phase 2"),
   lstd2$parameters$unstandardized%>%mutate(task = "delay_of_gratification", phase = "Phase 2")
@@ -338,19 +372,27 @@ lst <- bind_rows(
     quantity = "Quantity discrimination",
     switching = "Strategy switching"
   ))%>%
+  mutate(part = "Part 1")%>%
+  bind_rows(lsti2p2$parameters$unstandardized%>%mutate(task = "inference", phase = "Phase 2")%>%
+  filter(paramHeader== "New.Additional.Parameters",
+         !grepl("DIF",param))%>%
+  mutate(part = ifelse(grepl("1", param), "Part 1", "Part 2"),
+         param = recode(param, CON1 = "Consistency", OCC1 = "Occasion specificity", REL1 = "Reliability",CON2 = "Consistency", OCC2 = "Occasion specificity", REL2 = "Reliability"),
+         task = "Inference by exclusion"))%>%
   mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification")))
 
 
-plstmpar <- ggplot(lst,aes(x = param, y = est, col = task, pch = phase))+
+plstmpar <- ggplot(lst,aes(x = param, y = est, col = phase, pch = part))+
     geom_pointrange(aes(ymin = lower_2.5ci, ymax = upper_2.5ci), position = position_dodge(width = .7))+
   theme_few()+
   ylim(0,1)+
-  #facet_wrap(~task)+
+  facet_wrap(~task)+
   labs(x = "", y = "LST model estimate")+
-  scale_color_viridis_d(name = "")+
-  scale_shape(name = "")+
-  #theme(legend.position = "bottom", legend.box = "vertical")+
-  theme(legend.text=element_text(size=7), legend.key.size = unit(0.4,"cm"),legend.position = c(0.2,0.3), legend.box = "vertical", legend.spacing.x = unit(0, 'cm'), legend.spacing.y = unit(0, 'cm'))
+  scale_color_colorblind(name = "")+
+  scale_shape(name = "", guide = F)+
+  scale_x_discrete(guide = guide_axis(n.dodge = 2))+
+  theme(#legend.text=element_text(size=7), legend.key.size = unit(0.4,"cm"),
+    legend.position = c(0.8,0.2), legend.box = "vertical", legend.spacing.x = unit(0, 'cm'), legend.spacing.y = unit(0, 'cm'))
 ```
 
 ```{r}
@@ -434,42 +476,48 @@ lstar_beta <- bind_rows(
   ))%>%
   mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification")))
 
-ggplot(lstar_beta,aes(x = task, y = est, col = phase, pch = phase))+
+ggplot(lstar_beta,aes(x = task, y = est, col = phase))+
     geom_pointrange(aes(ymin = lower_2.5ci, ymax = upper_2.5ci), position = position_dodge(width = .7))+
   geom_hline(yintercept = 0,lty = 3, alpha = .75)+
   theme_few()+
-  ylim(-2,2)+
+  ylim(-1,1.1)+
   #facet_wrap(~task)+
   labs(x = "", y = "LST model estimate")+
   scale_color_colorblind(name = "")+
-  scale_shape(name = "")
+  scale_shape(name = "")+
+  scale_x_discrete(guide = guide_axis(n.dodge = 2))+
   #theme(legend.position = "bottom", legend.box = "vertical")+
-  theme(legend.text=element_text(size=7), legend.key.size = unit(0.4,"cm"),legend.position = c(0.4,0.7), legend.box = "vertical", legend.spacing.x = unit(0, 'cm'), legend.spacing.y = unit(0, 'cm'))
+  theme(#legend.text=element_text(size=7), legend.key.size = unit(0.4,"cm"),
+    legend.position = c(0.15,0.1), legend.direction = "horizontal", legend.spacing.x = unit(0, 'cm'), legend.spacing.y = unit(0, 'cm'))
 ```
 
 
 ```{r}
 lstmcor <- bind_rows(
   bind_rows(
-lstcg2$parameters$stdyx.standardized,
-lstci2$parameters$stdyx.standardized,
-lstcq2$parameters$stdyx.standardized,
-lstcd2$parameters$stdyx.standardized,
-lstig2$parameters$stdyx.standardized,
-lstiq2$parameters$stdyx.standardized,
-lstid2$parameters$stdyx.standardized,
-lstqg2$parameters$stdyx.standardized,
-lstqd2$parameters$stdyx.standardized,
-lstgd2$parameters$stdyx.standardized,
+lstcg2$parameters$stdyx.standardized%>%mutate(part = "Part 1"),
+lstci2p1$parameters$stdyx.standardized%>%mutate(part = "Part 1"),
+lstci2p2$parameters$stdyx.standardized%>%mutate(part = "Part 2"),
+lstcq2$parameters$stdyx.standardized%>%mutate(part = "Part 1"),
+lstcd2$parameters$stdyx.standardized%>%mutate(part = "Part 1"),
+lstig2p1$parameters$stdyx.standardized%>%mutate(part = "Part 1"),
+lstig2p2$parameters$stdyx.standardized%>%mutate(part = "Part 2"),
+lstiq2p1$parameters$stdyx.standardized%>%mutate(part = "Part 1"),
+lstiq2p2$parameters$stdyx.standardized%>%mutate(part = "Part 2"),
+lstid2p1$parameters$stdyx.standardized%>%mutate(part = "Part 1"),
+lstid2p2$parameters$stdyx.standardized%>%mutate(part = "Part 2"),
+lstqg2$parameters$stdyx.standardized%>%mutate(part = "Part 1"),
+lstqd2$parameters$stdyx.standardized%>%mutate(part = "Part 1"),
+lstgd2$parameters$stdyx.standardized%>%mutate(part = "Part 1"),
 )%>%mutate(phase = "Phase 2"),
 
 bind_rows(
-lstcg$parameters$stdyx.standardized,
-lstci$parameters$stdyx.standardized,
-lstcq$parameters$stdyx.standardized,
-lstig$parameters$stdyx.standardized,
-lstiq$parameters$stdyx.standardized,
-lstqg$parameters$stdyx.standardized,
+lstcg$parameters$stdyx.standardized%>%mutate(part = "Part 1"),
+lstci$parameters$stdyx.standardized%>%mutate(part = "Part 1"),
+lstcq$parameters$stdyx.standardized%>%mutate(part = "Part 1"),
+lstig$parameters$stdyx.standardized%>%mutate(part = "Part 1"),
+lstiq$parameters$stdyx.standardized%>%mutate(part = "Part 1"),
+lstqg$parameters$stdyx.standardized%>%mutate(part = "Part 1"),
 )%>%mutate(phase = "Phase 1")
 )%>%
   filter(grepl(".WITH", paramHeader))%>%
@@ -480,18 +528,27 @@ lstqg$parameters$stdyx.standardized,
   filter(!grepl("1", task1),!grepl("2", task1))%>%
   mutate(task1 = recode(task1, G = "Gaze following", I = "Inference by exclusion", C = "Causal inference", Q = "Quantity discrimination", D = "Delay of grat."),
          task2 = recode(task2, G = "Gaze following", I = "Inference by exclusion", C = "Causal inference", Q = "Quantity discrimination", D = "Delay of grat."),
-         label = paste0(round(est,2)," \n [", round(lower_2.5ci,2)," ; ", round(upper_2.5ci,2),"]"))%>%
+         )%>%
   filter(type == "Trait")
 
-pmtm <- lstmcor%>%
-  ggplot(aes(y = task1, x = task2, fill = est, label = label))+
-    geom_tile(color = "white")+
+lstlabel <- lstmcor%>%
+  mutate(label = paste0(round(est,2)," \n [", round(lower_2.5ci,2)," ; ", round(upper_2.5ci,2),"]"))%>%
+  select(task1,task2,phase,part, label)%>%
+  pivot_wider(names_from = part, values_from = label)%>%
+  mutate(label = ifelse(phase == "Phase 2" & !is.na(`Part 2`), paste0(`Part 1`,"\n",`Part 2`),`Part 1`))
+
+plstmcor <- lstmcor%>%
+  left_join(lstlabel)
+
+pmtm <- plstmcor%>%
+  ggplot(aes(y = task1, x = task2, label = label))+
+    geom_tile(color = "white", aes(fill = est))+
   labs(x = "", y = "")+
   scale_fill_gradient2(low = "#CC6677", high = "#117733", mid = "#FFE066", 
    midpoint = 0, limit = c(-1,1), space = "Lab", 
    name="Correlation")+
   facet_grid(~phase)+
-  geom_text(size = 2.5, fontface = ifelse(lstmcor$sig == T, 2, 1))+
+  geom_text(size = 2.5, fontface = ifelse(plstmcor$sig == T, 2, 1))+
   theme_few()+
   scale_x_discrete(guide = guide_axis(n.dodge = 2),limits = c("Causal inference", "Quantity discrimination","Gaze following", "Delay of grat."))+
   scale_y_discrete(limits = c( "Inference by exclusion","Delay of grat.","Gaze following", "Quantity discrimination"))+
@@ -502,7 +559,7 @@ pmtm <- lstmcor%>%
 
 
 ```{r}
-ggarrange(plstarmpar, pmtm, widths = c(1,1), labels = c("A","B"))
+ggarrange(plstmpar, pmtm, widths = c(1,1), labels = c("A","B"))
 ```
 
 

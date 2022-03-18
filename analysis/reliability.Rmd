@@ -1,0 +1,69 @@
+---
+title: "LAAC Reliability"
+output: html_document
+date: '2022-03-17'
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(writexl)
+library(readxl)
+library(psych)
+```
+
+# Round 1
+
+## Prepare files
+```{r}
+# read in data files
+data_task <- read.csv("../data/laac_data_task.csv") 
+data_trial <- read.csv("../data/laac_data_trial.csv") 
+```
+
+```{r}
+#tp1 <- sample(c(1:14), 2) #[1] 7 1
+#tp2 <- sample(c(15:28), 2) #[1] 16 23
+
+tp1 <- c(7,1)
+tp2 <- c(16,23)
+
+data_trial%>%
+  filter(time_point %in% tp1 | time_point %in% tp2)%>%
+  select(-c(20:37), -rank, -test_tp, -heat, -sick_severity, -location, -keeper, -test_day, -observer, -trial_time_point, -condition, -pick, -code)%>%
+  mutate(pick_reli = NA,
+         code_reli = NA)%>%
+  write_xlsx("../data/reli_2nd_coder.xlsx")
+
+```
+
+## Combine files
+
+```{r}
+reli <- data_trial%>%
+  filter(time_point %in% tp1 | time_point %in% tp2)%>%
+  select(-c(20:37), -rank, -test_tp, -heat, -sick_severity, -location, -keeper, -test_day, -observer, -trial_time_point, -condition)%>%
+  left_join(read_xlsx("../../../Seafile/LAAC/02_data/round_1/reli_2nd_coder.xlsx"))%>%
+  mutate(match_pick = ifelse(pick == pick_reli, 1, 0),
+         match_code = ifelse(code == code_reli, 1, 0))
+```
+
+```{r}
+# prop match
+reli%>%
+  group_by(task)%>%
+  summarise(match = mean(match_code))
+
+#gaze_following
+cohen.kappa(cbind(reli$code%>%filter(task == "gaze_following"), reli$code_reli%>%filter(task == "gaze_following")))
+#inference
+cohen.kappa(cbind(reli$code%>%filter(task == "inference"), reli$code_reli%>%filter(task == "inference")))
+#causality
+cohen.kappa(cbind(reli$code%>%filter(task == "causality"), reli$code_reli%>%filter(task == "causality")))
+#switching
+cohen.kappa(cbind(reli$code%>%filter(task == "switching"), reli$code_reli%>%filter(task == "switching")))
+#quantity
+cohen.kappa(cbind(reli$code%>%filter(task == "quantity"), reli$code_reli%>%filter(task == "quantity")))
+#delay_of_gratification
+cohen.kappa(cbind(reli$code%>%filter(task == "delay_of_gratification"), reli$code_reli%>%filter(task == "delay_of_gratification")))
+```
+

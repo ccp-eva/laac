@@ -1507,6 +1507,7 @@ lsti2 <- readModels("../../models and documentation Jana/Application/Testphase 2
 lstq2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_quant_equSvar.out")
 lstg2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_gaze_equSvar.out")
 lstd2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_delay_equSvar.out")
+lsti2p2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_inf_equSvar_2phases.out")
 
 # latent state trait models with auto regressive component
 lstarc2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_cau_equSvar_AR1.out")
@@ -1518,7 +1519,7 @@ lstard2 <- readModels("../../models and documentation Jana/Application/Testphase
 
 For a visual overview of group-level performance in the different tasks see Figure \@ref(fig:perfplot). The pattern observed in Phase 1 was similar in Phase 2 for causal inference and quantity. The rate of gaze following remained on the low level reached at the end of Phase 1. For inference, there was an increase in performance over time, which already began to show itself at the end of Phase 1. Taken together, there was a lot of continuity between Phase 1 and 2. The newly added delay of gratification task produced fairly variable results -- with no ceiling or floor effect.
 
-Correlations between time points were similar in Phase 1 and 2 for all tasks (Figure \@ref(fig:relplot)). Performance in the delay of gratification task proofed to be stable between individuals. Next, we present the results from the SEMs separate for each task. All models showed acceptable fit indices, except for the inference LST and LST-AR models (see Table \@ref(tab:semt2)). The threshold parameters for each model are shown in (see Table \@ref(tab:thresht2)).
+Correlations between time points were similar in Phase 1 and 2 for all tasks (Figure \@ref(fig:relplot)). Performance in the delay of gratification task proofed to be stable between individuals. Next, we present the results from the SEMs separate for each task. All models showed acceptable fit indices, except for the LST model for inference by exclusion (see Table \@ref(tab:semt2)). We therfore adjusted the LST model for this task in a way we describe below. The threshold parameters for each model are shown in (see Table \@ref(tab:thresht2)).
 
 ```{r}
 mot2 <- bind_rows(
@@ -1527,35 +1528,35 @@ mot2 <- bind_rows(
   Model = c("LSM","LSTM","LSTM-AR"),
   PPP = c(lsc2$summaries$PostPred_PValue,lstc2$summaries$PostPred_PValue,lstarc2$summaries$PostPred_PValue),
   `Chi 95% CI` = c(paste(lsc2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsc2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
-                           paste(lstc2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsc2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+                           paste(lstc2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstc2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
                            paste(lstarc2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstarc2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "))),
   tibble(
   Task = c("inference", "", ""),
-  Model = c("LSM","LSTM","LSTM-AR"),
-  PPP = c(lsi2$summaries$PostPred_PValue,lsti2$summaries$PostPred_PValue,lstari2$summaries$PostPred_PValue),
+  Model = c("LSM","LSTM (2 parts)","LSTM-AR"),
+  PPP = c(lsi2$summaries$PostPred_PValue,lsti2p2$summaries$PostPred_PValue,lstari2$summaries$PostPred_PValue),
   `Chi 95% CI` = c(paste(lsi2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsi2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
-                           paste(lsti2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsi2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+                           paste(lsti2p2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsti2p2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
                            paste(lstari2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstari2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "))),
   tibble(
   Task = c("gaze_following", "", ""),
   Model = c("LSM","LSTM","LSTM-AR"),
   PPP = c(lsg2$summaries$PostPred_PValue,lstg2$summaries$PostPred_PValue,lstarg2$summaries$PostPred_PValue),
   `Chi 95% CI` = c(paste(lsg2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsg2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
-                           paste(lstg2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsg2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+                           paste(lstg2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstg2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
                            paste(lstarg2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstarg2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "))),
   tibble(
   Task = c("quantitiy", "", ""),
   Model = c("LSM","LSTM","LSTM-AR"),
   PPP = c(lsq2$summaries$PostPred_PValue,lstq2$summaries$PostPred_PValue,lstarq2$summaries$PostPred_PValue),
   `Chi 95% CI` = c(paste(lsq2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsq2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
-                           paste(lstq2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsq2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+                           paste(lstq2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstq2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
                            paste(lstarq2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstarq2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "))),
     tibble(
   Task = c("delay of gratification", "", ""),
   Model = c("LSM","LSTM","LSTM-AR"),
   PPP = c(lsd2$summaries$PostPred_PValue,lstd2$summaries$PostPred_PValue,lstarq2$summaries$PostPred_PValue),
   `Chi 95% CI` = c(paste(lsd2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsd2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
-                           paste(lstd2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lsd2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
+                           paste(lstd2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstd2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; "),
                            paste(lstard2$summaries$ObsRepChiSqDiff_95CI_LB%>%round(2)%>%format(nsmall =2), lstard2$summaries$ObsRepChiSqDiff_95CI_UB%>%round(2)%>%format(nsmall =2), sep = " ; ")))
 )
 
@@ -1583,7 +1584,7 @@ thresh2 <- bind_rows(
   
     bind_rows(
     lsi2$parameters$unstandardized%>%mutate(Model = "LSM", Task = "inference"),
-    lsti2$parameters$unstandardized%>%mutate(Model = "LSTM", Task = ""),
+    lsti2p2$parameters$unstandardized%>%mutate(Model = "LSTM", Task = ""),
     lstari2$parameters$unstandardized%>%mutate(Model = "LSTM-AR", Task = ""))%>%
     filter(paramHeader=="Thresholds")%>%
     select(Task, Model, param, est)%>%
@@ -1678,7 +1679,7 @@ plser2 <-
   bind_rows(plse2, plsr2)%>%
   ggplot(aes(x = time_point, y = est, col = task))+
   facet_wrap_custom(estimate~., scales = "free_y", ncol = 1, scale_overrides = list(
-    scale_override(1, scale_y_continuous(limits = c(-5, 1))),
+    scale_override(1, scale_y_continuous(limits = c(-3, 2.2))),
     scale_override(2, scale_y_continuous(limits = c(0, 1)))
   ))+
   geom_hline(aes(yintercept = ref), lty = 2, alpha = .75)+
@@ -1726,16 +1727,20 @@ plsc2
 ```
 
 
-
-
 #### Inference by exclusion
 
-... to be added after discussing issues with the models.
+... model fitting stuff.
+
+With a PPP of `r lsti2$summaries$PostPred_PValue`, the LST model for inference by exclusion did not provide a good fit to the data. The latent state correlations shown in Figure \@ref(fig:lsplot2) suggest that there was a split in the data in that there were high correlations between latent states among the time points smaller than 8 as well as among time points larger than 8. Looking at Figure \@ref(fig:perfplot), we can see that the increase in group level performance started around that time and was largely driven by individuals from the chimpanzee B group. What this suggests is that some individuals quickly "rose through the ranks" and then retained a higher level of performance for the rest of the study. Some of the orangutans changed in the other direction, though to a lesser extend. We therefore fit an adjusted LST model for which we estimated one trait for time points 1 to 8 and a second trait for time points 9 to 14. As a consequence, we get two values for each LSTM coefficient (one for each part) as well as a correlation between the two traits. 
+
+The adjusted model provided an acceptable fit to the data (see Table \@ref(tab:semt2)). The consistency coefficients were very similar for the two parts: .912 (Part 1) and .928 (Part 2). That is, for both parts, more than 90% of true inter-individual differences are attributable to stable (trait) differences between individuals, while less than 10% are due to variance in time point specific deviations from the stable trait. Reliability (across time points) was estimated to be high for both parts: .800 (Part 1) and .830 (Part 2) (see Figure \@ref(fig:lsteplot2)).
+
+In sum, the models suggest that there was an increase in group-level performance over time which resulted in reliable above-chance performance in later time points (see Figure \@ref(fig:perfplot). This change was largely driven by a few individuals who quickly improved and thereby changed their relative ranks. This resulted in a split in the data, with inter-individual differences in each part being very stable.
 
 ```{r}
 plste2 <- bind_rows(
   lstc2$parameters$unstandardized%>%mutate(task = "causality"),
-  lsti2$parameters$unstandardized%>%mutate(task = "inference"),
+  #lsti2$parameters$unstandardized%>%mutate(task = "inference"),
   lstq2$parameters$unstandardized%>%mutate(task = "quantity"),
   lstg2$parameters$unstandardized%>%mutate(task = "gaze_following"),
   lstd2$parameters$unstandardized%>%mutate(task = "delay_of_gratification")
@@ -1744,12 +1749,29 @@ plste2 <- bind_rows(
   filter(paramHeader== "New.Additional.Parameters",
          !grepl("DIF",param))%>%
   mutate(param = recode(param, CON1 = "Consistency", OCC1 = "Occasion specificity", REL1 = "Reliability"))%>%
-  ggplot(aes(x = param, y = est, col = task))+
+  mutate(task = recode(task,
+    gaze_following = "Gaze following",
+    causality = "Causal inference",
+    inference = "Inference by exclusion",
+    delay_of_gratification = "Delay of gratification",
+    quantity = "Quantity discrimination",
+    switching = "Strategy switching"
+  ))%>%
+  mutate(part = "Part 1")%>%
+  bind_rows(lsti2p2$parameters$unstandardized%>%mutate(task = "inference", phase = "Phase 2")%>%
+  filter(paramHeader== "New.Additional.Parameters",
+         !grepl("DIF",param))%>%
+  mutate(part = ifelse(grepl("1", param), "Part 1", "Part 2"),
+         param = recode(param, CON1 = "Consistency", OCC1 = "Occasion specificity", REL1 = "Reliability",CON2 = "Consistency", OCC2 = "Occasion specificity", REL2 = "Reliability"),
+         task = "Inference by exclusion"))%>%
+  mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification")))%>%
+  ggplot(aes(x = param, y = est, col = task, pch = part))+
     geom_pointrange(aes(ymin = lower_2.5ci, ymax = upper_2.5ci), position = position_dodge(width = .9))+
   theme_minimal()+
   ylim(0,1)+
   facet_grid(~param, scales = "free_x")+
   labs(x = "", y = "Model estiamte")+
+    scale_shape(name = "")+
   scale_x_discrete(limits=rev)+
   theme(axis.text.x = element_blank(), legend.position = "bottom")+
   scale_color_colorblind(name = "Task")
@@ -1837,35 +1859,12 @@ In sum, delay of gratification showed some variation in group level performance.
 
 For the comparison between the two phases, we will focus on the four tasks that were included in both: causal inference, gaze following, inference by exclusion and quantity. 
 
-For the causal inference task, the raw performance in Figure \@ref(fig:perfplot) shows no marked difference between the two phases. Similarly, we see no systematic difference between the two phases when looking at the latent state means estimated by the LSM (Figure \@ref(fig:lsdifplot)). This suggests stable group-level performance across the two phases. The LSTM estimates for consistency, occasion specificity and reliability were also very similar for the two phases (Figure \@ref(fig:lstdifplot)), which indicates that individual differences were structured similarly in the two phases. We see a more pronounced difference in the results of the LST-AR model in that consistency is considerably lower while predictability is higher in Phase 2 compared to 1. The reason ... 
+For the causal inference task, the raw performance in Figure \@ref(fig:perfplot) shows no marked difference between the two phases. Similarly, we see no systematic difference between the two phases when looking at the latent state means estimated by the LSM. This suggests stable group-level performance across the two phases. The LSTM estimates for consistency, occasion specificity and reliability were also very similar for the two phases (Figure \@ref(fig:lstdifplot)), which indicates that individual differences were structured similarly in the two phases. We see a more pronounced difference in the results of the LST-AR model in that consistency is considerably lower while predictability is higher in Phase 2 compared to 1. The reason ... 
 
-
-```{r}
-plsdif <- bind_rows(
-  plse%>%mutate(phase = "Phase 1"),
-  plse2%>%mutate(phase = "Phase 2")
-)%>%
-  mutate(time_point = as.numeric(time_point))%>%
-  filter(task != "delay_of_gratification")%>%
-  ggplot(aes(x = time_point, y = est, col = phase))+
-  facet_wrap(~task, nrow = 1)+
-  geom_hline(aes(yintercept = ref), lty = 2, alpha = .75)+
-  labs(x = "Time point",y = "Latent state mean")+
-  geom_line(aes(group = phase),position = position_dodge(width = 0.2), alpha = .75)+
-  geom_pointrange(aes(ymin = lower_2.5ci, ymax = upper_2.5ci),position = position_dodge(width = 0.2), alpha = .75, size = .25)+
-  scale_x_continuous(breaks = c(1,14))+
-  scale_color_discrete(name = "Phase")+
-  theme_few()
-```
-
-```{r lsdifplot, fig.height = 2.5, fig.cap = "Difference between model LSTM estimates for phase 1 and phase 2.", out.width="100%"}
-plsdif
-```
-
-The gaze following task showed notable differences between the two phases. The initial decline in gaze following in the beginning of Phase 1 did not repeat itself in Phase 2. Performance in Phase 2 seemed to pick up where it left off at the end of Phase 1 (Figure \@ref(fig:perfplot)). The LSM mean estimates for the different time points follow a similar pattern (Figure \@ref(fig:lsdifplot)). Despite this difference in group-level variability, the near-identical LSTM estimates for consistency and occasion specificity showed that individual differences were structured in a similar way across the two phases (Figure \@ref(fig:lstdifplot)). In contrast to the other tasks, consistency and predictability -- as estimated by the LST-AR model -- were similar to the estimates of Phase 1.  
+The gaze following task showed notable differences between the two phases. The initial decline in gaze following in the beginning of Phase 1 did not repeat itself in Phase 2. Performance in Phase 2 seemed to pick up where it left off at the end of Phase 1 (Figure \@ref(fig:perfplot)). The LSM mean estimates for the different time points follow a similar pattern. Despite this difference in group-level variability, the near-identical LSTM estimates for consistency and occasion specificity showed that individual differences were structured in a similar way across the two phases (Figure \@ref(fig:lstdifplot)). In contrast to the other tasks, consistency and predictability -- as estimated by the LST-AR model -- were similar to the estimates of Phase 1.  
 
 ```{r}
-plstdif <- bind_rows(
+lstdif <- bind_rows(
 bind_rows(
   lstc$parameters$unstandardized%>%mutate(task = "causality"),
   lsti$parameters$unstandardized%>%mutate(task = "inference"),
@@ -1877,7 +1876,7 @@ bind_rows(
   mutate(param = recode(param, CON1 = "Consistency", OCC1 = "Occasion specificity", REL1 = "Reliability"))%>%mutate(phase = "Phase 1"),
 bind_rows(
   lstc2$parameters$unstandardized%>%mutate(task = "causality"),
-  lsti2$parameters$unstandardized%>%mutate(task = "inference"),
+  #lsti2$parameters$unstandardized%>%mutate(task = "inference"),
   lstq2$parameters$unstandardized%>%mutate(task = "quantity"),
   lstg2$parameters$unstandardized%>%mutate(task = "gaze_following")
   )%>%
@@ -1885,30 +1884,45 @@ bind_rows(
          !grepl("DIF",param))%>%
   mutate(param = recode(param, CON1 = "Consistency", OCC1 = "Occasion specificity", REL1 = "Reliability"))%>%mutate(phase = "Phase 2")
 )%>%
-  select(phase,param, task,est)%>%
-  pivot_wider(names_from = phase, values_from = est)%>%
-  mutate(dif = `Phase 1` - `Phase 2`)%>%
-  ggplot(aes(x = task, y = dif, col = task))+
-  geom_hline(yintercept = 0, lty = 2, alpha = .75)+
-  geom_segment(aes(x = task, y = 0, xend = task, yend = dif), alpha = .5, col = "black")+
-  facet_grid(~param, scales = "free_x")+
-  geom_point(size = 2)+
-  ylim(-0.25, 0.25)+
+  mutate(task = recode(task,
+    gaze_following = "Gaze following",
+    causality = "Causal inference",
+    inference = "Inference by exclusion",
+    delay_of_gratification = "Delay of gratification",
+    quantity = "Quantity discrimination",
+    switching = "Strategy switching"
+  ))%>%
+  mutate(part = "Part 1")%>%
+  bind_rows(lsti2p2$parameters$unstandardized%>%mutate(task = "inference", phase = "Phase 2")%>%
+  filter(paramHeader== "New.Additional.Parameters",
+         !grepl("DIF",param))%>%
+  mutate(part = ifelse(grepl("1", param), "Part 1", "Part 2"),
+         param = recode(param, CON1 = "Consistency", OCC1 = "Occasion specificity", REL1 = "Reliability",CON2 = "Consistency", OCC2 = "Occasion specificity", REL2 = "Reliability"),
+         task = "Inference by exclusion"))%>%
+  mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification")))
+
+#plstdif <- 
+ggplot(lstdif, aes(x = param, y = est, col = phase, pch = part))+
+  geom_pointrange(aes(ymin = lower_2.5ci, ymax = upper_2.5ci), position = position_dodge(width = .9))+
+  facet_grid(~task)+
   theme_few()+
-  labs(x = "", y = "Difference in model \nestiamte btw. phases")+
-  scale_x_discrete(limits=rev)+
-  theme(axis.text.x = element_blank(), legend.position = "right")+
-  scale_color_colorblind(name = "Task")
+  labs(x = "", y = "Model estiamte")+
+  scale_x_discrete(guide = guide_axis(n.dodge = 2))+
+  theme(legend.position = "right")+
+  scale_color_discrete(name = "Task")+
+  scale_shape(guide = F)
   
+
+
 ```
 
-```{r lstdifplot, fig.height = 2, fig.cap = "Difference between model LSTM estimates for phase 1 and phase 2.", out.width="100%"}
+```{r lstdifplot, fig.height = 2, fig.cap = "LSTM estimates for Phase 1 and Phase 2. In Phase 2, inference by exclusion has two estimates, one for each part (see text for details).", out.width="100%"}
 plstdif
 ```
 
-Inference by exclusion ...
+For inference by 
 
-Raw performance in the quantity task did not show a markedly different pattern in the two phases (Figure \@ref(fig:perfplot)). This was once again also reflected in the latent state means estimated by the LSM (Figure \@ref(fig:lsdifplot)) and suggests stable group-level performance across the two phases. The three LSTM estimates for consistency, occasion specificity and reliability were also very similar for the two phases, which indicates that individual differences were measured and structured in a similar way in the two phases (Figure \@ref(fig:lstdifplot)). In the LST-AR model we saw the now familiar pattern of lower consistency and higher predictability. The source of this difference is likely ...
+Raw performance in the quantity task did not show a markedly different pattern in the two phases (Figure \@ref(fig:perfplot)). This was once again also reflected in the latent state means estimated by the LSM and suggests stable group-level performance across the two phases. The three LSTM estimates for consistency, occasion specificity and reliability were also very similar for the two phases, which indicates that individual differences were measured and structured in a similar way in the two phases (Figure \@ref(fig:lstdifplot)). In the LST-AR model we saw the now familiar pattern of lower consistency and higher predictability. The source of this difference is likely ...
 
 ```{r}
 plstardif <- bind_rows(
