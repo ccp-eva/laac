@@ -29,7 +29,7 @@ tp2 <- c(16,23)
 
 data_trial%>%
   filter(time_point %in% tp1 | time_point %in% tp2)%>%
-  select(-c(20:37), -rank, -test_tp, -heat, -sick_severity, -location, -keeper, -test_day, -observer, -trial_time_point, -condition, -pick, -code)%>%
+  select(-c(20:37), -rank, -test_tp, -heat, -sick_severity, -location, -keeper, -test_day, -observer, -trial_time_point,  -pick, -code)%>%
   mutate(pick_reli = NA,
          code_reli = NA)%>%
   write_xlsx("../data/reli_2nd_coder.xlsx")
