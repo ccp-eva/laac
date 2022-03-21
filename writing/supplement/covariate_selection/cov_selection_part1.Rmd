@@ -47,8 +47,8 @@ options(scipen = 999)
 
 ```{r}
 # load data
-apes1 <- read_csv("../data/laac_data_trial.csv")
-apes2 <- read_csv("../data/laac_data_task.csv")
+apes1 <- read_csv("../../../data/laac_data_trial.csv")
+apes2 <- read_csv("../../../data/laac_data_task.csv")
 
 fn0 <- function(x, ...) {
   # helper function
@@ -142,6 +142,11 @@ t_gaze <- t_gaze %>%
   group_by(subject) %>%
   filter(!duplicated(tp_mod)) %>%   
   ungroup() 
+
+t_cau <- filter(t_cau, time_point < 15)
+t_inf <- filter(t_inf, time_point < 15)
+t_quant <- filter(t_quant, time_point < 15)
+t_gaze <- filter(t_gaze, time_point < 15)
 ```
 
 # Covariate selection

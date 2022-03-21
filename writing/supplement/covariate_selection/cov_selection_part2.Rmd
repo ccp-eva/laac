@@ -46,19 +46,26 @@ options(scipen = 999)
 ## Data
 
 ```{r}
-# load data
 apes1 <- read_csv("../../../data/laac_data_trial.csv")
-apes2 <- read_csv("../../../data/laac_data_task.csv")
+# apes2 <- read_csv("../../../data/laac_data_task.csv")
+```
 
+```{r}
+# remove variables not relevant to PPI analysis
+apes1 <- apes1 %>% 
+  select(-c(time_waited, birth_date, comment, experimenter, pick, condition, heat))
+```
+
+```{r}
 fn0 <- function(x, ...) {
   # helper function
-  # sum over correct choice variable (code)
+  # sum over `correct response` variable (code)
   to_return = tibble(cogn = sum(x$code))
   return(to_return)
 }
 
 code_sum <- apes1 %>%
-  # contains summed code variable [for each task, time point, session and subject]
+  # contains summed code variable for [task, time point, session, subject]
   group_by(time_point, session, subject, task) %>%
   group_modify(fn0)
 
@@ -67,9 +74,9 @@ apes1_tmp <- apes1 %>%
   select(-c(date, trial_session, trial_time_point, code)) %>%
   unique(by = c("time_point", "session", "subject"))
 
-apes1_new <-
+apes1_new <- 
   as_tibble(merge(apes1_tmp, code_sum, by = c("time_point", "session", "subject", "task"))) %>%
-  mutate(across(c(subject, group, heat, test_day, le_present, dist_present, sex, rearing, observer), as_factor)) %>%
+  mutate(across(c(subject, group, test_day, le_present, dist_present, sex, rearing, observer), as_factor)) %>%
   mutate(observer = fct_relevel(observer, "no")) %>% 
   jtools::center(.,vars = c("sick_severity",
                             "le_mean",
@@ -78,6 +85,7 @@ apes1_new <-
                             "time_in_leipzig")) %>%
   group_by(group, time_point) %>%
   mutate(rank_gmc = rank - mean(rank, na.rm = TRUE)) %>%
+  mutate(rearing = fct_recode(rearing, "hand" = "unknown")) %>%  # recode rearing categories: hand -> unknown
   ungroup() %>%
   arrange(time_point)
 
@@ -103,25 +111,7 @@ apes1_new <- apes1_new %>%
     )
   ) %>%
   ungroup()
-
-apes1_new <- apes1_new %>%
-  # create coding for heat variable
-  mutate(heat_mod = case_when(
-    sex == "f" & heat == "yes" ~ "_f_fheat",
-    sex == "m" & heat == "yes" ~ "_m_fheat",
-    sex == "f" & heat == "no" ~ "_f_noheat",
-    sex == "m" & heat == "no" ~ "_m_noheat"),
-    heat_mod = as_factor(heat_mod)
-  ) %>% 
-  mutate(heat_mod = fct_relevel(heat_mod, "_f_noheat"))
-
-apes1_new <- apes1_new %>% 
-  select(-heat, -heat_mod)
-
-apes1_new <- apes1_new %>% 
-  # recode rearing categories: hand -> unknown
-  mutate(rearing = fct_recode(rearing, "hand" = "unknown"))
-
+  
 apes1_new <-  apes1_new %>% 
   mutate(observer_mod = case_when(
     observer == "yes" ~ "yes",
@@ -154,31 +144,24 @@ t_gaze <- t_gaze %>%
 ```
 
 ```{r}
+# filter data to only include time points from phase 1
+t_cau_p1 <- filter(t_cau, time_point < 15)
+t_inf_p1 <- filter(t_inf, time_point < 15)
+t_quant_p1 <- filter(t_quant, time_point < 15)
+t_gaze_p1 <- filter(t_gaze, time_point < 15)
+
 # filter data to only include time points from phase 2
-t_cau <- filter(t_cau, time_point >= 15)
-t_inf <- filter(t_inf, time_point >= 15)
-t_quant <- filter(t_quant, time_point >= 15)
-t_gaze <- filter(t_gaze, time_point >= 15)
-t_grat <- filter(t_grat, time_point >= 15)
+t_cau_p2 <- filter(t_cau, time_point >= 15)
+t_inf_p2 <- filter(t_inf, time_point >= 15)
+t_quant_p2 <- filter(t_quant, time_point >= 15)
+t_gaze_p2 <- filter(t_gaze, time_point >= 15)
+t_grat_p2 <- filter(t_grat, time_point >= 15)
 ```
 
 # Covariate selection
 
 ```{r}
-# covariate needed for projection prediction
-# placed here for easy editing of formula
-all_fixed_effects <- c("sick_severity",       
-                       "test_day", "test_tp", 
-                       "rel_rank",
-                       "observer_mod", 
-                       "age", "time_in_leipzig", 
-                       "sex", "group",
-                       "rearing", 
-                       "le_mean", 
-                       "dist_mean",
-                       "time_outdoors", 
-                       "sociality")
-
+# formula for reference model
 fm <- formula(cogn ~ sick_severity +                    
                 test_day + test_tp +                
                 rel_rank + # rank_gmc +
@@ -189,7 +172,7 @@ fm <- formula(cogn ~ sick_severity +
                 le_mean + # le_max + # le_present +         
                 dist_mean + # dist_max + # + dist_present +
                 time_outdoors +
-                sociality + # sociality_total
+                sociality + # sociality_total +
                 # heat_mod + # heat +
                 (1|subject)                         
               )
@@ -197,54 +180,74 @@ fm <- formula(cogn ~ sick_severity +
 fm_gaze <- update(fm, . ~ . +day2 -test_day)
 ```
 
-## Debugging Area
-
-```{r}
-#info <- debug_contr_error2(fm, t_cau)
-#info
-```
-
 ## Reference Model: 2-level Multilevel Model (random intercepts only)
 
 ```{r, warning = F}
-m_cau_2l <- brm(fm, data = t_cau, 
-                warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                seed = 2021,
-                save_pars = save_pars(all = TRUE)
-                )
-m_inf_2l <- brm(fm, data = t_inf, 
-                warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                seed = 2021,
-                save_pars = save_pars(all = TRUE)
-                )
-m_quant_2l <- brm(fm, data = t_quant, 
-                  warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                  seed = 2021,
-                  save_pars = save_pars(all = TRUE)
-                  )
-m_gaze_2l <- brm(fm_gaze, data = t_gaze, 
-                 warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                 seed = 2021,
-                 save_pars = save_pars(all = TRUE)
-                 )
-m_grat_2l <- brm(fm, data = t_grat,
-                 warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                 seed = 2021,
-                 save_pars = save_pars(all = TRUE)
-                 )
-```
-
-```{r, eval = F}
-library(loo)
-lapply(list(m_cau_2l, m_inf_2l, m_quant_2l, m_gaze_2l, m_grat_2l), loo)
+m_cau_2l_p1 <- brm(fm, data = t_cau_p1, 
+                   warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                   seed = 2021,
+                   save_pars = save_pars(all = TRUE)
+                   )
+m_inf_2l_p1 <- brm(fm, data = t_inf_p1, 
+                   warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                   seed = 2021,
+                   save_pars = save_pars(all = TRUE)
+                   )
+m_quant_2l_p1 <- brm(fm, data = t_quant_p1, 
+                     warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                     seed = 2021,
+                     save_pars = save_pars(all = TRUE)
+                     )
+m_gaze_2l_p1 <- brm(fm_gaze, data = t_gaze_p1, 
+                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                    seed = 2021,
+                    save_pars = save_pars(all = TRUE)
+                    )
 ```
 
 ```{r, warning = F}
-summary(m_cau_2l)
-summary(m_inf_2l)
-summary(m_quant_2l)
-summary(m_gaze_2l)
-summary(m_grat_2l)
+m_cau_2l_p2 <- brm(fm, data = t_cau_p2, 
+                   warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                   seed = 2022,
+                   save_pars = save_pars(all = TRUE)
+                   )
+m_inf_2l_p2 <- brm(fm, data = t_inf_p2, 
+                   warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                   seed = 2022,
+                   save_pars = save_pars(all = TRUE)
+                   )
+m_quant_2l_p2 <- brm(fm, data = t_quant_p2, 
+                     warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                     seed = 2022,
+                     save_pars = save_pars(all = TRUE)
+                     )
+m_gaze_2l_p2 <- brm(fm_gaze, data = t_gaze_p2, 
+                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                    seed = 2022,
+                    save_pars = save_pars(all = TRUE)
+                    )
+m_grat_2l_p2 <- brm(fm, data = t_grat_p2,
+                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                    seed = 2022,
+                    save_pars = save_pars(all = TRUE)
+                    )
+```
+
+```{r, eval = F}
+summary(m_cau_2l_p1)
+summary(m_inf_2l_p1)
+summary(m_quant_2l_p1)
+summary(m_gaze_2l_p1)
+
+summary(m_cau_2l_p2)
+summary(m_inf_2l_p2)
+summary(m_quant_2l_p2)
+summary(m_gaze_2l_p2)
+summary(m_grat_2l_p2)
+
+library(loo)
+lapply(list(m_cau_2l_p1, m_inf_2l_p1, m_quant_2l_p1, m_gaze_2l_p1), loo)
+lapply(list(m_cau_2l_p2, m_inf_2l_p2, m_quant_2l_p2, m_gaze_2l_p2, m_grat_2l_p2), loo)
 ```
 
 ## Predictive Projection
@@ -259,72 +262,23 @@ s_terms_gaze <- c("1", c(tmp, "day2"),
 ```
 
 ```{r}
-refM_cau <- get_refmodel(m_cau_2l)
-refM_inf <- get_refmodel(m_inf_2l)
-refM_quant <- get_refmodel(m_quant_2l)
-refM_gaze <- get_refmodel(m_gaze_2l)
-refM_grat <- get_refmodel(m_grat_2l)
+# define reference models
+refM_cau_p1 <- get_refmodel(m_cau_2l_p1)
+refM_inf_p1 <- get_refmodel(m_inf_2l_p1)
+refM_quant_p1 <- get_refmodel(m_quant_2l_p1)
+refM_gaze_p1 <- get_refmodel(m_gaze_2l_p1)
+
+refM_cau_p2 <- get_refmodel(m_cau_2l_p2)
+refM_inf_p2 <- get_refmodel(m_inf_2l_p2)
+refM_quant_p2 <- get_refmodel(m_quant_2l_p2)
+refM_gaze_p2 <- get_refmodel(m_gaze_2l_p2)
+refM_grat_p2 <- get_refmodel(m_grat_2l_p2)
 ```
-
-```{r, eval = F}
-vs_cau <- varsel(refM_cau, search_terms = s_terms)
-summary(vs_cau); plot(vs_cau, stats = c('elpd', 'rmse'))
-
-randint_ind_vscau <- length(solution_terms(vs_cau))
-relevant_cov_vscau <- c(1, 2, 3, 4, 5, randint_ind_vscau)
-
-# proj_cau <- project(vs_cau, solution_terms = relevant_cov_vscau)
-# mcmc_areas(as.matrix(proj_cau), pars = solution_terms(vs_cau)[relevant_cov_vscau])
-```
-
-```{r, eval = F}
-vs_inf <- varsel(refM_inf, search_terms = s_terms)
-summary(vs_inf); plot(vs_inf, stats = c('elpd', 'rmse'))
-
-randint_ind_vsinf <- length(solution_terms(vs_inf))
-relevant_cov_vsinf <- c(1, 2, 3, 4, 5, randint_ind_vsinf)
-
-#proj_inf <- project(vs_inf, solution_terms = relevant_cov_vsinf, ndraws = 10)
-#mcmc_areas(as.matrix(proj_inf), pars = solution_terms(vs_inf)[relevant_cov_vsinf])
-```
-
-```{r, eval = F}
-vs_quant <- varsel(refM_quant, search_terms = s_terms)
-summary(vs_quant); plot(vs_quant, stats = c('elpd', 'rmse'))
-
-randint_ind_vsquant <- length(solution_terms(vs_quant))
-relevant_cov_vsquant <- c(1, 2, 3, 4, 5, randint_ind_vsquant)
-
-# proj_quant <- project(vs_quant, solution_terms = relevant_cov_vsquant)
-# mcmc_areas(as.matrix(proj_quant), pars = solution_terms(vs_quant)[relevant_cov_vsquant])
-```
-
-```{r, eval = F}
-vs_gaze <- varsel(refM_gaze, search_terms = s_terms_gaze)
-summary(vs_gaze); plot(vs_gaze, stats = c('elpd', 'rmse'))
-
-randint_ind_vsgaze <- length(solution_terms(vs_gaze))
-relevant_cov_vsgaze <- c(1, 2, 3, 4, 5, randint_ind_vsgaze)
-
-# proj_gaze <- project(vs_gaze, solution_terms = relevant_cov_vsgaze)
-# mcmc_areas(as.matrix(proj_gaze), pars = solution_terms(vs_gaze)[relevant_cov_vsgaze])
-```
-
-```{r, eval = F}
-vs_grat <- varsel(refM_grat, search_terms = s_terms)
-summary(vs_grat); plot(vs_grat, stats = c('elpd', 'rmse'))
-
-randint_ind_vsgrat <- length(solution_terms(vs_grat))
-relevant_cov_vsgrat <- c(1, 2, 3, 4, 5, randint_ind_vsgrat)
-```
-
-
-
 
 ```{r, warning = F}
-cvs_cau <- cv_varsel(refM_cau, 
+cvs_cau <- cv_varsel(refM_cau_p1, 
                      search_terms = s_terms, cv_method = "LOO", method = "forward", 
-                     seed = 2020)
+                     seed = 2021)
 summary(cvs_cau); plot(cvs_cau, stats = c('elpd', 'rmse'))
 # proj_cau_cv <- project(cvs_cau, solution_terms = c(1, 2, 3, 14))
 # mcmc_areas(as.matrix(proj_cau_cv), pars = solution_terms(cvs_cau)[c(1, 2, 3, 14)])
@@ -332,9 +286,9 @@ summary(cvs_cau); plot(cvs_cau, stats = c('elpd', 'rmse'))
 **relevant** covariates: (1 | subject), group
 
 ```{r, warning = F}
-cvs_inf <- cv_varsel(refM_inf, 
+cvs_inf <- cv_varsel(refM_inf_p1, 
                      search_terms = s_terms, cv_method = "LOO", method = "forward", 
-                     seed = 2020)
+                     seed = 2021)
 summary(cvs_inf); plot(cvs_inf, stats = c('elpd', 'rmse'))
 # proj_inf_cv <- project(cvs_inf, solution_terms = c(1, 2, 14))
 # mcmc_areas(as.matrix(proj_inf_cv), pars = solution_terms(cvs_inf)[c(1, 2, 14)])
@@ -342,14 +296,24 @@ summary(cvs_inf); plot(cvs_inf, stats = c('elpd', 'rmse'))
 **relevant** covariates: (1 | subject), time_in_leipzig, group, age
 
 ```{r, warning = F}
-cvs_quant <- cv_varsel(refM_quant, 
+cvs_quant <- cv_varsel(refM_quant_p1, 
                        search_terms = s_terms, cv_method = "LOO", method = "forward", 
-                       seed = 2020)
+                       seed = 2021)
 summary(cvs_quant); plot(cvs_quant, stats = c('elpd', 'rmse'))
 # proj_quant_cv <- project(cvs_quant, solution_terms = c(1, 2, 3, 15))
 # mcmc_areas(as.matrix(proj_quant_cv), pars = solution_terms(cvs_quant)[c(1, 2, 3, 15)])
 ```
 **relevant** covariates: (1 | subject), rel_rank, rearing, time_in_leipzig, group, time_outdoors
+
+```{r, warning = F}
+cvs_gaze <- cv_varsel(refM_gaze_p1, 
+                      search_terms = s_terms_gaze, cv_method = "LOO", method = "forward", 
+                      seed = 2021)
+summary(cvs_gaze); plot(cvs_gaze, stats = c('elpd', 'rmse'))
+# proj_gaze_cv <- project(cvs_gaze, solution_terms = c(1, 2, 3, 4, 5, 6, 7, 15))
+# mcmc_areas(as.matrix(proj_gaze_cv), pars = solution_terms(cvs_gaze)[c(1, 2, 3, 4, 5, 6, 7, 15)])
+```
+**relevant** covariates: group, sex (random intercept removed due to convergence issues)
 
 
 
