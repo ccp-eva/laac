@@ -921,14 +921,17 @@ In Mplus, every 10th iteration after burn-in is used to compute the PPP and the 
 
 ## Projection predictive inference {#projection-predictive-inference}
 
+**ToDo**  
+- add projpred version used
+- reference model used for gaze task has changed
+- add a short discussion around pareto k estimates?
+
 Our goal is to select the predictor variables that are relevant for predicting performance in the different cognitive tasks over time. The selection of relevant predictor variables constitutes a variable selection problem, for which a range of different methods are available (e.g., shrinkage priors). We chose to use projection predictive inference because it is a state-of-the-art variable selection procedure that provides an excellent trade-off between model complexity and accuracy [@piironen2017comparison], especially when the goal is to identify a minimal subset of predictors that yield a good predictive model [@pavone2020using].
 
-An overview of different projection techniques and an introduction to the projection prediction approach for generalized linear models can be found in @piironen2018projective. In this work, we use the extension to the generalized linear multilevel model case provided by @catalina2020projection.
-
+An overview of different projection techniques and an introduction to the projection prediction approach for generalized linear models can be found in @piironen2018projective. In this work, we use the extension to the generalized linear multilevel model case provided by @catalina2020projection.  
 The projection prediction approach can be viewed as a two-step process: The first step consists of building the best predictive model possible, called the reference model. In the context of this work, the reference model is a Bayesian multilevel regression model (repeated measurements nested in apes), including all available predictors.
 
-In the second step, the goal is to replace the posterior distribution of the reference model with a simpler distribution. This is achieved via a forward step-wise addition of predictors that decrease the Kullback-Leibler (KL) divergence from the reference model to the projected model. Let the reference model and the projected model have parameters $\theta'$ and $\theta$ respectively. Then by the definition of the KL divergence, the following optimization problem is obtained
-
+In the second step, the goal is to replace the posterior distribution of the reference model with a simpler distribution. This is achieved via a forward step-wise addition of predictors that decrease the Kullback-Leibler (KL) divergence from the reference model to the projected model. Let the reference model and the projected model have parameters $\theta'$ and $\theta$ respectively. Then by the definition of the KL divergence, the following optimization problem is obtained:
 ```{=tex}
 \begin{equation}
 \begin{aligned}
@@ -937,7 +940,7 @@ In the second step, the goal is to replace the posterior distribution of the ref
 \end{aligned}
 \end{equation}
 ```
-The result is a list containing the best model for each number of predictors from which the final model is selected by inspecting the mean log-predictive density (`elpd`) and root-mean-squared error (`rmse`). The projected model with the smallest number of predictors is chosen, which shows similar predictive performance as the reference model.
+The result of the projection is a list containing the best model for each number of predictors from which the final model is selected by inspecting the mean log-predictive density (`elpd`) and root-mean-squared error (`rmse`). The projected model with the smallest number of predictors is chosen, which shows similar predictive performance as the reference model.
 
 We built five different (Bayesian multilevel regression) reference models and ran them through the above-described projection prediction approach in phase 1 and phase 2 for the five tasks: Gaze following, causal inference, inference by exclusion, quantity discrimination, and delay of gratification. The dependent variable for each task was the cognitive performance of the apes, that is, the number of correctly solved trials per time point and task. The model for the delay of gratification task was only estimated once (Phase 2).
 
@@ -2372,7 +2375,7 @@ The output of the projection predictive inference models is a ranking of the dif
 ### Phase 1
 
 ```{r}
-# ncores <- parallel::detectCores()
+ncores <- parallel::detectCores()
 ```
 
 ```{r, include = FALSE}
@@ -2496,91 +2499,109 @@ t_gaze_p2 <- filter(t_gaze, time_point >= 15)
 t_grat_p2 <- filter(t_grat, time_point >= 15)
 ```
 
-```{r, include = F}
-# # covariate needed for projection prediction
-# # placed here for easy editing of formula
-# all_fixed_effects <- c("sick_severity",       
-#                        "test_day", "test_tp", 
-#                        "rel_rank",
-#                        "observer", 
-#                        "age", "time_in_leipzig", 
-#                        "sex", "group",
-#                        "rearing", 
-#                        "le_mean", 
-#                        "dist_mean",
-#                        "time_outdoors", 
-#                        "sociality")
-# 
-# fm <- formula(cogn ~ sick_severity +                    
-#                 test_day + test_tp +                
-#                 rel_rank + # rank_gmc +
-#                 observer + 
-#                 age + time_in_leipzig +
-#                 sex + group +
-#                 rearing +
-#                 le_mean + # le_max + # le_present +         
-#                 dist_mean + # dist_max + # + dist_present +
-#                 time_outdoors +
-#                 sociality + # sociality_total
-#                 # heat_mod + # heat +
-#                 (1|subject)                         
-#               )
-# 
-# fm_gaze <- update(fm, . ~ . +day2)
+```{r}
+# formula for reference model (random intercept)
+fm <- formula(cogn ~ sick_severity +                    
+                test_tp + test_day + time_point +               
+                rel_rank + # rank_gmc +
+                observer_mod + 
+                age + time_in_leipzig +
+                sex + group +
+                rearing +
+                # le_present + dist_present +
+                le_mean + dist_mean + 
+                # le_max + dist_max +     
+                time_outdoors +
+                sociality + # sociality_total +
+                # heat_mod + heat +
+                (1|subject)
+              )
+# formula for gaze reference model (random intercept + slope)
+fm_gaze <- formula(cogn ~ sick_severity +                    
+                test_tp + test_day + time_point +               
+                rel_rank + # rank_gmc +
+                observer_mod + 
+                age + time_in_leipzig +
+                sex + group +
+                rearing +
+                # le_present + dist_present +
+                le_mean + dist_mean + 
+                # le_max + dist_max +     
+                time_outdoors +
+                sociality + # sociality_total +
+                # heat_mod + heat +
+                (1 + time_point|subject)                         
+              )
+fm_gaze <- update(fm, . ~ . +day2)
 ```
 
 ```{r}
-# m_cau_2l <- brm(fm, data = t_cau, 
-#                 warmup = 2e3, iter = 4e3, cores = ncores, chains = 4, 
-#                 seed = 2020,
-#                 save_pars = save_pars(all = TRUE)
-#                 )
-# m_inf_2l <- brm(fm, data = t_inf, 
-#                 warmup = 2e3, iter = 4e3, cores = ncores, chains = 4, 
-#                 seed = 2020,
-#                 save_pars = save_pars(all = TRUE)
-#                 )
-# m_quant_2l <- brm(fm, data = t_quant, 
-#                   warmup = 2e3, iter = 4e3, cores = ncores, chains = 4, 
-#                   seed = 2020,
-#                   save_pars = save_pars(all = TRUE)
-#                   )
-# m_gaze_2l <- brm(fm_gaze, data = t_gaze, 
-#                  warmup = 2e3, iter = 4e3, cores = ncores, chains = 4, 
-#                  seed = 2020,
-#                  save_pars = save_pars(all = TRUE)
-#                  )
-```
-
-```{r, eval = F}
-#lapply(list(m_cau_2l, m_inf_2l, m_quant_2l, m_gaze_2l), loo)
+m_cau_2l_p1 <- brm(fm, data = t_cau_p1, 
+                   warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                   seed = 2021)
+m_inf_2l_p1 <- brm(fm, data = t_inf_p1, 
+                   warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                   seed = 2021)
+m_quant_2l_p1 <- brm(fm, data = t_quant_p1, 
+                     warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                     seed = 2021)
+m_gaze_2l_p1 <- brm(fm_gaze, data = t_gaze_p1, 
+                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                    seed = 2021)
 ```
 
 ```{r}
+m_cau_2l_p2 <- brm(fm, data = t_cau_p2, 
+                   warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                   seed = 2022)
+m_inf_2l_p2 <- brm(fm, data = t_inf_p2, 
+                   warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                   seed = 2022)
+m_quant_2l_p2 <- brm(fm, data = t_quant_p2, 
+                     warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                     seed = 2022)
+m_gaze_2l_p2 <- brm(fm_gaze, data = t_gaze_p2, 
+                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                    seed = 2022)
+m_grat_2l_p2 <- brm(fm, data = t_grat_p2,
+                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+                    seed = 2022)
+```
+
+```{r}
+all_fixed_effects <- c("sick_severity",
+                       "test_tp", "test_day", "time_point",
+                       "rel_rank",
+                       "observer_mod",
+                       "age", "time_in_leipzig",
+                       "sex", "group",
+                       "rearing",
+                       "le_mean", "dist_mean",
+                       "time_outdoors",
+                       "sociality")
 # delay random intercept to last place so that it doesn't soak up all the variance
-# s_terms <- c("1", all_fixed_effects,
-#              paste0(paste(all_fixed_effects, collapse = " + "), " + (1 | subject)"))
-# s_terms_gaze <- c("1", c(all_fixed_effects, "day2"),
-#                   paste0(paste(c(all_fixed_effects, "day2"), collapse = " + "), " + (1 | subject)"))
-```
-
-```{r}
-# refM_cau <- get_refmodel(m_cau_2l)
-# refM_inf <- get_refmodel(m_inf_2l)
-# refM_quant <- get_refmodel(m_quant_2l)
-# refM_gaze <- get_refmodel(m_gaze_2l)
+s_terms <- c("1", all_fixed_effects, 
+             paste0(paste(all_fixed_effects, collapse = " + "), 
+                    " + (1 | subject)")) 
+# gaze task gets its own search terms vector due to `day2` covariate and random slope
+s_terms_gaze <- c("1", c(all_fixed_effects, "day2"), 
+                  paste0(paste(all_fixed_effects, collapse = " + "), 
+                    " + (1 | subject)"),
+                  paste0(paste(all_fixed_effects, collapse = " + "), 
+                    " + (time_point | subject)"))
 ```
 
 #### Causal inference
 
 ```{r, warning = FALSE}
-# cvs_cau <- cv_varsel(refM_cau, 
-#                      search_terms = s_terms, cv_method = "LOO", method = "forward", 
-#                      seed = 2020)
-# 
-# saveRDS(cvs_cau,"./saves/cvs_cau.rds")
-# 
-# cvs_cau <- readRDS("./saves/cvs_cau.rds")
+cvs_cau_p1 <- cv_varsel(m_cau_2l_p1, 
+                        search_terms = s_terms, 
+                        cv_method = "LOO", method = "forward",
+                        seed = 2020)
+
+saveRDS(cvs_cau_p1,"./saves/cvs_cau.rds")
+
+cvs_cau <- readRDS("./saves/cvs_cau.rds")
 ```
 
 ```{r}
@@ -2705,13 +2726,14 @@ Figure \@ref(fig:cselp) visualizes the results. Out of the 13 predictor variable
 #### Inference by exclusion
 
 ```{r, warning = F}
-# cvs_inf <- cv_varsel(refM_inf, 
-#                      search_terms = s_terms, cv_method = "LOO", method = "forward", 
-#                      seed = 2020)
-# 
-# saveRDS(cvs_inf,"./saves/cvs_inf.rds")
-# 
-# cvs_inf <- readRDS("./saves/cvs_inf.rds")
+cvs_inf_p1 <- cv_varsel(m_inf_2l_p1, 
+                        search_terms = s_terms, 
+                        cv_method = "LOO", method = "forward",
+                        seed = 2020)
+
+saveRDS(cvs_inf_p1,"./saves/cvs_inf.rds")
+
+cvs_inf <- readRDS("./saves/cvs_inf.rds")
 ```
 
 ```{r}
@@ -2835,13 +2857,14 @@ Figure \@ref(fig:iselp)B shows the projected posterior distributions for the pre
 #### Gaze Following
 
 ```{r, warning = F}
-# cvs_gaze <- cv_varsel(refM_gaze, 
-#                       search_terms = s_terms_gaze, cv_method = "LOO", method = "forward", 
-#                       seed = 2020)
-# 
-# saveRDS(cvs_gaze,"./saves/cvs_gaze.rds")
-# 
-# cvs_gaze <- readRDS("./saves/cvs_gaze.rds")
+cvs_gaze_p1 <- cv_varsel(m_gaze_2l_p1, 
+                         search_terms = s_terms_gaze, 
+                         cv_method = "LOO", method = "forward", 
+                         seed = 2020)
+
+saveRDS(cvs_gaze_p1,"./saves/cvs_gaze.rds")
+
+cvs_gaze <- readRDS("./saves/cvs_gaze.rds")
 ```
 
 ```{r}
@@ -2970,13 +2993,14 @@ Groups differed in that a-chimpanzees were most likely to follow gaze, followed 
 #### Quantity
 
 ```{r, warning = F}
-# cvs_quant <- cv_varsel(refM_quant, 
-#                        search_terms = s_terms, cv_method = "LOO", method = "forward", 
-#                        seed = 2020)
-# 
-# saveRDS(cvs_quant,"./saves/cvs_quant.rds")
-# 
-# cvs_quant <- readRDS("./saves/cvs_quant.rds")
+cvs_quant_p1 <- cv_varsel(m_quant_2l_p1, 
+                          search_terms = s_terms, 
+                          cv_method = "LOO", method = "forward", 
+                          seed = 2020)
+
+saveRDS(cvs_quant_p1,"./saves/cvs_quant.rds")
+
+cvs_quant <- readRDS("./saves/cvs_quant.rds")
 ```
 
 ```{r}
@@ -3204,6 +3228,71 @@ pro
 ### Phase 2
 
 ### Comparison between phases
+
+#### Causal inference
+
+```{r}
+cvs_cau_p2 <- cv_varsel(m_cau_2l_p2, 
+                        search_terms = s_terms, 
+                        cv_method = "LOO", method = "forward", 
+                        seed = 2022)
+
+saveRDS(cvs_cau_p2,"./saves/cvs_cau_p2.rds")
+
+cvs_cau_p2 <- readRDS("./saves/cvs_cau_p2.rds")  
+```
+
+#### Inference by exclusion
+
+```{r}
+cvs_inf_p2 <- cv_varsel(m_inf_2l_p2, 
+                        search_terms = s_terms, 
+                        cv_method = "LOO", method = "forward", 
+                        seed = 2022)
+
+saveRDS(cvs_inf_p2,"./saves/cvs_inf_p2.rds")
+
+cvs_inf_p2 <- readRDS("./saves/cvs_inf_p2.rds")  
+```
+
+#### Gaze following
+
+```{r}
+cvs_gaze_p2 <- cv_varsel(m_gaze_2l_p2, 
+                         search_terms = s_terms_gaze, 
+                         cv_method = "LOO", method = "forward", 
+                         seed = 2022)
+
+saveRDS(cvs_gaze_p2,"./saves/cvs_gaze_p2.rds")
+
+cvs_gaze_p2 <- readRDS("./saves/cvs_gaze_p2.rds")  
+```
+
+#### Quantity
+
+```{r}
+cvs_quant_p2 <- cv_varsel(m_quant_2l_p2, 
+                       search_terms = s_terms, 
+                       cv_method = "LOO", method = "forward", 
+                       seed = 2022)
+
+saveRDS(cvs_quant_p2,"./saves/cvs_quant_p2.rds")
+
+cvs_quant_p2 <- readRDS("./saves/cvs_quant_p2.rds")              
+```
+
+#### Delay of gratification
+
+```{r}
+cvs_grat_p2 <- cv_varsel(m_grat_2l_p2, 
+                         search_terms = s_terms, 
+                         cv_method = "LOO", method = "forward", 
+                         seed = 2022)
+
+saveRDS(cvs_grat_p2,"./saves/cvs_grat_p2.rds")
+
+cvs_grat_p2 <- readRDS("./saves/cvs_grat_p2.rds")  
+```
 
 # Summary
 

@@ -185,9 +185,24 @@ fm <- formula(cogn ~ sick_severity +
                 time_outdoors +
                 sociality + # sociality_total +
                 # heat_mod + heat +
+                (1|subject)
+              )
+# formula for gaze reference model
+fm_gaze <- formula(cogn ~ sick_severity +                    
+                test_tp + test_day + time_point +               
+                rel_rank + # rank_gmc +
+                observer_mod + 
+                age + time_in_leipzig +
+                sex + group +
+                rearing +
+                # le_present + dist_present +
+                le_mean + dist_mean + 
+                # le_max + dist_max +     
+                time_outdoors +
+                sociality + # sociality_total +
+                # heat_mod + heat +
                 (1 + time_point|subject)                         
               )
-
 fm_gaze <- update(fm, . ~ . +day2)
 ```
 
@@ -235,7 +250,7 @@ m_grat_2l_p2 <- brm(fm, data = t_grat_p2,
                     )
 ```
 
-```{r, eval = T}
+```{r, eval = F}
 summary(m_cau_2l_p1)
 summary(m_inf_2l_p1)
 summary(m_quant_2l_p1)
@@ -267,9 +282,7 @@ all_fixed_effects <- c("sick_severity",
 # delay random intercept to last place so that it doesn't soak up all the variance
 s_terms <- c("1", all_fixed_effects, 
              paste0(paste(all_fixed_effects, collapse = " + "), 
-                    " + (1 | subject)"),
-             paste0(paste(all_fixed_effects, collapse = " + "), 
-                    " + (time_point | subject)")) 
+                    " + (1 | subject)")) 
 # gaze task gets its own search terms vector due to `day2` covariate
 s_terms_gaze <- c("1", c(all_fixed_effects, "day2"), 
                   paste0(paste(all_fixed_effects, collapse = " + "), 
