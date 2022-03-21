@@ -2503,36 +2503,28 @@ t_grat_p2 <- filter(t_grat, time_point >= 15)
 # formula for reference model (random intercept)
 fm <- formula(cogn ~ sick_severity +                    
                 test_tp + test_day + time_point +               
-                rel_rank + # rank_gmc +
+                rel_rank +
                 observer_mod + 
                 age + time_in_leipzig +
                 sex + group +
                 rearing +
-                # le_present + dist_present +
-                le_mean + dist_mean + 
-                # le_max + dist_max +     
+                le_mean + dist_mean +     
                 time_outdoors +
-                sociality + # sociality_total +
-                # heat_mod + heat +
-                (1|subject)
-              )
+                sociality +
+                (1|subject))
 # formula for gaze reference model (random intercept + slope)
 fm_gaze <- formula(cogn ~ sick_severity +                    
-                test_tp + test_day + time_point +               
-                rel_rank + # rank_gmc +
-                observer_mod + 
-                age + time_in_leipzig +
-                sex + group +
-                rearing +
-                # le_present + dist_present +
-                le_mean + dist_mean + 
-                # le_max + dist_max +     
-                time_outdoors +
-                sociality + # sociality_total +
-                # heat_mod + heat +
-                (1 + time_point|subject)                         
-              )
-fm_gaze <- update(fm, . ~ . +day2)
+                      test_tp + test_day + time_point +               
+                      rel_rank +
+                      observer_mod + 
+                      age + time_in_leipzig +
+                      sex + group +
+                      rearing +
+                      le_mean + dist_mean +     
+                      time_outdoors +
+                      sociality + 
+                      (1 + time_point|subject))
+fm_gaze <- update(fm_gaze, . ~ . +day2)
 ```
 
 ```{r}

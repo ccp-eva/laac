@@ -1,7 +1,6 @@
-
 # Data pre-processing -----------------------------------------------------
 
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))  # set wd
+
 
 # Packages & Options
 library(tidyverse)
@@ -144,70 +143,70 @@ fm <- formula(cogn ~ sick_severity +
                 time_outdoors +
                 sociality + # sociality_total +
                 # heat_mod + heat +
-                (1 + time_point|subject)                         
-)
+                (1|subject))
+# formula for gaze reference model
+fm_gaze <- formula(cogn ~ sick_severity +                    
+                     test_tp + test_day + time_point +               
+                     rel_rank + # rank_gmc +
+                     observer_mod + 
+                     age + time_in_leipzig +
+                     sex + group +
+                     rearing +
+                     # le_present + dist_present +
+                     le_mean + dist_mean + 
+                     # le_max + dist_max +     
+                     time_outdoors +
+                     sociality + # sociality_total +
+                     # heat_mod + heat +
+                     (1 + time_point|subject)                         )
+fm_gaze <- update(fm_gaze, . ~ . +day2)
 
-fm_gaze <- update(fm, . ~ . +day2)
 
-
-## Reference Model: 2-level Multilevel Model (random intercepts only)
-
-
+## Reference Model: 2-level Multilevel Model
 m_cau_2l_p1 <- brm(fm, data = t_cau_p1, 
                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                   seed = 2021
-)
+                   seed = 2021)
 m_inf_2l_p1 <- brm(fm, data = t_inf_p1, 
                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                   seed = 2021
-)
+                   seed = 2021)
 m_quant_2l_p1 <- brm(fm, data = t_quant_p1, 
                      warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                     seed = 2021
-)
+                     seed = 2021)
 m_gaze_2l_p1 <- brm(fm_gaze, data = t_gaze_p1, 
                     warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                    seed = 2021
-)
-
+                    seed = 2021)
 
 m_cau_2l_p2 <- brm(fm, data = t_cau_p2, 
                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                   seed = 2022
-)
+                   seed = 2022)
 m_inf_2l_p2 <- brm(fm, data = t_inf_p2, 
                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                   seed = 2022
-)
+                   seed = 2022)
 m_quant_2l_p2 <- brm(fm, data = t_quant_p2, 
                      warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                     seed = 2022
-)
+                     seed = 2022)
 m_gaze_2l_p2 <- brm(fm_gaze, data = t_gaze_p2, 
                     warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                    seed = 2022
-)
+                    seed = 2022)
 m_grat_2l_p2 <- brm(fm, data = t_grat_p2,
                     warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                    seed = 2022
-)
+                    seed = 2022)
 
 
 
-summary(m_cau_2l_p1)
-summary(m_inf_2l_p1)
-summary(m_quant_2l_p1)
-summary(m_gaze_2l_p1)
+# summary(m_cau_2l_p1)
+# summary(m_inf_2l_p1)
+# summary(m_quant_2l_p1)
+# summary(m_gaze_2l_p1)
+# 
+# summary(m_cau_2l_p2)
+# summary(m_inf_2l_p2)
+# summary(m_quant_2l_p2)
+# summary(m_gaze_2l_p2)
+# summary(m_grat_2l_p2)
 
-summary(m_cau_2l_p2)
-summary(m_inf_2l_p2)
-summary(m_quant_2l_p2)
-summary(m_gaze_2l_p2)
-summary(m_grat_2l_p2)
-
-lapply(list(m_cau_2l_p1, m_inf_2l_p1, m_quant_2l_p1, m_gaze_2l_p1), loo::loo)
-lapply(list(m_cau_2l_p2, m_inf_2l_p2, m_quant_2l_p2, m_gaze_2l_p2, m_grat_2l_p2), loo::loo)
-
+loo_p1 <- lapply(list(m_cau_2l_p1, m_inf_2l_p1, m_quant_2l_p1, m_gaze_2l_p1), loo::loo)
+loo_p2 <- lapply(list(m_cau_2l_p2, m_inf_2l_p2, m_quant_2l_p2, m_gaze_2l_p2, m_grat_2l_p2), loo::loo)
 
 ## Projection Prediction Inference
 
@@ -224,9 +223,7 @@ all_fixed_effects <- c("sick_severity",
 # delay random intercept to last place so that it doesn't soak up all the variance
 s_terms <- c("1", all_fixed_effects, 
              paste0(paste(all_fixed_effects, collapse = " + "), 
-                    " + (1 | subject)"),
-             paste0(paste(all_fixed_effects, collapse = " + "), 
-                    " + (time_point | subject)")) 
+                    " + (1 | subject)")) 
 # gaze task gets its own search terms vector due to `day2` covariate
 s_terms_gaze <- c("1", c(all_fixed_effects, "day2"), 
                   paste0(paste(all_fixed_effects, collapse = " + "), 
@@ -235,93 +232,55 @@ s_terms_gaze <- c("1", c(all_fixed_effects, "day2"),
                          " + (time_point | subject)"))
 
 
-### Phase 1
+## Phase 1
+tmp <- Sys.time()
 
-cvs_cau_p1 <- cv_varsel(m_cau_2l_p1, 
+cs_cau_p1 <- cv_varsel(m_cau_2l_p1, 
                         search_terms = s_terms, 
                         cv_method = "LOO", method = "forward",
                         seed = 2020)
-summary(cvs_cau_p1)
-plot(cvs_cau_p1, stats = c('elpd', 'rmse'))
-
-selected covariates: (1 | subject), group
-
 
 cvs_inf_p1 <- cv_varsel(m_inf_2l_p1, 
                         search_terms = s_terms, 
                         cv_method = "LOO", method = "forward",
                         seed = 2020)
-summary(cvs_inf_p1)
-plot(cvs_inf_p1, stats = c('elpd', 'rmse'))
-
-selected covariates: (1 | subject), time_in_leipzig, group, age
-
 
 cvs_quant_p1 <- cv_varsel(m_quant_2l_p1, 
                           search_terms = s_terms, 
                           cv_method = "LOO", method = "forward", 
                           seed = 2020)
-summary(cvs_quant_p1)
-plot(cvs_quant_p1, stats = c('elpd', 'rmse'))
-
-selected covariates: (1 | subject), time_in_leipzig, rearing, group
-
 
 cvs_gaze_p1 <- cv_varsel(m_gaze_2l_p1, 
                          search_terms = s_terms_gaze, 
                          cv_method = "LOO", method = "forward", 
                          seed = 2020)
-summary(cvs_gaze_p1)
-plot(cvs_gaze_p1, stats = c('elpd', 'rmse'))
 
-selected covariates: (1 | subject), group, rearing, time_outdoors, age, sociality, sex, sick_severity, observer_mod
-
-### Phase 2
-
+## Phase 2
 cvs_cau_p2 <- cv_varsel(m_cau_2l_p2, 
                         search_terms = s_terms, 
                         cv_method = "LOO", method = "forward", 
                         seed = 2022)
-summary(cvs_cau_p2)
-plot(cvs_cau_p2, stats = c('elpd', 'rmse'))
-
-selected covariates: (1 | subject), group
-
 
 cvs_inf_p2 <- cv_varsel(m_inf_2l_p2, 
                         search_terms = s_terms, 
                         cv_method = "LOO", method = "forward", 
                         seed = 2022)
-summary(cvs_inf_p2)
-plot(cvs_inf_p2, stats = c('elpd', 'rmse'))
-
-selected covariates: (1 | subject), time_in_leipzig, group, age
 
 cvs_quant_p2 <- cv_varsel(m_quant_2l_p2, 
                           search_terms = s_terms, 
                           cv_method = "LOO", method = "forward", 
                           seed = 2022)
-summary(cvs_quant_p2)
-plot(cvs_quant_p2, stats = c('elpd', 'rmse'))
-
-selected covariates: (1 | subject), rel_rank, rearing, time_in_leipzig, group, time_outdoors
-
 
 cvs_gaze_p2 <- cv_varsel(m_gaze_2l_p2, 
                          search_terms = s_terms_gaze, 
                          cv_method = "LOO", method = "forward", 
                          seed = 2022)
-summary(cvs_gaze_p2)
-plot(cvs_gaze_p2, stats = c('elpd', 'rmse'))
-
-selected covariates: group, sex (old)
-
 
 cvs_grat_p2 <- cv_varsel(m_grat_2l_p2, 
                          search_terms = s_terms, 
                          cv_method = "LOO", method = "forward", 
                          seed = 2022)
-summary(cvs_grat_p2)
-plot(cvs_grat_p2, stats = c('elpd', 'rmse'))
 
-selected covariates: (1 | subject), rel_rank, observer, sex, group
+simtime <- Sys.time() - tmp  # information on duration
+sesinfo <- sessionInfo()     # information on session
+save(simtime, sesinfo, file = "session_info.rda")

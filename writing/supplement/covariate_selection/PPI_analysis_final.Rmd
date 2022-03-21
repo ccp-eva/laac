@@ -203,7 +203,7 @@ fm_gaze <- formula(cogn ~ sick_severity +
                 # heat_mod + heat +
                 (1 + time_point|subject)                         
               )
-fm_gaze <- update(fm, . ~ . +day2)
+fm_gaze <- update(fm_gaze, . ~ . +day2)
 ```
 
 ## Reference Model: 2-level Multilevel Model (random intercepts only)
