@@ -3234,6 +3234,21 @@ saveRDS(cvs_cau_p2,"./saves/cvs_cau_p2.rds")
 cvs_cau_p2 <- readRDS("./saves/cvs_cau_p2.rds")  
 ```
 
+```{r}
+cvarselp_p2 <- summary(cvs_cau_p2, stats = c('elpd', 'rmse'))%>%
+  tibble()%>%
+  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+  rowwise()%>%
+  filter(grepl(stat,se_term))%>%
+  select(-se_term)%>%
+  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+         select = ifelse(solution_terms  %in% c("(1 | subject)", "group"), "yes", "no"))
+
+saveRDS(cvarselp_p2, "./saves/cvs_cau_summary_p2.rds")
+```
+
+
 #### Inference by exclusion
 
 ```{r}
@@ -3245,6 +3260,20 @@ cvs_inf_p2 <- cv_varsel(m_inf_2l_p2,
 saveRDS(cvs_inf_p2,"./saves/cvs_inf_p2.rds")
 
 cvs_inf_p2 <- readRDS("./saves/cvs_inf_p2.rds")  
+```
+
+```{r}
+ivarselp_p2 <- summary(cvs_inf_p2, stats = c('elpd', 'rmse'))%>%
+  tibble()%>%
+  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+  rowwise()%>%
+  filter(grepl(stat,se_term))%>%
+  select(-se_term)%>%
+  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+         select = ifelse(solution_terms  %in% c("(1 | subject)", "group","time_in_leipzig","age"), "yes", "no"))
+
+saveRDS(ivarselp_p2, "./saves/cvs_inf_summary_p2.rds")
 ```
 
 #### Gaze following
@@ -3260,6 +3289,20 @@ saveRDS(cvs_gaze_p2,"./saves/cvs_gaze_p2.rds")
 cvs_gaze_p2 <- readRDS("./saves/cvs_gaze_p2.rds")  
 ```
 
+```{r}
+gvarselp_p2 <- summary(cvs_gaze_p2, stats = c('elpd', 'rmse'))%>%
+  tibble()%>%
+  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+  rowwise()%>%
+  filter(grepl(stat,se_term))%>%
+  select(-se_term)%>%
+  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+         select = ifelse(solution_terms  %in% c("group", "sex"), "yes", "no"))
+
+saveRDS(gvarselp_p2, "./saves/cvs_grat_summary_p2.rds")
+```
+
 #### Quantity
 
 ```{r}
@@ -3273,6 +3316,22 @@ saveRDS(cvs_quant_p2,"./saves/cvs_quant_p2.rds")
 cvs_quant_p2 <- readRDS("./saves/cvs_quant_p2.rds")              
 ```
 
+```{r}
+qvarselp_p2 <- summary(cvs_quant_p2, stats = c('elpd', 'rmse'))%>%
+  tibble()%>%
+  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+  rowwise()%>%
+  filter(grepl(stat,se_term))%>%
+  select(-se_term)%>%
+  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+         select = ifelse(solution_terms  %in% c("(1 | subject)", "rel_rank", "rearing", "time_in_leipzig", "group", "time_outdoors"), "yes", "no"))
+
+saveRDS(qvarselp_p2, "./saves/cvs_quant_summary_p2.rds")
+```
+
+
+
 #### Delay of gratification
 
 ```{r}
@@ -3285,6 +3344,22 @@ saveRDS(cvs_grat_p2,"./saves/cvs_grat_p2.rds")
 
 cvs_grat_p2 <- readRDS("./saves/cvs_grat_p2.rds")  
 ```
+
+```{r}
+dgvarselp_p2 <- summary(cvs_grat_p2, stats = c('elpd', 'rmse'))%>%
+  tibble()%>%
+  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+  rowwise()%>%
+  filter(grepl(stat,se_term))%>%
+  select(-se_term)%>%
+  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+         select = ifelse(solution_terms  %in% c("(1 | subject)", "rel_rank", "observer", "sex", "group"), "yes", "no"))
+
+saveRDS(dgvarselp_p2, "./saves/cvs_grat_summary_p2.rds")
+```
+
+
 
 # Summary
 
