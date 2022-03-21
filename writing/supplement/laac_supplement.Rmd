@@ -3219,33 +3219,71 @@ pro
 
 ### Phase 2
 
-### Comparison between phases
-
 #### Causal inference
 
 ```{r}
-cvs_cau_p2 <- cv_varsel(m_cau_2l_p2, 
-                        search_terms = s_terms, 
-                        cv_method = "LOO", method = "forward", 
-                        seed = 2022)
-
-saveRDS(cvs_cau_p2,"./saves/cvs_cau_p2.rds")
-
-cvs_cau_p2 <- readRDS("./saves/cvs_cau_p2.rds")  
+# cvs_cau_p2 <- cv_varsel(m_cau_2l_p2, 
+#                         search_terms = s_terms, 
+#                         cv_method = "LOO", method = "forward", 
+#                         seed = 2022)
+# 
+# saveRDS(cvs_cau_p2,"./saves/cvs_cau_p2.rds")
+# 
+# cvs_cau_p2 <- readRDS("./saves/cvs_cau_p2.rds")  
 ```
 
 ```{r}
-cvarselp_p2 <- summary(cvs_cau_p2, stats = c('elpd', 'rmse'))%>%
-  tibble()%>%
-  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
-  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
-  rowwise()%>%
-  filter(grepl(stat,se_term))%>%
-  select(-se_term)%>%
-  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
-         select = ifelse(solution_terms  %in% c("(1 | subject)", "group"), "yes", "no"))
+# cvarselp_p2 <- summary(cvs_cau_p2, stats = c('elpd', 'rmse'))%>%
+#   tibble()%>%
+#   pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+#   pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+#   rowwise()%>%
+#   filter(grepl(stat,se_term))%>%
+#   select(-se_term)%>%
+#   mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+#          select = ifelse(solution_terms  %in% c("(1 | subject)", "group"), "yes", "no"))
+# 
+# saveRDS(cvarselp_p2, "./saves/cvs_cau_summary_p2.rds")
 
-saveRDS(cvarselp_p2, "./saves/cvs_cau_summary_p2.rds")
+cvarselp_p2 <- readRDS("./saves/cvs_cau_summary_p2.rds")%>%
+  mutate(solution_terms = recode(solution_terms,
+    time_in_leipzig = "Time spent in research",
+    rearing = "Rearing history",
+    group = "Group",
+    observer = "Observer present",
+    sex = "Sex",
+    rel_rank = "Rank",
+    age = "Age",
+    sick_severity = "Sickness severity",
+    test_tp = "Study participation (day)",
+    test_day = "Study participation (time point)",
+    time_outdoors = "Time spent outdoors",
+    dist_mean = "Disturbance",
+    le_mean = "Life event",
+    sociality = "Sociality",
+    a_chimp = "Chimpanzee group A",
+    b_chimp = "Chimpanzee group B",
+    bonobo = "Bonobo",
+    orangutan = "Orangutan",
+    gorilla = "Gorilla",
+    f = "Female", 
+    m = "Male",
+    hand = "Hand-reared",
+    mother = "Mother-reared",
+    `(1 | subject)` = "(1 | Subject)"
+  ))
+
+pcsel_p2 <- cvarselp_p2%>%
+ggplot(aes(x = size, y = value))+
+  geom_line(col = "black", alpha = .5)+
+  geom_pointrange(aes(ymin = value - se, ymax = value + se, col = select), size = 0.5, pch = 4)+
+  facet_grid(stat~., scale = "free_y")+
+  scale_color_manual(name = "relevant", values = c("black", "firebrick"))+
+  labs(y = "", x = "Predictors")+
+  scale_x_continuous(labels = unique(cvarselp$solution_terms), breaks = unique(cvarselp$size))+
+  theme_few()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = c(0.5,0.9), legend.direction = "horizontal")
 ```
 
 
@@ -3359,7 +3397,7 @@ dgvarselp_p2 <- summary(cvs_grat_p2, stats = c('elpd', 'rmse'))%>%
 saveRDS(dgvarselp_p2, "./saves/cvs_grat_summary_p2.rds")
 ```
 
-
+### Comparison between phases
 
 # Summary
 
