@@ -922,8 +922,8 @@ In Mplus, every 10th iteration after burn-in is used to compute the PPP and the 
 ## Projection predictive inference {#projection-predictive-inference}
 
 **ToDo**  
-- add projpred version used
-- reference model used for gaze task has changed
+- add projpred version used (as soon as projection ran on server cluster)
+- add explanation on addition of time_point as fixed/random to gaze task reference model
 - add a short discussion around pareto k estimates?
 
 Our goal is to select the predictor variables that are relevant for predicting performance in the different cognitive tasks over time. The selection of relevant predictor variables constitutes a variable selection problem, for which a range of different methods are available (e.g., shrinkage priors). We chose to use projection predictive inference because it is a state-of-the-art variable selection procedure that provides an excellent trade-off between model complexity and accuracy [@piironen2017comparison], especially when the goal is to identify a minimal subset of predictors that yield a good predictive model [@pavone2020using].
@@ -2500,31 +2500,30 @@ t_grat_p2 <- filter(t_grat, time_point >= 15)
 ```
 
 ```{r}
-# formula for reference model (random intercept)
+# formula for reference models
 fm <- formula(cogn ~ sick_severity +                    
-                test_tp + test_day + time_point +               
-                rel_rank +
+                test_tp + test_day +             
+                rel_rank + 
                 observer_mod + 
                 age + time_in_leipzig +
                 sex + group +
                 rearing +
-                le_mean + dist_mean +     
+                le_mean + dist_mean + 
                 time_outdoors +
                 sociality +
                 (1|subject))
-# formula for gaze reference model (random intercept + slope)
+# formula for gaze reference model
 fm_gaze <- formula(cogn ~ sick_severity +                    
-                      test_tp + test_day + time_point +               
-                      rel_rank +
-                      observer_mod + 
-                      age + time_in_leipzig +
-                      sex + group +
-                      rearing +
-                      le_mean + dist_mean +     
-                      time_outdoors +
-                      sociality + 
-                      (1 + time_point|subject))
-fm_gaze <- update(fm_gaze, . ~ . +day2)
+                     test_tp + test_day + time_point + day2 +            
+                     rel_rank + 
+                     observer_mod + 
+                     age + time_in_leipzig +
+                     sex + group +
+                     rearing +
+                     le_mean + dist_mean + 
+                     time_outdoors +
+                     sociality +
+                     (1 + time_point|subject))
 ```
 
 ```{r}
@@ -2562,7 +2561,7 @@ m_grat_2l_p2 <- brm(fm, data = t_grat_p2,
 
 ```{r}
 all_fixed_effects <- c("sick_severity",
-                       "test_tp", "test_day", "time_point",
+                       "test_tp", "test_day",
                        "rel_rank",
                        "observer_mod",
                        "age", "time_in_leipzig",
@@ -2575,8 +2574,8 @@ all_fixed_effects <- c("sick_severity",
 s_terms <- c("1", all_fixed_effects, 
              paste0(paste(all_fixed_effects, collapse = " + "), 
                     " + (1 | subject)")) 
-# gaze task gets its own search terms vector due to `day2` covariate and random slope
-s_terms_gaze <- c("1", c(all_fixed_effects, "day2"), 
+# gaze task gets its own search terms vector (including day2 and time_point (fixed/random))
+s_terms_gaze <- c("1", c(all_fixed_effects, "day2", "time_point"), 
                   paste0(paste(all_fixed_effects, collapse = " + "), 
                     " + (1 | subject)"),
                   paste0(paste(all_fixed_effects, collapse = " + "), 

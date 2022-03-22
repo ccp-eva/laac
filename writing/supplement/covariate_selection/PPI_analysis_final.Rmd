@@ -171,44 +171,35 @@ t_grat_p2 <- filter(t_grat, time_point >= 15)
 # Covariate selection
 
 ```{r}
-# formula for reference model
+# formula for reference models
 fm <- formula(cogn ~ sick_severity +                    
-                test_tp + test_day + time_point +               
-                rel_rank + # rank_gmc +
+                test_tp + test_day +             
+                rel_rank + 
                 observer_mod + 
                 age + time_in_leipzig +
                 sex + group +
                 rearing +
-                # le_present + dist_present +
                 le_mean + dist_mean + 
-                # le_max + dist_max +     
                 time_outdoors +
-                sociality + # sociality_total +
-                # heat_mod + heat +
-                (1|subject)
-              )
+                sociality +
+                (1|subject))
 # formula for gaze reference model
 fm_gaze <- formula(cogn ~ sick_severity +                    
-                test_tp + test_day + time_point +               
-                rel_rank + # rank_gmc +
-                observer_mod + 
-                age + time_in_leipzig +
-                sex + group +
-                rearing +
-                # le_present + dist_present +
-                le_mean + dist_mean + 
-                # le_max + dist_max +     
-                time_outdoors +
-                sociality + # sociality_total +
-                # heat_mod + heat +
-                (1 + time_point|subject)                         
-              )
-fm_gaze <- update(fm_gaze, . ~ . +day2)
+                     test_tp + test_day + time_point + day2 +            
+                     rel_rank + 
+                     observer_mod + 
+                     age + time_in_leipzig +
+                     sex + group +
+                     rearing +
+                     le_mean + dist_mean + 
+                     time_outdoors +
+                     sociality +
+                     (1 + time_point|subject))
 ```
 
-## Reference Model: 2-level Multilevel Model (random intercepts only)
+## Reference Model: 2-level Multilevel Model
 
-```{r, warning = F}
+```{r}
 m_cau_2l_p1 <- brm(fm, data = t_cau_p1, 
                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
                    seed = 2021
@@ -227,7 +218,7 @@ m_gaze_2l_p1 <- brm(fm_gaze, data = t_gaze_p1,
                     )
 ```
 
-```{r, warning = F}
+```{r}
 m_cau_2l_p2 <- brm(fm, data = t_cau_p2, 
                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
                    seed = 2022
@@ -262,15 +253,15 @@ summary(m_quant_2l_p2)
 summary(m_gaze_2l_p2)
 summary(m_grat_2l_p2)
 
-lapply(list(m_cau_2l_p1, m_inf_2l_p1, m_quant_2l_p1, m_gaze_2l_p1), loo::loo)
-lapply(list(m_cau_2l_p2, m_inf_2l_p2, m_quant_2l_p2, m_gaze_2l_p2, m_grat_2l_p2), loo::loo)
+loo_p1 <- lapply(list(m_cau_2l_p1, m_inf_2l_p1, m_quant_2l_p1, m_gaze_2l_p1), loo::loo)
+loo_p2 <- lapply(list(m_cau_2l_p2, m_inf_2l_p2, m_quant_2l_p2, m_gaze_2l_p2, m_grat_2l_p2), loo::loo)
 ```
 
 ## Projection Prediction Inference
 
 ```{r}
 all_fixed_effects <- c("sick_severity",
-                       "test_tp", "test_day", "time_point",
+                       "test_tp", "test_day",
                        "rel_rank",
                        "observer_mod",
                        "age", "time_in_leipzig",
@@ -283,8 +274,8 @@ all_fixed_effects <- c("sick_severity",
 s_terms <- c("1", all_fixed_effects, 
              paste0(paste(all_fixed_effects, collapse = " + "), 
                     " + (1 | subject)")) 
-# gaze task gets its own search terms vector due to `day2` covariate
-s_terms_gaze <- c("1", c(all_fixed_effects, "day2"), 
+# gaze task gets its own search terms vector (including day2 and time_point (fixed/random))
+s_terms_gaze <- c("1", c(all_fixed_effects, "day2", "time_point"), 
                   paste0(paste(all_fixed_effects, collapse = " + "), 
                     " + (1 | subject)"),
                   paste0(paste(all_fixed_effects, collapse = " + "), 
@@ -343,7 +334,7 @@ cvs_cau_p2 <- cv_varsel(m_cau_2l_p2,
 summary(cvs_cau_p2)
 plot(cvs_cau_p2, stats = c('elpd', 'rmse'))
 ```
-selected covariates: (1 | subject), group
+selected covariates: (1 | subject), group, time_outdoors, (time_in_leipzig?)
 
 ```{r}
 cvs_inf_p2 <- cv_varsel(m_inf_2l_p2, 
@@ -353,7 +344,7 @@ cvs_inf_p2 <- cv_varsel(m_inf_2l_p2,
 summary(cvs_inf_p2)
 plot(cvs_inf_p2, stats = c('elpd', 'rmse'))
 ```
-selected covariates: (1 | subject), time_in_leipzig, group, age
+selected covariates: (1 | subject), time_in_leipzig, group, age, time_outdoors
 
 ```{r}
 cvs_quant_p2 <- cv_varsel(m_quant_2l_p2, 
@@ -363,7 +354,7 @@ cvs_quant_p2 <- cv_varsel(m_quant_2l_p2,
 summary(cvs_quant_p2)
 plot(cvs_quant_p2, stats = c('elpd', 'rmse'))
 ```
-selected covariates: (1 | subject), rel_rank, rearing, time_in_leipzig, group, time_outdoors
+selected covariates: (1 | subject), rel_rank, rearing, time_in_leipzig, group, time_outdoors, test_tp
 
 ```{r}
 cvs_gaze_p2 <- cv_varsel(m_gaze_2l_p2, 
@@ -373,7 +364,7 @@ cvs_gaze_p2 <- cv_varsel(m_gaze_2l_p2,
 summary(cvs_gaze_p2)
 plot(cvs_gaze_p2, stats = c('elpd', 'rmse'))
 ```
-selected covariates: group, sex (old)
+selected covariates: (1 | subject), group, sex, observer_mod, age, (rearing?)
 
 ```{r}
 cvs_grat_p2 <- cv_varsel(m_grat_2l_p2, 
@@ -383,8 +374,18 @@ cvs_grat_p2 <- cv_varsel(m_grat_2l_p2,
 summary(cvs_grat_p2)
 plot(cvs_grat_p2, stats = c('elpd', 'rmse'))
 ```
-selected covariates: (1 | subject), rel_rank, observer, sex, group
+selected covariates: (1 | subject), time_in_leipzig, observer_mod, sex, rel_rank, sick_severity
 
+```{r, eval = F}
+saveRDS(list(m_cau_2l_p1, m_inf_2l_p1, m_quant_2l_p1, m_gaze_2l_p1,
+             m_cau_2l_p2, m_inf_2l_p2, m_quant_2l_p2, m_gaze_2l_p2, m_grat_2l_p2,
+             loo_p1, loo_p2),
+     file = "results/ref_models.rds")
+
+saveRDS(list(cvs_cau_p1, cvs_inf_p1, cvs_quant_p1, cvs_gaze_p1,
+             cvs_cau_p2, cvs_inf_p2, cvs_quant_p2, cvs_gaze_p2, cvs_grat_p2), 
+     file = "results/projection_results.rds")
+```
 
 
 
