@@ -2593,6 +2593,7 @@ cvs_cau_p1 <- cv_varsel(m_cau_2l_p1,
 saveRDS(cvs_cau_p1,"./saves/cvs_cau.rds")
 
 cvs_cau <- readRDS("./saves/cvs_cau.rds")
+
 ```
 
 ```{r}
@@ -2607,6 +2608,16 @@ cvarselp <- summary(cvs_cau, stats = c('elpd', 'rmse'))%>%
          select = ifelse(solution_terms  %in% c("(1 | subject)", "group"), "yes", "no"))
 
 saveRDS(cvarselp, "./saves/cvs_cau_summary.rds")
+
+ref_c_p1 <- tibble(
+  stat = c('elpd', 'rmse'),
+  value = c(sum(cvs_cau$summaries$ref$lppd) , sqrt(mean((cvs_cau$refmodel$fit$data$cogn - cvs_cau$summaries$ref$mu)^2)))
+)
+
+saveRDS(ref_c_p1, "./saves/cvs_cau_ref.rds")
+
+
+ref_c_p1 <-readRDS("./saves/cvs_cau_ref.rds") 
 
 cvarselp <- readRDS("./saves/cvs_cau_summary.rds")%>%
   mutate(solution_terms = recode(solution_terms,
@@ -2636,8 +2647,10 @@ cvarselp <- readRDS("./saves/cvs_cau_summary.rds")%>%
     `(1 | subject)` = "(1 | Subject)"
   ))
 
+
 pcsel <- cvarselp%>%
 ggplot(aes(x = size, y = value))+
+  geom_hline(data = ref_c_p1, aes(yintercept = value), lty = 3)+
   geom_line(col = "black", alpha = .5)+
   geom_pointrange(aes(ymin = value - se, ymax = value + se, col = select), size = 0.5, pch = 4)+
   facet_grid(stat~., scale = "free_y")+
@@ -2740,6 +2753,15 @@ ivarselp <- summary(cvs_inf, stats = c('elpd', 'rmse'))%>%
 
 saveRDS(ivarselp, "./saves/cvs_inf_summary.rds")
 
+ref_i_p1 <- tibble(
+  stat = c('elpd', 'rmse'),
+  value = c(sum(cvs_inf$summaries$ref$lppd) , sqrt(mean((cvs_inf$refmodel$fit$data$cogn - cvs_inf$summaries$ref$mu)^2)))
+)
+
+saveRDS(ref_i_p1, "./saves/cvs_inf_ref.rds")
+
+ref_i_p1 <-readRDS("./saves/cvs_inf_ref.rds") 
+
 ivarselp <- readRDS("./saves/cvs_inf_summary.rds")%>%
   mutate(solution_terms = recode(solution_terms,
     time_in_leipzig = "Time spent in research",
@@ -2770,6 +2792,7 @@ ivarselp <- readRDS("./saves/cvs_inf_summary.rds")%>%
 
 pisel <- ivarselp%>%
 ggplot(aes(x = size, y = value))+
+  geom_hline(data = ref_i_p1, aes(yintercept = value), lty = 3)+
   geom_line(col = "black", alpha = .5)+
   geom_pointrange(aes(ymin = value - se, ymax = value + se, col = select), size = 0.5, pch = 4)+
   facet_grid(stat~., scale = "free_y")+
@@ -2871,6 +2894,15 @@ gvarselp <- summary(cvs_gaze, stats = c('elpd', 'rmse'))%>%
 
 saveRDS(gvarselp, "./saves/cvs_gaze_summary.rds")
 
+ref_g_p1 <- tibble(
+  stat = c('elpd', 'rmse'),
+  value = c(sum(cvs_gaze$summaries$ref$lppd) , sqrt(mean((cvs_gaze$refmodel$fit$data$cogn - cvs_gaze$summaries$ref$mu)^2)))
+)
+
+saveRDS(ref_g_p1, "./saves/cvs_gaze_ref.rds")
+
+ref_g_p1 <-readRDS("./saves/cvs_gaze_ref.rds") 
+
 gvarselp <- readRDS("./saves/cvs_gaze_summary.rds")%>%
   mutate(solution_terms = recode(solution_terms,
     time_in_leipzig = "Time spent in research",
@@ -2902,6 +2934,7 @@ gvarselp <- readRDS("./saves/cvs_gaze_summary.rds")%>%
 
 pgsel <- gvarselp%>%
 ggplot(aes(x = size, y = value))+
+  geom_hline(data = ref_g_p1, aes(yintercept = value), lty = 3)+
   geom_line(col = "black", alpha = .5)+
   geom_pointrange(aes(ymin = value - se, ymax = value + se, col = select), size = 0.5, pch = 4)+
   facet_grid(stat~., scale = "free_y")+
@@ -3008,6 +3041,16 @@ qvarselp <- summary(cvs_quant, stats = c('elpd', 'rmse'))%>%
 
 saveRDS(qvarselp, "./saves/cvs_quant_summary.rds")
 
+ref_q_p1 <- tibble(
+  stat = c('elpd', 'rmse'),
+  value = c(sum(cvs_quant$summaries$ref$lppd) , sqrt(mean((cvs_quant$refmodel$fit$data$cogn - cvs_quant$summaries$ref$mu)^2)))
+)
+
+saveRDS(ref_q_p1, "./saves/cvs_quant_ref.rds")
+
+ref_q_p1 <-readRDS("./saves/cvs_quant_ref.rds") 
+
+
 qvarselp <- readRDS("./saves/cvs_quant_summary.rds")%>%
   mutate(solution_terms = recode(solution_terms,
     time_in_leipzig = "Time spent in research",
@@ -3038,6 +3081,7 @@ qvarselp <- readRDS("./saves/cvs_quant_summary.rds")%>%
 
 pqsel <- qvarselp%>%
 ggplot(aes(x = size, y = value))+
+  geom_hline(data = ref_q_p1, aes(yintercept = value), lty = 3)+
   geom_line(col = "black", alpha = .5)+
   geom_pointrange(aes(ymin = value - se, ymax = value + se, col = select), size = 0.5, pch = 4)+
   facet_grid(stat~., scale = "free_y")+
@@ -3245,6 +3289,16 @@ cvarselp_p2 <- summary(cvs_cau_p2, stats = c('elpd', 'rmse'))%>%
 
 saveRDS(cvarselp_p2, "./saves/cvs_cau_summary_p2.rds")
 
+ref_c_p2 <- tibble(
+  stat = c('elpd', 'rmse'),
+  value = c(sum(cvs_cau_p2$summaries$ref$lppd) , sqrt(mean((cvs_cau_p2$refmodel$fit$data$cogn - cvs_cau_p2$summaries$ref$mu)^2)))
+)
+
+saveRDS(ref_c_p2, "./saves/cvs_cau_ref_p2.rds")
+
+ref_c_p2 <-readRDS("./saves/cvs_cau_ref_p2.rds") 
+
+
 cvarselp_p2 <- readRDS("./saves/cvs_cau_summary_p2.rds")%>%
   mutate(solution_terms = recode(solution_terms,
     time_in_leipzig = "Time spent in research",
@@ -3276,6 +3330,7 @@ cvarselp_p2 <- readRDS("./saves/cvs_cau_summary_p2.rds")%>%
 
 pcsel_p2 <- cvarselp_p2%>%
 ggplot(aes(x = size, y = value))+
+  geom_hline(data = ref_c_p2, aes(yintercept = value), lty = 3)+
   geom_line(col = "black", alpha = .5)+
   geom_pointrange(aes(ymin = value - se, ymax = value + se, col = select), size = 0.5, pch = 4)+
   facet_grid(stat~., scale = "free_y")+
@@ -3374,6 +3429,15 @@ ivarselp_p2 <- summary(cvs_inf_p2, stats = c('elpd', 'rmse'))%>%
 
 saveRDS(ivarselp_p2, "./saves/cvs_inf_summary_p2.rds")
 
+ref_i_p2 <- tibble(
+  stat = c('elpd', 'rmse'),
+  value = c(sum(cvs_inf_p2$summaries$ref$lppd) , sqrt(mean((cvs_inf_p2$refmodel$fit$data$cogn - cvs_inf_p2$summaries$ref$mu)^2)))
+)
+
+saveRDS(ref_i_p2, "./saves/cvs_inf_ref_p2.rds")
+
+ref_i_p2 <-readRDS("./saves/cvs_inf_ref_p2.rds") 
+
 ivarselp_p2 <- readRDS("./saves/cvs_inf_summary_p2.rds")%>%
   mutate(solution_terms = recode(solution_terms,
     time_in_leipzig = "Time spent in research",
@@ -3405,6 +3469,7 @@ ivarselp_p2 <- readRDS("./saves/cvs_inf_summary_p2.rds")%>%
 
 pisel_p2 <- ivarselp_p2%>%
 ggplot(aes(x = size, y = value))+
+  geom_hline(data = ref_i_p2, aes(yintercept = value), lty = 3)+
   geom_line(col = "black", alpha = .5)+
   geom_pointrange(aes(ymin = value - se, ymax = value + se, col = select), size = 0.5, pch = 4)+
   facet_grid(stat~., scale = "free_y")+
@@ -3500,7 +3565,17 @@ gvarselp_p2 <- summary(cvs_gaze_p2, stats = c('elpd', 'rmse'))%>%
   mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
          select = ifelse(solution_terms  %in% c("(1 | subject)", "group", "sex", "observer_mod", "age"), "yes", "no"))
 
-saveRDS(gvarselp_p2, "./saves/cvs_grat_summary_p2.rds")
+saveRDS(gvarselp_p2, "./saves/cvs_gaze_summary_p2.rds")
+
+ref_g_p2 <- tibble(
+  stat = c('elpd', 'rmse'),
+  value = c(sum(cvs_gaze_p2$summaries$ref$lppd) , sqrt(mean((cvs_gaze_p2$refmodel$fit$data$cogn - cvs_gaze_p2$summaries$ref$mu)^2)))
+)
+
+saveRDS(ref_g_p2, "./saves/cvs_gaze_ref_p2.rds")
+
+ref_g_p2 <-readRDS("./saves/cvs_gaze_ref_p2.rds") 
+
 
 gvarselp_p2 <- readRDS("./saves/cvs_grat_summary_p2.rds")%>%
   mutate(solution_terms = recode(solution_terms,
@@ -3534,6 +3609,7 @@ gvarselp_p2 <- readRDS("./saves/cvs_grat_summary_p2.rds")%>%
 
 pgsel_p2 <- gvarselp_p2%>%
 ggplot(aes(x = size, y = value))+
+  geom_hline(data = ref_g_p2, aes(yintercept = value), lty = 3)+
   geom_line(col = "black", alpha = .5)+
   geom_pointrange(aes(ymin = value - se, ymax = value + se, col = select), size = 0.5, pch = 4)+
   facet_grid(stat~., scale = "free_y")+
@@ -3636,6 +3712,16 @@ qvarselp_p2 <- summary(cvs_quant_p2, stats = c('elpd', 'rmse'))%>%
 
 saveRDS(qvarselp_p2, "./saves/cvs_quant_summary_p2.rds")
 
+ref_q_p2 <- tibble(
+  stat = c('elpd', 'rmse'),
+  value = c(sum(cvs_quant_p2$summaries$ref$lppd) , sqrt(mean((cvs_quant_p2$refmodel$fit$data$cogn - cvs_quant_p2$summaries$ref$mu)^2)))
+)
+
+saveRDS(ref_q_p2, "./saves/cvs_quant_ref_p2.rds")
+
+ref_q_p2 <-readRDS("./saves/cvs_quant_ref_p2.rds") 
+
+
 qvarselp_p2 <- readRDS("./saves/cvs_quant_summary_p2.rds")%>%
   mutate(solution_terms = recode(solution_terms,
     time_in_leipzig = "Time spent in research",
@@ -3667,6 +3753,7 @@ qvarselp_p2 <- readRDS("./saves/cvs_quant_summary_p2.rds")%>%
 
 pqsel_p2 <- qvarselp_p2%>%
 ggplot(aes(x = size, y = value))+
+  geom_hline(data = ref_q_p2, aes(yintercept = value), lty = 3)+
   geom_line(col = "black", alpha = .5)+
   geom_pointrange(aes(ymin = value - se, ymax = value + se, col = select), size = 0.5, pch = 4)+
   facet_grid(stat~., scale = "free_y")+
@@ -3677,6 +3764,7 @@ ggplot(aes(x = size, y = value))+
   theme(axis.text.x = element_text(angle = 45, hjust=1),
         legend.position = c(0.5,0.9), legend.direction = "horizontal")
 ```
+
 ```{r}
 proj_quant_cv_p2 <- project(cvs_quant_p2,  solution_terms = c(1:5))
 
@@ -3768,6 +3856,15 @@ dgvarselp_p2 <- summary(cvs_grat_p2, stats = c('elpd', 'rmse'))%>%
 
 saveRDS(dgvarselp_p2, "./saves/cvs_grat_summary_p2.rds")
 
+ref_d_p2 <- tibble(
+  stat = c('elpd', 'rmse'),
+  value = c(sum(cvs_grat_p2$summaries$ref$lppd) , sqrt(mean((cvs_grat_p2$refmodel$fit$data$cogn - cvs_grat_p2$summaries$ref$mu)^2)))
+)
+
+saveRDS(ref_d_p2, "./saves/cvs_grat_ref_p2.rds")
+
+ref_d_p2 <-readRDS("./saves/cvs_grat_ref_p2.rds") 
+
 dgvarselp_p2 <- readRDS("./saves/cvs_grat_summary_p2.rds")%>%
   mutate(solution_terms = recode(solution_terms,
     time_in_leipzig = "Time spent in research",
@@ -3800,6 +3897,7 @@ dgvarselp_p2 <- readRDS("./saves/cvs_grat_summary_p2.rds")%>%
 pdgsel_p2 <- dgvarselp_p2%>%
 ggplot(aes(x = size, y = value))+
   geom_line(col = "black", alpha = .5)+
+  geom_hline(data = ref_d_p2, aes(yintercept = value), lty = 3)+
   geom_pointrange(aes(ymin = value - se, ymax = value + se, col = select), size = 0.5, pch = 4)+
   facet_grid(stat~., scale = "free_y")+
         labs(y = "", x = "Predictors")+

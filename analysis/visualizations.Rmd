@@ -575,16 +575,31 @@ cvarselp <- readRDS("../writing/supplement/saves/cvs_cau_summary.rds")
 ivarselp <- readRDS("../writing/supplement/saves/cvs_inf_summary.rds")
 gvarselp <- readRDS("../writing/supplement/saves/cvs_gaze_summary.rds")
 
+qvarselp_p2 <- readRDS("../writing/supplement/saves/cvs_quant_summary_p2.rds")
+cvarselp_p2 <- readRDS("../writing/supplement/saves/cvs_cau_summary_p2.rds")
+ivarselp_p2 <- readRDS("../writing/supplement/saves/cvs_inf_summary_p2.rds")
+gvarselp_p2 <- readRDS("../writing/supplement/saves/cvs_gaze_summary_p2.rds")
+dgvarselp_p2 <- readRDS("../writing/supplement/saves/cvs_grat_summary_p2.rds")
 
-ro <- bind_rows(qvarselp%>%mutate(task = "quantity")%>%mutate(phase = "Phase 1"),
-          cvarselp%>%mutate(task = "causality")%>%mutate(phase = "Phase 1"),
-          ivarselp%>%mutate(task = "inference")%>%mutate(phase = "Phase 1"),
-          gvarselp%>%mutate(task = "gaze_following")%>%mutate(phase = "Phase 1"),
+
+ro <- bind_rows(
+  qvarselp%>%mutate(task = "quantity")%>%mutate(phase = "Phase 1"),
+  cvarselp%>%mutate(task = "causality")%>%mutate(phase = "Phase 1"),
+  ivarselp%>%mutate(task = "inference")%>%mutate(phase = "Phase 1"),
+  gvarselp%>%mutate(task = "gaze_following")%>%mutate(phase = "Phase 1"),
+  
+  qvarselp_p2%>%mutate(task = "quantity")%>%mutate(phase = "Phase 2"),
+  cvarselp_p2%>%mutate(task = "causality")%>%mutate(phase = "Phase 2"),
+  ivarselp_p2%>%mutate(task = "inference")%>%mutate(phase = "Phase 2"),
+  gvarselp_p2%>%mutate(task = "gaze_following")%>%mutate(phase = "Phase 2"),
+  dgvarselp_p2%>%mutate(task = "delay_of_gratification")%>%mutate(phase = "Phase 2"),
 )%>%
   filter(stat == "elpd", 
          solution_terms != "none",
          solution_terms != "day2",
-         solution_terms != "(1 | subject)")%>%
+         solution_terms != "(1 | subject)",
+         solution_terms != "(time_point | subject)",
+         solution_terms != "time_point")%>%
   select(size, solution_terms, task,phase, select)%>%
   group_by(solution_terms)%>%
   mutate(sum = sum(size))%>%
@@ -608,6 +623,7 @@ ro <- bind_rows(qvarselp%>%mutate(task = "quantity")%>%mutate(phase = "Phase 1")
     time_in_leipzig = "Time spent in research",
     rearing = "Rearing history",
     group = "Group",
+    observer_mod = "Observer present",
     observer = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
@@ -625,20 +641,21 @@ ro <- bind_rows(qvarselp%>%mutate(task = "quantity")%>%mutate(phase = "Phase 1")
 p1 <- ggplot(ro,aes(x = fct_reorder(solution_terms,sum), y = size, lty = phase, col = type ))+
   #geom_line(aes(group = task))+
   geom_line(aes(group = phase), alpha = .5, col = "black")+
-  geom_point(aes(pch = select), size = 3, stroke = 1)+
-  theme_few()+
+  geom_point(aes(pch = select), size = 2, stroke = 1)+
+  theme_minimal()+
   facet_grid(task~.)+
   labs(x = "", y = "Rank based on PPI model")+
   scale_color_brewer(palette="Set1", name = "")+
   scale_linetype(name = "")+
   scale_shape_manual(name = "", values =  c(1,4), labels = c("Irrelevant", "Relevant"))+
-  scale_y_reverse(breaks = c(14,10,5,1), limits = c(15,0))+
+  scale_y_reverse(breaks = c(15,10,5,1), limits = c(16,0))+
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         legend.box = "horizontal",
         legend.direction = "vertical",
         legend.position = "top", 
         legend.spacing.y = unit(0, 'cm'),
-        #legend.spacing.x = unit(0, 'cm')
+        #legend.spacing.x = unit(0, 'cm'),
+        panel.border  = element_rect(colour = "black",fill = NA)
         )
 ```
 
@@ -648,16 +665,20 @@ proj_samples <- bind_rows(
   readRDS("../writing/supplement/saves/proj_cvs_cau.rds")%>%mutate(task = "Causal inference", phase = "Phase 1"),
   readRDS("../writing/supplement/saves/proj_cvs_inf.rds")%>%mutate(task = "Inference by exclusion", phase = "Phase 1"),
   readRDS("../writing/supplement/saves/proj_cvs_quant.rds")%>%mutate(task = "Quantity discrimination", phase = "Phase 1"),
+  
+  readRDS("../writing/supplement/saves/proj_cvs_gaze_p2.rds")%>%mutate(task = "Gaze following", phase = "Phase 2"),
+  readRDS("../writing/supplement/saves/proj_cvs_cau_p2.rds")%>%mutate(task = "Causal inference", phase = "Phase 2"),
+  readRDS("../writing/supplement/saves/proj_cvs_inf_p2.rds")%>%mutate(task = "Inference by exclusion", phase = "Phase 2"),
+  readRDS("../writing/supplement/saves/proj_cvs_quant_p2.rds")%>%mutate(task = "Quantity discrimination", phase = "Phase 2"),
+    readRDS("../writing/supplement/saves/proj_cvs_grat_p2.rds")%>%mutate(task = "Delay of gratification", phase = "Phase 2"),
 )%>%
-  group_by(phase,task,factor, pred)%>%
-  summarise(mean = mean(value),
-            lci = hdi_lower(value),
-            uci = hdi_upper(value))%>%
+  filter(pred != "time_point")%>%
   mutate(pred = recode(pred,
     time_in_leipzig = "Time spent in research",
     rearing = "Rearing history",
     group = "Group",
     observer = "Observer present",
+    observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -682,34 +703,188 @@ proj_samples <- bind_rows(
                          group = "Group",
                          rearing = "Rearing \nhistory",
                          sex = "Sex",
-                         `other predictors` = ""))%>%
-  mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification"),labels = c("Gaze \nfollowing", "Causal \ninference","Inference \nby exclusion" ,"Quantity \ndiscrimination", "Delay of \ngratification")))
+                         `other predictors` = ""))
 
 
-p2 <- ggplot(proj_samples, aes(x = pred, y = mean, col = phase)) +
+proj_samples_sum <- proj_samples%>%
+  group_by(phase,task,factor, pred)%>%
+  summarise(mean = mean(value),
+            lci = hdi_lower(value),
+            uci = hdi_upper(value))
+
+p2<-proj_samples_sum%>%
+  mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification"),labels = c("Gaze \nfollowing", "Causal \ninference","Inference \nby exclusion" ,"Quantity \ndiscrimination", "Delay of \ngratification")))%>%
+  ggplot(aes(x = pred, y = mean, col = phase)) +
   geom_hline(yintercept = 0, lty = 3, alpha = .75)+
-  geom_pointrange(aes(ymin = lci, ymax = uci), pch = 4, size = 0.25)+
+  geom_pointrange(aes(ymin = lci, ymax = uci), pch = 4, size = 0.25, position = position_dodge(width = .5))+
   facet_grid(task~factor, scales = "free", space = "free_x")+
   labs(y = "Model estimate", x = "")+
-  theme_few()+
+  theme_minimal()+
   scale_color_colorblind(name = "")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
                 legend.direction = "vertical",
         legend.position = "top", 
-        legend.spacing.y = unit(0, 'cm'),)
+        legend.spacing.y = unit(0, 'cm'),
+        panel.border  = element_rect(colour = "black",fill = NA))
  
 ```
+
+```{r}
+grob <- ggplotGrob(p2);
+idx <- which(grob$layout$name %in% c("panel-2-3", "panel-2-4", "panel-2-5", "panel-3-3", "panel-3-4", "panel-3-5", "panel-4-5",  "panel-5-2",  "panel-5-4"));
+for (i in idx) grob$grobs[[i]] <- nullGrob();
+
+
+x <-   {grid::grid.newpage(); grid::grid.draw(grob)}
+```
+
 
 ```{r}
 df <- data.frame()
 pe <- ggplot(df) + geom_blank()+theme_void()
 
-ggarrange(p1,
-ggarrange(pe, p2,pe , ncol = 1, heights = c(0.08,1,0.04)), 
-widths = c(1.5,1))
+p_ppi <- ggarrange(p1,
+ggarrange(pe, p2,pe , ncol = 1, heights = c(0.01,1,0.045)), 
+widths = c(1,1))
 ```
 
 
 ```{r}
 ggsave("../writing/paper/figures/ppi3.png", width = 10, height = 6, scale = 1.25, bg = "white")
 ```
+
+```{r}
+pai <- proj_samples_sum%>%
+  filter(pred == "Age",
+         task == "Inference by exclusion")%>%
+  ggplot(aes(x = pred, y = mean, col = phase)) +
+  geom_hline(yintercept = 0, lty = 3, alpha = .75)+
+  geom_pointrange(aes(ymin = lci, ymax = uci), size = .25,pch = 4, position = position_dodge(width = 1))+
+  labs(y = element_blank(), x = element_blank())+
+  theme_void()+
+  ylim(-0.1, 0.025)+
+  scale_color_colorblind(name = "", guide = F)+
+  theme(panel.background = element_rect(fill = "white",
+                                colour = "black",
+                                size = 1, linetype = "solid")
+        )
+
+pag <- proj_samples_sum%>%
+  filter(pred == "Age",
+         task == "Gaze following")%>%
+  ggplot(aes(x = pred, y = mean, col = phase)) +
+  geom_hline(yintercept = 0, lty = 3, alpha = .75)+
+  geom_pointrange(aes(ymin = lci, ymax = uci), size = .25,pch = 4, position = position_dodge(width = 1))+
+  labs(y = element_blank(), x = element_blank())+
+  theme_void()+
+  ylim(-0.005, 0.015)+
+  scale_color_colorblind(name = "", guide = F)+
+  theme(panel.background = element_rect(fill = "white",
+                                colour = "black",
+                                size = 1, linetype = "solid")
+        )
+
+ptq <- proj_samples_sum%>%
+  filter(pred == "Time spent in research",
+         task == "Quantity discrimination")%>%
+  ggplot(aes(x = pred, y = mean, col = phase)) +
+  geom_hline(yintercept = 0, lty = 3, alpha = .75)+
+  geom_pointrange(aes(ymin = lci, ymax = uci), size = .25,pch = 4, position = position_dodge(width = 1))+
+  labs(y = element_blank(), x = element_blank())+
+  theme_void()+
+  ylim(-0.1, 0.3)+
+  scale_color_colorblind(name = "", guide = F)+
+  theme(panel.background = element_rect(fill = "white",
+                                colour = "black",
+                                size = 1, linetype = "solid")
+        )
+
+pti <- proj_samples_sum%>%
+  filter(pred == "Time spent in research",
+         task == "Inference by exclusion")%>%
+  ggplot(aes(x = pred, y = mean, col = phase)) +
+  geom_hline(yintercept = 0, lty = 3, alpha = .75)+
+  geom_pointrange(aes(ymin = lci, ymax = uci), size = .25,pch = 4, position = position_dodge(width = 1))+
+  labs(y = element_blank(), x = element_blank())+
+  theme_void()+
+  ylim(-0.1, 0.4)+
+  scale_color_colorblind(name = "", guide = F)+
+  theme(panel.background = element_rect(fill = "white",
+                                colour = "black",
+                                size = 1, linetype = "solid")
+        )
+
+ptd <- proj_samples_sum%>%
+  filter(pred == "Time spent in research",
+         task == "Delay of gratification")%>%
+  ggplot(aes(x = pred, y = mean, col = phase)) +
+  geom_hline(yintercept = 0, lty = 3, alpha = .75)+
+  geom_pointrange(aes(ymin = lci, ymax = uci), size = .25,pch = 4)+
+  labs(y = element_blank(), x = element_blank())+
+  theme_void()+
+  ylim(-0.1, 0.4)+
+  scale_color_manual(name = "", guide = F, values = "#E69F00")+
+  theme(panel.background = element_rect(fill = "white",
+                                colour = "black",
+                                size = 1, linetype = "solid")
+        )
+
+
+p2_i <- ggdraw() +
+  draw_plot(p2) +
+  draw_plot(pai, x = 0.105, y = .46, width = .03, height = .075)+
+  draw_plot(pag, x = 0.105, y = .71, width = .03, height = .075)+
+  draw_plot(ptq, x = 0.285, y = .33, width = .03, height = .075)+
+  draw_plot(pti, x = 0.285, y = .46, width = .03, height = .075)+
+  draw_plot(ptd, x = 0.285, y = .2, width = .03, height = .075)
+```
+
+```{r}
+ggarrange(p1,
+ggarrange(NULL, p2_i,NULL , ncol = 1, heights = c(0.014,1,0.042)), 
+widths = c(1,1.2))
+```
+
+```{r}
+ggsave("../writing/paper/figures/ppi3_i.png", width = 10, height = 6, scale = 1.25, bg = "white")
+```
+
+```{r}
+ggplot(ro,aes(x = fct_reorder(solution_terms,sum), y = size, lty = phase, col = type ))+
+  #geom_line(aes(group = task))+
+  geom_line(aes(group = phase), alpha = .5, col = "black")+
+  geom_point(aes(pch = select), size = 2, stroke = 1)+
+  theme_few()+
+  facet_grid(task~.)+
+  labs(x = "", y = "Rank based on PPI model")+
+  scale_color_brewer(palette="Set1", name = "")+
+  scale_linetype(name = "")+
+  scale_shape_manual(name = "", values =  c(1,4), labels = c("Irrelevant", "Relevant"))+
+  scale_y_reverse(breaks = c(15,10,5,1), limits = c(16,0))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.box = "vertical",
+        legend.direction = "vertical",
+        legend.position = "right", 
+        legend.spacing.y = unit(0, 'cm'),
+        #legend.spacing.x = unit(0, 'cm')
+        )
+```
+```{r}
+ggsave("../writing/paper/figures/ppi3_1.png", width = 8, height = 6, scale = 1.25, bg = "white")
+```
+
+```{r}
+proj_samples%>%
+  filter(factor == "Group")%>%
+  ggplot(aes(y = pred,x =value,  fill = phase))+
+  geom_vline(xintercept = 0, lty = 2, alpha = .75)+
+   stat_slab(height = 2, color = "black", alpha = .75) +
+  scale_fill_colorblind()+
+  facet_grid(~task, scales = "free_x")+
+  theme_minimal_hgrid()
+```
+
+```{r}
+ggsave("../writing/paper/figures/ppi3_2.png", width = 8, height = 6, scale = 1.25, bg = "white")
+```
+
