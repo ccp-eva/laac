@@ -3,14 +3,14 @@ title: "A baseline for inferences about human cognitive evolution: structure, st
 author: "tbd..."
 subtitle: Supplementary material
 output:
-  bookdown::pdf_document2:
-    toc: yes
-    number_sections: no
   bookdown::html_document2:
     toc: yes
     toc_float: yes
     fig_caption: yes
     code_folding: hide
+    number_sections: no
+  bookdown::pdf_document2:
+    toc: yes
     number_sections: no
   html_document:
     toc: yes
@@ -269,7 +269,7 @@ Participant's biological sex. Variable name in model: `sex`.
 
 Here, we differentiated between, `mother-reared`, `hand-reared` and `unknown`. The last category was used only for three chimpanzees. In the analysis, we classified them as `hand-reared` to facilitate model fitting (i.e. it is very difficult to estimate a parameter for a factor level with so little data). We think this decision is justified because the individuals in question have spent most of their life in close contact to humans and not in a larger chimpanzee group. Variable name in model: `rearing`.
 
-#### Time lived in Leipzig
+#### Time spent in research
 
 Absolute time the individual has lived in Leipzig Zoo. All apes living in Leipzig are involved in behavioral research to a certain degree. Thus, we take this measure to be a rough proxy of how much experience an individual has had with cognitive research. Variable name in model: `time_in_leipzig`.
 
@@ -1172,9 +1172,9 @@ We ran the same models for the data from Phase 1 and Phase 2. We first report th
 
 ### Phase 1
 
-To get an overview of the results, we first visualized the data. Figure \@ref(fig:perfplot) shows performance at the different time points. From a group-level perspective, we can say that performance was consistently above chance (0.5) in the causal inference and quantity tasks. For gaze following, there is no meaningful chance level. We can note, however, that group level performance never went down to zero, which would be expected if apes did not pay attention to the experimenter's gaze. The performance score in the switching task was largely negative, suggesting no successful switching between the two phases.
+To get an overview of the results, we first visualized the data. Figure \@ref(fig:perfplot) shows performance at the different time points. From a group-level perspective, we can say that performance was consistently above chance (0.5) in the causal inference and quantity discriminationtasks. For gaze following, there is no meaningful chance level. We can note, however, that group level performance never went down to zero, which would be expected if apes did not pay attention to the experimenter's gaze. The performance score in the switching task was largely negative, suggesting no successful switching between the two phases.
 
-For a first glimpse on the stability of individual differences, we correlated performance at the different time points for each task (all possible combinations of time points). Figure \@ref(fig:relplot)A visualizes the distribution of raw correlations between the different time points and \@ref(fig:relplot)B shows the relation between re-test correlations and the time span between time points. Correlations between time points were large and clearly different from zero for quantity, inference and gaze following. For quantity, this distribution was wider and closer to zero, but still clearly positive. For switching, the distribution was even wider and substantially overlapped with zero. For all tasks, correlations between time points tended to be lower for time points that were further apart [@uher2011individual].
+For a first glimpse on the stability of individual differences, we correlated performance at the different time points for each task (all possible combinations of time points). Figure \@ref(fig:relplot)A visualizes the distribution of raw correlations between the different time points and \@ref(fig:relplot)B shows the relation between re-test correlations and the time span between time points. Correlations between time points were large and clearly different from zero for quantity discrimination, inference by exclusion and gaze following. For quantity discrimination, this distribution was wider and closer to zero, but still clearly positive. For switching, the distribution was even wider and substantially overlapped with zero. For all tasks, correlations between time points tended to be lower for time points that were further apart [@uher2011individual].
 
 We excluded the switching task from further analysis for two reasons. First, group level scores were constantly negative and performance in the feature trials always overlapped with chance. This suggests that, as a group, apes did not successfully switch strategies (see Figure \@ref(fig:perfplot)). Second, the correlations between the different measurement time points were low, suggesting no systematic individual differences (see Figure \@ref(fig:relplot)).
 
@@ -1447,7 +1447,7 @@ In the LSTM, consistency was estimated to be around .758, that is around 76% of 
 
 In sum, we see a change in gaze following over time (Figure \@ref(fig:perfplot)). This group-level effect, however, did not affect differences between individuals, which were systematic across time points.
 
-#### Quantity
+#### Quantity discrimination
 
 The lowest three (out of seven possible) categories (0, 1 and 2 correctly solved trials per test half) were collapsed due to sparsity. Thresholds could not be set equal for test half 1 at time point 5, due to a different number of observed categories for the respective test half and time-point combination. Latent means can still be compared across time.
 
@@ -1798,7 +1798,7 @@ None of the latent state means -- except for time point 14 -- were significantly
 
 In the LSTM, consistency was estimated to be around 0.769, that is around 77% of true inter-individual differences are attributable to stable differences between individuals. Approximately 23% of inter-individual differences were due to variance in time point specific deviations from the stable trait. Reliability was high with an estimate of 0.77. In sum, gaze following in Phase 2 was stable over time with systematic and stable differences between individuals (Figure \@ref(fig:perfplot)).
 
-#### Quantity
+#### Quantity discrimination
 
 ... model fitting stuff ...
 
@@ -1994,14 +1994,14 @@ To analyse relations between different tasks (constructs), we estimated separate
 	
 
 %%%%%%%%%%%%% Korrelationen
-\foreach \a in {1,...,6} {\draw[<->,>=stealth',semithick,] (o\a) to [with1] (o\a1);}
+\foreach \a in {1,...,6} {\draw[<->,>=stealth ,semithick,] (o\a) to [with1] (o\a1);}
 
 \coordinate [below = 6cm of t1] (fit above) {};
 \coordinate [below= 6cm of t] (fit right) {};
 
-\draw[<-,>=stealth',semithick] (t1.south) -- (fit above);
+\draw[<-,>=stealth,semithick] (t1.south) -- (fit above);
 \draw[semithick] (fit above) -| (fit right);   
-\draw[->,>=stealth',semithick] (fit right) to (t.south);  
+\draw[->,>=stealth,semithick] (fit right) to (t.south);  
    
 \end{tikzpicture}
 
@@ -2066,15 +2066,15 @@ kable_classic(full_width = F)%>%
       footnote(c("PPP = Posterior predictive p-value", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values"))
 ```
 
-Model fit indices are shown in Table \@ref(tab:relt). Due to a low PPP value, the model for causal inference and quantity was modified such that for each task, test-half specific trait factors were estimated on the between-level. The correlations between the two tasks are therefore also reported as test-half specific trait correlations.
+Model fit indices are shown in Table \@ref(tab:relt). Due to a low PPP value, the model for causal inference and quantity discriminationwas modified such that for each task, test-half specific trait factors were estimated on the between-level. The correlations between the two tasks are therefore also reported as test-half specific trait correlations.
 
-The only correlations for which the 95% CI did not include zero were the state residual correlation between causal inference and inference ($r_{s_c,s_i}$ = `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(est)`, 95% CI = [`r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(lower_2.5ci)`; `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(upper_2.5ci)`]) and the trait correlation between inference and quantity ($r_{t_i,t_q}$ = `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]).
+The only correlations for which the 95% CI did not include zero were the state residual correlation between causal inference and inference by exclusion ($r_{s_c,s_i}$ = `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(est)`, 95% CI = [`r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(lower_2.5ci)`; `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(upper_2.5ci)`]) and the trait correlation between inference by exclusion and quantity discrimination ($r_{t_i,t_q}$ = `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]).
 
-The negative state correlations between causal inference and inference may be explained by the way the two tasks were presented. Remember that causal inference and inference trials used the same setup and were intermixed. A negative correlation suggests that higher (residual) performance in one task was associated with lower performance in the other task. Responding correctly in the two tasks required opposite choice behaviors. That is, in causal inference, the ape had to pick the cup the experimenter shook to be correct. In inference, it was the unshaken cup. Such a negative correlation arises when sometimes participants respond in the same way (e.g. pick the shaken cup) across tasks. Note, however, that if this were a stable strategy which individuals would consistently use, we would have seen a negative correlation between the trait estimates. The best explanation is thus that there are short periods of inattentiveness during which (some) participants confused the two tasks.
+The negative state correlations between causal inference and inference by exclusion may be explained by the way the two tasks were presented. Remember that causal inference and inference by exclusion trials used the same setup and were intermixed. A negative correlation suggests that higher (residual) performance in one task was associated with lower performance in the other task. Responding correctly in the two tasks required opposite choice behaviors. That is, in causal inference, the ape had to pick the cup the experimenter shook to be correct. In inference, it was the unshaken cup. Such a negative correlation arises when sometimes participants respond in the same way (e.g. pick the shaken cup) across tasks. Note, however, that if this were a stable strategy which individuals would consistently use, we would have seen a negative correlation between the trait estimates. The best explanation is thus that there are short periods of inattentiveness during which (some) participants confused the two tasks.
 
-The trait correlation between inference and quantity was positive, suggesting that individuals with better quantity judgment abilities also have better inferential abilities.
+The trait correlation between inference by exclusion and quantity discrimination was positive, suggesting that individuals with better quantity judgment abilities also have better inferential abilities.
 
-One (out of four) of the test-half specific trait correlations between causal inference and quantity was also reliably different from zero ($r_{t_{c_{h2}},t_{q_{h1}}}$ = `r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(est)`, 95% CI = [`r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(lower_2.5ci)`; `r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(upper_2.5ci)`]). We do not consider this result to be substantial evidence for a substantive association between the trait estimates in the two tasks and therefore do not interpret it any further. Figure \@ref(fig:mtmplot) shows all correlations between the different tasks.
+One (out of four) of the test-half specific trait correlations between causal inference and quantity discrimination was also reliably different from zero ($r_{t_{c_{h2}},t_{q_{h1}}}$ = `r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(est)`, 95% CI = [`r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(lower_2.5ci)`; `r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(upper_2.5ci)`]). We do not consider this result to be substantial evidence for a substantive association between the trait estimates in the two tasks and therefore do not interpret it any further. Figure \@ref(fig:mtmplot) shows all correlations between the different tasks.
 
 ```{r}
 mtmcor <- bind_rows(
@@ -2126,7 +2126,7 @@ pmtmcor <- mtmcor%>%
   theme(legend.position = c(0.92,0.75), legend.direction = "vertical", legend.title = element_blank(), legend.key = element_blank())
 ```
 
-```{r mtmplot, fig.height=4, fig.width=8, fig.cap = "Phase 1: correlations between latent traits and latent state residual variables, respectively, of different tasks. Bold correlations are different from zero as judged by the 95\\% CI. The trait correlations between quantity and causal inference are not displayed, see main text for details. See main text for details.", out.width="100%"}
+```{r mtmplot, fig.height=4, fig.width=8, fig.cap = "Phase 1: correlations between latent traits and latent state residual variables, respectively, of different tasks. Bold correlations are different from zero as judged by the 95\\% CI. The trait correlations between quantity discrimination and causal inference are not displayed, see main text for details. See main text for details.", out.width="100%"}
 pmtmcor
 ```
 
@@ -2283,9 +2283,9 @@ As noted above, we had to fit a 2-part LST model to the data of the inference by
 
 For the state residuals, the correlation between inference by exclusion and delay of gratification for the forst part of the 2-part model was estimated to be reliably different from zero ($r_{s_{i_1},s_{d_1}}$ = `r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(est)`, 95% CI = [`r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(lower_2.5ci)`; `r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(upper_2.5ci)`]). Given that for the second part of this pairing the correlation was effectively zero ($r_{s_{i_2},s_{d_2}}$ = `r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(est)`, 95% CI = [`r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(lower_2.5ci)`; `r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(upper_2.5ci)`]), we do not take this to be strong evidence for a systematic relation between the state residuals.
 
-Five of nine task combinations showed evidence for a subtantial trait correlation. These included quantity discrimination and delay of gratification ($r_{t_d,t_q}$ = `r lstqd2$parameters$stdyx.standardized%>%filter(paramHeader == "TD.WITH")%>%pull(est)`, 95% CI = [`r lstqd2$parameters$stdyx.standardized%>%filter(paramHeader == "TD.WITH")%>%pull(lower_2.5ci)`; `r lstqd2$parameters$stdyx.standardized%>%filter(paramHeader == "TD.WITH")%>%pull(upper_2.5ci)`]) as well as quantity and gaze following ($r_{t_g,t_q}$ = `r lstqg2$parameters$stdyx.standardized%>%filter(paramHeader == "TG.WITH")%>%pull(est)`, 95% CI = [`r lstqg2$parameters$stdyx.standardized%>%filter(paramHeader == "TG.WITH")%>%pull(lower_2.5ci)`; `r lstqg2$parameters$stdyx.standardized%>%filter(paramHeader == "TG.WITH")%>%pull(upper_2.5ci)`]). The remaining three included the inference by exclusion task and thus had two cefficients per combination: inference by exclusion and causal inference (Part 1: $r_{t_{i_1},t_{q_1}}$ = `r lstci2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstci2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstci2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]; Part 2: $r_{t_{i_2},t_{q_2}}$ = `r lstci2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstci2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstci2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]) as well as inference by exclusion and delay of gratification (Part 1: $r_{t_{i_1},t_{d_1}}$ = `r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]; Part 2: $r_{t_{i_2},t_{d_2}}$ = `r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]). For inference by exclusion and quantity discrimination, only the correlation for Part 1 was reliably different from zero, the one for Part 2, however, was also largely positive (Part 1: $r_{t_{i_1},t_{q_1}}$ = `r lstiq2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]; Part 2: $r_{t_{i_2},t_{q_2}}$ = `r lstiq2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]).
+Five of nine task combinations showed evidence for a subtantial trait correlation. These included quantity discrimination and delay of gratification ($r_{t_d,t_q}$ = `r lstqd2$parameters$stdyx.standardized%>%filter(paramHeader == "TD.WITH")%>%pull(est)`, 95% CI = [`r lstqd2$parameters$stdyx.standardized%>%filter(paramHeader == "TD.WITH")%>%pull(lower_2.5ci)`; `r lstqd2$parameters$stdyx.standardized%>%filter(paramHeader == "TD.WITH")%>%pull(upper_2.5ci)`]) as well as quantity discriminationand gaze following ($r_{t_g,t_q}$ = `r lstqg2$parameters$stdyx.standardized%>%filter(paramHeader == "TG.WITH")%>%pull(est)`, 95% CI = [`r lstqg2$parameters$stdyx.standardized%>%filter(paramHeader == "TG.WITH")%>%pull(lower_2.5ci)`; `r lstqg2$parameters$stdyx.standardized%>%filter(paramHeader == "TG.WITH")%>%pull(upper_2.5ci)`]). The remaining three included the inference by exclusion task and thus had two cefficients per combination: inference by exclusion and causal inference (Part 1: $r_{t_{i_1},t_{q_1}}$ = `r lstci2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstci2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstci2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]; Part 2: $r_{t_{i_2},t_{q_2}}$ = `r lstci2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstci2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstci2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]) as well as inference by exclusion and delay of gratification (Part 1: $r_{t_{i_1},t_{d_1}}$ = `r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]; Part 2: $r_{t_{i_2},t_{d_2}}$ = `r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]). For inference by exclusion and quantity discrimination, only the correlation for Part 1 was reliably different from zero, the one for Part 2, however, was also largely positive (Part 1: $r_{t_{i_1},t_{q_1}}$ = `r lstiq2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]; Part 2: $r_{t_{i_2},t_{q_2}}$ = `r lstiq2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]).
 
-Two (out of four) of the test-half specific trait correlations between causal inference and quantity were also reliably different from zero ($r_{t_{c_{h1}},t_{q_{h2}}}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(upper_2.5ci)`]; $r_{t_{c_{h2}},t_{q_{h2}}}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(upper_2.5ci)`]). Given that a third correlation was also of similar magnitude ($r_{t_{c_{h2}},t_{q_{h1}}}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(upper_2.5ci)`]), we consider this to be at least suggestive evidence that individuals with higher quantitative abilities were also better at making causal inferences. Figure \@ref(fig:mtmplot2) shows all correlations between the different tasks.
+Two (out of four) of the test-half specific trait correlations between causal inference and quantity discrimination were also reliably different from zero ($r_{t_{c_{h1}},t_{q_{h2}}}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(upper_2.5ci)`]; $r_{t_{c_{h2}},t_{q_{h2}}}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(upper_2.5ci)`]). Given that a third correlation was also of similar magnitude ($r_{t_{c_{h2}},t_{q_{h1}}}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(upper_2.5ci)`]), we consider this to be at least suggestive evidence that individuals with higher quantitative abilities were also better at making causal inferences. Figure \@ref(fig:mtmplot2) shows all correlations between the different tasks.
 
 ```{r mtmplot2, fig.height=4, fig.width=8, fig.cap = "Phase 2: correlations between latent traits and latent state residual variables, respectively, of different tasks. Bold correlations are different from zero as judged by the 95\\% CI.", out.width="100%"}
 pmtmcor2
@@ -2293,11 +2293,11 @@ pmtmcor2
 
 ### Comparison between phases
 
-The most notable difference between the two phases was that we saw more substantial trait correlations in Phase 2 compared to Phase 1. This was expected given that we had one additional task in Phase 2 and thus four more combined models. The only significant trait correlation from Phase 1 also turned out to be significant in Phase 2 (quantity and inference by exclusion). For the tasks that were part of both phases, correlations were numerically similar (Figure \@ref(fig:mtmplotc)).
+The most notable difference between the two phases was that we saw more substantial trait correlations in Phase 2 compared to Phase 1. This was expected given that we had one additional task in Phase 2 and thus four more combined models. The only significant trait correlation from Phase 1 also turned out to be significant in Phase 2 (quantity discrimination and inference by exclusion). For the tasks that were part of both phases, correlations were numerically similar (Figure \@ref(fig:mtmplotc)).
 
-These results suggest some commonalities between the traits -- with gaze following being an exception (see Figure \@ref(fig:mtmplotc)). However, the sample size we studied here is still comparatively small for individual differences research. Larger samples are needed to corroborate these findings.
+These results suggest low to moderate commonalities between the traits -- with gaze following being an exception (see Figure \@ref(fig:mtmplotc)). However, the sample size we studied here is still comparatively small for individual differences research. Larger samples are needed to corroborate these findings.
 
-The significant *negative* state residual correlation between causal inference and inference by exclusion found in Phase 1 was not present in Phase 2. This suggests a de-coupling between the two tasks in that apes were less likely to confuse them with one another in Phase 2. This interpretation is also supported by the increase in group-level performance for inference by exlucsion and an increase in the trait correlation between the two tasks.
+The significant *negative* state residual correlation between causal inference and inference by exclusion found in Phase 1 was not present in Phase 2. This suggests a de-coupling between the two tasks in that apes were less likely to confuse them in Phase 2. This interpretation is also supported by the increase in group-level performance for inference by exclusion and an increase in the trait correlation between the two tasks.
 
 ```{r}
 lstmcor <- bind_rows(
@@ -2375,246 +2375,246 @@ The output of the projection predictive inference models is a ranking of the dif
 ### Phase 1
 
 ```{r}
-ncores <- parallel::detectCores()
+#ncores <- parallel::detectCores()
 ```
 
 ```{r, include = FALSE}
-# data pre-processing
-
-df_trials <- read_csv("../../data/laac_data_trial.csv")
-
-df_trials <- df_trials %>% 
-  select(-c(time_waited, birth_date, comment, experimenter, pick, condition, heat))
-
-
-sum_resp <- function(x, ...) {
-  # helper function: sum over `correct response` variable (code)
-  to_return = tibble(cogn = sum(x$code))
-}
-
-resp_sum <- df_trials %>%
-  # contains summed code variable for [task, time point, session, subject]
-  group_by(time_point, session, subject, task) %>%
-  group_modify(sum_resp)
-
-df_tmp <- df_trials %>%
-  # helper function: for merging
-  select(-c(date, trial_session, trial_time_point, code)) %>%
-  unique(by = c("time_point", "session", "subject"))
-
-df_trials_final <- inner_join(df_tmp, resp_sum)
-
-df_trials_final <- df_trials_final %>% 
-  # grand mean center below variables
-  mutate(across(c(sick_severity, 
-                  le_mean, 
-                  dist_mean, 
-                  time_outdoors, 
-                  age, 
-                  time_in_leipzig), 
-                ~scale(., center = T, scale = F))) %>% 
-  mutate(across(c(session, 
-                  subject, 
-                  group, 
-                  sex,
-                  test_day, 
-                  le_present, 
-                  dist_present,
-                  rearing,
-                  observer), 
-                as_factor)) %>% 
-  mutate(observer = fct_relevel(observer, "no")) %>% 
-  mutate(rearing = fct_recode(rearing, "hand" = "unknown")) %>% 
-  # create new observer variable due to different measurements of observer between phases
-  mutate(observer_mod = case_when(
-    observer == "yes" ~ "yes",
-    observer == "no" ~ "no",
-    observer != "no" & observer != "yes" & observer != "NA" ~ "yes",
-    TRUE ~ "no"
-  ), observer_mod =  as_factor(observer_mod))
-
-grp_size <- tibble(
-  # number of apes for each species
-  a_chimp = 20,
-  b_chimp = 6,
-  bonobo = 12,
-  gorilla = 6,
-  orangutan = 6
-)
-
-df_trials_final <- df_trials_final %>%
-  # relative rank of ape within species (varies between time points)
-  group_by(group, time_point) %>%
-  mutate(
-    rel_rank = case_when(
-      group == "a_chimp" ~ percent_rank(grp_size$a_chimp:1)[rank],
-      group == "b_chimp" ~ percent_rank(grp_size$b_chimp:1)[rank],
-      group == "bonobo" ~ percent_rank(grp_size$bonobo:1)[rank],
-      group == "gorilla" ~ percent_rank(grp_size$gorilla:1)[rank],
-      group == "orangutan" ~ percent_rank(grp_size$orangutan:1)[rank]
-    )
-  ) %>%
-  ungroup()
+# # data pre-processing
+# 
+# df_trials <- read_csv("../../data/laac_data_trial.csv")
+# 
+# df_trials <- df_trials %>% 
+#   select(-c(time_waited, birth_date, comment, experimenter, pick, condition, heat))
+# 
+# 
+# sum_resp <- function(x, ...) {
+#   # helper function: sum over `correct response` variable (code)
+#   to_return = tibble(cogn = sum(x$code))
+# }
+# 
+# resp_sum <- df_trials %>%
+#   # contains summed code variable for [task, time point, session, subject]
+#   group_by(time_point, session, subject, task) %>%
+#   group_modify(sum_resp)
+# 
+# df_tmp <- df_trials %>%
+#   # helper function: for merging
+#   select(-c(date, trial_session, trial_time_point, code)) %>%
+#   unique(by = c("time_point", "session", "subject"))
+# 
+# df_trials_final <- inner_join(df_tmp, resp_sum)
+# 
+# df_trials_final <- df_trials_final %>% 
+#   # grand mean center below variables
+#   mutate(across(c(sick_severity, 
+#                   le_mean, 
+#                   dist_mean, 
+#                   time_outdoors, 
+#                   age, 
+#                   time_in_leipzig), 
+#                 ~scale(., center = T, scale = F))) %>% 
+#   mutate(across(c(session, 
+#                   subject, 
+#                   group, 
+#                   sex,
+#                   test_day, 
+#                   le_present, 
+#                   dist_present,
+#                   rearing,
+#                   observer), 
+#                 as_factor)) %>% 
+#   mutate(observer = fct_relevel(observer, "no")) %>% 
+#   mutate(rearing = fct_recode(rearing, "hand" = "unknown")) %>% 
+#   # create new observer variable due to different measurements of observer between phases
+#   mutate(observer_mod = case_when(
+#     observer == "yes" ~ "yes",
+#     observer == "no" ~ "no",
+#     observer != "no" & observer != "yes" & observer != "NA" ~ "yes",
+#     TRUE ~ "no"
+#   ), observer_mod =  as_factor(observer_mod))
+# 
+# grp_size <- tibble(
+#   # number of apes for each species
+#   a_chimp = 20,
+#   b_chimp = 6,
+#   bonobo = 12,
+#   gorilla = 6,
+#   orangutan = 6
+# )
+# 
+# df_trials_final <- df_trials_final %>%
+#   # relative rank of ape within species (varies between time points)
+#   group_by(group, time_point) %>%
+#   mutate(
+#     rel_rank = case_when(
+#       group == "a_chimp" ~ percent_rank(grp_size$a_chimp:1)[rank],
+#       group == "b_chimp" ~ percent_rank(grp_size$b_chimp:1)[rank],
+#       group == "bonobo" ~ percent_rank(grp_size$bonobo:1)[rank],
+#       group == "gorilla" ~ percent_rank(grp_size$gorilla:1)[rank],
+#       group == "orangutan" ~ percent_rank(grp_size$orangutan:1)[rank]
+#     )
+#   ) %>%
+#   ungroup()
 ```
 
 ```{r, include = F}
-# create complete subsets for each task
-t_cau <- filter(df_trials_final, task == "causality")
-t_inf <- filter(df_trials_final, task == "inference")
-t_quant <- filter(df_trials_final, task == "quantity")
-t_gaze <- filter(df_trials_final, task == "gaze_following")
-t_grat <- filter(df_trials_final, task == "delay_of_gratification")
+# # create complete subsets for each task
+# t_cau <- filter(df_trials_final, task == "causality")
+# t_inf <- filter(df_trials_final, task == "inference")
+# t_quant <- filter(df_trials_final, task == "quantity")
+# t_gaze <- filter(df_trials_final, task == "gaze_following")
+# t_grat <- filter(df_trials_final, task == "delay_of_gratification")
 ```
 
 ```{r, include = F}
-t_gaze <- t_gaze %>%
-  # create dummy variable indicating if in session 1 or 2
-  group_by(time_point, session) %>% 
-  mutate(tp_mod = cur_group_id()) %>%
-  ungroup() %>% 
-  mutate(day2 = case_when(session == 1 ~ "no",
-                          session == 2 ~ "yes"),
-         day2 = factor(day2)) %>%
-  select(tp_mod, day2, everything())
-
-t_gaze <- t_gaze %>%
-  # remove duplicates created by day2
-  group_by(subject) %>%
-  filter(!duplicated(tp_mod)) %>%   
-  ungroup() 
+# t_gaze <- t_gaze %>%
+#   # create dummy variable indicating if in session 1 or 2
+#   group_by(time_point, session) %>% 
+#   mutate(tp_mod = cur_group_id()) %>%
+#   ungroup() %>% 
+#   mutate(day2 = case_when(session == 1 ~ "no",
+#                           session == 2 ~ "yes"),
+#          day2 = factor(day2)) %>%
+#   select(tp_mod, day2, everything())
+# 
+# t_gaze <- t_gaze %>%
+#   # remove duplicates created by day2
+#   group_by(subject) %>%
+#   filter(!duplicated(tp_mod)) %>%   
+#   ungroup() 
 ```
 
 ```{r, include = F}
-# filter data to only include time points from phase 1
-t_cau_p1 <- filter(t_cau, time_point < 15)
-t_inf_p1 <- filter(t_inf, time_point < 15)
-t_quant_p1 <- filter(t_quant, time_point < 15)
-t_gaze_p1 <- filter(t_gaze, time_point < 15)
-
-# filter data to only include time points from phase 2
-t_cau_p2 <- filter(t_cau, time_point >= 15)
-t_inf_p2 <- filter(t_inf, time_point >= 15)
-t_quant_p2 <- filter(t_quant, time_point >= 15)
-t_gaze_p2 <- filter(t_gaze, time_point >= 15)
-t_grat_p2 <- filter(t_grat, time_point >= 15)
+# # filter data to only include time points from phase 1
+# t_cau_p1 <- filter(t_cau, time_point < 15)
+# t_inf_p1 <- filter(t_inf, time_point < 15)
+# t_quant_p1 <- filter(t_quant, time_point < 15)
+# t_gaze_p1 <- filter(t_gaze, time_point < 15)
+# 
+# # filter data to only include time points from phase 2
+# t_cau_p2 <- filter(t_cau, time_point >= 15)
+# t_inf_p2 <- filter(t_inf, time_point >= 15)
+# t_quant_p2 <- filter(t_quant, time_point >= 15)
+# t_gaze_p2 <- filter(t_gaze, time_point >= 15)
+# t_grat_p2 <- filter(t_grat, time_point >= 15)
 ```
 
 ```{r}
-# formula for reference models
-fm <- formula(cogn ~ sick_severity +                    
-                test_tp + test_day +             
-                rel_rank + 
-                observer_mod + 
-                age + time_in_leipzig +
-                sex + group +
-                rearing +
-                le_mean + dist_mean + 
-                time_outdoors +
-                sociality +
-                (1|subject))
-# formula for gaze reference model
-fm_gaze <- formula(cogn ~ sick_severity +                    
-                     test_tp + test_day + time_point + day2 +            
-                     rel_rank + 
-                     observer_mod + 
-                     age + time_in_leipzig +
-                     sex + group +
-                     rearing +
-                     le_mean + dist_mean + 
-                     time_outdoors +
-                     sociality +
-                     (1 + time_point|subject))
+# # formula for reference models
+# fm <- formula(cogn ~ sick_severity +                    
+#                 test_tp + test_day +             
+#                 rel_rank + 
+#                 observer_mod + 
+#                 age + time_in_leipzig +
+#                 sex + group +
+#                 rearing +
+#                 le_mean + dist_mean + 
+#                 time_outdoors +
+#                 sociality +
+#                 (1|subject))
+# # formula for gaze reference model
+# fm_gaze <- formula(cogn ~ sick_severity +                    
+#                      test_tp + test_day + time_point + day2 +            
+#                      rel_rank + 
+#                      observer_mod + 
+#                      age + time_in_leipzig +
+#                      sex + group +
+#                      rearing +
+#                      le_mean + dist_mean + 
+#                      time_outdoors +
+#                      sociality +
+#                      (1 + time_point|subject))
 ```
 
 ```{r}
-m_cau_2l_p1 <- brm(fm, data = t_cau_p1, 
-                   warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                   seed = 2021)
-m_inf_2l_p1 <- brm(fm, data = t_inf_p1, 
-                   warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                   seed = 2021)
-m_quant_2l_p1 <- brm(fm, data = t_quant_p1, 
-                     warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                     seed = 2021)
-m_gaze_2l_p1 <- brm(fm_gaze, data = t_gaze_p1, 
-                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                    seed = 2021)
+# m_cau_2l_p1 <- brm(fm, data = t_cau_p1, 
+#                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+#                    seed = 2021)
+# m_inf_2l_p1 <- brm(fm, data = t_inf_p1, 
+#                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+#                    seed = 2021)
+# m_quant_2l_p1 <- brm(fm, data = t_quant_p1, 
+#                      warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+#                      seed = 2021)
+# m_gaze_2l_p1 <- brm(fm_gaze, data = t_gaze_p1, 
+#                     warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+#                     seed = 2021)
 ```
 
 ```{r}
-m_cau_2l_p2 <- brm(fm, data = t_cau_p2, 
-                   warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                   seed = 2022)
-m_inf_2l_p2 <- brm(fm, data = t_inf_p2, 
-                   warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                   seed = 2022)
-m_quant_2l_p2 <- brm(fm, data = t_quant_p2, 
-                     warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                     seed = 2022)
-m_gaze_2l_p2 <- brm(fm_gaze, data = t_gaze_p2, 
-                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                    seed = 2022)
-m_grat_2l_p2 <- brm(fm, data = t_grat_p2,
-                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
-                    seed = 2022)
+# m_cau_2l_p2 <- brm(fm, data = t_cau_p2, 
+#                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+#                    seed = 2022)
+# m_inf_2l_p2 <- brm(fm, data = t_inf_p2, 
+#                    warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+#                    seed = 2022)
+# m_quant_2l_p2 <- brm(fm, data = t_quant_p2, 
+#                      warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+#                      seed = 2022)
+# m_gaze_2l_p2 <- brm(fm_gaze, data = t_gaze_p2, 
+#                     warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+#                     seed = 2022)
+# m_grat_2l_p2 <- brm(fm, data = t_grat_p2,
+#                     warmup = 1e3, iter = 4e3, cores = ncores, chains = 4, 
+#                     seed = 2022)
 ```
 
 ```{r}
-all_fixed_effects <- c("sick_severity",
-                       "test_tp", "test_day",
-                       "rel_rank",
-                       "observer_mod",
-                       "age", "time_in_leipzig",
-                       "sex", "group",
-                       "rearing",
-                       "le_mean", "dist_mean",
-                       "time_outdoors",
-                       "sociality")
-# delay random intercept to last place so that it doesn't soak up all the variance
-s_terms <- c("1", all_fixed_effects, 
-             paste0(paste(all_fixed_effects, collapse = " + "), 
-                    " + (1 | subject)")) 
-# gaze task gets its own search terms vector (including day2 and time_point (fixed/random))
-s_terms_gaze <- c("1", c(all_fixed_effects, "day2", "time_point"), 
-                  paste0(paste(all_fixed_effects, collapse = " + "), 
-                    " + (1 | subject)"),
-                  paste0(paste(all_fixed_effects, collapse = " + "), 
-                    " + (time_point | subject)"))
+# all_fixed_effects <- c("sick_severity",
+#                        "test_tp", "test_day",
+#                        "rel_rank",
+#                        "observer_mod",
+#                        "age", "time_in_leipzig",
+#                        "sex", "group",
+#                        "rearing",
+#                        "le_mean", "dist_mean",
+#                        "time_outdoors",
+#                        "sociality")
+# # delay random intercept to last place so that it doesn't soak up all the variance
+# s_terms <- c("1", all_fixed_effects, 
+#              paste0(paste(all_fixed_effects, collapse = " + "), 
+#                     " + (1 | subject)")) 
+# # gaze task gets its own search terms vector (including day2 and time_point (fixed/random))
+# s_terms_gaze <- c("1", c(all_fixed_effects, "day2", "time_point"), 
+#                   paste0(paste(all_fixed_effects, collapse = " + "), 
+#                     " + (1 | subject)"),
+#                   paste0(paste(all_fixed_effects, collapse = " + "), 
+#                     " + (time_point | subject)"))
 ```
 
 #### Causal inference
 
 ```{r, warning = FALSE}
-cvs_cau_p1 <- cv_varsel(m_cau_2l_p1, 
-                        search_terms = s_terms, 
-                        cv_method = "LOO", method = "forward",
-                        seed = 2020)
-
-saveRDS(cvs_cau_p1,"./saves/cvs_cau.rds")
-
-cvs_cau <- readRDS("./saves/cvs_cau.rds")
+# cvs_cau_p1 <- cv_varsel(m_cau_2l_p1, 
+#                         search_terms = s_terms, 
+#                         cv_method = "LOO", method = "forward",
+#                         seed = 2020)
+# 
+# saveRDS(cvs_cau_p1,"./saves/cvs_cau.rds")
+# 
+# cvs_cau <- readRDS("./saves/cvs_cau.rds")
 
 ```
 
 ```{r}
-cvarselp <- summary(cvs_cau, stats = c('elpd', 'rmse'))%>%
-  tibble()%>%
-  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
-  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
-  rowwise()%>%
-  filter(grepl(stat,se_term))%>%
-  select(-se_term)%>%
-  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
-         select = ifelse(solution_terms  %in% c("(1 | subject)", "group"), "yes", "no"))
-
-saveRDS(cvarselp, "./saves/cvs_cau_summary.rds")
-
-ref_c_p1 <- tibble(
-  stat = c('elpd', 'rmse'),
-  value = c(sum(cvs_cau$summaries$ref$lppd) , sqrt(mean((cvs_cau$refmodel$fit$data$cogn - cvs_cau$summaries$ref$mu)^2)))
-)
-
-saveRDS(ref_c_p1, "./saves/cvs_cau_ref.rds")
+# cvarselp <- summary(cvs_cau, stats = c('elpd', 'rmse'))%>%
+#   tibble()%>%
+#   pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+#   pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+#   rowwise()%>%
+#   filter(grepl(stat,se_term))%>%
+#   select(-se_term)%>%
+#   mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+#          select = ifelse(solution_terms  %in% c("(1 | subject)", "group"), "yes", "no"))
+# 
+# saveRDS(cvarselp, "./saves/cvs_cau_summary.rds")
+# 
+# ref_c_p1 <- tibble(
+#   stat = c('elpd', 'rmse'),
+#   value = c(sum(cvs_cau$summaries$ref$lppd) , sqrt(mean((cvs_cau$refmodel$fit$data$cogn - cvs_cau$summaries$ref$mu)^2)))
+# )
+# 
+# saveRDS(ref_c_p1, "./saves/cvs_cau_ref.rds")
 
 
 ref_c_p1 <-readRDS("./saves/cvs_cau_ref.rds") 
@@ -2625,6 +2625,7 @@ cvarselp <- readRDS("./saves/cvs_cau_summary.rds")%>%
     rearing = "Rearing history",
     group = "Group",
     observer = "Observer present",
+    observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -2665,18 +2666,18 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-proj_cau_cv <- project(cvs_cau,  solution_terms = c(1, 14))
-
-proj_samples_cau <- as.matrix(proj_cau_cv)%>%
-  as_tibble()%>%
-  pivot_longer(cols =c(1:8), names_to = "pred", values_to = "value")%>%
-  filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
-  mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
-         pred = str_remove(pred,"group"),
-         pred = str_remove(pred,"rel_"),
-         species = ifelse(factor == "group", pred,factor))
-
-saveRDS(proj_samples_cau,"./saves/proj_cvs_cau.rds")
+# proj_cau_cv <- project(cvs_cau,  solution_terms = c(1, 14))
+# 
+# proj_samples_cau <- as.matrix(proj_cau_cv)%>%
+#   as_tibble()%>%
+#   pivot_longer(cols =c(1:8), names_to = "pred", values_to = "value")%>%
+#   filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+#   mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
+#          pred = str_remove(pred,"group"),
+#          pred = str_remove(pred,"rel_"),
+#          species = ifelse(factor == "group", pred,factor))
+# 
+# saveRDS(proj_samples_cau,"./saves/proj_cvs_cau.rds")
 
 proj_samples_cau <- readRDS("./saves/proj_cvs_cau.rds")%>%
   mutate(pred = recode(pred,
@@ -2684,6 +2685,7 @@ proj_samples_cau <- readRDS("./saves/proj_cvs_cau.rds")%>%
     rearing = "Rearing history",
     group = "Group",
     observer = "Observer present",
+    observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -2730,35 +2732,35 @@ Figure \@ref(fig:cselp) visualizes the results. Out of the 13 predictor variable
 #### Inference by exclusion
 
 ```{r, warning = F}
-cvs_inf_p1 <- cv_varsel(m_inf_2l_p1, 
-                        search_terms = s_terms, 
-                        cv_method = "LOO", method = "forward",
-                        seed = 2020)
-
-saveRDS(cvs_inf_p1,"./saves/cvs_inf.rds")
-
-cvs_inf <- readRDS("./saves/cvs_inf.rds")
+# cvs_inf_p1 <- cv_varsel(m_inf_2l_p1, 
+#                         search_terms = s_terms, 
+#                         cv_method = "LOO", method = "forward",
+#                         seed = 2020)
+# 
+# saveRDS(cvs_inf_p1,"./saves/cvs_inf.rds")
+# 
+# cvs_inf <- readRDS("./saves/cvs_inf.rds")
 ```
 
 ```{r}
-ivarselp <- summary(cvs_inf, stats = c('elpd', 'rmse'))%>%
-  tibble()%>%
-  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
-  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
-  rowwise()%>%
-  filter(grepl(stat,se_term))%>%
-  select(-se_term)%>%
-  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
-         select = ifelse(solution_terms  %in% c("(1 | subject)", "time_in_leipzig", "group", "age"), "yes", "no"))
-
-saveRDS(ivarselp, "./saves/cvs_inf_summary.rds")
-
-ref_i_p1 <- tibble(
-  stat = c('elpd', 'rmse'),
-  value = c(sum(cvs_inf$summaries$ref$lppd) , sqrt(mean((cvs_inf$refmodel$fit$data$cogn - cvs_inf$summaries$ref$mu)^2)))
-)
-
-saveRDS(ref_i_p1, "./saves/cvs_inf_ref.rds")
+# ivarselp <- summary(cvs_inf, stats = c('elpd', 'rmse'))%>%
+#   tibble()%>%
+#   pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+#   pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+#   rowwise()%>%
+#   filter(grepl(stat,se_term))%>%
+#   select(-se_term)%>%
+#   mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+#          select = ifelse(solution_terms  %in% c("(1 | subject)", "time_in_leipzig", "group", "age"), "yes", "no"))
+# 
+# saveRDS(ivarselp, "./saves/cvs_inf_summary.rds")
+# 
+# ref_i_p1 <- tibble(
+#   stat = c('elpd', 'rmse'),
+#   value = c(sum(cvs_inf$summaries$ref$lppd) , sqrt(mean((cvs_inf$refmodel$fit$data$cogn - cvs_inf$summaries$ref$mu)^2)))
+# )
+# 
+# saveRDS(ref_i_p1, "./saves/cvs_inf_ref.rds")
 
 ref_i_p1 <-readRDS("./saves/cvs_inf_ref.rds") 
 
@@ -2768,6 +2770,7 @@ ivarselp <- readRDS("./saves/cvs_inf_summary.rds")%>%
     rearing = "Rearing history",
     group = "Group",
     observer = "Observer present",
+    observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -2805,17 +2808,17 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-proj_inf_cv <- project(cvs_inf,  solution_terms = c(1, 2, 3))
-
-proj_samples_inf <- as.matrix(proj_inf_cv)%>%
-  as_tibble()%>%
-  pivot_longer(cols =c(1:9), names_to = "pred", values_to = "value")%>%
-  filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
-  mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
-         pred = str_remove(pred,"group"),
-         species = ifelse(factor == "group", pred,factor))
-
-saveRDS(proj_samples_inf,"./saves/proj_cvs_inf.rds")
+# proj_inf_cv <- project(cvs_inf,  solution_terms = c(1, 2, 3))
+# 
+# proj_samples_inf <- as.matrix(proj_inf_cv)%>%
+#   as_tibble()%>%
+#   pivot_longer(cols =c(1:9), names_to = "pred", values_to = "value")%>%
+#   filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+#   mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
+#          pred = str_remove(pred,"group"),
+#          species = ifelse(factor == "group", pred,factor))
+# 
+# saveRDS(proj_samples_inf,"./saves/proj_cvs_inf.rds")
 
 proj_samples_inf <- readRDS("./saves/proj_cvs_inf.rds")%>%
   mutate(pred = recode(pred,
@@ -2823,6 +2826,7 @@ proj_samples_inf <- readRDS("./saves/proj_cvs_inf.rds")%>%
     rearing = "Rearing history",
     group = "Group",
     observer = "Observer present",
+    observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -2871,35 +2875,35 @@ Figure \@ref(fig:iselp)B shows the projected posterior distributions for the pre
 #### Gaze Following
 
 ```{r, warning = F}
-cvs_gaze_p1 <- cv_varsel(m_gaze_2l_p1, 
-                         search_terms = s_terms_gaze, 
-                         cv_method = "LOO", method = "forward", 
-                         seed = 2020)
-
-saveRDS(cvs_gaze_p1,"./saves/cvs_gaze.rds")
-
-cvs_gaze <- readRDS("./saves/cvs_gaze.rds")
+# cvs_gaze_p1 <- cv_varsel(m_gaze_2l_p1, 
+#                          search_terms = s_terms_gaze, 
+#                          cv_method = "LOO", method = "forward", 
+#                          seed = 2020)
+# 
+# saveRDS(cvs_gaze_p1,"./saves/cvs_gaze.rds")
+# 
+# cvs_gaze <- readRDS("./saves/cvs_gaze.rds")
 ```
 
 ```{r}
-gvarselp <- summary(cvs_gaze, stats = c('elpd', 'rmse'))%>%
-  tibble()%>%
-  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
-  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
-  rowwise()%>%
-  filter(grepl(stat,se_term))%>%
-  select(-se_term)%>%
-  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
-         select = ifelse(solution_terms  %in% c("(1 | subject)", "group", "rearing", "time_outdoors", "age","sociality","sex","sick_severity", "observer_mod"), "yes", "no"))
-
-saveRDS(gvarselp, "./saves/cvs_gaze_summary.rds")
-
-ref_g_p1 <- tibble(
-  stat = c('elpd', 'rmse'),
-  value = c(sum(cvs_gaze$summaries$ref$lppd) , sqrt(mean((cvs_gaze$refmodel$fit$data$cogn - cvs_gaze$summaries$ref$mu)^2)))
-)
-
-saveRDS(ref_g_p1, "./saves/cvs_gaze_ref.rds")
+# gvarselp <- summary(cvs_gaze, stats = c('elpd', 'rmse'))%>%
+#   tibble()%>%
+#   pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+#   pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+#   rowwise()%>%
+#   filter(grepl(stat,se_term))%>%
+#   select(-se_term)%>%
+#   mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+#          select = ifelse(solution_terms  %in% c("(1 | subject)", "group", "rearing", "time_outdoors", "age","sociality","sex","sick_severity", "observer_mod"), "yes", "no"))
+# 
+# saveRDS(gvarselp, "./saves/cvs_gaze_summary.rds")
+# 
+# ref_g_p1 <- tibble(
+#   stat = c('elpd', 'rmse'),
+#   value = c(sum(cvs_gaze$summaries$ref$lppd) , sqrt(mean((cvs_gaze$refmodel$fit$data$cogn - cvs_gaze$summaries$ref$mu)^2)))
+# )
+# 
+# saveRDS(ref_g_p1, "./saves/cvs_gaze_ref.rds")
 
 ref_g_p1 <-readRDS("./saves/cvs_gaze_ref.rds") 
 
@@ -2909,6 +2913,7 @@ gvarselp <- readRDS("./saves/cvs_gaze_summary.rds")%>%
     rearing = "Rearing history",
     group = "Group",
     observer_mod = "Observer present",
+    observer = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -2947,20 +2952,20 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-proj_gaze_cv <- project(cvs_gaze,  solution_terms = c(1:6))
-
-proj_samples_gaze <- as.matrix(proj_gaze_cv)%>%
-  as_tibble()%>%
-  pivot_longer(cols =c(1:14), names_to = "pred", values_to = "value")%>%
-  filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
-  mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex",ifelse(grepl("observer", pred),"Observer","other predictors")))),
-         pred = str_remove(pred,"group"),
-         pred = str_remove(pred,"rearing"),
-         pred = str_remove(pred,"sex"),
-         pred = str_remove(pred,"observer_mod"),
-         species = ifelse(factor == "group", pred,factor))
-
-saveRDS(proj_samples_gaze,"./saves/proj_cvs_gaze.rds")
+# proj_gaze_cv <- project(cvs_gaze,  solution_terms = c(1:6))
+# 
+# proj_samples_gaze <- as.matrix(proj_gaze_cv)%>%
+#   as_tibble()%>%
+#   pivot_longer(cols =c(1:14), names_to = "pred", values_to = "value")%>%
+#   filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+#   mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex",ifelse(grepl("observer", pred),"Observer","other predictors")))),
+#          pred = str_remove(pred,"group"),
+#          pred = str_remove(pred,"rearing"),
+#          pred = str_remove(pred,"sex"),
+#          pred = str_remove(pred,"observer_mod"),
+#          species = ifelse(factor == "group", pred,factor))
+# 
+# saveRDS(proj_samples_gaze,"./saves/proj_cvs_gaze.rds")
 
 proj_samples_gaze <- readRDS("./saves/proj_cvs_gaze.rds")%>%
   mutate(pred = recode(pred,
@@ -2968,6 +2973,7 @@ proj_samples_gaze <- readRDS("./saves/proj_cvs_gaze.rds")%>%
     rearing = "Rearing history",
     group = "Group",
     observer_mod = "Observer present",
+    observer = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -3015,38 +3021,38 @@ Figure \@ref(fig:gselp) visualizes the results. Gaze following had the most sele
 
 Groups differed in that a-chimpanzees were most likely to follow gaze, followed by b-chimpanzees and bonobos. Gorillas and orangutans were the least likely to follow the experimenter's gaze. Mother-reared individuals outperformed hand-reared individuals (including those with an unknown rearing history). The more time individuals spent outdoors, the more likely they were to follow gaze. Also, the probability to follow gaze increased with age. Individuals with a lower sociality index had higher rates of gaze following. Finally, females outperformed males. Figure \@ref(fig:gselp)B visualizes these results.
 
-#### Quantity
+#### Quantity discrimination
 
 ```{r, warning = F}
-cvs_quant_p1 <- cv_varsel(m_quant_2l_p1, 
-                          search_terms = s_terms, 
-                          cv_method = "LOO", method = "forward", 
-                          seed = 2020)
-
-saveRDS(cvs_quant_p1,"./saves/cvs_quant.rds")
-
-cvs_quant <- readRDS("./saves/cvs_quant.rds")
+# cvs_quant_p1 <- cv_varsel(m_quant_2l_p1, 
+#                           search_terms = s_terms, 
+#                           cv_method = "LOO", method = "forward", 
+#                           seed = 2020)
+# 
+# saveRDS(cvs_quant_p1,"./saves/cvs_quant.rds")
+# 
+# cvs_quant <- readRDS("./saves/cvs_quant.rds")
 ```
 
 ```{r}
-qvarselp <- summary(cvs_quant, stats = c('elpd', 'rmse'))%>%
-  tibble()%>%
-  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
-  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
-  rowwise()%>%
-  filter(grepl(stat,se_term))%>%
-  select(-se_term)%>%
-  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
-         select = ifelse(solution_terms  %in% c("(1 | subject)", "time_in_leipzig", "rearing", "group"), "yes", "no"))
-
-saveRDS(qvarselp, "./saves/cvs_quant_summary.rds")
-
-ref_q_p1 <- tibble(
-  stat = c('elpd', 'rmse'),
-  value = c(sum(cvs_quant$summaries$ref$lppd) , sqrt(mean((cvs_quant$refmodel$fit$data$cogn - cvs_quant$summaries$ref$mu)^2)))
-)
-
-saveRDS(ref_q_p1, "./saves/cvs_quant_ref.rds")
+# qvarselp <- summary(cvs_quant, stats = c('elpd', 'rmse'))%>%
+#   tibble()%>%
+#   pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+#   pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+#   rowwise()%>%
+#   filter(grepl(stat,se_term))%>%
+#   select(-se_term)%>%
+#   mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+#          select = ifelse(solution_terms  %in% c("(1 | subject)", "time_in_leipzig", "rearing", "group"), "yes", "no"))
+# 
+# saveRDS(qvarselp, "./saves/cvs_quant_summary.rds")
+# 
+# ref_q_p1 <- tibble(
+#   stat = c('elpd', 'rmse'),
+#   value = c(sum(cvs_quant$summaries$ref$lppd) , sqrt(mean((cvs_quant$refmodel$fit$data$cogn - cvs_quant$summaries$ref$mu)^2)))
+# )
+# 
+# saveRDS(ref_q_p1, "./saves/cvs_quant_ref.rds")
 
 ref_q_p1 <-readRDS("./saves/cvs_quant_ref.rds") 
 
@@ -3057,6 +3063,7 @@ qvarselp <- readRDS("./saves/cvs_quant_summary.rds")%>%
     rearing = "Rearing history",
     group = "Group",
     observer_mod = "Observer present",
+    observer = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -3094,19 +3101,19 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-proj_quant_cv <- project(cvs_quant,  solution_terms = c(1:3))
-
-proj_samples_quant <- as.matrix(proj_quant_cv)%>%
-  as_tibble()%>%
-  pivot_longer(cols =c(1:10), names_to = "pred", values_to = "value")%>%
-  filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
-  mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex","other predictors"))),
-         pred = str_remove(pred,"group"),
-         pred = str_remove(pred,"rearing"),
-         pred = str_remove(pred,"sex"),
-         species = ifelse(factor == "group", pred,factor))
-
-saveRDS(proj_samples_quant,"./saves/proj_cvs_quant.rds")
+# proj_quant_cv <- project(cvs_quant,  solution_terms = c(1:3))
+# 
+# proj_samples_quant <- as.matrix(proj_quant_cv)%>%
+#   as_tibble()%>%
+#   pivot_longer(cols =c(1:10), names_to = "pred", values_to = "value")%>%
+#   filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+#   mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex","other predictors"))),
+#          pred = str_remove(pred,"group"),
+#          pred = str_remove(pred,"rearing"),
+#          pred = str_remove(pred,"sex"),
+#          species = ifelse(factor == "group", pred,factor))
+# 
+# saveRDS(proj_samples_quant,"./saves/proj_cvs_quant.rds")
 
 proj_samples_quant <- readRDS("./saves/proj_cvs_quant.rds")%>%
   mutate(pred = recode(pred,
@@ -3114,6 +3121,7 @@ proj_samples_quant <- readRDS("./saves/proj_cvs_quant.rds")%>%
     rearing = "Rearing history",
     group = "Group",
     observer = "Observer present",
+    observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -3170,7 +3178,7 @@ The predictor selected most often was `group`. Differences between groups were, 
 
 The predictors that were selected more than once influenced performance in a systematic way. Whenever rearing history was selected to be relevant, mother-reared individuals outperformed others. The more time an individual had lived in Leipzig, the better performance was. An exception was `age`, which had a positive estimate for gaze following but a negative one for inference.
 
-When zooming out, we found no clear ranking of predictors across tasks (see Figure \@ref(fig:selcomp)). It is important to note, however, that for higher ranks, the difference between ranks in the loss statistic is very small and the ordering to some extend arbitrary. But even if we focus only on the five highest-ranked predictors per task, we see a lot of variation across tasks -- with `group` being a notable exception.
+When zooming out, except for `group`, none of the predictors was selected as important for all tasks. As noted above, the relative ranking of the groups varied from task to task.  
 
 ```{r}
 ro <- bind_rows(qvarselp%>%mutate(task = "quantity"),
@@ -3215,46 +3223,46 @@ ro <- bind_rows(qvarselp%>%mutate(task = "quantity"),
 #   scale_fill_viridis_d()
 
 
-pro <- ggplot(ro,aes(x = fct_reorder(solution_terms,sum), y = size, col = task))+
-  #geom_line(aes(group = task))+
-  geom_line(aes(group = task), alpha = .5)+
-  geom_point(aes(pch = select), size = 3)+
-  scale_shape_manual(values=c(1,4))+
-  theme_minimal()+
-  labs(x = "Predictor (ordered by average rank)", y = "Rank based on PPI model")+
-  scale_color_viridis_d(name = "Task")+
-  guides(shape = "none")+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+# pro <- ggplot(ro,aes(x = fct_reorder(solution_terms,sum), y = size, col = task))+
+#   #geom_line(aes(group = task))+
+#   geom_line(aes(group = task), alpha = .5)+
+#   geom_point(aes(pch = select), size = 3)+
+#   scale_shape_manual(values=c(1,4))+
+#   theme_minimal()+
+#   labs(x = "Predictor (ordered by average rank)", y = "Rank based on PPI model")+
+#   scale_color_viridis_d(name = "Task")+
+#   guides(shape = "none")+
+#   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
 
 ```{r}
-pco <- ro%>%
-  ungroup()%>%
-  select(size, solution_terms,task)%>%
-  pivot_wider(names_from = "task", values_from = "size")%>%
-  select(-solution_terms)%>%
-  corrr::correlate(method = "spearman", quiet = T)%>%
-  gather(task, cor, -term)%>%
-  mutate(cor = replace(cor, duplicated(cor), NA))%>%
-  drop_na(cor)%>%
-  mutate(cor = round(cor,2))%>%
-  ggplot(aes(y = task, x = term, fill = cor, label = cor))+
-  geom_tile(color = "white")+
-  labs(x = "", y = "")+
-  scale_fill_gradient2(low = "#CC6677", high = "#117733", mid = "#FFE066", 
-  midpoint = 0, limit = c(-1,1), space = "Lab", name="Correlation")+
-  geom_text()+
-  scale_x_discrete(limits = c("gaze_following","inference","causality"))+
-  scale_y_discrete(limits = c("quantity","causality","inference"))+
-  theme_few()+
-  theme(legend.position = "right", legend.direction = "vertical", legend.title = element_blank())+
-  coord_fixed()
+# pco <- ro%>%
+#   ungroup()%>%
+#   select(size, solution_terms,task)%>%
+#   pivot_wider(names_from = "task", values_from = "size")%>%
+#   select(-solution_terms)%>%
+#   corrr::correlate(method = "spearman", quiet = T)%>%
+#   gather(task, cor, -term)%>%
+#   mutate(cor = replace(cor, duplicated(cor), NA))%>%
+#   drop_na(cor)%>%
+#   mutate(cor = round(cor,2))%>%
+#   ggplot(aes(y = task, x = term, fill = cor, label = cor))+
+#   geom_tile(color = "white")+
+#   labs(x = "", y = "")+
+#   scale_fill_gradient2(low = "#CC6677", high = "#117733", mid = "#FFE066", 
+#   midpoint = 0, limit = c(-1,1), space = "Lab", name="Correlation")+
+#   geom_text()+
+#   scale_x_discrete(limits = c("gaze_following","inference","causality"))+
+#   scale_y_discrete(limits = c("quantity","causality","inference"))+
+#   theme_few()+
+#   theme(legend.position = "right", legend.direction = "vertical", legend.title = element_blank())+
+#   coord_fixed()
   
 ```
 
 ```{r selcomp, fig.height=3, fig.cap = "Ranking for each predictor and task. Crosses denote selected predictors.", out.width="100%"}
-pro
+#pro
 ```
 
 ```{r cselcomp, fig.height=3, fig.cap = "Correlations of predictor rankings among the four tasks.", out.width="100%"}
@@ -3266,35 +3274,35 @@ pro
 #### Causal inference
 
 ```{r}
-cvs_cau_p2 <- cv_varsel(m_cau_2l_p2,
-                        search_terms = s_terms,
-                        cv_method = "LOO", method = "forward",
-                        seed = 2022)
-
-saveRDS(cvs_cau_p2,"./saves/cvs_cau_p2.rds")
-
-cvs_cau_p2 <- readRDS("./saves/cvs_cau_p2.rds")
+# cvs_cau_p2 <- cv_varsel(m_cau_2l_p2,
+#                         search_terms = s_terms,
+#                         cv_method = "LOO", method = "forward",
+#                         seed = 2022)
+# 
+# saveRDS(cvs_cau_p2,"./saves/cvs_cau_p2.rds")
+# 
+# cvs_cau_p2 <- readRDS("./saves/cvs_cau_p2.rds")
 ```
 
 ```{r}
-cvarselp_p2 <- summary(cvs_cau_p2, stats = c('elpd', 'rmse'))%>%
-  tibble()%>%
-  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
-  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
-  rowwise()%>%
-  filter(grepl(stat,se_term))%>%
-  select(-se_term)%>%
-  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
-         select = ifelse(solution_terms  %in% c("(1 | subject)", "group", "time_outdoors"), "yes", "no"))
-
-saveRDS(cvarselp_p2, "./saves/cvs_cau_summary_p2.rds")
-
-ref_c_p2 <- tibble(
-  stat = c('elpd', 'rmse'),
-  value = c(sum(cvs_cau_p2$summaries$ref$lppd) , sqrt(mean((cvs_cau_p2$refmodel$fit$data$cogn - cvs_cau_p2$summaries$ref$mu)^2)))
-)
-
-saveRDS(ref_c_p2, "./saves/cvs_cau_ref_p2.rds")
+# cvarselp_p2 <- summary(cvs_cau_p2, stats = c('elpd', 'rmse'))%>%
+#   tibble()%>%
+#   pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+#   pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+#   rowwise()%>%
+#   filter(grepl(stat,se_term))%>%
+#   select(-se_term)%>%
+#   mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+#          select = ifelse(solution_terms  %in% c("(1 | subject)", "group", "time_outdoors"), "yes", "no"))
+# 
+# saveRDS(cvarselp_p2, "./saves/cvs_cau_summary_p2.rds")
+# 
+# ref_c_p2 <- tibble(
+#   stat = c('elpd', 'rmse'),
+#   value = c(sum(cvs_cau_p2$summaries$ref$lppd) , sqrt(mean((cvs_cau_p2$refmodel$fit$data$cogn - cvs_cau_p2$summaries$ref$mu)^2)))
+# )
+# 
+# saveRDS(ref_c_p2, "./saves/cvs_cau_ref_p2.rds")
 
 ref_c_p2 <-readRDS("./saves/cvs_cau_ref_p2.rds") 
 
@@ -3306,6 +3314,7 @@ cvarselp_p2 <- readRDS("./saves/cvs_cau_summary_p2.rds")%>%
     rearing = "Rearing history",
     group = "Group",
     observer = "Observer present",
+    observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -3343,18 +3352,18 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-proj_cau_cv_p2 <- project(cvs_cau_p2, solution_terms = c(1,2))
-
-proj_samples_cau_p2 <- as.matrix(proj_cau_cv_p2)%>%
-  as_tibble()%>%
-  pivot_longer(cols =c(1:8), names_to = "pred", values_to = "value")%>%
-  filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
-  mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
-         pred = str_remove(pred,"group"),
-         pred = str_remove(pred,"rel_"),
-         species = ifelse(factor == "group", pred,factor))
-
-saveRDS(proj_samples_cau_p2,"./saves/proj_cvs_cau_p2.rds")
+# proj_cau_cv_p2 <- project(cvs_cau_p2, solution_terms = c(1,2))
+# 
+# proj_samples_cau_p2 <- as.matrix(proj_cau_cv_p2)%>%
+#   as_tibble()%>%
+#   pivot_longer(cols =c(1:8), names_to = "pred", values_to = "value")%>%
+#   filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+#   mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
+#          pred = str_remove(pred,"group"),
+#          pred = str_remove(pred,"rel_"),
+#          species = ifelse(factor == "group", pred,factor))
+# 
+# saveRDS(proj_samples_cau_p2,"./saves/proj_cvs_cau_p2.rds")
 
 proj_samples_cau_p2 <- readRDS("./saves/proj_cvs_cau_p2.rds")%>%
   mutate(pred = recode(pred,
@@ -3362,6 +3371,7 @@ proj_samples_cau_p2 <- readRDS("./saves/proj_cvs_cau_p2.rds")%>%
     rearing = "Rearing history",
     group = "Group",
     observer = "Observer present",
+    observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -3403,38 +3413,40 @@ pcpro_p2 <- ggplot(proj_samples_cau_p2, aes(x = value, y = pred)) +
 ggarrange(pcsel_p2, pcpro_p2, labels = c("A","B"), widths = c(1.5,1))
 ```
 
+Figure \@ref(fig:cselp2) visualizes the results. In addition to the random intercept term, `group` and `time_outdoors` were selected as relevant predictors. When inspecting the projected posterior distribution for `time_outdoors`, we saw that performance was better on time points on which subjects spent less time outdoors. For `group`, we saw substantial differences between the groups: Orangutans and the chimpanzee group B performed best, followed by bonobos and finally the gorillas and the chimpanzee A group (see Figure \@ref(fig:cselp)B).
+
 #### Inference by exclusion
 
 ```{r}
-cvs_inf_p2 <- cv_varsel(m_inf_2l_p2, 
-                        search_terms = s_terms, 
-                        cv_method = "LOO", method = "forward", 
-                        seed = 2022)
-
-saveRDS(cvs_inf_p2,"./saves/cvs_inf_p2.rds")
-
-cvs_inf_p2 <- readRDS("./saves/cvs_inf_p2.rds")  
+# cvs_inf_p2 <- cv_varsel(m_inf_2l_p2, 
+#                         search_terms = s_terms, 
+#                         cv_method = "LOO", method = "forward", 
+#                         seed = 2022)
+# 
+# saveRDS(cvs_inf_p2,"./saves/cvs_inf_p2.rds")
+# 
+# cvs_inf_p2 <- readRDS("./saves/cvs_inf_p2.rds")  
 ```
 
 ```{r}
-ivarselp_p2 <- summary(cvs_inf_p2, stats = c('elpd', 'rmse'))%>%
-  tibble()%>%
-  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
-  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
-  rowwise()%>%
-  filter(grepl(stat,se_term))%>%
-  select(-se_term)%>%
-  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
-         select = ifelse(solution_terms  %in% c("(1 | subject)", "group","time_in_leipzig","age"), "yes", "no"))
-
-saveRDS(ivarselp_p2, "./saves/cvs_inf_summary_p2.rds")
-
-ref_i_p2 <- tibble(
-  stat = c('elpd', 'rmse'),
-  value = c(sum(cvs_inf_p2$summaries$ref$lppd) , sqrt(mean((cvs_inf_p2$refmodel$fit$data$cogn - cvs_inf_p2$summaries$ref$mu)^2)))
-)
-
-saveRDS(ref_i_p2, "./saves/cvs_inf_ref_p2.rds")
+# ivarselp_p2 <- summary(cvs_inf_p2, stats = c('elpd', 'rmse'))%>%
+#   tibble()%>%
+#   pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+#   pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+#   rowwise()%>%
+#   filter(grepl(stat,se_term))%>%
+#   select(-se_term)%>%
+#   mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+#          select = ifelse(solution_terms  %in% c("(1 | subject)", "group","time_in_leipzig","age"), "yes", "no"))
+# 
+# saveRDS(ivarselp_p2, "./saves/cvs_inf_summary_p2.rds")
+# 
+# ref_i_p2 <- tibble(
+#   stat = c('elpd', 'rmse'),
+#   value = c(sum(cvs_inf_p2$summaries$ref$lppd) , sqrt(mean((cvs_inf_p2$refmodel$fit$data$cogn - cvs_inf_p2$summaries$ref$mu)^2)))
+# )
+# 
+# saveRDS(ref_i_p2, "./saves/cvs_inf_ref_p2.rds")
 
 ref_i_p2 <-readRDS("./saves/cvs_inf_ref_p2.rds") 
 
@@ -3445,6 +3457,7 @@ ivarselp_p2 <- readRDS("./saves/cvs_inf_summary_p2.rds")%>%
     rearing = "Rearing history",
     group = "Group",
     observer = "Observer present",
+    observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -3482,24 +3495,26 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-proj_inf_cv_p2 <- project(cvs_inf_p2,  solution_terms = c(1, 2, 3,4))
-
-proj_samples_inf_p2 <- as.matrix(proj_inf_cv_p2)%>%
-  as_tibble()%>%
-  pivot_longer(cols  = everything(), names_to = "pred", values_to = "value")%>%
-  filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
-  mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
-         pred = str_remove(pred,"group"),
-         species = ifelse(factor == "group", pred,factor))
-
-saveRDS(proj_samples_inf_p2,"./saves/proj_cvs_inf_p2.rds")
+# proj_inf_cv_p2 <- project(cvs_inf_p2,  solution_terms = c(1, 2, 3,4))
+# 
+# proj_samples_inf_p2 <- as.matrix(proj_inf_cv_p2)%>%
+#   as_tibble()%>%
+#   pivot_longer(cols  = everything(), names_to = "pred", values_to = "value")%>%
+#   filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+#   mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
+#          pred = str_remove(pred,"group"),
+#          species = ifelse(factor == "group", pred,factor))
+# 
+# saveRDS(proj_samples_inf_p2,"./saves/proj_cvs_inf_p2.rds")
 
 proj_samples_inf_p2 <- readRDS("./saves/proj_cvs_inf_p2.rds")%>%
+  filter(pred != "time_point")%>%
   mutate(pred = recode(pred,
     time_in_leipzig = "Time spent in research",
     rearing = "Rearing history",
     group = "Group",
     observer = "Observer present",
+    observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -3541,49 +3556,54 @@ pipro_p2 <- ggplot(proj_samples_inf_p2, aes(x = value, y = pred)) +
 ggarrange(pisel_p2, pipro_p2, labels = c("A","B"), widths = c(1.5,1))
 ```
 
+Figure \@ref(fig:iselp2) visualizes the results. For inference by exclusion, we selected `time_in_leipzig`, `group`, and `age` as relevant predictors in addition to the random intercept term. All three predictors capture stable individual characteristics.
+
+Figure \@ref(fig:iselp2)B shows the projected posterior distributions for the predictors and suggests that the longer apes lived in Leipzig, the better their performance was. For `age` the results suggest better performance for younger individuals. The differences between groups were such that the chimpanzee B group performed best, followed by the gorillas. The remaining groups performed on a substantially lower level.
+
 #### Gaze following
 
 ```{r}
-cvs_gaze_p2 <- cv_varsel(m_gaze_2l_p2, 
-                         search_terms = s_terms_gaze, 
-                         cv_method = "LOO", method = "forward", 
-                         seed = 2022)
-
-saveRDS(cvs_gaze_p2,"./saves/cvs_gaze_p2.rds")
-
-cvs_gaze_p2 <- readRDS("./saves/cvs_gaze_p2.rds")  
+# cvs_gaze_p2 <- cv_varsel(m_gaze_2l_p2, 
+#                          search_terms = s_terms_gaze, 
+#                          cv_method = "LOO", method = "forward", 
+#                          seed = 2022)
+# 
+# saveRDS(cvs_gaze_p2,"./saves/cvs_gaze_p2.rds")
+# 
+# cvs_gaze_p2 <- readRDS("./saves/cvs_gaze_p2.rds")  
 ```
 
 ```{r}
-gvarselp_p2 <- summary(cvs_gaze_p2, stats = c('elpd', 'rmse'))%>%
-  tibble()%>%
-  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
-  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
-  rowwise()%>%
-  filter(grepl(stat,se_term))%>%
-  select(-se_term)%>%
-  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
-         select = ifelse(solution_terms  %in% c("(1 | subject)", "group", "sex", "observer_mod", "age"), "yes", "no"))
-
-saveRDS(gvarselp_p2, "./saves/cvs_gaze_summary_p2.rds")
-
-ref_g_p2 <- tibble(
-  stat = c('elpd', 'rmse'),
-  value = c(sum(cvs_gaze_p2$summaries$ref$lppd) , sqrt(mean((cvs_gaze_p2$refmodel$fit$data$cogn - cvs_gaze_p2$summaries$ref$mu)^2)))
-)
-
-saveRDS(ref_g_p2, "./saves/cvs_gaze_ref_p2.rds")
+# gvarselp_p2 <- summary(cvs_gaze_p2, stats = c('elpd', 'rmse'))%>%
+#   tibble()%>%
+#   pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+#   pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+#   rowwise()%>%
+#   filter(grepl(stat,se_term))%>%
+#   select(-se_term)%>%
+#   mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+#          select = ifelse(solution_terms  %in% c("(1 | subject)", "group", "sex", "observer_mod", "age"), "yes", "no"))
+# 
+# saveRDS(gvarselp_p2, "./saves/cvs_gaze_summary_p2.rds")
+# 
+# ref_g_p2 <- tibble(
+#   stat = c('elpd', 'rmse'),
+#   value = c(sum(cvs_gaze_p2$summaries$ref$lppd) , sqrt(mean((cvs_gaze_p2$refmodel$fit$data$cogn - cvs_gaze_p2$summaries$ref$mu)^2)))
+# )
+# 
+# saveRDS(ref_g_p2, "./saves/cvs_gaze_ref_p2.rds")
 
 ref_g_p2 <-readRDS("./saves/cvs_gaze_ref_p2.rds") 
 
 
-gvarselp_p2 <- readRDS("./saves/cvs_grat_summary_p2.rds")%>%
+gvarselp_p2 <- readRDS("./saves/cvs_gaze_summary_p2.rds")%>%
   mutate(solution_terms = recode(solution_terms,
     time_in_leipzig = "Time spent in research",
     time_point = "Time point",
     rearing = "Rearing history",
     group = "Group",
-    observer_mode = "Observer present",
+    observer_mod = "Observer present",
+    observer = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -3604,7 +3624,8 @@ gvarselp_p2 <- readRDS("./saves/cvs_grat_summary_p2.rds")%>%
     hand = "Hand-reared",
     mother = "Mother-reared",
     `(1 | subject)` = "(1 | Subject)",
-    `other predictors` = "Other predictors"
+    `other predictors` = "Other predictors",
+    `(time_point | subject)` = "(time point | Subject)"
   ))
 
 pgsel_p2 <- gvarselp_p2%>%
@@ -3622,20 +3643,20 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-proj_gaze_cv_p2 <- project(cvs_gaze_p2,  solution_terms = c(1:4))
-
-proj_samples_gaze_p2 <- as.matrix(proj_gaze_cv_p2)%>%
-  as_tibble()%>%
-  pivot_longer(cols = everything(), names_to = "pred", values_to = "value")%>%
-  filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
-  mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex",ifelse(grepl("observer", pred),"Observer","other predictors")))),
-         pred = str_remove(pred,"group"),
-         pred = str_remove(pred,"rearing"),
-         pred = str_remove(pred,"sex"),
-         pred = str_remove(pred,"observer_mod"),
-         species = ifelse(factor == "group", pred,factor))
-
-saveRDS(proj_samples_gaze_p2,"./saves/proj_cvs_gaze_p2.rds")
+# proj_gaze_cv_p2 <- project(cvs_gaze_p2,  solution_terms = c(1:4))
+# 
+# proj_samples_gaze_p2 <- as.matrix(proj_gaze_cv_p2)%>%
+#   as_tibble()%>%
+#   pivot_longer(cols = everything(), names_to = "pred", values_to = "value")%>%
+#   filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+#   mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex",ifelse(grepl("observer", pred),"Observer","other predictors")))),
+#          pred = str_remove(pred,"group"),
+#          pred = str_remove(pred,"rearing"),
+#          pred = str_remove(pred,"sex"),
+#          pred = str_remove(pred,"observer_mod"),
+#          species = ifelse(factor == "group", pred,factor))
+# 
+# saveRDS(proj_samples_gaze_p2,"./saves/proj_cvs_gaze_p2.rds")
 
 proj_samples_gaze_p2 <- readRDS("./saves/proj_cvs_gaze_p2.rds")%>%
   mutate(pred = recode(pred,
@@ -3643,6 +3664,7 @@ proj_samples_gaze_p2 <- readRDS("./saves/proj_cvs_gaze_p2.rds")%>%
     rearing = "Rearing history",
     group = "Group",
     observer_mod = "Observer present",
+    observer = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -3679,45 +3701,50 @@ pgpro_p2 <- ggplot(proj_samples_gaze_p2, aes(x = value, y = pred)) +
   scale_x_continuous(guide = guide_axis(n.dodge = 2))+
   theme_minimal()+
   theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
-  
+
 ```
 
-```{r gselp2, fig.height=5, fig.width=10, fig.cap = "Predictor selection for gaze following in Phase 2. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel model.", out.width="100%"}
+```{r gselp2, fig.height=6, fig.width=10, fig.cap = "Predictor selection for gaze following in Phase 2. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel model.", out.width="100%"}
 ggarrange(pgsel_p2, pgpro_p2, labels = c("A","B"), nrow = 1, widths = c(1.5,1))
 ```
 
-#### Quantity
+
+Figure \@ref(fig:gselp2) visualizes the results. In addition to the random intercept term, we selected, `group`,`sex`, `rearing`,`observer`, and `age`. Most of these predictors were stable individual characteristics, with the exception of `observer`.
+
+Groups differed in that individuals from the chimpanzee A group were most likely to follow gaze, followed by the bonobos. The chimpanzee B group and the gorillas were less likely to follow gaze, but still did so on a rate above the Orangutans. Females outperformed males. The rate of gaze following was higher when no observer was present. Finally, the rate of gaze following further increased with age. Figure \@ref(fig:gselp2)B visualizes these results.
+
+#### Quantity discrimination
 
 ```{r}
-cvs_quant_p2 <- cv_varsel(m_quant_2l_p2, 
-                       search_terms = s_terms, 
-                       cv_method = "LOO", method = "forward", 
-                       seed = 2022)
-
-saveRDS(cvs_quant_p2,"./saves/cvs_quant_p2.rds")
-
-cvs_quant_p2 <- readRDS("./saves/cvs_quant_p2.rds")              
+# cvs_quant_p2 <- cv_varsel(m_quant_2l_p2, 
+#                        search_terms = s_terms, 
+#                        cv_method = "LOO", method = "forward", 
+#                        seed = 2022)
+# 
+# saveRDS(cvs_quant_p2,"./saves/cvs_quant_p2.rds")
+# 
+# cvs_quant_p2 <- readRDS("./saves/cvs_quant_p2.rds")              
 ```
 
 ```{r}
-qvarselp_p2 <- summary(cvs_quant_p2, stats = c('elpd', 'rmse'))%>%
-  tibble()%>%
-  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
-  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
-  rowwise()%>%
-  filter(grepl(stat,se_term))%>%
-  select(-se_term)%>%
-  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
-         select = ifelse(solution_terms  %in% c("(1 | subject)", "rel_rank", "rearing", "time_in_leipzig", "group", "time_outdoors", "test_tp"), "yes", "no"))
-
-saveRDS(qvarselp_p2, "./saves/cvs_quant_summary_p2.rds")
-
-ref_q_p2 <- tibble(
-  stat = c('elpd', 'rmse'),
-  value = c(sum(cvs_quant_p2$summaries$ref$lppd) , sqrt(mean((cvs_quant_p2$refmodel$fit$data$cogn - cvs_quant_p2$summaries$ref$mu)^2)))
-)
-
-saveRDS(ref_q_p2, "./saves/cvs_quant_ref_p2.rds")
+# qvarselp_p2 <- summary(cvs_quant_p2, stats = c('elpd', 'rmse'))%>%
+#   tibble()%>%
+#   pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+#   pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+#   rowwise()%>%
+#   filter(grepl(stat,se_term))%>%
+#   select(-se_term)%>%
+#   mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+#          select = ifelse(solution_terms  %in% c("(1 | subject)", "rel_rank", "rearing", "time_in_leipzig", "group", "time_outdoors", "test_tp"), "yes", "no"))
+# 
+# saveRDS(qvarselp_p2, "./saves/cvs_quant_summary_p2.rds")
+# 
+# ref_q_p2 <- tibble(
+#   stat = c('elpd', 'rmse'),
+#   value = c(sum(cvs_quant_p2$summaries$ref$lppd) , sqrt(mean((cvs_quant_p2$refmodel$fit$data$cogn - cvs_quant_p2$summaries$ref$mu)^2)))
+# )
+# 
+# saveRDS(ref_q_p2, "./saves/cvs_quant_ref_p2.rds")
 
 ref_q_p2 <-readRDS("./saves/cvs_quant_ref_p2.rds") 
 
@@ -3729,6 +3756,7 @@ qvarselp_p2 <- readRDS("./saves/cvs_quant_summary_p2.rds")%>%
     rearing = "Rearing history",
     group = "Group",
     observer_mod = "Observer present",
+    observer = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -3766,20 +3794,20 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-proj_quant_cv_p2 <- project(cvs_quant_p2,  solution_terms = c(1:5))
-
-proj_samples_quant_p2 <- as.matrix(proj_quant_cv_p2)%>%
-  as_tibble()%>%
-  pivot_longer(cols =everything(), names_to = "pred", values_to = "value")%>%
-  filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
-mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex",ifelse(grepl("observer", pred),"Observer","other predictors")))),
-         pred = str_remove(pred,"group"),
-         pred = str_remove(pred,"rearing"),
-         pred = str_remove(pred,"sex"),
-         pred = str_remove(pred,"observer_mod"),
-         species = ifelse(factor == "group", pred,factor))
-
-saveRDS(proj_samples_quant_p2,"./saves/proj_cvs_quant_p2.rds")
+# proj_quant_cv_p2 <- project(cvs_quant_p2,  solution_terms = c(1:5))
+# 
+# proj_samples_quant_p2 <- as.matrix(proj_quant_cv_p2)%>%
+#   as_tibble()%>%
+#   pivot_longer(cols =everything(), names_to = "pred", values_to = "value")%>%
+#   filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+# mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex",ifelse(grepl("observer", pred),"Observer","other predictors")))),
+#          pred = str_remove(pred,"group"),
+#          pred = str_remove(pred,"rearing"),
+#          pred = str_remove(pred,"sex"),
+#          pred = str_remove(pred,"observer_mod"),
+#          species = ifelse(factor == "group", pred,factor))
+# 
+# saveRDS(proj_samples_quant_p2,"./saves/proj_cvs_quant_p2.rds")
 
 proj_samples_quant_p2 <- readRDS("./saves/proj_cvs_quant_p2.rds")%>%
   mutate(pred = recode(pred,
@@ -3787,6 +3815,7 @@ proj_samples_quant_p2 <- readRDS("./saves/proj_cvs_quant_p2.rds")%>%
     rearing = "Rearing history",
     group = "Group",
     observer = "Observer present",
+    observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -3825,43 +3854,44 @@ pqpro_p2 <- ggplot(proj_samples_quant_p2, aes(x = value, y = pred)) +
   
 ```
 
-```{r qselp2, fig.height=4, fig.width=10, fig.cap = "Predictor selection for quantity discrimination in Phase 2. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel model.", out.width="100%"}
+```{r qselp2, fig.height=6, fig.width=10, fig.cap = "Predictor selection for quantity discrimination in Phase 2. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel model.", out.width="100%"}
 ggarrange(pqsel_p2, pqpro_p2, labels = c("A","B"), nrow = 1, widths = c(1.5,1))
 ```
 
+Figure \@ref(fig:qselp2) ... to be discussed
 
 #### Delay of gratification
 
 ```{r}
-cvs_grat_p2 <- cv_varsel(m_grat_2l_p2, 
-                         search_terms = s_terms, 
-                         cv_method = "LOO", method = "forward", 
-                         seed = 2022)
-
-saveRDS(cvs_grat_p2,"./saves/cvs_grat_p2.rds")
-
-cvs_grat_p2 <- readRDS("./saves/cvs_grat_p2.rds")  
+# cvs_grat_p2 <- cv_varsel(m_grat_2l_p2, 
+#                          search_terms = s_terms, 
+#                          cv_method = "LOO", method = "forward", 
+#                          seed = 2022)
+# 
+# saveRDS(cvs_grat_p2,"./saves/cvs_grat_p2.rds")
+# 
+# cvs_grat_p2 <- readRDS("./saves/cvs_grat_p2.rds")  
 ```
 
 ```{r}
-dgvarselp_p2 <- summary(cvs_grat_p2, stats = c('elpd', 'rmse'))%>%
-  tibble()%>%
-  pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
-  pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
-  rowwise()%>%
-  filter(grepl(stat,se_term))%>%
-  select(-se_term)%>%
-  mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
-         select = ifelse(solution_terms  %in% c("(1 | subject)", "time_in_leipzig", "observer_mod", "sex", "rel_rank", "sick_severity"), "yes", "no"))
-
-saveRDS(dgvarselp_p2, "./saves/cvs_grat_summary_p2.rds")
-
-ref_d_p2 <- tibble(
-  stat = c('elpd', 'rmse'),
-  value = c(sum(cvs_grat_p2$summaries$ref$lppd) , sqrt(mean((cvs_grat_p2$refmodel$fit$data$cogn - cvs_grat_p2$summaries$ref$mu)^2)))
-)
-
-saveRDS(ref_d_p2, "./saves/cvs_grat_ref_p2.rds")
+# dgvarselp_p2 <- summary(cvs_grat_p2, stats = c('elpd', 'rmse'))%>%
+#   tibble()%>%
+#   pivot_longer(cols = c(elpd,rmse), values_to = "value", names_to = "stat")%>%
+#   pivot_longer(cols = c(elpd.se,rmse.se), values_to = "se", names_to = "se_term")%>%
+#   rowwise()%>%
+#   filter(grepl(stat,se_term))%>%
+#   select(-se_term)%>%
+#   mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
+#          select = ifelse(solution_terms  %in% c("(1 | subject)", "time_in_leipzig", "observer_mod", "sex", "rel_rank", "sick_severity"), "yes", "no"))
+# 
+# saveRDS(dgvarselp_p2, "./saves/cvs_grat_summary_p2.rds")
+# 
+# ref_d_p2 <- tibble(
+#   stat = c('elpd', 'rmse'),
+#   value = c(sum(cvs_grat_p2$summaries$ref$lppd) , sqrt(mean((cvs_grat_p2$refmodel$fit$data$cogn - cvs_grat_p2$summaries$ref$mu)^2)))
+# )
+# 
+# saveRDS(ref_d_p2, "./saves/cvs_grat_ref_p2.rds")
 
 ref_d_p2 <-readRDS("./saves/cvs_grat_ref_p2.rds") 
 
@@ -3872,6 +3902,7 @@ dgvarselp_p2 <- readRDS("./saves/cvs_grat_summary_p2.rds")%>%
     rearing = "Rearing history",
     group = "Group",
     observer_mod = "Observer present",
+    observer = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -3909,20 +3940,20 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-proj_grat_cv_p2 <- project(cvs_grat_p2,  solution_terms = c(1:5))
-
-proj_samples_grat_p2 <- as.matrix(proj_grat_cv_p2)%>%
-  as_tibble()%>%
-  pivot_longer(cols =everything(), names_to = "pred", values_to = "value")%>%
-  filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
-mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex",ifelse(grepl("observer", pred),"Observer","other predictors")))),
-         pred = str_remove(pred,"group"),
-         pred = str_remove(pred,"rearing"),
-         pred = str_remove(pred,"sex"),
-         pred = str_remove(pred,"observer_mod"),
-         species = ifelse(factor == "group", pred,factor))
-
-saveRDS(proj_samples_grat_p2,"./saves/proj_cvs_grat_p2.rds")
+# proj_grat_cv_p2 <- project(cvs_grat_p2,  solution_terms = c(1:5))
+# 
+# proj_samples_grat_p2 <- as.matrix(proj_grat_cv_p2)%>%
+#   as_tibble()%>%
+#   pivot_longer(cols =everything(), names_to = "pred", values_to = "value")%>%
+#   filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+# mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex",ifelse(grepl("observer", pred),"Observer","other predictors")))),
+#          pred = str_remove(pred,"group"),
+#          pred = str_remove(pred,"rearing"),
+#          pred = str_remove(pred,"sex"),
+#          pred = str_remove(pred,"observer_mod"),
+#          species = ifelse(factor == "group", pred,factor))
+# 
+# saveRDS(proj_samples_grat_p2,"./saves/proj_cvs_grat_p2.rds")
 
 proj_samples_grat_p2 <- readRDS("./saves/proj_cvs_grat_p2.rds")%>%
   mutate(pred = recode(pred,
@@ -3930,6 +3961,7 @@ proj_samples_grat_p2 <- readRDS("./saves/proj_cvs_grat_p2.rds")%>%
     rearing = "Rearing history",
     group = "Group",
     observer = "Observer present",
+    observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
     age = "Age",
@@ -3972,9 +4004,108 @@ pdgpro_p2 <- ggplot(proj_samples_grat_p2, aes(x = value, y = pred)) +
 ggarrange(pdgsel_p2, pdgpro_p2, labels = c("A","B"), nrow = 1, widths = c(1.5,1))
 ```
 
+Figure \@ref(fig:dgselp2) visualizes the results. In addition to the random intercept term, we selected, `time_in_leipzig`,`observer`, `sex`,`rank`, and `sick_severity`. Notably, delay of gratification was the only task for which `group` was not selected as a predictor. 
+
+Individuals who has spent more time in Leipzig were more likely to delay gratification. Waiting for the bigger reward was also more likely when there was no observer present. Males and higher ranking individuals also hat higher rates of waiting. Finally, individuals were more likely to wait when they had higher sickness ratings for that time point. Figure \@ref(fig:dgselp2)B visualizes these results.
+
+#### Summary
+
+Once again, the random intercept term `(1 | subject)` was the predictor that improved the model fit the most. Predictors capturing stable individual characteristics were selected most often, which aligns well with the SEM results, in which we saw that most of the variance in performance could be traced back to stable trait differences between individuals. The tasks with the highest occasion specific variance (gaze following and delay of gratification, see Figure \@ref(fig:lsteplot2)) were also those for which the most time point specific predictors were selected. However, the quantity discrimination task did not fit this pattern; even though the LSTM suggested that only a very small portion of the variance in performance was occasion specific, three time point specific variables were selected to be relevant. 
+
+The predictor selected most often was `group`. The Differences between groups were, however, variable with no obvious pattern. The two chimpanzee groups varied largely independent from each other. Thus, it makes more sense to interpret this as differences between groups rather than species.
+
+The way in which the predictors that were selected more than once influenced performance was largely coherent. The presence of observers always had a negative effect on performance. The more time an individual had lived in Leipzig, the better performance was. Higher-ranking individuals outperformed lower-ranking ones. Exceptions were `age` and `sex`: while the rate of gaze following increased with age, performance in the inference by exclusion task decreased. Females were more likely to follow gaze than males, but males were more likely to wait for the larger reward in the delay of gratification task.
+
+Taken together, there was no single predictor that was selected as important for all tasks. The most important predictor across tasks was `group`, but the relative ranking of groups was not consistent across tasks. 
+
 ### Comparison between phases
 
+```{r}
+ro <- bind_rows(
+  qvarselp%>%mutate(task = "quantity")%>%mutate(phase = "Phase 1"),
+  cvarselp%>%mutate(task = "causality")%>%mutate(phase = "Phase 1"),
+  ivarselp%>%mutate(task = "inference")%>%mutate(phase = "Phase 1"),
+  gvarselp%>%mutate(task = "gaze_following")%>%mutate(phase = "Phase 1"),
+  
+  qvarselp_p2%>%mutate(task = "quantity")%>%mutate(phase = "Phase 2"),
+  cvarselp_p2%>%mutate(task = "causality")%>%mutate(phase = "Phase 2"),
+  ivarselp_p2%>%mutate(task = "inference")%>%mutate(phase = "Phase 2"),
+  gvarselp_p2%>%mutate(task = "gaze_following")%>%mutate(phase = "Phase 2"),
+  dgvarselp_p2%>%mutate(task = "delay_of_gratification")%>%mutate(phase = "Phase 2"),
+)%>%
+  filter(stat == "elpd", 
+         solution_terms != "none",
+         solution_terms != "day2",
+         solution_terms != "(1|subject)",
+         solution_terms != "(1 | Subject)",
+         solution_terms != "(time_point | subject)",
+         solution_terms != "Time point",
+         solution_terms != "time_point")%>%
+  select(size, solution_terms, task,phase, select)%>%
+  group_by(solution_terms)%>%
+  mutate(sum = sum(size))%>%
+  mutate(task = recode(task,
+    gaze_following = "Gaze following",
+    causality = "Causal inference",
+    inference = "Inference by exclusion",
+    delay_of_gratification = "Delay of gratification",
+    quantity = "Quantity discrimination"
+  ))%>%
+  mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification"),labels = c("Gaze \nfollowing", "Causal \ninference","Inference \nby exclusion" ,"Quantity \ndiscrimination", "Delay of \ngratification")))%>%
+  mutate(type = ifelse(
+    solution_terms == "Time spent in research" | solution_terms == "Rearing history" | solution_terms == "Group" | solution_terms == "Sex"| solution_terms == "Age", "Stable characteristic", ifelse(
+      solution_terms == "Rank" | solution_terms == "Sickness severity" | solution_terms == "Sociality" ,"Variable characteristic", ifelse(
+        solution_terms == "Time spent outdoors" | solution_terms == "Disturbance" | solution_terms == "Life event", "Group life", "Testing arrangement"
+      )
+    )
+  ))
+
+
+ppicomp <- ggplot(ro,aes(x = fct_reorder(solution_terms,sum), y = size, lty = phase, col = type ))+
+  #geom_line(aes(group = task))+
+  geom_line(aes(group = phase), alpha = .5, col = "black")+
+  geom_point(aes(pch = select), size = 2, stroke = 1)+
+  theme_minimal()+
+  facet_grid(task~.)+
+  labs(x = "", y = "Rank based on PPI model")+
+  scale_color_brewer(palette="Set1", name = "")+
+  scale_linetype(name = "")+
+  scale_shape_manual(name = "", values =  c(1,4), labels = c("Irrelevant", "Relevant"))+
+  scale_y_reverse(breaks = c(15,10,5,1), limits = c(16,0))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.box = "vertical",
+        legend.direction = "vertical",
+        legend.position = "right", 
+        legend.spacing.y = unit(0, 'cm'),
+        #legend.spacing.x = unit(0, 'cm'),
+        panel.border  = element_rect(colour = "black",fill = NA)
+        )
+```
+
+```{r ppisum, fig.height=6, fig.width=8, fig.cap = "Predictor ranking and selection based on PPI models for Phase 1 and Phase 2. Different linetypes show the different phases, crosses mark predictors that were selected to be relevant based on the PPI models. Color shows the broader category each predictor belongs to. The x-axis is sorted by the average rank across tasks and phases.", out.width="100%"}
+ppicomp
+```
+Figure \@ref(fig:ppisum)) shows the predictor ranking and selection across tasks and phases. For the following comparison between the two phases, we focus on the tasks that were part of both. The picture that emerges is one of consistency with occasional variability. 
+
+Inference by exclusion was the most consistent of all tasks, that is, the same predictors were selected to be relevant in both phases (`group`, `age`). Furthermore, theses predictors were ranked in the same order. 
+
+For causal inference, the highest ranked predictor was the same in both phases (`group`). However, in Phase 2, `time_outdoors` was also selected to be relevant even though it had received a fairly low rank in Phase 1.
+
+For quantity discrimination, all predictors that were selected in Phase 1 were also selected in Phase 2 (`time_in_leipzig`, `rearing`, `group`, similar ranking in both Phases), however, Phase 2 had three additional -- time point specific -- predictors (`rank`, `time_outdoors`, `test_day`). 
+
+The gaze following task was the only one for which some of the predictors selected in Phase 1 were not selected in Phase 2 (`rearing`, `time_outdoors`, `sociality`). However, except for `time_outdoors`, despite not being selected the ranking of these predictors was similar. The divergence for `time_outdoors` can largely be explained by the initial habituation we saw in gaze following at the beginning of Phase 1 (Figure \@ref(fig:perfplot)) which coincided with a seasonal decline in time spent outdoors (Figure \@ref(fig:glife)). At the beginning of Phase 2, gaze following rates remained low while time spent outdoors was high again. Thus, the result of Phase 1 is likely to be a mere coincident. Phase 2 had additional predictors selected (`observer`, `sex`) and overlapping predictors between phases were `group`, `age`, and `sex`.
+
+The consistency between phases was that for most tasks the predictors selected as relevant in Phase 1 were again selected in Phase 2. This constitutes solid evidence that there is a systematic and consistent relation between performance and these predictors. All predictors that were selected twice capture stable individual differences (`group`, `age`, `time_in_leipzig`, `rearing`), echoing once again the results of the LST models. Variability showed itself in the time point specific variables. There was no overlap in time point specific predictors between Phase 1 and 2. This suggests that cognitive performance *is* influenced by temporal variation in group life, testing arrangements and variable characteristics, the way this happens, however, is either less consistent or less pronounced (or both). 
+
+The stable individual characteristics that turned out to be systematically related to performance varied across tasks. That is, except for `group`, none of the predictors was relevant for all tasks. The ranking of the different groups varied across tasks, with no clear pattern. That is, none of the groups consistently performed better or worse compared to the others across tasks. There seems to be no one-size-fits-all predictor of cognitive abilities in great apes.  
+
 # Summary
+
+When reflecting on the results presented here, we can draw the following tentative conclusions: First, the majority of tasks produced stable group level results and showed acceptable re-test reliability. Exceptions were the switching task -- which produced no interpretable individual differences -- and the quantity discrimination task, which produced stable group-level results but no reliable individual differences. Thus, assessing the psychometric properties of tasks is an important prerequisite to contextualize and interpret the results of individual differences studies in great apes.  
+
+We saw that individual differences in performance were best explained by stable differences in cognitive abilities between individuals. This does not mean that these abilities are time-invariant. For the inference by exclusion task, we saw that some individuals quickly improved, leading to a re-ordering of individual difference. It means that change is systematic and potentially long-lasting, reflecting a change in the underlying cognitive abilities. 
+
+Performance was best predicted by variables that captured stable individual characteristics such as group membership, age or experience with research. This aligns well with the stability of individual differences mentioned above. However, the single most important predictor of performance was a term that simply reflected the identity of the individual. This suggests that the -- fairly comprehensive -- set of predictors that we studied here do not fully explain cognitive performance in great apes. Most likely, idiosyncratic developmental processes or genetic pre-dispositions -- which operate on a much longer time-scale -- are the source of these unexplained individual differences.
 
 # References
 

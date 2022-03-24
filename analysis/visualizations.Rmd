@@ -869,6 +869,7 @@ ggplot(ro,aes(x = fct_reorder(solution_terms,sum), y = size, lty = phase, col = 
         #legend.spacing.x = unit(0, 'cm')
         )
 ```
+
 ```{r}
 ggsave("../writing/paper/figures/ppi3_1.png", width = 8, height = 6, scale = 1.25, bg = "white")
 ```
