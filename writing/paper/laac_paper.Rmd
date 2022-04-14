@@ -180,8 +180,8 @@ The results thus far suggest that individual differences originate from stable d
 
 ... but models also included a random intercept term, capturing variance specific to individuals not explained by the predictors. 
 
-```{r ppiplot, fig.cap = "A. Latent state-trait model estimates for Phase 1 and 2. Consistency: proportion of (measurement-error free) variance in performance explained by stable trait differences. Occasion specificity: variance explained by variable states. Reliability: proportion of variance in raw scores explained by the trait and the state. B. Correlations between latent traits based on pairwise LST models between tasks with 95\\% Credible Interval. Bold correlations are reliably different from zero. The models for quantity discrimination and causal inference showed a poor fit and are not reported here (see supplementary material for details).", out.width="100%", fig.align='center'}
-knitr::include_graphics("./figures/ppi3.png") 
+```{r ppiplot, fig.cap = "A.  B. with 95\\% Credible Interval.", out.width="100%", fig.align='center'}
+knitr::include_graphics("./figures/ppi3_i3.png") 
 ```
 
 # Discussion

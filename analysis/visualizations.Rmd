@@ -647,7 +647,7 @@ p1 <- ggplot(ro,aes(x = fct_reorder(solution_terms,sum), y = size, lty = phase, 
   labs(x = "", y = "Rank based on PPI model")+
   scale_color_brewer(palette="Set1", name = "")+
   scale_linetype(name = "")+
-  scale_shape_manual(name = "", values =  c(1,4), labels = c("Irrelevant", "Relevant"))+
+  scale_shape_manual(name = "", values =  c(1,19), labels = c("Irrelevant", "Relevant"))+
   scale_y_reverse(breaks = c(15,10,5,1), limits = c(16,0))+
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         legend.box = "horizontal",
@@ -703,7 +703,8 @@ proj_samples <- bind_rows(
                          group = "Group",
                          rearing = "Rearing \nhistory",
                          sex = "Sex",
-                         `other predictors` = ""))
+                         Observer = "Observer \npresent",
+                         `other predictors` = "    "))
 
 
 proj_samples_sum <- proj_samples%>%
@@ -712,48 +713,57 @@ proj_samples_sum <- proj_samples%>%
             lci = hdi_lower(value),
             uci = hdi_upper(value))
 
-p2<-proj_samples_sum%>%
+ 
+
+p2f <- proj_samples_sum%>%
   mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification"),labels = c("Gaze \nfollowing", "Causal \ninference","Inference \nby exclusion" ,"Quantity \ndiscrimination", "Delay of \ngratification")))%>%
-  ggplot(aes(x = pred, y = mean, col = phase)) +
+  mutate(factor= ifelse(pred == "Time spent in research","",factor),
+         factor= ifelse(pred == "Age"," ",factor),
+         factor= ifelse(pred == "Sickness severity","  ",factor),
+         factor= factor(factor, levels = c("Group", "", "Observer \npresent"," ","Rearing \nhistory","  ","Sex","    ")))%>%
+  ungroup()%>%
+  mutate(pred2 = recode(pred,
+                        Bonobo = 1,
+                        `Chimpanzee group A` = 2,
+                        `Chimpanzee group B` = 3,
+                        Gorilla = 4,
+                        Orangutan = 5,
+                        `Time spent in research` = 6,
+                        no = 7, 
+                        yes = 8,
+                        Age = 9,
+                        `Hand-reared` = 10,
+                        `Mother-reared` = 11,
+                        `Sickness severity` = 12,
+                        Female = 13,
+                        Male = 14,
+                        Rank = 15,
+                        Sociality = 16, 
+                        `Time spent outdoors` = 17))
+
+p2 <- ggplot(p2f,aes(x = pred2, y = mean, col = phase)) +
   geom_hline(yintercept = 0, lty = 3, alpha = .75)+
   geom_pointrange(aes(ymin = lci, ymax = uci), pch = 4, size = 0.25, position = position_dodge(width = .5))+
-  facet_grid(task~factor, scales = "free", space = "free_x")+
+  facet_grid(task~factor, scales = "free", space = "free_x", switch = "x")+
   labs(y = "Model estimate", x = "")+
   theme_minimal()+
   scale_color_colorblind(name = "")+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),
-                legend.direction = "vertical",
-        legend.position = "top", 
+  scale_x_continuous(breaks = c(6,9,12,15,16,17), labels = c("Time spent in research","                           Age", "       Sickness severity","                   Rank", "               Sociality","     Time spent outdoors"),
+                     sec.axis = sec_axis(~ .,breaks = c(1,2,3,4,5,7,8,10,11,13,14), labels = c("Bonobo","Chimpanzee group A","Chimpanzee group B","Orangutan", "Gorilla", "no", "yes", "Hand-reared", "Mother-reared", "Female","Male")))+
+  theme(axis.text.x.bottom = element_text(angle = 45, hjust = 1, vjust = 1.4),
+                legend.direction = "horizontal",
+        legend.position = c(0.14, 0.1), 
         legend.spacing.y = unit(0, 'cm'),
-        panel.border  = element_rect(colour = "black",fill = NA))
+        legend.background = element_blank(),
+        panel.border  = element_rect(colour = "black",fill = NA),
+        axis.text.x.top = element_text(angle = 45, hjust = 0),
+        panel.grid.minor = element_blank())
+
+
  
 ```
 
-```{r}
-grob <- ggplotGrob(p2);
-idx <- which(grob$layout$name %in% c("panel-2-3", "panel-2-4", "panel-2-5", "panel-3-3", "panel-3-4", "panel-3-5", "panel-4-5",  "panel-5-2",  "panel-5-4"));
-for (i in idx) grob$grobs[[i]] <- nullGrob();
-
-
-x <-   {grid::grid.newpage(); grid::grid.draw(grob)}
-```
-
-
-```{r}
-df <- data.frame()
-pe <- ggplot(df) + geom_blank()+theme_void()
-
-p_ppi <- ggarrange(p1,
-ggarrange(pe, p2,pe , ncol = 1, heights = c(0.01,1,0.045)), 
-widths = c(1,1))
-```
-
-
-```{r}
-ggsave("../writing/paper/figures/ppi3.png", width = 10, height = 6, scale = 1.25, bg = "white")
-```
-
-```{r}
+```{r, warning = F}
 pai <- proj_samples_sum%>%
   filter(pred == "Age",
          task == "Inference by exclusion")%>%
@@ -832,21 +842,25 @@ ptd <- proj_samples_sum%>%
 
 p2_i <- ggdraw() +
   draw_plot(p2) +
-  draw_plot(pai, x = 0.105, y = .46, width = .03, height = .075)+
-  draw_plot(pag, x = 0.105, y = .71, width = .03, height = .075)+
-  draw_plot(ptq, x = 0.285, y = .33, width = .03, height = .075)+
-  draw_plot(pti, x = 0.285, y = .46, width = .03, height = .075)+
-  draw_plot(ptd, x = 0.285, y = .2, width = .03, height = .075)
+  draw_plot(pai, x = 0.509, y = .51, width = .03, height = .075)+
+  draw_plot(pag, x = 0.509, y = .76, width = .03, height = .075)+
+  draw_plot(ptq, x = 0.369, y = .387, width = .03, height = .075)+
+  draw_plot(pti, x = 0.369, y = .51, width = .03, height = .075)+
+  draw_plot(ptd, x = 0.369, y = .26, width = .03, height = .075)
+
+ggarrange(
+ggarrange( p1, NULL , ncol = 1, heights = c(1,0.012)),
+ggarrange(NULL, p2_i , ncol = 1, heights = c(0.06,1)),
+widths = c(1,1.2),
+nrow = 1, 
+labels = c("A","B"),
+vjust = 3,
+align = "h")
+
 ```
 
 ```{r}
-ggarrange(p1,
-ggarrange(NULL, p2_i,NULL , ncol = 1, heights = c(0.014,1,0.042)), 
-widths = c(1,1.2))
-```
-
-```{r}
-ggsave("../writing/paper/figures/ppi3_i.png", width = 10, height = 6, scale = 1.25, bg = "white")
+ggsave("../writing/paper/figures/ppi3_i3.png", width = 10, height = 6, scale = 1.25, bg = "white")
 ```
 
 ```{r}
