@@ -3711,14 +3711,14 @@ Groups differed in that individuals from the chimpanzee A group were most likely
 #### Quantity discrimination
 
 ```{r}
-# cvs_quant_p2 <- cv_varsel(m_quant_2l_p2,
-#                        search_terms = s_terms,
-#                        cv_method = "LOO", method = "forward",
-#                        seed = 2022)
-# 
-# saveRDS(cvs_quant_p2,"./saves/cvs_quant_p2.rds")
-# 
-# cvs_quant_p2 <- readRDS("./saves/cvs_quant_p2.rds")
+cvs_quant_p2 <- cv_varsel(m_quant_2l_p2,
+                       search_terms = s_terms,
+                       cv_method = "LOO", method = "forward",
+                       seed = 2022)
+
+saveRDS(cvs_quant_p2,"./saves/cvs_quant_p2.rds")
+
+cvs_quant_p2 <- readRDS("./saves/cvs_quant_p2.rds")
 ```
 
 ```{r}
@@ -3730,7 +3730,7 @@ Groups differed in that individuals from the chimpanzee A group were most likely
 #   filter(grepl(stat,se_term))%>%
 #   select(-se_term)%>%
 #   mutate(solution_terms = factor(ifelse(is.na(solution_terms),"none",solution_terms)),
-#          select = ifelse(solution_terms  %in% c("(1 | subject)", "rel_rank", "rearing", "time_in_leipzig", "group", "time_outdoors", "test_tp"), "yes", "no"))
+#          select = ifelse(solution_terms  %in% c("(1 | subject)", "rel_rank", "rearing", "time_in_leipzig", "group", "time_outdoors", "observer_mod", "test_tp"), "yes", "no"))
 # 
 # saveRDS(qvarselp_p2, "./saves/cvs_quant_summary_p2.rds")
 # 
@@ -3789,12 +3789,12 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-# proj_quant_cv_p2 <- project(cvs_quant_p2,  solution_terms = c(1:5))
+# proj_quant_cv_p2 <- project(cvs_quant_p2,  solution_terms = c(1:7))
 # 
 # proj_samples_quant_p2 <- as.matrix(proj_quant_cv_p2)%>%
 #   as_tibble()%>%
 #   pivot_longer(cols =everything(), names_to = "pred", values_to = "value")%>%
-#   filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+#   filter(!pred%in%c( "sigma", "Intercept"))%>%
 # mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex",ifelse(grepl("observer", pred),"Observer","other predictors")))),
 #          pred = str_remove(pred,"group"),
 #          pred = str_remove(pred,"rearing"),
