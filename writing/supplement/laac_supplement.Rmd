@@ -3,14 +3,14 @@ title: "A baseline for inferences about human cognitive evolution: structure, st
 author: "tbd..."
 subtitle: Supplementary material
 output:
+  bookdown::pdf_document2:
+    toc: yes
+    number_sections: no
   bookdown::html_document2:
     toc: yes
     toc_float: yes
     fig_caption: yes
     code_folding: hide
-    number_sections: no
-  bookdown::pdf_document2:
-    toc: yes
     number_sections: no
   html_document:
     toc: yes
@@ -3711,14 +3711,14 @@ Groups differed in that individuals from the chimpanzee A group were most likely
 #### Quantity discrimination
 
 ```{r}
-cvs_quant_p2 <- cv_varsel(m_quant_2l_p2,
-                       search_terms = s_terms,
-                       cv_method = "LOO", method = "forward",
-                       seed = 2022)
-
-saveRDS(cvs_quant_p2,"./saves/cvs_quant_p2.rds")
-
-cvs_quant_p2 <- readRDS("./saves/cvs_quant_p2.rds")
+# cvs_quant_p2 <- cv_varsel(m_quant_2l_p2,
+#                        search_terms = s_terms,
+#                        cv_method = "LOO", method = "forward",
+#                        seed = 2022)
+# 
+# saveRDS(cvs_quant_p2,"./saves/cvs_quant_p2.rds")
+# 
+# cvs_quant_p2 <- readRDS("./saves/cvs_quant_p2.rds")
 ```
 
 ```{r}
@@ -3853,9 +3853,9 @@ pqpro_p2 <- ggplot(proj_samples_quant_p2, aes(x = value, y = pred)) +
 ggarrange(pqsel_p2, pqpro_p2, labels = c("A","B"), nrow = 1, widths = c(1.5,1))
 ```
 
-Figure \@ref(fig:qselp2) visualizes the results. In addition to the random intercept term, we selected, `time_in_leipzig`,`observer`, `sex`,`rank`, and `sick_severity`. Notably, delay of gratification was the only task for which `group` was not selected as a predictor. 
+Figure \@ref(fig:qselp2) visualizes the results. In addition to the random intercept term, we selected, `rel_rank`, `rearing`, `time_in_leipzig`, `group`, `time_outdoors`, `observer_mod` and `test_tp`. Notably, four of the seven predictors captured more variable aspects of experience.
 
-Individuals who has spent more time in Leipzig were more likely to delay gratification. Waiting for the bigger reward was also more likely when there was no observer present. Males and higher ranking individuals also hat higher rates of waiting. Finally, individuals were more likely to wait when they had higher sickness ratings for that time point. Figure \@ref(fig:dgselp2)B visualizes these results.
+Figure \@ref(fig:iselp2)B shows the projected posterior distributions for the predictors. Higher ranking individuals performed better in the task. Mother-reared individuals performed better compared to hand-reared individuals. The more time the individual had spent in Leipzig, the better the performance. With respect to `group`, we found that Bonobos and the Chimpanzee B group performed better compared to the other groups. Time spent outdoors seemed to have a negative impact. Furthermore, performance was better, when there was no observer. Finally, individuals who had already participated in anotehr study on the same day showed better performance.
 
 #### Delay of gratification
 
@@ -4036,11 +4036,14 @@ ro <- bind_rows(
          solution_terms != "(1|subject)",
          solution_terms != "(1 | Subject)",
          solution_terms != "(time_point | subject)",
+         solution_terms != "(time point | Subject)",
          solution_terms != "Time point",
          solution_terms != "time_point")%>%
   select(size, solution_terms, task,phase, select)%>%
   group_by(solution_terms)%>%
   mutate(sum = sum(size))%>%
+  ungroup()%>%
+  droplevels()%>%
   mutate(task = recode(task,
     gaze_following = "Gaze following",
     causality = "Causal inference",
@@ -4077,6 +4080,7 @@ ppicomp <- ggplot(ro,aes(x = fct_reorder(solution_terms,sum), y = size, lty = ph
         #legend.spacing.x = unit(0, 'cm'),
         panel.border  = element_rect(colour = "black",fill = NA)
         )
+
 ```
 
 ```{r ppisum, fig.height=6, fig.width=8, fig.cap = "Predictor ranking and selection based on PPI models for Phase 1 and Phase 2. Different linetypes show the different phases, crosses mark predictors that were selected to be relevant based on the PPI models. Color shows the broader category each predictor belongs to. The x-axis is sorted by the average rank across tasks and phases.", out.width="100%"}
@@ -4088,7 +4092,7 @@ Inference by exclusion was the most consistent of all tasks, that is, the same p
 
 For causal inference, the highest ranked predictor was the same in both phases (`group`). However, in Phase 2, `time_outdoors` was also selected to be relevant even though it had received a fairly low rank in Phase 1.
 
-For quantity discrimination, all predictors that were selected in Phase 1 were also selected in Phase 2 (`time_in_leipzig`, `rearing`, `group`, similar ranking in both Phases), however, Phase 2 had three additional -- time point specific -- predictors (`rank`, `time_outdoors`, `test_day`). 
+For quantity discrimination, all predictors that were selected in Phase 1 were also selected in Phase 2 (`time_in_leipzig`, `rearing`, `group`, similar ranking in both Phases), however, Phase 2 had three additional -- time point specific -- predictors (`rank`, `time_outdoors`, `observer`, `test_day`). 
 
 The gaze following task was the only one for which some of the predictors selected in Phase 1 were not selected in Phase 2 (`rearing`, `time_outdoors`, `sociality`). However, except for `time_outdoors`, despite not being selected the ranking of these predictors was similar. The divergence for `time_outdoors` can largely be explained by the initial habituation we saw in gaze following at the beginning of Phase 1 (Figure \@ref(fig:perfplot)) which coincided with a seasonal decline in time spent outdoors (Figure \@ref(fig:glife)). At the beginning of Phase 2, gaze following rates remained low while time spent outdoors was high again. Thus, the result of Phase 1 is likely to be a mere coincident. Phase 2 had additional predictors selected (`observer`, `sex`) and overlapping predictors between phases were `group`, `age`, and `sex`.
 
