@@ -355,19 +355,26 @@ One time point meant running all tasks with all participants. Within each time p
 \hypertarget{analysis}{%
 \subsection{Analysis}\label{analysis}}
 
-We had two overarching questions. First, we were interested in the cognitive measures and the relations between them. That is, we asked how stable performance in a given task was on a group-level, how stable individual differences were, how reliable the measures were. We also investigated relations between the different tasks. To assess re-test reliability, we computed computed pearson correlations between the data from two time points, aggregated for each individual and task. We used Structural Equation Modeling (SEM) (Bollen, 1989; Hoyle, 2012) to address the stability and structure of each task as well as relations between tasks.
+In the following, we provide an overview of the analytical procedures we used. We encourage the reader to consult the supplementary material available online for additional details and results.
 
-SEMs allowed us to partition the variance in performance into latent traits (stable over time), latent states (time varying) and measurement error. Because the latent variables are estimated on multiple indicators (here: test halves), they are assumed to be measurement-error free (Geiser, 2020; Steyer et al., 1992, 2015). In the present context, one can think of a trait as a stable psychological ability (e.g.~ability to make causal inferences) and states as time-specific, variable psychological conditions (e.g.~variations in performance due to being attentive or inattentive).
+We had two overarching questions. On the one hand, we were interested in the cognitive measures and the relations between them. That is, we asked how stable performance in a given task was on a group-level, how stable individual differences were, how reliable the measures were. We also investigated relations between the different tasks. We used \emph{Structural Equation Modeling} (SEM) (Bollen, 1989; Hoyle, 2012) to address these questions.
+
+Our second question was, which predictors explain variability in cognitive performance. Here we wanted to see which of the predictors we recorded were most important to predict performance over time. This is a variable selection problem (selecting a subset of variables from a larger pool) and we used \emph{Projection Prediction Inference} for this (Piironen et al., 2020).
+
+\hypertarget{structural-equation-modelling}{%
+\subsubsection{Structural equation modelling}\label{structural-equation-modelling}}
+
+We used Structural Equation Modeling (SEM) (Bollen, 1989; Hoyle, 2012) to address the stability and structure of each task as well as relations between tasks. SEMs allowed us to partition the variance in performance into latent traits (stable over time), latent states (time varying) and measurement error. Because the latent variables are estimated on multiple indicators (here: test halves), they are assumed to be measurement-error free (Geiser, 2020; Steyer et al., 1992, 2015). In the present context, one can think of a trait as a stable psychological ability (e.g.~ability to make causal inferences) and states as time-specific, variable psychological conditions (e.g.~variations in performance due to being attentive or inattentive).
 
 We used Bayesian estimation techniques to fit the models. In the supplementary material available online we report the prior settings for our models as well as the structural restrictions we imposed on the model and the parameter estimation process. We justify these settings and restrictions via simulations studies also included in the supplementary material.
 
-Our focal Latent Trait-State (LST) model was defined as follows. The latent state variables \(S_{it}\) were decomposed into a latent trait variable \(T_{it}\) and a latent state residual variable \(\zeta_{it}\). The latent trait variables \(T_{it}\) are time-specific dispositions, that is, trait scores capture the expected value of the latent state (i.e., true score) variable for an individual at time \(t\) across all possible situations the individual might experience at time \(t\) (Eid, Holtmann, Santangelo, \& Ebner-Priemer, 2017; Steyer et al., 2015). The state residual variables \(\zeta_{it}\) captured the deviation of a momentary state from the time-specific disposition \(T_{it}\). We assumed that latent traits were stable across time. In addition, we assumed common latent trait and state residual variables across the two test halves, which leads to the following measurement equation for parcel \(i\) at time point \(t\):
+In our focal Latent Trait-State (LST) model, the observed categorical variables \(Y_{it}\) for test half \(i\) at time point \(t\) result from a categorization of unobserved continuous latent variables \(Y^*_{it}\) which underlie the observed categorical variables (graded response model, see Samejima, 1969, 1996). This continuous latent variable \(Y^*_{it}\) is then decomposed into a latent trait variable \(T_{it}\) and a latent state residual variable \(\zeta_{it}\). The latent trait variables \(T_{it}\) are time-specific dispositions, that is, trait scores capture the expected value of the latent state (i.e., true score) variable for an individual at time \(t\) across all possible situations the individual might experience at time \(t\) (Eid, Holtmann, Santangelo, \& Ebner-Priemer, 2017; Steyer et al., 2015). The state residual variables \(\zeta_{it}\) captured the deviation of a momentary state from the time-specific disposition \(T_{it}\). We assumed that latent traits were stable across time. In addition, we assumed common latent trait and state residual variables across the two test halves, which leads to the following measurement equation for parcel \(i\) at time point \(t\):
 
 \begin{equation}
 Y^*_{it}= T + \zeta_t + \epsilon_{it}
 \end{equation}
 
-Here, \(T\) is a stable (time-invariant) latent trait variable, capturing stable interindividual differences. The state residual variable \(\zeta_t\) captures time-specific deviations of the respective true score from the trait variable at time \(t\), and thereby captures deviations from the trait due to situation or person-situation interaction effects. \(\epsilon_{it}\) denotes a measurement error variable, with \(\epsilon_{it} \sim N(0,1)\) \(\forall~ i,t\). The following variance components can be computed for the presented LST model.
+Here, \(T\) is a stable (time-invariant) latent trait variable, capturing stable interindividual differences. The state residual variable \(\zeta_t\) captures time-specific deviations of the respective true score from the trait variable at time \(t\), and thereby captures deviations from the trait due to situation or person-situation interaction effects. \(\epsilon_{it}\) denotes a measurement error variable, with \(\epsilon_{it} \sim N(0,1)\) \(\forall~ i,t\). This allowed us to computed the following variance components.
 
 Consistency: Proportion of true variance (i.e., measurement-error free variance) that is due to true inter-individual stable trait differences.
 
@@ -383,9 +390,24 @@ OS(Y^*_{it})=1-Con(Y^*_{it}) = \frac{Var(\zeta_t)}{Var(T)+Var(\zeta_t)}
 
 As state residual variances \(Var(\zeta_t)\) were set equal across time, \(OS(Y^*_{it})\) is constant across time (as well as across item parcels \(i\)).
 
-To investigate associations between cognitive performance in different tasks, the LSTMs were extended to multitrait models. Due to the small sample size, we could not combine all tasks in a single, structured model. Instead, we assessed relations between tasks in pairs.
+To investigate associations between cognitive performance in different tasks, the LSTMs were extended to multi-trait models. Due to the small sample size, we could not combine all tasks in a single, structured model. Instead, we assessed relations between tasks in pairs.
 
-Our second question was, which predictors explain variability in cognitive performance. Here we wanted to see which of the predictors we recorded were most important to predict performance over time. This is a variable selection problem (selecting a subset of variables from a larger pool) and we used \emph{Projection Prediction Inference} for this (Piironen et al., 2020).
+\hypertarget{projection-predictive-inference}{%
+\subsubsection{Projection predictive inference}\label{projection-predictive-inference}}
+
+The selection of relevant predictor variables constitutes a variable selection problem, for which a range of different methods are available (e.g., shrinkage priors, Van Erp, Oberski, \& Mulder, 2019). We chose to use \emph{Projection Prediction Inference} because it is a state-of-the-art variable selection procedure that provides an excellent trade-off between model complexity and accuracy (Piironen et al., 2020; Piironen \& Vehtari, 2017), especially when the goal is to identify a minimal subset of predictors that yield a good predictive model (Pavone et al., 2020).
+
+The projection prediction approach can be viewed as a two-step process: The first step consists of building the best predictive model possible, called the reference model. In the context of this work, the reference model is a Bayesian multilevel regression model (repeated measurements nested in apes), including all available predictors and a random intercept term for individual (\texttt{R} notation: \texttt{sum\_correct\ \textasciitilde{}\ predictors\ +\ (1\ \textbar{}\ subject)}).
+
+In the second step, the goal is to replace the posterior distribution of the reference model with a simpler distribution. This is achieved via a forward step-wise addition of predictors that decrease the Kullback-Leibler (KL) divergence from the reference model to the projected model.
+
+The result of the projection is a list containing the best model for each number of predictors from which the final model is selected by inspecting the mean log-predictive density (\texttt{elpd}) and root-mean-squared error (\texttt{rmse}). The projected model with the smallest number of predictors is chosen, which shows similar predictive performance as the reference model.
+
+We built separate (Bayesian multilevel regression using the package \texttt{brms} Burkner, 2017) reference models for each phase and task and ran them through the above-described projection prediction approach. The dependent variable for each task was the cognitive performance of the apes, that is, the number of correctly solved trials per time point and task. The model for the delay of gratification task was only estimated once (Phase 2).
+
+Following step two, we performed projection prediction for each reference model separately, thus resulting in different rankings for the relevant predictors for each task and phase. We used the R package \texttt{projpred} (\emph{Projpred}, n.d.), which implements the aforementioned projection prediction technique. The predictor relevance ranking is measured by the LOO cross-validated mean log-predictive density and root-mean-squared error. To find the optimal submodel size, we inspected -- in line with the authors' recommendations -- summaries and the plotted trajectories of the calculated \texttt{elpd} and \texttt{rmse}.
+
+The order of relevance for the predictors and the random intercept (together called terms) is created by performing forward search. The term that decreases the KL divergence between the reference model's predictions and the projection's predictions the most goes into the ranking first. Forward search is then repeated \(N\) times to get a more robust selection. We chose the final model by inspecting the predictive utility of each projection. To be precise, we chose the model with \(p\) terms where \(p\) depicts the number of terms at the cutoff between the term that increases the \texttt{elpd} and the term that does not increase the \texttt{elpd} by any significant amount. In order to get a useful predictor ranking, we manually delayed the random intercept term to the last position in the predictor selection process. The random intercept delay is needed because if the random intercept were not delayed, it would soak up almost all of the variance of the dependent variable before the predictors are allowed to explain some amount of the variance themselves.
 
 \newpage
 
@@ -412,6 +434,9 @@ Brauer, J., Call, J., \& Tomasello, M. (2005). All great ape species follow gaze
 
 \leavevmode\vadjust pre{\hypertarget{ref-burkart2017evolution}{}}%
 Burkart, J. M., Schubiger, M. N., \& Schaik, C. P. van. (2017). The evolution of general intelligence. \emph{Behavioral and Brain Sciences}, \emph{40}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-R-brms_a}{}}%
+Burkner, P.-C. (2017). {brms}: An {R} package for {Bayesian} multilevel models using {Stan}. \emph{Journal of Statistical Software}, \emph{80}(1), 1--28.
 
 \leavevmode\vadjust pre{\hypertarget{ref-call2004inferences}{}}%
 Call, J. (2004). Inferences about the location of food in the great apes (pan paniscus, pan troglodytes, gorilla gorilla, and pongo pygmaeus). \emph{Journal of Comparative Psychology}, \emph{118}(2), 232.
@@ -527,8 +552,17 @@ Piironen, J., Paasiniemi, M., \& Vehtari, A. (2020). {Projective inference in hi
 \leavevmode\vadjust pre{\hypertarget{ref-piironen2017comparison}{}}%
 Piironen, J., \& Vehtari, A. (2017). Comparison of bayesian predictive methods for model selection. \emph{Statistics and Computing}, \emph{27}, 711--735. \url{https://doi.org/10.1007/s11222-016-9649-y}
 
+\leavevmode\vadjust pre{\hypertarget{ref-projpred202}{}}%
+\emph{Projpred: Projection predictive feature selection}. (n.d.). Retrieved from \url{https://mc-stan.org/projpred}
+
 \leavevmode\vadjust pre{\hypertarget{ref-rosati2007evolutionary}{}}%
 Rosati, A. G., Stevens, J. R., Hare, B., \& Hauser, M. D. (2007). The evolutionary origins of human patience: Temporal preferences in chimpanzees, bonobos, and human adults. \emph{Current Biology}, \emph{17}(19), 1663--1668.
+
+\leavevmode\vadjust pre{\hypertarget{ref-samejima1969estimation}{}}%
+Samejima, F. (1969). Estimation of latent ability using a response pattern of graded scores. \emph{Psychometrika}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-samejima1996graded}{}}%
+Samejima, F. (1996). The graded response model. In W. van der Linden \& R. Hambleton (Eds.), \emph{Handbook of modern item response theory} (pp. 85--100). New York: Springer.
 
 \leavevmode\vadjust pre{\hypertarget{ref-schubiger2020validity}{}}%
 Schubiger, M. N., Fichtel, C., \& Burkart, J. M. (2020). Validity of cognitive tests for non-human animals: Pitfalls and prospects. \emph{Frontiers in Psychology}, \emph{11}, 1835.
@@ -554,6 +588,9 @@ Tomasello, M. (2019). \emph{Becoming human}. Harvard University Press.
 \leavevmode\vadjust pre{\hypertarget{ref-uher2011individual}{}}%
 Uher, J. (2011). Individual behavioral phenotypes: An integrative meta-theoretical framework. Why {``behavioral syndromes''} are not analogs of {``personality.''} \emph{Developmental Psychobiology}, \emph{53}(6), 521--548.
 
+\leavevmode\vadjust pre{\hypertarget{ref-van2019shrinkage}{}}%
+Van Erp, S., Oberski, D. L., \& Mulder, J. (2019). Shrinkage priors for bayesian penalized regression. \emph{Journal of Mathematical Psychology}, \emph{89}, 31--50.
+
 \leavevmode\vadjust pre{\hypertarget{ref-van2018population}{}}%
 Van Leeuwen, E. J., Cronin, K. A., \& Haun, D. B. (2018). Population-specific social dynamics in chimpanzees. \emph{Proceedings of the National Academy of Sciences}, \emph{115}(45), 11393--11400.
 
@@ -561,7 +598,7 @@ Van Leeuwen, E. J., Cronin, K. A., \& Haun, D. B. (2018). Population-specific so
 Volter, C. J., Tinklenberg, B., Call, J., \& Seed, A. M. (2018). Comparative psychometrics: Establishing what differs is central to understanding what evolves. \emph{Philosophical Transactions of the Royal Society B: Biological Sciences}, \emph{373}(1756), 20170283.
 
 \leavevmode\vadjust pre{\hypertarget{ref-volter2022structure}{}}%
-Völter, C. J., Reindl, E., Felsche, E., Civelek, Z., Whalen, A., Lugosi, Z., \ldots{} Seed, A. M. (2022). The structure of executive functions in preschool children and chimpanzees. \emph{Scientific Reports}.
+Völter, C. J., Reindl, E., Felsche, E., Civelek, Z., Whalen, A., Lugosi, Z., \ldots{} Seed, A. M. (2022). The structure of executive functions in preschool children and chimpanzees. \emph{Scientific Reports}, \emph{12}(1), 1--16.
 
 \leavevmode\vadjust pre{\hypertarget{ref-wobber2014differences}{}}%
 Wobber, V., Herrmann, E., Hare, B., Wrangham, R., \& Tomasello, M. (2014). Differences in the early cognitive development of children and great apes. \emph{Developmental Psychobiology}, \emph{56}(3), 547--573.
