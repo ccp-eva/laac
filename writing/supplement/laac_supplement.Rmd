@@ -2947,12 +2947,12 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-# proj_gaze_cv <- project(cvs_gaze,  solution_terms = c(1:6))
+# proj_gaze_cv <- project(cvs_gaze,  solution_terms = c(1:8))
 # 
 # proj_samples_gaze <- as.matrix(proj_gaze_cv)%>%
 #   as_tibble()%>%
-#   pivot_longer(cols =c(1:14), names_to = "pred", values_to = "value")%>%
-#   filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+#   pivot_longer(cols =everything(), names_to = "pred", values_to = "value")%>%
+#   filter(!pred%in%c("sigma", "Intercept"))%>%
 #   mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex",ifelse(grepl("observer", pred),"Observer","other predictors")))),
 #          pred = str_remove(pred,"group"),
 #          pred = str_remove(pred,"rearing"),
@@ -3012,9 +3012,9 @@ facet_grid(factor~., scales = "free", space = "free")+
 ggarrange(pgsel, pgpro, labels = c("A","B"), nrow = 1, widths = c(1.5,1))
 ```
 
-Figure \@ref(fig:gselp) visualizes the results. Gaze following had the most selected predictors of all tasks. In addition to the random intercept term, we selected, `group`, `rearing`, `time_outdoors`, `age`, `sociality`, and `sex`. Again, most of these predictors were stable individual characteristics, with the exception of `time_outdoors` and `sociality`.
+Figure \@ref(fig:gselp) visualizes the results. Gaze following had the most selected predictors of all tasks. In addition to the random intercept term, we selected, `group`, `rearing`, `time_outdoors`, `age`, `sociality`, `sex`, `sick_severity`, and `observer`. Half of the predictors were stable individual characteristics, while the other half captured variable characteristics of experience.
 
-Groups differed in that a-chimpanzees were most likely to follow gaze, followed by b-chimpanzees and bonobos. Gorillas and orangutans were the least likely to follow the experimenter's gaze. Mother-reared individuals outperformed hand-reared individuals (including those with an unknown rearing history). The more time individuals spent outdoors, the more likely they were to follow gaze. Also, the probability to follow gaze increased with age. Individuals with a lower sociality index had higher rates of gaze following. Finally, females outperformed males. Figure \@ref(fig:gselp)B visualizes these results.
+Groups differed in that a-chimpanzees were most likely to follow gaze, followed by the chimpanzee B group and the bonobos. Gorillas and orangutans were the least likely to follow the experimenter's gaze. Mother-reared individuals outperformed hand-reared individuals (including those with an unknown rearing history). The more time individuals spent outdoors, the more likely they were to follow gaze. Also, the probability to follow gaze increased with age. Individuals with a lower sociality index had higher rates of gaze following. Finally, females outperformed males. Figure \@ref(fig:gselp)B visualizes these results.
 
 #### Quantity discrimination
 
@@ -3490,12 +3490,12 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-# proj_inf_cv_p2 <- project(cvs_inf_p2,  solution_terms = c(1, 2, 3,4))
+# proj_inf_cv_p2 <- project(cvs_inf_p2,  solution_terms = c(1, 2, 3))
 # 
 # proj_samples_inf_p2 <- as.matrix(proj_inf_cv_p2)%>%
 #   as_tibble()%>%
 #   pivot_longer(cols  = everything(), names_to = "pred", values_to = "value")%>%
-#   filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+#   filter(!pred%in%c("sigma", "Intercept"))%>%
 #   mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
 #          pred = str_remove(pred,"group"),
 #          species = ifelse(factor == "group", pred,factor))
@@ -3643,7 +3643,7 @@ ggplot(aes(x = size, y = value))+
 # proj_samples_gaze_p2 <- as.matrix(proj_gaze_cv_p2)%>%
 #   as_tibble()%>%
 #   pivot_longer(cols = everything(), names_to = "pred", values_to = "value")%>%
-#   filter(!pred%in%c("test_tp", "sigma", "Intercept"))%>%
+#   filter(!pred%in%c("sigma", "Intercept"))%>%
 #   mutate(factor = ifelse(grepl("group", pred), "group", ifelse(grepl("rearing", pred), "rearing",ifelse(grepl("sex", pred), "sex",ifelse(grepl("observer", pred),"Observer","other predictors")))),
 #          pred = str_remove(pred,"group"),
 #          pred = str_remove(pred,"rearing"),
@@ -4094,7 +4094,7 @@ For causal inference, the highest ranked predictor was the same in both phases (
 
 For quantity discrimination, all predictors that were selected in Phase 1 were also selected in Phase 2 (`time_in_leipzig`, `rearing`, `group`, similar ranking in both Phases), however, Phase 2 had three additional -- time point specific -- predictors (`rank`, `time_outdoors`, `observer`, `test_day`). 
 
-The gaze following task was the only one for which some of the predictors selected in Phase 1 were not selected in Phase 2 (`rearing`, `time_outdoors`, `sociality`). However, except for `time_outdoors`, despite not being selected the ranking of these predictors was similar. The divergence for `time_outdoors` can largely be explained by the initial habituation we saw in gaze following at the beginning of Phase 1 (Figure \@ref(fig:perfplot)) which coincided with a seasonal decline in time spent outdoors (Figure \@ref(fig:glife)). At the beginning of Phase 2, gaze following rates remained low while time spent outdoors was high again. Thus, the result of Phase 1 is likely to be a mere coincident. Phase 2 had additional predictors selected (`observer`, `sex`) and overlapping predictors between phases were `group`, `age`, and `sex`.
+The gaze following task was the only one for which some of the predictors selected in Phase 1 were not selected in Phase 2 (`rearing`, `time_outdoors`, `sociality`, `sick_severity`). However, except for `time_outdoors`, despite not being selected, the ranking of the predictors was similar. The divergence for `time_outdoors` can largely be explained by the initial habituation we saw in gaze following at the beginning of Phase 1 (Figure \@ref(fig:perfplot)) which coincided with a seasonal decline in time spent outdoors (Figure \@ref(fig:glife)). At the beginning of Phase 2, gaze following rates remained low while time spent outdoors was high again. Thus, the result of Phase 1 is likely to be a mere coincident. Overlapping predictors between phases were `group`, `age`, `observer`, and `sex`. The case of `observer` is the only one in which a variable predictor was selected in both phases.
 
 The consistency between phases was that for most tasks the predictors selected as relevant in Phase 1 were again selected in Phase 2. This constitutes solid evidence that there is a systematic and consistent relation between performance and these predictors. All predictors that were selected twice capture stable individual differences (`group`, `age`, `time_in_leipzig`, `rearing`), echoing once again the results of the LST models. Variability showed itself in the time point specific variables. There was no overlap in time point specific predictors between Phase 1 and 2. This suggests that cognitive performance *is* influenced by temporal variation in group life, testing arrangements and variable characteristics, the way this happens, however, is either less consistent or less pronounced (or both). 
 
