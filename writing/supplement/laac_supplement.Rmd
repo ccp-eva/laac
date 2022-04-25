@@ -193,7 +193,7 @@ Example videos for each task can be found in the associated online repository in
 
 The gaze following task was modeled after @brauer2005all. The experimenter sat opposite the ape and handed over food at a constant pace. That is, the experimenter picked up a piece of food, briefly held it out in front of her face and then handed it over to the participant. After a predetermined (but varying) number of food items had been handed over, the experimenter again picked up a food item, held it in front of her face and then looked up (i.e., moving her head up - see Figure \@ref(fig:setup)C). The experimenter looked to the ceiling, no object of particular interest was placed there. After 10s, the experimenter looked down again, handed over the food and the trial ended. We coded whether the participant looked up during the 10s interval. Apes received eight gaze following trials.
 
-We assume that participants look up becasue they assume that the experimenter's attention is focused on a potentially noteworthy object.
+We assume that participants look up because they assume that the experimenter's attention is focused on a potentially noteworthy object.
 
 ### Causal inference
 

@@ -129,6 +129,15 @@ filter(!grepl("switch", task))%>%
   tidyboot_mean(col = performance, na.rm = TRUE)%>%
   mutate(n = n(),
          chance = ifelse(task == "Gaze following" | task == "Delay of gratification", NA,0.5))
+
+
+time_plot_3 <- data_task%>%
+ filter(!grepl("switch", task))%>%
+  mutate(group = as.character(group), 
+         species = ifelse(grepl("chimp",group),"chimpanzee", group), 
+         species = factor(species),
+         group = factor(group))%>%
+  drop_na(performance)
 ```
 
 ```{r}
@@ -160,6 +169,7 @@ ggplot(time_plot_0, aes(x = time_point, y = performance,  col = group))+
 ggplot()+
   facet_wrap(~task)+
   geom_vline(xintercept = 14.5, size = 1)+
+  geom_jitter(data = time_plot_3, aes(x = time_point, y = performance,  col = group), alpha = .25, size = 0.3, height = 0.05, width = 0, pch = 1)+
   geom_hline(data = time_plot_2,aes(yintercept = chance), lty = 3, col = "black", alpha = .75)+
   geom_point(data = time_plot_1, aes(x = time_point, y = mean,  col = group), alpha = .6, size = 0.75)+
   geom_line(data = time_plot_1%>%filter(time_point<15), aes(x = time_point, y = mean, col = group, group = group), alpha = .6, size = 0.5)+
@@ -271,8 +281,9 @@ cor_data%>%
   theme(#panel.border = element_rect(color = "black",fill = NA,size = .25),
         ggside.panel.border = element_blank(),
         ggside.panel.scale.x = .5,
-        axis.title.y = element_text(hjust = -0.1),
-        legend.position = c(0.05,0.9))+
+        axis.title.y = element_text(hjust = 0.2),
+        legend.position = c(0.05,0.9),
+        legend.background = element_blank())+
   theme_ggside_void()
 
 
@@ -749,7 +760,7 @@ p2 <- ggplot(p2f,aes(x = pred2, y = mean, col = phase)) +
   theme_minimal()+
   scale_color_colorblind(name = "")+
   scale_x_continuous(breaks = c(6,9,12,15,16,17), labels = c("Time spent in research","                           Age", "       Sickness severity","                   Rank", "               Sociality","     Time spent outdoors"),
-                     sec.axis = sec_axis(~ .,breaks = c(1,2,3,4,5,7,8,10,11,13,14), labels = c("Bonobo","Chimpanzee group A","Chimpanzee group B","Orangutan", "Gorilla", "no", "yes", "Hand-reared", "Mother-reared", "Female","Male")))+
+                     sec.axis = sec_axis(~ .,breaks = c(1,2,3,4,5,7,8,10,11,13,14), labels = c("Bonobo","Chimpanzee group A","Chimpanzee group B", "Gorilla","Orangutan", "no", "yes", "Hand-reared", "Mother-reared", "Female","Male")))+
   theme(axis.text.x.bottom = element_text(angle = 45, hjust = 1, vjust = 1.4),
                 legend.direction = "horizontal",
         legend.position = c(0.14, 0.1), 
