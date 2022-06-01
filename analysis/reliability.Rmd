@@ -24,15 +24,22 @@ data_trial <- read.csv("../data/laac_data_trial.csv")
 #tp1 <- sample(c(1:14), 2) #[1] 7 1
 #tp2 <- sample(c(15:28), 2) #[1] 16 23
 
+#tp1_2 <- sample(c(1:14), 2) #[1] 14  9
+#tp2_2 <- sample(c(15:28), 2) #[1] 20 19
+
 tp1 <- c(7,1)
 tp2 <- c(16,23)
 
-data_trial%>%
-  filter(time_point %in% tp1 | time_point %in% tp2)%>%
-  select(-c(20:37), -rank, -test_tp, -heat, -sick_severity, -location, -keeper, -test_day, -observer, -trial_time_point,  -pick, -code)%>%
-  mutate(pick_reli = NA,
-         code_reli = NA)%>%
-  write_xlsx("../data/reli_2nd_coder.xlsx")
+tp1_2 <- c(14 , 9)
+tp2_2 <- c(20 ,19)
+
+# data_trial%>%
+#   filter(time_point %in% tp1_2 | time_point %in% tp2_2)%>%
+#   select(-c(20:37), -rank, -test_tp, -heat, -sick_severity, -location, -keeper, -test_day, -observer, -trial_time_point,  -pick, -code)%>%
+#   mutate(pick_reli = NA,
+#          code_reli = NA)%>%
+#   filter(task == "gaze_following")%>%
+#   write_xlsx("../data/reli_2nd_coder_round2.xlsx")
 
 ```
 
@@ -50,20 +57,73 @@ reli <- data_trial%>%
 ```{r}
 # prop match
 reli%>%
+  filter(!is.na(match_code))%>%
   group_by(task)%>%
-  summarise(match = mean(match_code))
+  summarise(match = mean(match_code, na.rm = T))
 
 #gaze_following
-cohen.kappa(cbind(reli$code%>%filter(task == "gaze_following"), reli$code_reli%>%filter(task == "gaze_following")))
+gaze <- reli%>%filter(task == "gaze_following", !is.na(match_code))
+cohen.kappa(cbind(gaze%>%pull(code), gaze%>%pull(code_reli)))
 #inference
-cohen.kappa(cbind(reli$code%>%filter(task == "inference"), reli$code_reli%>%filter(task == "inference")))
+inf <- reli%>%filter(task == "inference", !is.na(match_code))
+cohen.kappa(cbind(inf%>%pull(code), inf%>%pull(code_reli)))
 #causality
-cohen.kappa(cbind(reli$code%>%filter(task == "causality"), reli$code_reli%>%filter(task == "causality")))
+caus <- reli%>%filter(task == "causality", !is.na(match_code))
+cohen.kappa(cbind(caus%>%pull(code), caus%>%pull(code_reli)))
 #switching
-cohen.kappa(cbind(reli$code%>%filter(task == "switching"), reli$code_reli%>%filter(task == "switching")))
+switch <- reli%>%filter(task == "switching", !is.na(match_code))
+cohen.kappa(cbind(switch%>%pull(code), switch%>%pull(code_reli)))
 #quantity
-cohen.kappa(cbind(reli$code%>%filter(task == "quantity"), reli$code_reli%>%filter(task == "quantity")))
+quant <- reli%>%filter(task == "quantity", !is.na(match_code))
+cohen.kappa(cbind(quant%>%pull(code), quant%>%pull(code_reli)))
 #delay_of_gratification
-cohen.kappa(cbind(reli$code%>%filter(task == "delay_of_gratification"), reli$code_reli%>%filter(task == "delay_of_gratification")))
+dog <- reli%>%filter(task == "delay_of_gratification", !is.na(match_code))
+cohen.kappa(cbind(dog%>%pull(code), dog%>%pull(code_reli)))
 ```
 
+```{r}
+reli2 <- data_trial%>%
+  filter(time_point %in% tp1_2 | time_point %in% tp2_2)%>%
+  select(-c(20:37), -rank, -test_tp, -heat, -sick_severity, -location, -keeper, -test_day, -observer, -trial_time_point, -condition)%>%
+  left_join(read_xlsx("../../../Seafile/LAAC/02_data/round_1/reli_2nd_coder_round2.xlsx"))%>%
+  mutate(match_pick = ifelse(pick == pick_reli, 1, 0),
+         match_code = ifelse(code == code_reli, 1, 0))
+```
+
+```{r}
+# prop match
+reli2%>%
+  filter(!is.na(match_code))%>%
+  group_by(task)%>%
+  summarise(match = mean(match_code, na.rm = T))
+
+#gaze_following
+gaze2 <- reli2%>%filter(task == "gaze_following", !is.na(match_code))
+cohen.kappa(cbind(gaze2%>%pull(code), gaze2%>%pull(code_reli)))
+```
+
+
+```{r}
+gaze%>%
+  select(code, code_reli, match_code)%>%
+  View()
+
+gaze%>%
+  group_by(subject)%>%
+  summarise(match = mean(match_code))%>%
+  arrange(match)
+
+gaze%>%
+  select(phase, code, code_reli, match_code)%>%
+  pivot_longer(cols = c(code, code_reli, match_code), names_to = "coder", values_to = "coding")%>%
+  group_by(phase, coder)%>%
+  summarise(mean = mean(coding))
+```
+
+```{r}
+gaze%>%
+  filter(match_code == 0)%>%
+  select(phase,date, time_point, group, subject, task, trial_session, code, code_reli)%>%
+  write_xlsx("../../../Seafile/LAAC/02_data/round_1/reli_mismatches.xlsx")
+
+```
