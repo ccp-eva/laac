@@ -2411,7 +2411,7 @@ ncores <- parallel::detectCores()
 #                   time_outdoors,
 #                   age,
 #                   time_in_leipzig),
-#                 ~scale(., center = T, scale = F))) %>%
+#                 ~as.numeric(scale(., center = T, scale = F)))) %>%
 #   mutate(across(c(session,
 #                   subject,
 #                   group,
