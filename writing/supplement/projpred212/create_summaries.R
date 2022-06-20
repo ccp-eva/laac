@@ -34,6 +34,22 @@ ref_model_perf <- function(cvarsel_obj) {
   
 }
 
+summarise_prj <- function(prj_obj) {
+  
+  prj_out <- as.matrix(prj_obj) %>% 
+    as_tibble() %>% 
+    select(-contains(c("subject", "sigma"))) %>% 
+    pivot_longer(cols = everything(), names_to = "pred", values_to = "value") %>% 
+    mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
+           pred = str_remove(pred, "group"),
+           pred = str_remove(pred, "rel_"),
+           species = ifelse(factor == "group", pred, factor)) %>% 
+    mutate(pred = str_replace(pred, pattern = "b_", replacement = ""))
+  
+  return(prj_out)
+  
+}
+
 # Data Formatting
 
 ## Causality
@@ -49,8 +65,8 @@ cau_sol_terms <- c("(1 | subject)", "group")  # edit solution terms here
 cvarselp <- create_summary(cvs_cau_summary, sol_terms = cau_sol_terms)
 saveRDS(cvarselp, "cvs_cau_summary.rds")
 
-proj_cau_cv <- project(cvs_cau_p1,  solution_terms = cau_sol_terms)
-proj_samples_cau <- as.matrix(proj_cau_cv) 
+proj_cau_cv <- project(cvs_cau_p1, solution_terms = cau_sol_terms)
+proj_samples_cau <- summarise_prj(as.matrix(proj_cau_cv)) 
 saveRDS(proj_samples_cau, "proj_cvs_cau.rds")
 
 ### Phase 2
@@ -65,7 +81,7 @@ cvarselp2 <- create_summary(cvs_cau_summary_p2, sol_terms = cau_sol_terms_p2)
 saveRDS(cvarselp2, "cvs_cau_summary_p2.rds")
 
 proj_cau_cv_p2 <- project(cvs_cau_p2,  solution_terms = cau_sol_terms_p2)
-proj_samples_cau_p2 <- as.matrix(proj_cau_cv_p2)
+proj_samples_cau_p2 <- summarise_prj(as.matrix(proj_cau_cv_p2)) 
 saveRDS(proj_samples_cau_p2, "proj_cvs_cau_p2.rds")
 
 ## Inference
@@ -82,7 +98,7 @@ ivarselp <- create_summary(cvs_inf_summary, sol_terms = inf_sol_terms)
 saveRDS(ivarselp, "cvs_inf_summary.rds")
 
 proj_inf_cv <- project(cvs_inf_p1,  solution_terms = inf_sol_terms)
-proj_samples_inf <- as.matrix(proj_inf_cv) 
+proj_samples_inf <- summarise_prj(as.matrix(proj_inf_cv))
 saveRDS(proj_samples_inf, "proj_cvs_inf.rds")
 
 ### Phase 2
@@ -97,7 +113,7 @@ ivarselp2 <- create_summary(cvs_inf_summary_p2, sol_terms = inf_sol_terms_p2)
 saveRDS(ivarselp2, "cvs_inf_summary_p2.rds")
 
 proj_inf_cv_p2 <- project(cvs_inf_p2,  solution_terms = inf_sol_terms_p2)
-proj_samples_inf_p2 <- as.matrix(proj_inf_cv_p2) 
+proj_samples_inf_p2 <- summarise_prj(as.matrix(proj_inf_cv_p2))
 saveRDS(proj_samples_inf_p2, "proj_cvs_inf_p2.rds")
 
 ## Quantity
@@ -114,7 +130,7 @@ qvarselp <- create_summary(cvs_quant_summary, sol_terms = quant_sol_terms)
 saveRDS(qvarselp, "cvs_quant_summary.rds")
 
 proj_quant_cv <- project(cvs_quant_p1,  solution_terms = quant_sol_terms)
-proj_samples_quant <- as.matrix(proj_quant_cv) 
+proj_samples_quant <- summarise_prj(as.matrix(proj_quant_cv))
 saveRDS(proj_samples_quant, "proj_cvs_quant.rds")
 
 ### Phase 2
@@ -129,7 +145,7 @@ qvarselp2 <- create_summary(cvs_quant_summary_p2, sol_terms = quant_sol_terms_p2
 saveRDS(qvarselp2, "cvs_quant_summary_p2.rds")
 
 proj_quant_cv_p2 <- project(cvs_quant_p2,  solution_terms = quant_sol_terms_p2)
-proj_samples_quant_p2 <- as.matrix(proj_quant_cv_p2) 
+proj_samples_quant_p2 <- summarise_prj(as.matrix(proj_quant_cv_p2))
 saveRDS(proj_samples_quant_p2, "proj_cvs_quant_p2.rds")
 
 ## Gratification
@@ -146,7 +162,7 @@ dgvarselp2 <- create_summary(cvs_grat_summary_p2, sol_terms = grat_sol_terms_p2)
 saveRDS(dgvarselp2, "cvs_grat_summary_p2.rds")
 
 proj_grat_cv_p2 <- project(cvs_grat_p2,  solution_terms = grat_sol_terms_p2)
-proj_samples_grat_p2 <- as.matrix(proj_grat_cv_p2) 
+proj_samples_grat_p2 <- summarise_prj(as.matrix(proj_grat_cv_p2))
 saveRDS(proj_samples_grat_p2, "proj_cvs_grat_p2.rds")
 
 # ## Gaze
@@ -163,12 +179,12 @@ saveRDS(proj_samples_grat_p2, "proj_cvs_grat_p2.rds")
 # saveRDS(gvarselp, "cvs_gaze_summary.rds")
 # 
 # proj_gaze_cv <- project(cvs_gaze_p1,  solution_terms = gaze_sol_terms_p1)
-# proj_samples_gaze <- as.matrix(proj_gaze_cv) 
+# proj_samples_gaze <- summarise_prj(as.matrix(proj_gaze_cv))
 # saveRDS(proj_samples_gaze, "proj_cvs_gaze.rds")
 # 
 # ### Phase 2
 # 
-# # cvs_gaze_p2 <- readRDS("cvs_gaze_p2.rds")
+# cvs_gaze_p2 <- readRDS("cvs_gaze_p2.rds")
 # cvs_gaze_ref_p2 <- ref_model_perf(cvs_gaze_p2)
 # saveRDS(cvs_gaze_ref_p2, "cvs_gaze_ref_p2.rds")
 # 
@@ -178,32 +194,6 @@ saveRDS(proj_samples_grat_p2, "proj_cvs_grat_p2.rds")
 # saveRDS(gvarselp2, "cvs_gaze_summary_p2.rds")
 # 
 # proj_gaze_cv_p2 <- project(cvs_gaze_p2,  solution_terms = gaze_sol_terms_p2)
-# proj_samples_gaze_p2 <- as.matrix(proj_gaze_cv_p2) 
+# proj_samples_gaze_p2 <- summarise_prj(as.matrix(proj_gaze_cv_p2))
 # saveRDS(proj_samples_gaze_p2, "proj_cvs_gaze_p2.rds")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
