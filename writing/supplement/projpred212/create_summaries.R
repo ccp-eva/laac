@@ -38,7 +38,7 @@ summarise_prj <- function(prj_obj) {
   
   prj_out <- as.matrix(prj_obj) %>% 
     as_tibble() %>% 
-    select(-contains(c("subject", "sigma"))) %>% 
+    select(-contains(c("r_subject", "sigma"))) %>% 
     pivot_longer(cols = everything(), names_to = "pred", values_to = "value") %>% 
     mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
            pred = str_remove(pred, "group"),

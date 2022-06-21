@@ -84,14 +84,17 @@ recode_pred <- function(prj_obj) {
                          m = "Male",
                          hand = "Hand-reared",
                          rearingmother = "Mother-reared",
-                         `(1 | subject)` = "(1 | Subject)"
+                         `(1 | subject)` = "(1 | Subject)",
+                         sd_subject__Intercept = "Random Intercept"
     )) %>%
     mutate(factor = recode(factor,
                            group = "Group",
                            sex = "Sex",
                            rearing = "Rearing history",
                            `other predictors` = "Other predictors"
-    ))
+    )) %>% 
+    mutate(factor = case_when(pred == "Random Intercept" ~ "sd_subject",
+                              TRUE ~ as.character(factor)))
   
   return(out)
   
@@ -104,7 +107,7 @@ plot_sum <- function(sum_obj, ref_perf) {
     geom_hline(data = ref_perf, aes(yintercept = value), lty = 3) +
     geom_line(col = "black", alpha = .5) +
     geom_pointrange(aes(ymin = value - se, ymax = value + se, col = select), size = 0.5, pch = 4) +
-    facet_grid(stat~., scale = "free_y") +
+    facet_grid(stat ~ ., scale = "free_y") +
     labs(y = "", x = "Predictors") +
     scale_color_manual(name = "relevant", values = c("black", "firebrick")) +
     scale_x_continuous(labels = unique(sum_obj$solution_terms), breaks = unique(sum_obj$size)) +
@@ -134,7 +137,7 @@ plot_post <- function(prj_obj) {
 
 ```{r}
 # Phase 1
-ref_cau_p1 <-readRDS("cvs_cau_ref.rds") 
+ref_cau_p1 <- readRDS("cvs_cau_ref.rds") 
 cvarselp1 <- readRDS("cvs_cau_summary.rds") %>% 
   recode_sol_terms() 
 pcsel <- plot_sum(sum_obj = cvarselp1, ref_perf = ref_cau_p1)
@@ -147,7 +150,7 @@ post_cau <- plot_post(prj_cau)
 ggarrange(pcsel, post_cau, labels = c("A","B"), widths = c(1.5, 1))
 
 # Phase 2
-ref_cau_p2 <-readRDS("cvs_cau_ref_p2.rds") 
+ref_cau_p2 <- readRDS("cvs_cau_ref_p2.rds") 
 cvarselp2 <- readRDS("cvs_cau_summary_p2.rds") %>% 
   recode_sol_terms() 
 pcsel2 <- plot_sum(sum_obj = cvarselp2, ref_perf = ref_cau_p2)
@@ -169,7 +172,7 @@ knitr::include_graphics("img/cau2.png")
 
 ```{r}
 # Phase 1
-ref_inf_p1 <-readRDS("cvs_inf_ref.rds") 
+ref_inf_p1 <- readRDS("cvs_inf_ref.rds") 
 ivarselp1 <- readRDS("cvs_inf_summary.rds") %>% 
   recode_sol_terms() 
 icsel <- plot_sum(sum_obj = ivarselp1, ref_perf = ref_inf_p1)
@@ -182,7 +185,7 @@ post_inf <- plot_post(prj_inf)
 ggarrange(icsel, post_inf, labels = c("A","B"), widths = c(1.5, 1))
 
 # Phase 2
-ref_inf_p2 <-readRDS("cvs_inf_ref_p2.rds") 
+ref_inf_p2 <- readRDS("cvs_inf_ref_p2.rds") 
 ivarselp2 <- readRDS("cvs_inf_summary_p2.rds") %>% 
   recode_sol_terms() 
 icsel2 <- plot_sum(sum_obj = ivarselp2, ref_perf = ref_inf_p2)
@@ -204,7 +207,7 @@ knitr::include_graphics("img/inf2.png")
 
 ```{r}
 # Phase 1
-ref_quant_p1 <-readRDS("cvs_quant_ref.rds") 
+ref_quant_p1 <- readRDS("cvs_quant_ref.rds") 
 qvarselp1 <- readRDS("cvs_quant_summary.rds") %>% 
   recode_sol_terms() 
 qcsel <- plot_sum(sum_obj = qvarselp1, ref_perf = ref_quant_p1)
@@ -217,7 +220,7 @@ post_quant <- plot_post(prj_quant)
 ggarrange(qcsel, post_quant, labels = c("A","B"), widths = c(1.5, 1))
 
 # Phase 2
-ref_quant_p2 <-readRDS("cvs_quant_ref_p2.rds") 
+ref_quant_p2 <- readRDS("cvs_quant_ref_p2.rds") 
 qvarselp2 <- readRDS("cvs_quant_summary_p2.rds") %>% 
   recode_sol_terms() 
 qcsel2 <- plot_sum(sum_obj = qvarselp2, ref_perf = ref_quant_p2)
@@ -239,7 +242,7 @@ knitr::include_graphics("img/quant2.png")
 
 ```{r}
 # Phase 2
-ref_grat_p2 <-readRDS("cvs_grat_ref_p2.rds") 
+ref_grat_p2 <- readRDS("cvs_grat_ref_p2.rds") 
 gratvarselp2 <- readRDS("cvs_grat_summary_p2.rds") %>% 
   recode_sol_terms() 
 gratcsel2 <- plot_sum(sum_obj = gratvarselp2, ref_perf = ref_grat_p2)
@@ -260,7 +263,7 @@ knitr::include_graphics("img/grat2.png")
 
 ```{r}
 # # Phase 1
-# ref_gaze_p1 <-readRDS("cvs_gaze_ref.rds") 
+# ref_gaze_p1 <- readRDS("cvs_gaze_ref.rds") 
 # gvarselp1 <- readRDS("cvs_gaze_summary.rds") %>% 
 #   recode_sol_terms() 
 # gcsel <- plot_sum(sum_obj = gvarselp1, ref_perf = ref_gaze_p1)
@@ -273,7 +276,7 @@ knitr::include_graphics("img/grat2.png")
 # ggarrange(gcsel, post_gaze, labels = c("A","B"), widths = c(1.5, 1))
 # 
 # # Phase 2
-# ref_gaze_p2 <-readRDS("cvs_gaze_ref_p2.rds") 
+# ref_gaze_p2 <- readRDS("cvs_gaze_ref_p2.rds") 
 # gvarselp2 <- readRDS("cvs_gaze_summary_p2.rds") %>% 
 #   recode_sol_terms() 
 # gcsel2 <- plot_sum(sum_obj = gvarselp2, ref_perf = ref_gaze_p2)
