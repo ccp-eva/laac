@@ -92,9 +92,9 @@ recode_pred <- function(prj_obj) {
                            sex = "Sex",
                            rearing = "Rearing history",
                            `other predictors` = "Other predictors"
-    )) %>% 
-    mutate(factor = case_when(pred == "Random Intercept" ~ "sd_subject",
-                              TRUE ~ as.character(factor)))
+    ))
+  #%>% mutate(factor = case_when(pred == "Random Intercept" ~ "sd_subject",
+  #                            TRUE ~ as.character(factor)))
   
   return(out)
   
@@ -317,30 +317,30 @@ post_gaze <- plot_post(prj_gaze)
 
 ggarrange(gcsel, post_gaze, labels = c("A","B"), widths = c(1.5, 1))
 
-# # Phase 2
-# ref_gaze_p2 <- readRDS("cvs_gaze_ref_p2.rds") 
-# gvarselp2 <- readRDS("cvs_gaze_summary_p2.rds") %>% 
-#   recode_sol_terms() 
-# gcsel2 <- plot_sum(sum_obj = gvarselp2, ref_perf = ref_gaze_p2)
-# 
-# prj_gaze_p2 <- readRDS("proj_cvs_gaze_p2.rds") %>% 
-#   recode_pred() %>% 
-#   filter(!pred == "Intercept")
-# post_gaze_p2 <- plot_post(prj_gaze_p2)
-# 
-# ggarrange(gcsel2, post_gaze_p2, labels = c("A","B"), widths = c(1.5, 1))
+# Phase 2
+ref_gaze_p2 <- readRDS("cvs_gaze_ref_p2.rds")
+gvarselp2 <- readRDS("cvs_gaze_summary_p2.rds") %>%
+  recode_sol_terms()
+gcsel2 <- plot_sum(sum_obj = gvarselp2, ref_perf = ref_gaze_p2)
+
+prj_gaze_p2 <- readRDS("proj_cvs_gaze_p2.rds") %>%
+  recode_pred() %>%
+  filter(!pred == "Intercept")
+post_gaze_p2 <- plot_post(prj_gaze_p2)
+
+ggarrange(gcsel2, post_gaze_p2, labels = c("A","B"), widths = c(1.5, 1))
 
 prj_gaze %>% group_by(pred) %>% summarise(mean = mean(value),
                                          sd = sd(value))
-# prj_gaze_p2 %>% group_by(pred) %>% summarise(mean = mean(value),
-#                                          sd = sd(value))
+prj_gaze_p2 %>% group_by(pred) %>% summarise(mean = mean(value),
+                                         sd = sd(value))
 
 prj_gaze_old <- readRDS(file = "../saves/proj_cvs_gaze.rds") %>% 
   group_by(pred) %>% summarise(mean = mean(value), sd = sd(value)) %>% 
   print()
-# prj_gaze_p2_old <- readRDS(file = "../saves/proj_cvs_gaze_p2.rds") %>% 
-#   group_by(pred) %>% summarise(mean = mean(value), sd = sd(value)) %>% 
-#   print()
+prj_gaze_p2_old <- readRDS(file = "../saves/proj_cvs_gaze_p2.rds") %>%
+  group_by(pred) %>% summarise(mean = mean(value), sd = sd(value)) %>%
+  print()
 ```
 
 ```{r}

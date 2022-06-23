@@ -38,7 +38,7 @@ summarise_prj <- function(prj_obj) {
   
   prj_out <- as.matrix(prj_obj) %>% 
     as_tibble() %>% 
-    select(-contains(c("r_subject", "sigma"))) %>% 
+    select(-contains(c("subject", "sigma"))) %>%  # change "subject" to "r_subject" to include random intercept term
     pivot_longer(cols = everything(), names_to = "pred", values_to = "value") %>% 
     mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
            pred = str_remove(pred, "group"),
@@ -157,7 +157,7 @@ cvs_grat_ref_p2 <- ref_model_perf(cvs_grat_p2)
 saveRDS(cvs_grat_ref_p2, "cvs_grat_ref_p2.rds")
 
 cvs_grat_summary_p2 <- summary(cvs_grat_p2, stat = c("elpd", "rmse"))$selection
-grat_sol_terms_p2 <- c("(1 | subject)", "time_in_leipzig", "observer_mod", "sex", "rel_rank", "sick_severity")  # edit solution terms here
+grat_sol_terms_p2 <- c("(1 | subject)", "time_in_leipzig", "observer_mod", "sex", "rel_rank")  # edit solution terms here
 dgvarselp2 <- create_summary(cvs_grat_summary_p2, sol_terms = grat_sol_terms_p2)
 saveRDS(dgvarselp2, "cvs_grat_summary_p2.rds")
 
@@ -182,18 +182,18 @@ proj_gaze_cv <- project(cvs_gaze_p1,  solution_terms = gaze_sol_terms_p1)
 proj_samples_gaze <- summarise_prj(as.matrix(proj_gaze_cv))
 saveRDS(proj_samples_gaze, "proj_cvs_gaze.rds")
 
-# ### Phase 2
-# 
-# cvs_gaze_p2 <- readRDS("cvs_gaze_p2.rds")
-# cvs_gaze_ref_p2 <- ref_model_perf(cvs_gaze_p2)
-# saveRDS(cvs_gaze_ref_p2, "cvs_gaze_ref_p2.rds")
-# 
-# cvs_gaze_summary_p2 <- summary(cvs_gaze_p2, stat = c("elpd", "rmse"))$selection
-# gaze_sol_terms_p2 <- c("(1 | subject)", "group", "sex", "observer_mod", "age")  # edit solution terms here
-# gvarselp2 <- create_summary(cvs_gaze_summary_p2, sol_terms = gaze_sol_terms_p2)
-# saveRDS(gvarselp2, "cvs_gaze_summary_p2.rds")
-# 
-# proj_gaze_cv_p2 <- project(cvs_gaze_p2,  solution_terms = gaze_sol_terms_p2)
-# proj_samples_gaze_p2 <- summarise_prj(as.matrix(proj_gaze_cv_p2))
-# saveRDS(proj_samples_gaze_p2, "proj_cvs_gaze_p2.rds")
+### Phase 2
+
+cvs_gaze_p2 <- readRDS("cvs_gaze_p2.rds")
+cvs_gaze_ref_p2 <- ref_model_perf(cvs_gaze_p2)
+saveRDS(cvs_gaze_ref_p2, "cvs_gaze_ref_p2.rds")
+
+cvs_gaze_summary_p2 <- summary(cvs_gaze_p2, stat = c("elpd", "rmse"))$selection
+gaze_sol_terms_p2 <- c("(1 | subject)", "group", "sex", "observer_mod", "age")  # edit solution terms here
+gvarselp2 <- create_summary(cvs_gaze_summary_p2, sol_terms = gaze_sol_terms_p2)
+saveRDS(gvarselp2, "cvs_gaze_summary_p2.rds")
+
+proj_gaze_cv_p2 <- project(cvs_gaze_p2,  solution_terms = gaze_sol_terms_p2)
+proj_samples_gaze_p2 <- summarise_prj(as.matrix(proj_gaze_cv_p2))
+saveRDS(proj_samples_gaze_p2, "proj_cvs_gaze_p2.rds")
 
