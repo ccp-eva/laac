@@ -108,7 +108,7 @@ cvs_inf_ref_p2 <- ref_model_perf(cvs_inf_p2)
 saveRDS(cvs_inf_ref_p2, "cvs_inf_ref_p2.rds")
 
 cvs_inf_summary_p2 <- summary(cvs_inf_p2, stat = c("elpd", "rmse"))$selection
-inf_sol_terms_p2 <- c("(1 | subject)", "group","time_in_leipzig","age")  # edit solution terms here
+inf_sol_terms_p2 <- c("(1 | subject)", "group", "time_in_leipzig", "age", "time_point")  # edit solution terms here
 ivarselp2 <- create_summary(cvs_inf_summary_p2, sol_terms = inf_sol_terms_p2)
 saveRDS(ivarselp2, "cvs_inf_summary_p2.rds")
 
