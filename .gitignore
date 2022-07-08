@@ -4,9 +4,12 @@ writing/supplement/laac_supplement_files
 
 writing/supplement/saves/srm.rds
 analysis/analysis.Rmd
+visuals/*
 
 videos/bonobo_pilot/*
 models and documentation Jana/*
+
+data/ppi_data_phase1.csv
 
 *.docx
 
