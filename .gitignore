@@ -3,8 +3,10 @@ writing/CogSci2021/figs/
 writing/supplement/laac_supplement_files
 
 writing/supplement/saves/srm.rds
+analysis/analysis.Rmd
 
 videos/bonobo_pilot/*
+models and documentation Jana/*
 
 *.docx
 
