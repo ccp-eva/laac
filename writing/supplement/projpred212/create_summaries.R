@@ -35,19 +35,19 @@ ref_model_perf <- function(cvarsel_obj) {
 }
 
 summarise_prj <- function(prj_obj) {
-  
-  prj_out <- as.matrix(prj_obj) %>% 
-    as_tibble() %>% 
+
+  prj_out <- as.matrix(prj_obj) %>%
+    as_tibble() %>%
     select(-contains(c("subject", "sigma"))) %>%  # change "subject" to "r_subject" to include random intercept term
-    pivot_longer(cols = everything(), names_to = "pred", values_to = "value") %>% 
+    pivot_longer(cols = everything(), names_to = "pred", values_to = "value") %>%
     mutate(factor = ifelse(grepl("group", pred), "group", "other predictors"),
            pred = str_remove(pred, "group"),
            pred = str_remove(pred, "rel_"),
-           species = ifelse(factor == "group", pred, factor)) %>% 
+           species = ifelse(factor == "group", pred, factor)) %>%
     mutate(pred = str_replace(pred, pattern = "b_", replacement = ""))
-  
+
   return(prj_out)
-  
+
 }
 
 # Data Formatting
@@ -66,6 +66,9 @@ cvarselp <- create_summary(cvs_cau_summary, sol_terms = cau_sol_terms)
 saveRDS(cvarselp, "cvs_cau_summary.rds")
 
 proj_cau_cv <- project(cvs_cau_p1, solution_terms = cau_sol_terms)
+
+mcmc_intervals(as.matrix(proj_cau_cv))
+
 proj_samples_cau <- summarise_prj(as.matrix(proj_cau_cv)) 
 saveRDS(proj_samples_cau, "proj_cvs_cau.rds")
 
@@ -108,7 +111,7 @@ cvs_inf_ref_p2 <- ref_model_perf(cvs_inf_p2)
 saveRDS(cvs_inf_ref_p2, "cvs_inf_ref_p2.rds")
 
 cvs_inf_summary_p2 <- summary(cvs_inf_p2, stat = c("elpd", "rmse"))$selection
-inf_sol_terms_p2 <- c("(1 | subject)", "group", "time_in_leipzig", "age", "time_point")  # edit solution terms here
+inf_sol_terms_p2 <- c("(1 | subject)", "group", "time_in_leipzig", "age", "time_point")  
 ivarselp2 <- create_summary(cvs_inf_summary_p2, sol_terms = inf_sol_terms_p2)
 saveRDS(ivarselp2, "cvs_inf_summary_p2.rds")
 
@@ -140,7 +143,7 @@ cvs_quant_ref_p2 <- ref_model_perf(cvs_quant_p2)
 saveRDS(cvs_quant_ref_p2, "cvs_quant_ref_p2.rds")
 
 cvs_quant_summary_p2 <- summary(cvs_quant_p2, stat = c("elpd", "rmse"))$selection
-quant_sol_terms_p2 <- c("(1 | subject)", "rel_rank", "rearing", "time_in_leipzig", "group", "observer_mod", "time_outdoors")  # edit solution terms here
+quant_sol_terms_p2 <- c("(1 | subject)", "rel_rank", "rearing", "time_in_leipzig", "group", "observer_mod", "time_point")  # edit solution terms here
 qvarselp2 <- create_summary(cvs_quant_summary_p2, sol_terms = quant_sol_terms_p2)
 saveRDS(qvarselp2, "cvs_quant_summary_p2.rds")
 
@@ -157,7 +160,7 @@ cvs_grat_ref_p2 <- ref_model_perf(cvs_grat_p2)
 saveRDS(cvs_grat_ref_p2, "cvs_grat_ref_p2.rds")
 
 cvs_grat_summary_p2 <- summary(cvs_grat_p2, stat = c("elpd", "rmse"))$selection
-grat_sol_terms_p2 <- c("(1 | subject)", "time_in_leipzig", "observer_mod", "sex", "rel_rank")  # edit solution terms here
+grat_sol_terms_p2 <- c("(1 | subject)", "time_in_leipzig", "observer_mod", "sex")  # edit solution terms here
 dgvarselp2 <- create_summary(cvs_grat_summary_p2, sol_terms = grat_sol_terms_p2)
 saveRDS(dgvarselp2, "cvs_grat_summary_p2.rds")
 
