@@ -195,15 +195,15 @@ The gaze following task was modeled after @brauer2005all. The experimenter sat o
 
 We assume that participants look up because they assume that the experimenter's attention is focused on a potentially noteworthy object.
 
-### Causal inference
+### Direct causal inference
 
-The causal inference task was modeled after @call2004inferences. Two identical cups with a lid were placed left and right on the table (Figure \@ref(fig:setup)A). The experimenter covered the table with the occluder, retrieved a piece of food, showed it to the ape, and hid it in one the cups outside the participant's view. Next, the experimenter removed the occluder, picked up the baited cup and shook it three times, which produced a rattling sound. Next, the cup was put back in place, the sliding table pushed forwards, and the participant made a choice by pointing to one of the cups. If they picked the baited cup, their choice was coded as correct, and they received the reward. If they chose the empty cup, they did not. Participants received 12 trials. The location of the food was counterbalanced; six times in the right cup and six times in the left. Causal inference trials were intermixed with inference by exclusion trials (see below).
+The direct causal inference task was modeled after @call2004inferences. Two identical cups with a lid were placed left and right on the table (Figure \@ref(fig:setup)A). The experimenter covered the table with the occluder, retrieved a piece of food, showed it to the ape, and hid it in one the cups outside the participant's view. Next, the experimenter removed the occluder, picked up the baited cup and shook it three times, which produced a rattling sound. Next, the cup was put back in place, the sliding table pushed forwards, and the participant made a choice by pointing to one of the cups. If they picked the baited cup, their choice was coded as correct, and they received the reward. If they chose the empty cup, they did not. Participants received 12 trials. The location of the food was counterbalanced; six times in the right cup and six times in the left. Direct causal inference trials were intermixed with inference by exclusion trials (see below).
 
 We assume that apes locate the food by reasoning that the food -- a solid object -- causes the rattling sound and therefore must be in the shaken cup.
 
 ### Inference by exclusion
 
-Inference by exclusion trials were also modeled after @call2004inferences and followed a very similar procedure compared to causal inference trials. After covering the two cups with the occluder, the experimenter placed the food in one of the cups and covered both with the lid. Next, they removed the occluder, picked up the empty cup and shook it three times. In contrast to the causal inference trials, this did not produce any sound. The experimenter then pushed the sliding table forward and the participant made a choice by pointing to one of the cups. Correct choice was coded when the baited (non-shaken) cup was chosen. If correct, the food was given to the ape. There were 12 inference by exclusion trials, intermixed with causal inference trials. The order was counterbalanced: six times the left cup was baited, six times the right.
+Inference by exclusion trials were also modeled after @call2004inferences and followed a very similar procedure compared to direct causal inference trials. After covering the two cups with the occluder, the experimenter placed the food in one of the cups and covered both with the lid. Next, they removed the occluder, picked up the empty cup and shook it three times. In contrast to the direct causal inference trials, this did not produce any sound. The experimenter then pushed the sliding table forward and the participant made a choice by pointing to one of the cups. Correct choice was coded when the baited (non-shaken) cup was chosen. If correct, the food was given to the ape. There were 12 inference by exclusion trials, intermixed with direct causal inference trials. The order was counterbalanced: six times the left cup was baited, six times the right.
 
 We assume that apes reason that the absence of a sound suggests that the shaken cup is empty. Because they saw a piece of food being hidden, they exclude the empty cup and infer that the food is more likely to be in the non-shaken cup.
 
@@ -233,13 +233,13 @@ We assume that, in order to choose the larger reward, apes inhibit choosing the 
 
 ### Reliability coding 
 
-A second coder unfamiliar to the purpose of the study coded 15% of all time points (four out of 28) for all tasks (except switching). Reliability was good to excellent. Gaze following: 92% agreement ($\kappa$ = .64), causal inference 99% agreement ($\kappa$ = .98), inference by exclusion: 99% agreement ($\kappa$ = .99), quantity discrimination: 99% agreement ($\kappa$ = .97), delay of gratification: 98% agreement ($\kappa$ = .97).
+A second coder unfamiliar to the purpose of the study coded 15% of all time points (four out of 28) for all tasks (except switching). Reliability was good to excellent. Gaze following: 92% agreement ($\kappa$ = .64), direct causal inference 99% agreement ($\kappa$ = .98), inference by exclusion: 99% agreement ($\kappa$ = .99), quantity discrimination: 99% agreement ($\kappa$ = .97), delay of gratification: 98% agreement ($\kappa$ = .97).
 
 ## Data collection {#data-collection}
 
-One time point meant running all tasks with all participants. Within each time point, the tasks were organized in two sessions (see Figure \@ref(fig:setup)F). Session 1 started with two gaze following trials. Next was a pseudo randomized mix of causal inference and inference by exclusion trials with 12 trials per task, but no more than two trials of the same task in a row. At the end of Session 1, there were again two gaze following trials. Session 2 also started with two gaze following trials, followed by quantity discrimination and switching (Phase 1) or Delay of Gratification (Phase 2). Finally, there were again two gaze following trials. By spreading out or mixing tasks we hoped to keep subjects more attentive and engaged.
+One time point meant running all tasks with all participants. Within each time point, the tasks were organized in two sessions (see Figure \@ref(fig:setup)F). Session 1 started with two gaze following trials. Next was a pseudo randomized mix of direct causal inference and inference by exclusion trials with 12 trials per task, but no more than two trials of the same task in a row. At the end of Session 1, there were again two gaze following trials. Session 2 also started with two gaze following trials, followed by quantity discrimination and switching (Phase 1) or Delay of Gratification (Phase 2). Finally, there were again two gaze following trials. By spreading out or mixing tasks we hoped to keep subjects more attentive and engaged.
 
-The order of tasks was the same for all subjects. So was the positioning of food items within each task. The counterbalancing can be found in the coding sheets in the online repository in `documentation/` [**to be added**]. This exact procedure was repeated at each time point so that the results would be comparable across participants and time points. The two sessions were usually spread out across two adjacent days. For the larger chimpanzee group, they were sometimes spread out across four days.
+The order of tasks was the same for all subjects. So was the positioning of food items within each task. The counterbalancing can be found in the coding sheets in the online repository in `documentation/`. This exact procedure was repeated at each time point so that the results would be comparable across participants and time points. The two sessions were usually spread out across two adjacent days. For the larger chimpanzee group, they were sometimes spread out across four days.
 
 The interval between two time points was planned to be two weeks. However, it was not always possible to follow this schedule so that some intervals were longer or shorter. Figure \@ref(fig:sample) visualizes the intervals between time points.
 
@@ -917,7 +917,7 @@ To investigate associations between cognitive performance in different tasks, th
 
 ### Estimation {#estimation}
 
-Models were estimated with MPlus version 8.4 [@muthen1998mplus], using Bayesian Markov-Chain Monte-Carlo sampling, with the Mplus default priors (see simulation studies in the [appendix](#appendix)). Using inverse gamma priors `IG(0.001, 0.001)` for LST models did not substantially change the parameter estimates (see simulation study). Therefore, only the results using the MPlus default priors are reported. We used two chains with a minimum of 10,000 iterations per chain, with a thinning of 10 (corresponds to a minimum of 100,000 drawn samples per chain of which every 10th is used for the construction of the posterior distribution). The first half of each chain is discarded as burn-in. Convergence was assumed and estimation stopped when the Potential Scale Reduction (PSR) factor was well below a threshold of 1.01 for the first time after the minimum number of iterations was reached.
+Models were estimated with MPlus version 8.4 [@muthen1998mplus], using Bayesian Markov-Chain Monte-Carlo sampling, with the Mplus default priors (see simulation studies in the [appendix](#appendix)). Using inverse gamma priors `IG(0.001, 0.001)` for LST models did not substantially change the parameter estimates (see simulation study). Therefore, only the results using the MPlus default priors are reported. We used two chains with a minimum of 10,000 iterations per chain, with a thinning of 10 (corresponds to a minimum of 100,000 drawn samples per chain of which every 10th is used for the construction of the posterior distribution). The first half of each chain is discarded as burn-in. Convergence was assumed and estimation stopped when the Potential Scale Reduction (PSR) factor was well below a threshold of 1.01 for the first time after the minimum number of iterations was reached. Model syntax can be accessed by locating the respective model in `writing/supplement/saves/` and opening the `.out` file using a text editor.
 
 Model fit was evaluated by computing Posterior Predicted P-values (PPP). PPP is the probability that the newly generated data are more extreme than the observed data, as measured by a specific test statistic or discrepancy function, in this case the chi-square fit function (that is, the likelihood ratio test between the specified structural equation model and an unrestricted mean and variance covariance model), see @asparouhov2010bayesian. The PPP is computed via the following steps: For a given MCMC iteration, a new data set is generated based on the model and the parameters of that iteration. Then the likelihood ratio chi-square test is applied to the real data as well as the newly generated data set to compute a fit index. The indices for the data and the generated data are then compared in size. If the value for the data is smaller, it is scored as 1 and if not, as 0. Averaging across these scores for the different iterations yields the PPP. Thus, values around .5 suggest a good model fit (no systematic difference between real and generated data) and very high and very low values suggest a poor model fit and / or model misspecification. In addition, we report the 95% CI of the difference between predicted and observed chi-square values, which should be centered around 0 for a good model fit.
 
@@ -1143,16 +1143,16 @@ ggarrange(rel_plot, rel_plot_dis, heights = c(1,1.5), labels = c("A","B"), nrow 
 
 ```{r, include=F}
 # latent state models
-lsc <- readModels("../../models and documentation Jana/Application/one task models/test_apes_data_LS_cau.out")
-lsi <- readModels("../../models and documentation Jana/Application/one task models/test_apes_data_LS_inf.out")
-lsq <- readModels("../../models and documentation Jana/Application/one task models/test_apes_data_LS_quant.out")
-lsg <- readModels("../../models and documentation Jana/Application/one task models/test_apes_data_LS_gaze.out")
+lsc <- readModels("../supplement/saves/test_apes_data_LS_cau.out")
+lsi <- readModels("../supplement/saves/test_apes_data_LS_inf.out")
+lsq <- readModels("../supplement/saves/test_apes_data_LS_quant.out")
+lsg <- readModels("../supplement/saves/test_apes_data_LS_gaze.out")
 
 # latent state trait models
-lstc <- readModels("../../models and documentation Jana/Application/one task models/test_apes_data_LST_cau_equSvar.out")
-lsti <- readModels("../../models and documentation Jana/Application/one task models/test_apes_data_LST_inf_equSvar.out")
-lstq <- readModels("../../models and documentation Jana/Application/one task models/test_apes_data_LST_quant_equSvar.out")
-lstg <- readModels("../../models and documentation Jana/Application/one task models/test_apes_data_LST_gaze_equSvar.out")
+lstc <- readModels("../supplement/saves/test_apes_data_LST_cau_equSvar.out")
+lsti <- readModels("../supplement/saves/test_apes_data_LST_inf_equSvar.out")
+lstq <- readModels("../supplement/saves/test_apes_data_LST_quant_equSvar.out")
+lstg <- readModels("../supplement/saves/test_apes_data_LST_gaze_equSvar.out")
 
 
 ```
@@ -1171,7 +1171,7 @@ We ran the same models for the data from Phase 1 and Phase 2. We first report th
 
 ### Phase 1
 
-To get an overview of the results, we first visualized the data. Figure \@ref(fig:perfplot) shows performance at the different time points. From a group-level perspective, we can say that performance was consistently above chance (0.5) in the causal inference and quantity discrimination tasks. For gaze following, there is no meaningful chance level. We can note, however, that group level performance never went down to zero, which would be expected if apes did not pay attention to the experimenter's gaze. The performance score in the switching task was largely negative, suggesting no successful switching between the two phases.
+To get an overview of the results, we first visualized the data. Figure \@ref(fig:perfplot) shows performance at the different time points. From a group-level perspective, we can say that performance was consistently above chance (0.5) in the direct causal inference and quantity discrimination tasks. For gaze following, there is no meaningful chance level. We can note, however, that group level performance never went down to zero, which would be expected if apes did not pay attention to the experimenter's gaze. The performance score in the switching task was largely negative, suggesting no successful switching between the two phases.
 
 For a first glimpse on the stability of individual differences, we correlated performance at the different time points for each task (all possible combinations of time points). Figure \@ref(fig:relplot)A visualizes the distribution of raw correlations between the different time points and \@ref(fig:relplot)B shows the relation between re-test correlations and the time span between time points. Correlations between time points were large and clearly different from zero for quantity discrimination, inference by exclusion and gaze following. For quantity discrimination, this distribution was wider and closer to zero, but still clearly positive. For switching, the distribution was even wider and substantially overlapped with zero. For all tasks, correlations between time points tended to be lower for time points that were further apart [@uher2011individual]. These re-test correlations confound measurement precision (reliability) and stability of individual differences. That is, low correlations (like e.g. for quantitiy discrimination) could reflect high measurement error or a lack of stability of individual differences. We tease these components apart in the SEM models reported below. 
 
@@ -1287,7 +1287,7 @@ kable_classic(full_width = F)%>%
       footnote(c("LSM = Latent state model", "LSTM = Latent state-trait model", "T1-6 = Threshold parameters for response categories"))
 ```
 
-#### Causal inference
+#### Direct causal inference
 
 To fit the models, the response categories of 0 or 1 solved trial had to be collapsed into one category due to sparsity. Furthermore, the thresholds could not be set equal for test-half 2 at time point 3 and 11 as well as test-half 1 at time points 4 and 12 due to a different number of observed categories for the respective test halves and time point combination. Latent means can still be compared across time for the state factors based on the respective other test half. At time point 7, thresholds of both test-halves could not be set invariant across time (due to a divergent number of observed categories). Latent mean differences for the latent state variable at time point 7 should therefore be interpreted with caution.
 
@@ -1400,7 +1400,7 @@ Reliability was high in the LS model and none of the latent means differed from 
 
 In the LSTM, consistency was estimated to be around .859 -- around 86% of true inter-individual differences were attributable to stable (trait) differences between individuals. Approximately 14% were due to variance in time-point specific deviations from the stable trait. Reliability was high with an estimate of .815 (see Figure \@ref(fig:lsteplot)).
 
-Taken together, we saw a similar pattern as for the causal inference task: Performance was very stable on a group level and so were the differences between individuals. Interestingly, from Figure \@ref(fig:perfplot) we take that group-level performance was at chance. The stable individual differences we found here suggest that variation around this mean was systematic and therefore that some individuals consistently performed above chance. Thus, despite the fact that this task was very difficult for apes, it was suitable to measure individual differences.
+Taken together, we saw a similar pattern as for the direct causal inference task: Performance was very stable on a group level and so were the differences between individuals. Interestingly, from Figure \@ref(fig:perfplot) we take that group-level performance was at chance. The stable individual differences we found here suggest that variation around this mean was systematic and therefore that some individuals consistently performed above chance. Thus, despite the fact that this task was very difficult for apes, it was suitable to measure individual differences.
 
 ```{r}
 plste <- bind_rows(
@@ -1460,19 +1460,19 @@ Taken together, quantity judgments were very stable over time on the group level
 
 ```{r, include=F}
 # latent state models
-lsc2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LS_cau.out")
-lsi2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LS_inf.out")
-lsq2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LS_quant.out")
-lsg2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LS_gaze.out")
-lsd2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LS_delay.out")
+lsc2 <- readModels("../supplement/saves/test_apes_data_LS_cau_2.out")
+lsi2 <- readModels("../supplement/saves/test_apes_data_LS_inf_2.out")
+lsq2 <- readModels("../supplement/saves/test_apes_data_LS_quant_2.out")
+lsg2 <- readModels("../supplement/saves/test_apes_data_LS_gaze_2.out")
+lsd2 <- readModels("../supplement/saves/test_apes_data_LS_delay_2.out")
 
 # latent state trait models
-lstc2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_cau_equSvar.out")
-lsti2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_inf_equSvar.out")
-lstq2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_quant_equSvar.out")
-lstg2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_gaze_equSvar.out")
-lstd2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_delay_equSvar.out")
-lsti2p2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_inf_equSvar_2phases.out")
+lstc2 <- readModels("../supplement/saves/test_apes_data_LST_cau_equSvar_2.out")
+lsti2 <- readModels("../supplement/saves/test_apes_data_LST_inf_equSvar_2.out")
+lstq2 <- readModels("../supplement/saves/test_apes_data_LST_quant_equSvar_2.out")
+lstg2 <- readModels("../supplement/saves/test_apes_data_LST_gaze_equSvar_2.out")
+lstd2 <- readModels("../supplement/saves/test_apes_data_LST_delay_equSvar_2.out")
+lsti2p2 <- readModels("../supplement/saves/test_apes_data_LST_inf_equSvar_2phases_2.out")
 
 ```
 
@@ -1625,7 +1625,7 @@ kable_classic(full_width = F)%>%
       footnote(c("LSM = Latent state model", "LSTM = Latent state-trait model", "LSTM-AR = LST model with autoregressive component", "T1-6 = Threshold parameters for response categories"))
 ```
 
-#### Causal inference
+#### Direct causal inference
 
 As in phase 1, the lowest two categories (0 and 1 correctly solved trials per test half) were collapsed due to sparsity. Thresholds could not be set equal for test half 1 at time point 5, 8, and 11 as well as test half 2 at time point 14 (of phase 2), due to a different number of observed categories for the respective test half and time-point combination. Latent means can still be compared across time.
 
@@ -1801,7 +1801,7 @@ In the LSTM, consistency was estimated to be 0.769, that is around 77% of true i
 
 As in phase 1, the lowest three (out of seven possible) categories (0, 1 and 2 correctly solved trials per test half) had to be collapsed due to sparsity. Thresholds were set equal across all time points.
 
-Like for gaze following, none of the latent state means differed from zero, except for time point 14. Reliability estimates were substantially lower compared to the other tasks (Figure \@ref(fig:lseplot2)). Correlations between time points were generally high, but somewhat lower compared to gaze following or causal inference.
+Like for gaze following, none of the latent state means differed from zero, except for time point 14. Reliability estimates were substantially lower compared to the other tasks (Figure \@ref(fig:lseplot2)). Correlations between time points were generally high, but somewhat lower compared to gaze following or direct causal inference.
 
 In the LST model, the consistency coefficient was estimated to be 0.939, that is around 94% of true inter-individual differences was attributable to stable differences between individuals. Only 6% of inter-individual differences were due to variance in time-point specific deviations from the stable trait. With an estimate of 0.436, reliability was once again lower compared to the other tasks.
 
@@ -1819,9 +1819,9 @@ In sum, delay of gratification showed some variation in group level performance.
 
 ### Comparison between phases
 
-For the comparison, we will focus on the four tasks that were included in both phases: causal inference, inference by exclusion, gaze following and quantity.
+For the comparison, we will focus on the four tasks that were included in both phases: direct causal inference, inference by exclusion, gaze following and quantity.
 
-For the causal inference task, the raw performance in Figure \@ref(fig:perfplot) shows no marked difference between the two phases. Similarly, we see no systematic difference between the two phases when looking at the latent state means estimated by the LSM. This suggests stable group-level performance across the two phases. The LSTM estimates for consistency, occasion specificity and reliability were also very similar for the two phases (Figure \@ref(fig:lstdifplot)), which indicates that individual differences were structured similarly in the two phases.
+For the direct causal inference task, the raw performance in Figure \@ref(fig:perfplot) shows no marked difference between the two phases. Similarly, we see no systematic difference between the two phases when looking at the latent state means estimated by the LSM. This suggests stable group-level performance across the two phases. The LSTM estimates for consistency, occasion specificity and reliability were also very similar for the two phases (Figure \@ref(fig:lstdifplot)), which indicates that individual differences were structured similarly in the two phases.
 
 For inference by exclusion, we saw an increase in performance towards the end of Phase 2 (Figure \@ref(fig:perfplot)), which was also reflected in the latent state means. As noted above, a relatively quick change in performance by some individuals was responsible for this group-level increase. As a consequence, for the LSTM, we had to split Phase 2 into two parts. Nevertheless, the LSTM model estimates for Phase 1 and both parts of Phase 2 were very similar.
 
@@ -2065,15 +2065,15 @@ kable_classic(full_width = F)%>%
       footnote(c("PPP = Posterior predictive p-value", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values"))
 ```
 
-Model fit indices are shown in Table \@ref(tab:relt). Due to a low PPP value, the model for causal inference and quantity discrimination was modified such that for each task, test-half specific trait factors were estimated on the between-level. The correlations between the two tasks are therefore also reported as test-half specific trait correlations.
+Model fit indices are shown in Table \@ref(tab:relt). Due to a low PPP value, the model for direct causal inference and quantity discrimination was modified such that for each task, test-half specific trait factors were estimated on the between-level. The correlations between the two tasks are therefore also reported as test-half specific trait correlations.
 
-The only correlations for which the 95% CI did not include zero were the state residual correlation between causal inference and inference by exclusion ($r_{s_c,s_i}$ = `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(est)`, 95% CI = [`r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(lower_2.5ci)`; `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(upper_2.5ci)`]) and the trait correlation between inference by exclusion and quantity discrimination ($r_{t_i,t_q}$ = `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]).
+The only correlations for which the 95% CI did not include zero were the state residual correlation between direct causal inference and inference by exclusion ($r_{s_c,s_i}$ = `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(est)`, 95% CI = [`r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(lower_2.5ci)`; `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(upper_2.5ci)`]) and the trait correlation between inference by exclusion and quantity discrimination ($r_{t_i,t_q}$ = `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]).
 
-The negative state correlations between causal inference and inference by exclusion may be explained by the way the two tasks were presented. Remember that causal inference and inference by exclusion trials used the same setup and were intermixed. A negative correlation suggests that higher (residual) performance in one task was associated with lower performance in the other task. Responding correctly in the two tasks required opposite choice behaviors. That is, in causal inference, the ape had to pick the cup the experimenter shook to be correct. In inference, it was the unshaken cup. Such a negative correlation arises when sometimes participants respond in the same way (e.g. pick the shaken cup) across tasks. Note, however, that if this were a stable strategy which individuals would consistently use, we would have seen a negative correlation between the trait estimates. The best explanation is thus that there are short periods of inattentiveness during which (some) participants confused the two tasks.
+The negative state correlations between direct causal inference and inference by exclusion may be explained by the way the two tasks were presented. Remember that direct causal inference and inference by exclusion trials used the same setup and were intermixed. A negative correlation suggests that higher (residual) performance in one task was associated with lower performance in the other task. Responding correctly in the two tasks required opposite choice behaviors. That is, in direct causal inference, the ape had to pick the cup the experimenter shook to be correct. In inference, it was the unshaken cup. Such a negative correlation arises when sometimes participants respond in the same way (e.g. pick the shaken cup) across tasks. Note, however, that if this were a stable strategy which individuals would consistently use, we would have seen a negative correlation between the trait estimates. The best explanation is thus that there are short periods of inattentiveness during which (some) participants confused the two tasks.
 
 The trait correlation between inference by exclusion and quantity discrimination was positive, suggesting that individuals with better quantity judgment abilities also have better inferential abilities.
 
-One (out of four) of the test-half specific trait correlations between causal inference and quantity discrimination was also reliably different from zero ($r_{t_{c_{h2}},t_{q_{h1}}}$ = `r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(est)`, 95% CI = [`r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(lower_2.5ci)`; `r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(upper_2.5ci)`]). We do not consider this result to be substantial evidence for a substantive association between the trait estimates in the two tasks and therefore do not interpret it any further. Figure \@ref(fig:mtmplot) shows all correlations between the different tasks.
+One (out of four) of the test-half specific trait correlations between direct causal inference and quantity discrimination was also reliably different from zero ($r_{t_{c_{h2}},t_{q_{h1}}}$ = `r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(est)`, 95% CI = [`r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(lower_2.5ci)`; `r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(upper_2.5ci)`]). We do not consider this result to be substantial evidence for a substantive association between the trait estimates in the two tasks and therefore do not interpret it any further. Figure \@ref(fig:mtmplot) shows all correlations between the different tasks.
 
 ```{r}
 mtmcor <- bind_rows(
@@ -2125,7 +2125,7 @@ pmtmcor <- mtmcor%>%
   theme(legend.position = c(0.92,0.75), legend.direction = "vertical", legend.title = element_blank(), legend.key = element_blank())
 ```
 
-```{r mtmplot, fig.height=4, fig.width=8, fig.cap = "Phase 1: correlations between latent traits and latent state residual variables, respectively, of different tasks. Bold correlations are different from zero as judged by the 95\\% CI. The trait correlations between quantity discrimination and causal inference are not displayed, see main text for details. See main text for details.", out.width="100%"}
+```{r mtmplot, fig.height=4, fig.width=8, fig.cap = "Phase 1: correlations between latent traits and latent state residual variables, respectively, of different tasks. Bold correlations are different from zero as judged by the 95\\% CI. The trait correlations between quantity discrimination and direct causal inference are not displayed, see main text for details. See main text for details.", out.width="100%"}
 pmtmcor
 ```
 
@@ -2276,15 +2276,15 @@ kable_classic(full_width = F)%>%
       footnote(c("PPP = Posterior predictive p-value", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values", "Part = separate models for the two parts of the data (see main text for details)"))
 ```
 
-Model fit indices are shown in Table \@ref(tab:relt2). Like in Phase 1, due to a low PPP value, the model for causal inference and quantity was modified such that for each task, test-half specific trait factors were estimated on the between-level. The correlations between the two tasks are therefore also reported as test-half specific trait correlations.
+Model fit indices are shown in Table \@ref(tab:relt2). Like in Phase 1, due to a low PPP value, the model for direct causal inference and quantity was modified such that for each task, test-half specific trait factors were estimated on the between-level. The correlations between the two tasks are therefore also reported as test-half specific trait correlations.
 
 As noted above, we had to fit a 2-part LST model to the data of the inference by exclusion task. We retained this adjustment and for all models involving two tasks, we modeled the correlations between tasks separately for the two parts. Thus, there are two correlations (one for part 1 and one for part 2) for each case involving inference by exclusion.
 
 For the state residuals, the correlation between inference by exclusion and delay of gratification for the first part of the Phase 2 was estimated to be reliably different from zero ($r_{s_{i_1},s_{d_1}}$ = `r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(est)`, 95% CI = [`r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(lower_2.5ci)`; `r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(upper_2.5ci)`]). Given that for the second part of this pairing the correlation was effectively zero ($r_{s_{i_2},s_{d_2}}$ = `r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(est)`, 95% CI = [`r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(lower_2.5ci)`; `r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(upper_2.5ci)`]), we do not take this to be strong evidence for a systematic relation between the state residuals.
 
-Five of nine task combinations showed evidence for a subtantial trait correlation. These included quantity discrimination and delay of gratification ($r_{t_d,t_q}$ = `r lstqd2$parameters$stdyx.standardized%>%filter(paramHeader == "TD.WITH")%>%pull(est)`, 95% CI = [`r lstqd2$parameters$stdyx.standardized%>%filter(paramHeader == "TD.WITH")%>%pull(lower_2.5ci)`; `r lstqd2$parameters$stdyx.standardized%>%filter(paramHeader == "TD.WITH")%>%pull(upper_2.5ci)`]) as well as quantity discrimination and gaze following ($r_{t_g,t_q}$ = `r lstqg2$parameters$stdyx.standardized%>%filter(paramHeader == "TG.WITH")%>%pull(est)`, 95% CI = [`r lstqg2$parameters$stdyx.standardized%>%filter(paramHeader == "TG.WITH")%>%pull(lower_2.5ci)`; `r lstqg2$parameters$stdyx.standardized%>%filter(paramHeader == "TG.WITH")%>%pull(upper_2.5ci)`]). The remaining three included the inference by exclusion task and thus had two coefficients per combination: inference by exclusion and causal inference (Part 1: $r_{t_{i_1},t_{q_1}}$ = `r lstci2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstci2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstci2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]; Part 2: $r_{t_{i_2},t_{q_2}}$ = `r lstci2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstci2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstci2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]) as well as inference by exclusion and delay of gratification (Part 1: $r_{t_{i_1},t_{d_1}}$ = `r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]; Part 2: $r_{t_{i_2},t_{d_2}}$ = `r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]). For inference by exclusion and quantity discrimination, only the correlation for Part 1 was reliably different from zero, the one for Part 2, however, was also largely positive (Part 1: $r_{t_{i_1},t_{q_1}}$ = `r lstiq2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]; Part 2: $r_{t_{i_2},t_{q_2}}$ = `r lstiq2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]).
+Five of nine task combinations showed evidence for a subtantial trait correlation. These included quantity discrimination and delay of gratification ($r_{t_d,t_q}$ = `r lstqd2$parameters$stdyx.standardized%>%filter(paramHeader == "TD.WITH")%>%pull(est)`, 95% CI = [`r lstqd2$parameters$stdyx.standardized%>%filter(paramHeader == "TD.WITH")%>%pull(lower_2.5ci)`; `r lstqd2$parameters$stdyx.standardized%>%filter(paramHeader == "TD.WITH")%>%pull(upper_2.5ci)`]) as well as quantity discrimination and gaze following ($r_{t_g,t_q}$ = `r lstqg2$parameters$stdyx.standardized%>%filter(paramHeader == "TG.WITH")%>%pull(est)`, 95% CI = [`r lstqg2$parameters$stdyx.standardized%>%filter(paramHeader == "TG.WITH")%>%pull(lower_2.5ci)`; `r lstqg2$parameters$stdyx.standardized%>%filter(paramHeader == "TG.WITH")%>%pull(upper_2.5ci)`]). The remaining three included the inference by exclusion task and thus had two coefficients per combination: inference by exclusion and direct causal inference (Part 1: $r_{t_{i_1},t_{q_1}}$ = `r lstci2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstci2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstci2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]; Part 2: $r_{t_{i_2},t_{q_2}}$ = `r lstci2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstci2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstci2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]) as well as inference by exclusion and delay of gratification (Part 1: $r_{t_{i_1},t_{d_1}}$ = `r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]; Part 2: $r_{t_{i_2},t_{d_2}}$ = `r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]). For inference by exclusion and quantity discrimination, only the correlation for Part 1 was reliably different from zero, the one for Part 2, however, was also largely positive (Part 1: $r_{t_{i_1},t_{q_1}}$ = `r lstiq2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]; Part 2: $r_{t_{i_2},t_{q_2}}$ = `r lstiq2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]).
 
-Two (out of four) of the test-half specific trait correlations between causal inference and quantity discrimination were also reliably different from zero ($r_{t_{c_{h1}},t_{q_{h2}}}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(upper_2.5ci)`]; $r_{t_{c_{h2}},t_{q_{h2}}}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(upper_2.5ci)`]). Given that a third correlation was also of similar magnitude ($r_{t_{c_{h2}},t_{q_{h1}}}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(upper_2.5ci)`]), we consider this to be at least suggestive evidence that individuals with higher quantitative abilities were also better at making causal inferences. Figure \@ref(fig:mtmplot2) shows all correlations between the different tasks.
+Two (out of four) of the test-half specific trait correlations between direct causal inference and quantity discrimination were also reliably different from zero ($r_{t_{c_{h1}},t_{q_{h2}}}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(upper_2.5ci)`]; $r_{t_{c_{h2}},t_{q_{h2}}}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(upper_2.5ci)`]). Given that a third correlation was also of similar magnitude ($r_{t_{c_{h2}},t_{q_{h1}}}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(upper_2.5ci)`]), we consider this to be at least suggestive evidence that individuals with higher quantitative abilities were also better at making direct causal inferences. Figure \@ref(fig:mtmplot2) shows all correlations between the different tasks.
 
 ```{r mtmplot2, fig.height=4, fig.width=8, fig.cap = "Phase 2: correlations between latent traits and latent state residual variables, respectively, of different tasks. Bold correlations are different from zero as judged by the 95\\% CI.", out.width="100%"}
 pmtmcor2
@@ -2296,7 +2296,7 @@ The most notable difference between the two phases was that we saw more substant
 
 These results suggest low to moderate commonalities between the traits -- with gaze following being an exception (see Figure \@ref(fig:mtmplotc)). However, the sample size we studied here is still comparatively small for individual differences research. Larger samples are needed to corroborate these findings.
 
-The significant *negative* state residual correlation between causal inference and inference by exclusion found in Phase 1 was not present in Phase 2. This suggests a de-coupling between the two tasks in that apes were less likely to confuse them in Phase 2. This interpretation is also supported by the increase in group-level performance for inference by exclusion and an increase in the trait correlation between the two tasks.
+The significant *negative* state residual correlation between direct causal inference and inference by exclusion found in Phase 1 was not present in Phase 2. This suggests a de-coupling between the two tasks in that apes were less likely to confuse them in Phase 2. This interpretation is also supported by the increase in group-level performance for inference by exclusion and an increase in the trait correlation between the two tasks.
 
 ```{r}
 lstmcor <- bind_rows(
@@ -2581,7 +2581,7 @@ ncores <- parallel::detectCores()
 #                     " + (time_point | subject)"))
 ```
 
-#### Causal inference
+#### Direct causal inference
 
 ```{r, warning = FALSE}
 # cvs_cau_p1 <- cv_varsel(m_cau_2l_p1,
@@ -2627,6 +2627,7 @@ cvarselp <- readRDS("./saves/cvs_cau_summary.rds")%>%
     observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
+    rank = "Rank",
     age = "Age",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
@@ -2679,6 +2680,7 @@ ggplot(aes(x = size, y = value))+
 # saveRDS(proj_samples_cau,"./saves/proj_cvs_cau.rds")
 
 proj_samples_cau <- readRDS("./saves/proj_cvs_cau.rds")%>%
+  filter(!grepl("Intercept",pred))%>%
   mutate(pred = recode(pred,
     time_in_leipzig = "Time spent in research",
     rearing = "Rearing history",
@@ -2687,6 +2689,7 @@ proj_samples_cau <- readRDS("./saves/proj_cvs_cau.rds")%>%
     observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
+    rank = "Rank",
     age = "Age",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
@@ -2700,10 +2703,9 @@ proj_samples_cau <- readRDS("./saves/proj_cvs_cau.rds")%>%
     bonobo = "Bonobo",
     orangutan = "Orangutan",
     gorilla = "Gorilla",
-    f = "Female", 
-    m = "Male",
-    hand = "Hand-reared",
-    mother = "Mother-reared",
+    sexf = "Sex (female)",
+    rearingmother = "Rearing (mother-reared)",
+    observer_modyes = "Observer present",
     `(1 | subject)` = "(1 | Subject)"
   ))%>%
   mutate(factor = recode(factor,
@@ -2722,7 +2724,7 @@ pcpro <- ggplot(proj_samples_cau, aes(x = value, y = pred)) +
   theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
 ```
 
-```{r cselp, fig.height=4,fig.width=10, fig.cap = "Predictor selection for causal inference in Phase 1. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel.", out.width="100%"}
+```{r cselp, fig.height=4,fig.width=10, fig.cap = "Predictor selection for direct causal inference in Phase 1. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel. Reference level for group are bonobos.", out.width="100%"}
 ggarrange(pcsel, pcpro, labels = c("A","B"), widths = c(1.5,1))
 ```
 
@@ -2772,6 +2774,7 @@ ivarselp <- readRDS("./saves/cvs_inf_summary.rds")%>%
     observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
+    rank = "Rank",
     age = "Age",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
@@ -2820,6 +2823,7 @@ ggplot(aes(x = size, y = value))+
 # saveRDS(proj_samples_inf,"./saves/proj_cvs_inf.rds")
 
 proj_samples_inf <- readRDS("./saves/proj_cvs_inf.rds")%>%
+  filter(!grepl("Intercept",pred))%>%
   mutate(pred = recode(pred,
     time_in_leipzig = "Time spent in research",
     rearing = "Rearing history",
@@ -2828,6 +2832,7 @@ proj_samples_inf <- readRDS("./saves/proj_cvs_inf.rds")%>%
     observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
+    rank = "Rank",
     age = "Age",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
@@ -2841,10 +2846,9 @@ proj_samples_inf <- readRDS("./saves/proj_cvs_inf.rds")%>%
     bonobo = "Bonobo",
     orangutan = "Orangutan",
     gorilla = "Gorilla",
-    f = "Female", 
-    m = "Male",
-    hand = "Hand-reared",
-    mother = "Mother-reared",
+    sexf = "Sex (female)",
+    rearingmother = "Rearing (mother-reared)",
+    observer_modyes = "Observer present",
     `(1 | subject)` = "(1 | Subject)"
   ))%>%
   mutate(factor = recode(factor,
@@ -2858,6 +2862,7 @@ pipro <- ggplot(proj_samples_inf, aes(x = value, y = pred)) +
   geom_vline(xintercept = 0, lty = 2, alpha = .75)+
   geom_density_ridges(alpha = .5, scale = .7) +
 facet_grid(factor~., scales = "free", space = "free")+
+  xlim(-5,5)+
     labs(y = "", x = "Estimate")+
   theme_minimal()+
   theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
@@ -2915,6 +2920,7 @@ gvarselp <- readRDS("./saves/cvs_gaze_summary.rds")%>%
     observer = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
+    rank = "Rank",
     age = "Age",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
@@ -2967,6 +2973,7 @@ ggplot(aes(x = size, y = value))+
 # saveRDS(proj_samples_gaze,"./saves/proj_cvs_gaze.rds")
 
 proj_samples_gaze <- readRDS("./saves/proj_cvs_gaze.rds")%>%
+  filter(!grepl("Intercept",pred))%>%
   mutate(pred = recode(pred,
     time_in_leipzig = "Time spent in research",
     rearing = "Rearing history",
@@ -2975,6 +2982,7 @@ proj_samples_gaze <- readRDS("./saves/proj_cvs_gaze.rds")%>%
     observer = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
+     rank = "Rank",
     age = "Age",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
@@ -2988,10 +2996,9 @@ proj_samples_gaze <- readRDS("./saves/proj_cvs_gaze.rds")%>%
     bonobo = "Bonobo",
     orangutan = "Orangutan",
     gorilla = "Gorilla",
-    f = "Female", 
-    m = "Male",
-    hand = "Hand-reared",
-    mother = "Mother-reared",
+    sexf = "Sex (female)",
+    rearingmother = "Rearing (mother-reared)",
+    observer_modyes = "Observer present",
     `(1 | subject)` = "(1 | Subject)"
   ))%>%
   mutate(factor = recode(factor,
@@ -3006,7 +3013,7 @@ pgpro <- ggplot(proj_samples_gaze, aes(x = value, y = pred)) +
   geom_density_ridges(alpha = .5, scale = .7) +
 facet_grid(factor~., scales = "free", space = "free")+
     labs(y = "", x = "Estimate")+
-  scale_x_continuous(guide = guide_axis(n.dodge = 2))+
+  scale_x_continuous(guide = guide_axis(n.dodge = 2), limits = c(-2,2))+
   theme_minimal()+
   theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
   
@@ -3065,6 +3072,7 @@ qvarselp <- readRDS("./saves/cvs_quant_summary.rds")%>%
     observer = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
+     rank = "Rank",
     age = "Age",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
@@ -3115,6 +3123,7 @@ ggplot(aes(x = size, y = value))+
 # saveRDS(proj_samples_quant,"./saves/proj_cvs_quant.rds")
 
 proj_samples_quant <- readRDS("./saves/proj_cvs_quant.rds")%>%
+  filter(!grepl("Intercept",pred))%>%
   mutate(pred = recode(pred,
     time_in_leipzig = "Time spent in research",
     rearing = "Rearing history",
@@ -3123,6 +3132,7 @@ proj_samples_quant <- readRDS("./saves/proj_cvs_quant.rds")%>%
     observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
+     rank = "Rank",
     age = "Age",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
@@ -3136,10 +3146,9 @@ proj_samples_quant <- readRDS("./saves/proj_cvs_quant.rds")%>%
     bonobo = "Bonobo",
     orangutan = "Orangutan",
     gorilla = "Gorilla",
-    f = "Female", 
-    m = "Male",
-    hand = "Hand-reared",
-    mother = "Mother-reared",
+   sexf = "Sex (female)",
+    rearingmother = "Rearing (mother-reared)",
+    observer_modyes = "Observer present",
     `(1 | subject)` = "(1 | Subject)"
   ))%>%
   mutate(factor = recode(factor,
@@ -3154,6 +3163,7 @@ pqpro <- ggplot(proj_samples_quant, aes(x = value, y = pred)) +
   geom_density_ridges(alpha = .5, scale = .7) +
   facet_grid(factor~., scales = "free", space = "free")+
     labs(y = "", x = "Estimate")+
+   xlim(-5,5)+
   theme_minimal()+
   theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
   
@@ -3270,7 +3280,7 @@ ro <- bind_rows(qvarselp%>%mutate(task = "quantity"),
 
 ### Phase 2
 
-#### Causal inference
+#### Direct causal inference
 
 ```{r}
 # cvs_cau_p2 <- cv_varsel(m_cau_2l_p2,
@@ -3316,6 +3326,7 @@ cvarselp_p2 <- readRDS("./saves/cvs_cau_summary_p2.rds")%>%
     observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
+     rank = "Rank",
     age = "Age",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
@@ -3365,6 +3376,7 @@ ggplot(aes(x = size, y = value))+
 # saveRDS(proj_samples_cau_p2,"./saves/proj_cvs_cau_p2.rds")
 
 proj_samples_cau_p2 <- readRDS("./saves/proj_cvs_cau_p2.rds")%>%
+  filter(!grepl("Intercept",pred))%>%
   mutate(pred = recode(pred,
     time_in_leipzig = "Time spent in research",
     rearing = "Rearing history",
@@ -3373,6 +3385,7 @@ proj_samples_cau_p2 <- readRDS("./saves/proj_cvs_cau_p2.rds")%>%
     observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
+     rank = "Rank",
     age = "Age",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
@@ -3386,10 +3399,9 @@ proj_samples_cau_p2 <- readRDS("./saves/proj_cvs_cau_p2.rds")%>%
     bonobo = "Bonobo",
     orangutan = "Orangutan",
     gorilla = "Gorilla",
-    f = "Female", 
-    m = "Male",
-    hand = "Hand-reared",
-    mother = "Mother-reared",
+   sexf = "Sex (female)",
+    rearingmother = "Rearing (mother-reared)",
+    observer_modyes = "Observer present",
     `(1 | subject)` = "(1 | Subject)"
   ))%>%
   mutate(factor = recode(factor,
@@ -3408,7 +3420,7 @@ pcpro_p2 <- ggplot(proj_samples_cau_p2, aes(x = value, y = pred)) +
   theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
 ```
 
-```{r cselp2, fig.height=4,fig.width=10, fig.cap = "Predictor selection for causal inference in Phase 2. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel.", out.width="100%"}
+```{r cselp2, fig.height=4,fig.width=10, fig.cap = "Predictor selection for direct causal inference in Phase 2. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel.", out.width="100%"}
 ggarrange(pcsel_p2, pcpro_p2, labels = c("A","B"), widths = c(1.5,1))
 ```
 
@@ -3459,6 +3471,7 @@ ivarselp_p2 <- readRDS("./saves/cvs_inf_summary_p2.rds")%>%
     observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
+     rank = "Rank",
     age = "Age",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
@@ -3507,6 +3520,7 @@ ggplot(aes(x = size, y = value))+
 # saveRDS(proj_samples_inf_p2,"./saves/proj_cvs_inf_p2.rds")
 
 proj_samples_inf_p2 <- readRDS("./saves/proj_cvs_inf_p2.rds")%>%
+  filter(!grepl("Intercept",pred))%>%
   filter(pred != "time_point")%>%
   mutate(pred = recode(pred,
     time_in_leipzig = "Time spent in research",
@@ -3516,6 +3530,7 @@ proj_samples_inf_p2 <- readRDS("./saves/proj_cvs_inf_p2.rds")%>%
     observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
+     rank = "Rank",
     age = "Age",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
@@ -3529,10 +3544,9 @@ proj_samples_inf_p2 <- readRDS("./saves/proj_cvs_inf_p2.rds")%>%
     bonobo = "Bonobo",
     orangutan = "Orangutan",
     gorilla = "Gorilla",
-    f = "Female", 
-    m = "Male",
-    hand = "Hand-reared",
-    mother = "Mother-reared",
+    sexf = "Sex (female)",
+    rearingmother = "Rearing (mother-reared)",
+    observer_modyes = "Observer present",
     `(1 | subject)` = "(1 | Subject)"
   ))%>%
   mutate(factor = recode(factor,
@@ -3605,6 +3619,7 @@ gvarselp_p2 <- readRDS("./saves/cvs_gaze_summary_p2.rds")%>%
     observer = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
+     rank = "Rank",
     age = "Age",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
@@ -3658,6 +3673,7 @@ ggplot(aes(x = size, y = value))+
 # saveRDS(proj_samples_gaze_p2,"./saves/proj_cvs_gaze_p2.rds")
 
 proj_samples_gaze_p2 <- readRDS("./saves/proj_cvs_gaze_p2.rds")%>%
+  filter(!grepl("Intercept",pred))%>%
   mutate(pred = recode(pred,
     time_in_leipzig = "Time spent in research",
     rearing = "Rearing history",
@@ -3666,6 +3682,7 @@ proj_samples_gaze_p2 <- readRDS("./saves/proj_cvs_gaze_p2.rds")%>%
     observer = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
+     rank = "Rank",
     age = "Age",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
@@ -3679,10 +3696,9 @@ proj_samples_gaze_p2 <- readRDS("./saves/proj_cvs_gaze_p2.rds")%>%
     bonobo = "Bonobo",
     orangutan = "Orangutan",
     gorilla = "Gorilla",
-    f = "Female", 
-    m = "Male",
-    hand = "Hand-reared",
-    mother = "Mother-reared",
+    sexf = "Sex (female)",
+    rearingmother = "Rearing (mother-reared)",
+    observer_modyes = "Observer present",
     `(1 | subject)` = "(1 | Subject)"
   ))%>%
   mutate(factor = recode(factor,
@@ -3758,6 +3774,7 @@ qvarselp_p2 <- readRDS("./saves/cvs_quant_summary_p2.rds")%>%
     observer = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
+     rank = "Rank",
     age = "Age",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
@@ -3809,14 +3826,15 @@ ggplot(aes(x = size, y = value))+
 # saveRDS(proj_samples_quant_p2,"./saves/proj_cvs_quant_p2.rds")
 
 proj_samples_quant_p2 <- readRDS("./saves/proj_cvs_quant_p2.rds")%>%
+  filter(!grepl("Intercept",pred))%>%
   mutate(pred = recode(pred,
     time_in_leipzig = "Time spent in research",
     rearing = "Rearing history",
     group = "Group",
     observer = "Observer present",
-    observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
+    rank = "Rank",
     age = "Age",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
@@ -3830,10 +3848,9 @@ proj_samples_quant_p2 <- readRDS("./saves/proj_cvs_quant_p2.rds")%>%
     bonobo = "Bonobo",
     orangutan = "Orangutan",
     gorilla = "Gorilla",
-    f = "Female", 
-    m = "Male",
-    hand = "Hand-reared",
-    mother = "Mother-reared",
+    sexf = "Sex (female)", 
+    rearingmother = "Rearing (mother-reared)",
+    observer_modyes = "Observer present",
     `(1 | subject)` = "(1 | Subject)"
   ))%>%
   mutate(factor = recode(factor,
@@ -3906,6 +3923,7 @@ dgvarselp_p2 <- readRDS("./saves/cvs_grat_summary_p2.rds")%>%
     observer = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
+    rank = "Rank",
     age = "Age",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
@@ -3957,6 +3975,7 @@ ggplot(aes(x = size, y = value))+
 # saveRDS(proj_samples_grat_p2,"./saves/proj_cvs_grat_p2.rds")
 
 proj_samples_grat_p2 <- readRDS("./saves/proj_cvs_grat_p2.rds")%>%
+  filter(!grepl("Intercept",pred))%>%
   mutate(pred = recode(pred,
     time_in_leipzig = "Time spent in research",
     rearing = "Rearing history",
@@ -3965,6 +3984,7 @@ proj_samples_grat_p2 <- readRDS("./saves/proj_cvs_grat_p2.rds")%>%
     observer_mod = "Observer present",
     sex = "Sex",
     rel_rank = "Rank",
+    rank = "Rank",
     age = "Age",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
@@ -3978,10 +3998,9 @@ proj_samples_grat_p2 <- readRDS("./saves/proj_cvs_grat_p2.rds")%>%
     bonobo = "Bonobo",
     orangutan = "Orangutan",
     gorilla = "Gorilla",
-    f = "Female", 
-    m = "Male",
-    hand = "Hand-reared",
-    mother = "Mother-reared",
+    sexf = "Sex (female)", 
+    rearingmother = "Rearing (mother-reared)",
+    observer_modyes = "Observer present",
     `(1 | subject)` = "(1 | Subject)"
   ))%>%
   mutate(factor = recode(factor,
@@ -4094,7 +4113,7 @@ Figure \@ref(fig:ppisum)) shows the predictor ranking and selection across tasks
 
 Inference by exclusion was the most consistent of all tasks, that is, the same predictors were selected to be relevant in both phases (`group`, `age`). Furthermore, theses predictors were ranked in the same order. 
 
-For causal inference, the highest ranked predictor was the same in both phases (`group`). However, in Phase 2, `time_outdoors` was also selected to be relevant even though it had received a fairly low rank in Phase 1.
+For direct causal inference, the highest ranked predictor was the same in both phases (`group`). However, in Phase 2, `time_outdoors` was also selected to be relevant even though it had received a fairly low rank in Phase 1.
 
 For quantity discrimination, all predictors that were selected in Phase 1 were also selected in Phase 2 (`time_in_leipzig`, `rearing`, `group`, similar ranking in both Phases), however, Phase 2 had three additional -- time point specific -- predictors (`rank`, `time_outdoors`, `observer`, `test_day`). 
 
@@ -4249,16 +4268,16 @@ Pred(Y^*_{it}) = \frac{\beta^2 Var(O_{(t-1)})}{Var(T)+\beta^2 Var(O_{(t-1)})+Var
 
 ```{r, include = F}
 # latent state trait models with auto regressive component
-lstarc <- readModels("../../models and documentation Jana/Application/one task models/test_apes_data_LST_cau_equSvar_AR1.out")
-lstari <- readModels("../../models and documentation Jana/Application/one task models/test_apes_data_LST_inf_equSvar_AR1.out")
-lstarq <- readModels("../../models and documentation Jana/Application/one task models/test_apes_data_LST_quant_equSvar_AR1.out")
-lstarg <- readModels("../../models and documentation Jana/Application/one task models/test_apes_data_LST_gaze_equSvar_AR1.out")
+lstarc <- readModels("../supplement/saves/test_apes_data_LST_cau_equSvar_AR1.out")
+lstari <- readModels("../supplement/saves/test_apes_data_LST_inf_equSvar_AR1.out")
+lstarq <- readModels("../supplement/saves/test_apes_data_LST_quant_equSvar_AR1.out")
+lstarg <- readModels("../supplement/saves/test_apes_data_LST_gaze_equSvar_AR1.out")
 
-lstarc2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_cau_equSvar_AR1.out")
-lstari2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_inf_equSvar_AR1.out")
-lstarq2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_quant_equSvar_AR1.out")
-lstarg2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_gaze_equSvar_AR1.out")
-lstard2 <- readModels("../../models and documentation Jana/Application/Testphase 2/one construct models/test_apes_data_LST_delay_equSvar_AR1.out")
+lstarc2 <- readModels("../supplement/saves/test_apes_data_LST_cau_equSvar_AR1_2.out")
+lstari2 <- readModels("../supplement/saves/test_apes_data_LST_inf_equSvar_AR1_2.out")
+lstarq2 <- readModels("../supplement/saves/test_apes_data_LST_quant_equSvar_AR1_2.out")
+lstarg2 <- readModels("../supplement/saves/test_apes_data_LST_gaze_equSvar_AR1_2.out")
+lstard2 <- readModels("../supplement/saves/test_apes_data_LST_delay_equSvar_AR1_2.out")
 ```
 
 ```{r}
@@ -4317,7 +4336,7 @@ kable_classic(full_width = F)%>%
 
 All LST-AR models in Phase 1 and Phase 2 fit the data reasonably well (see Table \@ref(tab:semtar)). The model estimates for consistency, occasion specificity and reliability were largely similar to the LSTM models (see Figure \@ref(fig:lstardifplot)). There were some pronounced differences: most notably, the models for the inference by exclusion and quantity discrimination tasks had very high predictability estimates in Phase 2. However, these results should be interpreted with caution. First, the credible intervals for the parameter estimates for consistency and predictability were very wide -- covering the whole range of possible values between 0 and 1 -- suggesting that the model was in fact unable to precisely quantify the two components.
 
-More importantly, however, the $\beta$ coefficients that quantify the auto-regressive effect suggest that the models were in fact unidentifiable [see also @ludtke2018more]. The upper bound for $\beta$ is 1 (i.e. 100% of true score variance of $t_i$ is predicted by the residual state variance of $t_{i-1}$) and the 95% CIs for the parameter estimates for the models in question included values that were larger than that (Figure \@ref(fig:lstarbeta)). This was also the case for the causal inference model of Phase 2. Because of this issue, and because the unproblematic models did not yield different interpretations from the LST models, we did not use the LST-AR models to interpret the results.
+More importantly, however, the $\beta$ coefficients that quantify the auto-regressive effect suggest that the models were in fact unidentifiable [see also @ludtke2018more]. The upper bound for $\beta$ is 1 (i.e. 100% of true score variance of $t_i$ is predicted by the residual state variance of $t_{i-1}$) and the 95% CIs for the parameter estimates for the models in question included values that were larger than that (Figure \@ref(fig:lstarbeta)). This was also the case for the direct causal inference model of Phase 2. Because of this issue, and because the unproblematic models did not yield different interpretations from the LST models, we did not use the LST-AR models to interpret the results.
 
 ```{r}
 lstare<- bind_rows(

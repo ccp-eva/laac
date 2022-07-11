@@ -3,8 +3,22 @@ writing/CogSci2021/figs/
 writing/supplement/laac_supplement_files
 
 writing/supplement/saves/srm.rds
+analysis/analysis.Rmd
+visuals/*
+
+
+documentation/baseline_model.md
+documentation/coding_descriptions.html
+documentation/Department_workshop.key
+documentation/Department_workshop.pdf
+documentation/group_size.md
+documentation/personality_questionnaire.pdf
+
 
 videos/bonobo_pilot/*
+models and documentation Jana/*
+
+data/ppi_data_phase1.csv
 
 *.docx
 
