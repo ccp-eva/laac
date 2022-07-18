@@ -941,7 +941,8 @@ In the second step, the goal is to replace the posterior distribution of the ref
 ```
 The result of the projection is a list containing the best model for each number of predictors from which the final model is selected by inspecting the mean log-predictive density (`elpd`) and root-mean-squared error (`rmse`). The projected model with the smallest number of predictors which shows similar predictive performance as the reference model is chosen.
 
-We built separate (Bayesian multilevel regression) reference models for each task and phase and ran them through the above-described projection prediction approach. The dependent variable for each task was the cognitive performance of the apes, that is, the number of correctly solved trials per time point and task. The model for the delay of gratification task was only estimated once (Phase 2). The reference model for the gaze following task additionally allows for the trend over time to vary by ape (random slope for `time_point`). This additional random slope was added due to convergence issues in the random intercept model for the gaze task.  
+We built separate (Bayesian multilevel regression) reference models for each task and phase and ran them through the above-described projection prediction approach. The dependent variable for each task was the cognitive performance of the apes, that is, the number of correctly solved trials per time point and task. The model for the delay of gratification task was only estimated once (Phase 2). 
+The reference model for the gaze following task additionally allows for the trend over time to vary by ape (random slope for `time_point`). This additional random slope was added due to convergence issues in the random intercept model for the gaze task. While adding the random slope led to the convergence of the gaze task models, it did not fully resolve the problem for the projection. This is indicated by the form of the marginals of the projected posteriors, which still show a not entirely expected form of distribution for the gaze tasks. However, given that the model converged and the posterior distributions show only some unexpected behavior, we proceed with the analysis. Besides, at this moment, we are confined by the capabilities of the `projpred` package (with regards to fitting more complex models).
 
 Continuous predictors were centered when needed. We transformed the `rank` variable into a relative rank, where a rank of value one depicts a subject with the highest possible rank. We added the predictor `day2` for gaze following, indicating whether the trials were from the second session or the first. All reference models converged well, having no divergent transitions, R-hat values equal to 1, and large ESSs for virtually all parameters. The R-hat value is a diagnostic value to investigate the convergence of the model and refers to the same concept as the potential scale reduction (PSR) factor defined above. R-hat values close to 1 indicate that the chains have mixed well (the estimates of the chains agree with each other), while values above 1 indicate that the chains did not converge to the same value. For chains of autocorrelated samples, the effective sample size (ESS) is an estimate for the number of independent samples within a chain containing the same amount of information about the dependent variable.
 
@@ -2378,14 +2379,8 @@ ncores <- parallel::detectCores()
 ```
 
 ```{r, include = FALSE}
-# # data pre-processing
-# 
-# df_trials <- read_csv("../../data/laac_data_trial.csv")
-# 
-# df_trials <- df_trials %>%
+# df_trials <- df_trials %>% 
 #   select(-c(time_waited, birth_date, comment, experimenter, pick, condition, heat))
-# 
-# 
 # sum_resp <- function(x, ...) {
 #   # helper function: sum over `correct response` variable (code)
 #   to_return = tibble(cogn = sum(x$code))
@@ -2397,33 +2392,32 @@ ncores <- parallel::detectCores()
 #   group_modify(sum_resp)
 # 
 # df_tmp <- df_trials %>%
-#   # helper function: for merging
+#   # helper for merging
 #   select(-c(date, trial_session, trial_time_point, code)) %>%
 #   unique(by = c("time_point", "session", "subject"))
 # 
 # df_trials_final <- inner_join(df_tmp, resp_sum)
 # 
-# df_trials_final <- df_trials_final %>%
-#   # grand mean center below variables
-#   mutate(across(c(sick_severity,
-#                   le_mean,
-#                   dist_mean,
-#                   time_outdoors,
-#                   age,
-#                   time_in_leipzig),
-#                 ~as.numeric(scale(., center = T, scale = F)))) %>%
-#   mutate(across(c(session,
-#                   subject,
-#                   group,
+# df_trials_final <- df_trials_final %>% 
+#   mutate(across(c(sick_severity, 
+#                   le_mean, 
+#                   dist_mean, 
+#                   time_outdoors, 
+#                   age, 
+#                   time_in_leipzig), 
+#                 ~scale(., center = T, scale = F))) %>% 
+#   mutate(across(c(session, 
+#                   subject, 
+#                   group, 
 #                   sex,
-#                   test_day,
-#                   le_present,
+#                   test_day, 
+#                   le_present, 
 #                   dist_present,
 #                   rearing,
-#                   observer),
-#                 as_factor)) %>%
-#   mutate(observer = fct_relevel(observer, "no")) %>%
-#   mutate(rearing = fct_recode(rearing, "hand" = "unknown")) %>%
+#                   observer), 
+#                 as_factor)) %>% 
+#   mutate(observer = fct_relevel(observer, "no")) %>% 
+#   mutate(rearing = fct_recode(rearing, "hand" = "unknown")) %>% 
 #   # create new observer variable due to different measurements of observer between phases
 #   mutate(observer_mod = case_when(
 #     observer == "yes" ~ "yes",
@@ -2457,7 +2451,6 @@ ncores <- parallel::detectCores()
 ```
 
 ```{r, include = F}
-# # create complete subsets for each task
 # t_cau <- filter(df_trials_final, task == "causality")
 # t_inf <- filter(df_trials_final, task == "inference")
 # t_quant <- filter(df_trials_final, task == "quantity")
@@ -2468,9 +2461,9 @@ ncores <- parallel::detectCores()
 ```{r, include = F}
 # t_gaze <- t_gaze %>%
 #   # create dummy variable indicating if in session 1 or 2
-#   group_by(time_point, session) %>%
+#   group_by(time_point, session) %>% 
 #   mutate(tp_mod = cur_group_id()) %>%
-#   ungroup() %>%
+#   ungroup() %>% 
 #   mutate(day2 = case_when(session == 1 ~ "no",
 #                           session == 2 ~ "yes"),
 #          day2 = factor(day2)) %>%
@@ -2479,8 +2472,8 @@ ncores <- parallel::detectCores()
 # t_gaze <- t_gaze %>%
 #   # remove duplicates created by day2
 #   group_by(subject) %>%
-#   filter(!duplicated(tp_mod)) %>%
-#   ungroup()
+#   filter(!duplicated(tp_mod)) %>%   
+#   ungroup() 
 ```
 
 ```{r, include = F}
@@ -2500,26 +2493,26 @@ ncores <- parallel::detectCores()
 
 ```{r}
 # # formula for reference models
-# fm <- formula(cogn ~ sick_severity +
-#                 test_tp + test_day +
-#                 rel_rank +
-#                 observer_mod +
+# fm <- formula(cogn ~ sick_severity +                    
+#                 test_tp + test_day +             
+#                 rel_rank + 
+#                 observer_mod + 
 #                 age + time_in_leipzig +
 #                 sex + group +
 #                 rearing +
-#                 le_mean + dist_mean +
+#                 le_mean + dist_mean + 
 #                 time_outdoors +
-#                 sociality +
+#                 sociality + time_point +
 #                 (1|subject))
 # # formula for gaze reference model
-# fm_gaze <- formula(cogn ~ sick_severity +
-#                      test_tp + test_day + time_point + day2 +
-#                      rel_rank +
-#                      observer_mod +
+# fm_gaze <- formula(cogn ~ sick_severity +                    
+#                      test_tp + test_day + time_point + day2 +            
+#                      rel_rank + 
+#                      observer_mod + 
 #                      age + time_in_leipzig +
 #                      sex + group +
 #                      rearing +
-#                      le_mean + dist_mean +
+#                      le_mean + dist_mean + 
 #                      time_outdoors +
 #                      sociality +
 #                      (1 + time_point|subject))
@@ -2560,7 +2553,7 @@ ncores <- parallel::detectCores()
 
 ```{r}
 # all_fixed_effects <- c("sick_severity",
-#                        "test_tp", "test_day",
+#                        "test_tp", "test_day", "time_point",
 #                        "rel_rank",
 #                        "observer_mod",
 #                        "age", "time_in_leipzig",
@@ -2570,15 +2563,15 @@ ncores <- parallel::detectCores()
 #                        "time_outdoors",
 #                        "sociality")
 # # delay random intercept to last place so that it doesn't soak up all the variance
-# s_terms <- c("1", all_fixed_effects,
-#              paste0(paste(all_fixed_effects, collapse = " + "),
-#                     " + (1 | subject)"))
+# s_terms <- c("1", all_fixed_effects, 
+#              paste0(paste(all_fixed_effects, collapse = " + "), 
+#                     " + (1 | subject)")) 
 # # gaze task gets its own search terms vector (including day2 and time_point (fixed/random))
-# s_terms_gaze <- c("1", c(all_fixed_effects, "day2", "time_point"),
-#                   paste0(paste(all_fixed_effects, collapse = " + "),
-#                     " + (1 | subject)"),
-#                   paste0(paste(all_fixed_effects, collapse = " + "),
-#                     " + (time_point | subject)"))
+# s_terms_gaze <- c("1", c(all_fixed_effects, "day2"), 
+#                   paste0(paste(all_fixed_effects, collapse = " + "), 
+#                          " + (1 | subject)"),
+#                   paste0(paste(all_fixed_effects, collapse = " + "), 
+#                          " + (time_point | subject)"))
 ```
 
 #### Direct causal inference
@@ -2667,7 +2660,8 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-# proj_cau_cv <- project(cvs_cau,  solution_terms = c(1, 14))
+# cau_sol_terms <- c("(1 | subject)", "group")
+# proj_cau_cv <- project(cvs_cau,  solution_terms = cau_sol_terms)
 # 
 # proj_samples_cau <- as.matrix(proj_cau_cv)%>%
 #   as_tibble()%>%
@@ -2813,7 +2807,8 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-# proj_inf_cv <- project(cvs_inf,  solution_terms = c(1, 2, 3))
+# inf_sol_terms <- c("(1 | subject)", "time_in_leipzig", "group", "age")
+# proj_inf_cv <- project(cvs_inf,  solution_terms = inf_sol_terms)
 # 
 # proj_samples_inf <- as.matrix(proj_inf_cv)%>%
 #   as_tibble()%>%
@@ -2962,7 +2957,8 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-# proj_gaze_cv <- project(cvs_gaze,  solution_terms = c(1:8))
+# gaze_sol_terms_p1 <- c("(1 | subject)", "group", "rearing", "time_outdoors", "age","sociality","sex","sick_severity", "observer_mod")
+# proj_gaze_cv <- project(cvs_gaze,  solution_terms = gaze_sol_terms_p1)
 # 
 # proj_samples_gaze <- as.matrix(proj_gaze_cv)%>%
 #   as_tibble()%>%
@@ -3115,7 +3111,8 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-# proj_quant_cv <- project(cvs_quant,  solution_terms = c(1:3))
+# quant_sol_terms <- c("(1 | subject)", "time_in_leipzig", "rearing", "group") 
+# proj_quant_cv <- project(cvs_quant,  solution_terms = quant_sol_terms)
 # 
 # proj_samples_quant <- as.matrix(proj_quant_cv)%>%
 #   as_tibble()%>%
@@ -3371,7 +3368,8 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-# proj_cau_cv_p2 <- project(cvs_cau_p2, solution_terms = c(1,2))
+# cau_sol_terms_p2 <- c("(1 | subject)", "group", "time_outdoors")
+# proj_cau_cv_p2 <- project(cvs_cau_p2, solution_terms = cau_sol_terms_p2)
 # 
 # proj_samples_cau_p2 <- as.matrix(proj_cau_cv_p2)%>%
 #   as_tibble()%>%
@@ -3518,7 +3516,8 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-# proj_inf_cv_p2 <- project(cvs_inf_p2,  solution_terms = c(1, 2, 3))
+# inf_sol_terms_p2 <- c("(1 | subject)", "group", "time_in_leipzig", "age", "time_point")  
+# proj_inf_cv_p2 <- project(cvs_inf_p2,  solution_terms = inf_sol_terms_p2)
 # 
 # proj_samples_inf_p2 <- as.matrix(proj_inf_cv_p2)%>%
 #   as_tibble()%>%
@@ -3670,7 +3669,8 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-# proj_gaze_cv_p2 <- project(cvs_gaze_p2,  solution_terms = c(1:4))
+# gaze_sol_terms_p2 <- c("(1 | subject)", "group", "sex", "observer_mod", "age")
+# proj_gaze_cv_p2 <- project(cvs_gaze_p2,  solution_terms = gaze_sol_terms_p2)
 # 
 # proj_samples_gaze_p2 <- as.matrix(proj_gaze_cv_p2)%>%
 #   as_tibble()%>%
@@ -3825,7 +3825,8 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-# proj_quant_cv_p2 <- project(cvs_quant_p2,  solution_terms = c(1:7))
+# quant_sol_terms_p2 <- c("(1 | subject)", "rel_rank", "rearing", "time_in_leipzig", "group", "observer_mod", "time_point") 
+# proj_quant_cv_p2 <- project(cvs_quant_p2,  solution_terms = quant_sol_terms_p2)
 # 
 # proj_samples_quant_p2 <- as.matrix(proj_quant_cv_p2)%>%
 #   as_tibble()%>%
@@ -3976,7 +3977,8 @@ ggplot(aes(x = size, y = value))+
 ```
 
 ```{r}
-# proj_grat_cv_p2 <- project(cvs_grat_p2,  solution_terms = c(1:5))
+# grat_sol_terms_p2 <- c("(1 | subject)", "time_in_leipzig", "observer_mod", "sex")
+# proj_grat_cv_p2 <- project(cvs_grat_p2,  solution_terms = grat_sol_terms_p2)
 # 
 # proj_samples_grat_p2 <- as.matrix(proj_grat_cv_p2)%>%
 #   as_tibble()%>%
