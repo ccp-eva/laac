@@ -768,8 +768,8 @@ ro <- bind_rows(
          solution_terms != "none",
          solution_terms != "day2",
          solution_terms != "(1 | subject)",
-         solution_terms != "(time_point | subject)",
-         solution_terms != "time_point")%>%
+         solution_terms != "time_point",
+         solution_terms != "(time_point | subject)")%>%
   select(size, solution_terms, task,phase, select)%>%
   group_by(solution_terms)%>%
   mutate(sum = sum(size))%>%
@@ -793,6 +793,7 @@ ro <- bind_rows(
     time_in_leipzig = "Time spent in research",
     rearing = "Rearing history",
     group = "Group",
+    time_point = "Time point",
     observer_mod = "Observer present",
     observer = "Observer present",
     sex = "Sex",
@@ -858,6 +859,7 @@ proj_samples <- bind_rows(
     rel_rank = "Rank",
     rank = "Rank",
     age = "Age",
+    time_point = "Time point",
     sick_severity = "Sickness severity",
     test_tp = "Study participation (day)",
     test_day = "Study participation (time point)",
