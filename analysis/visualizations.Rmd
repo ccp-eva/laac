@@ -356,7 +356,8 @@ data_task %>%
 cor_data_sum <- cor_data%>%
   group_by(phase, task)%>%
   mean_hdci(value)%>%
-  mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification")))
+  mutate(task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination", "Delay of gratification")),
+         time_span = 16)
   
 # ggplot(cor_data, aes(x = value, col = task, fill = task))+
 #   #geom_histogram(col = "black", fill = "white")+
@@ -389,6 +390,8 @@ cor_data%>%
   mutate(time_span = abs(as.numeric(term) - as.numeric(time_point)))%>%
   ggplot(aes(y = time_span, x = value, col = phase))+
   geom_xsidedensity(aes(x = value, fill = phase),col = "white",alpha = 0.5)+
+  geom_xsidesegment(data =  cor_data_sum, aes(x = .lower, xend = .upper, y = 0, yend = 0, col = phase),alpha = 0.5)+
+  geom_xsidepoint(data =  cor_data_sum, aes(x = value, y = 0, col = phase),alpha = 0.75)+
   geom_point(alpha = .5, size = 0.75)+
   geom_smooth(method = "lm", aes(col = phase),lty = 2, se = T, size = .5)+
   stat_cor(method = "pearson", aes(y = time_span, x = value, col = phase, label = paste(..r.label..)), inherit.aes = F,r.accuracy = 0.01, cor.coef.name = "r", show.legend = FALSE)+
@@ -1016,7 +1019,7 @@ grouproj <- proj_samples%>%
   facet_wrap_custom(task~., scales = "free_x", nrow = 1, scale_overrides = list(
     scale_override(1, scale_x_continuous(limits = c(-4, 4))),
     scale_override(2, scale_x_continuous(limits = c(-3, 3))),
-    scale_override(3, scale_x_continuous(limits = c(-25, 25))),
+    scale_override(3, scale_x_continuous(limits = c(-5, 5))),
     scale_override(4, scale_x_continuous(limits = c(-5, 4))),
     scale_override(5, scale_x_continuous(limits = c(1, 1), breaks = c(0,2)))
   ))+
