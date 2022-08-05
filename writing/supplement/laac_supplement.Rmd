@@ -1,16 +1,16 @@
 ---
-title: "Probing the foundations of comparative cognition: the structure, stability and predictability of great ape cognition"
+title: "Probing the structure, stability, and predictability of great ape cognition"
 author: "Manuel Bohn, Johanna Eckert, Daniel Hanus, Benedikt Lugauer, Jana Holtmann & Daniel Haun"
 subtitle: Supplementary material
 output:
+  bookdown::pdf_document2:
+    toc: yes
+    number_sections: no
   bookdown::html_document2:
     toc: yes
     toc_float: yes
     fig_caption: yes
     code_folding: hide
-    number_sections: no
-  bookdown::pdf_document2:
-    toc: yes
     number_sections: no
   html_document:
     toc: yes
