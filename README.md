@@ -7,7 +7,7 @@
 
 ------------------------------------------------------------------------
 
-* Bohn, M., Eckert, J., Hanus, D., Lugauer, B., Holtmann, J., & Haun, D. (2022). [Probing the structure, stability and predictability of great ape cognition](https://psyarxiv.com/pdt5w). *PsyArXiv*.
+* Bohn, M., Eckert, J., Hanus, D., Lugauer, B., Holtmann, J., & Haun, D. (2022). [Probing the structure, stability and predictability of great ape cognition](https://psyarxiv.com/w8vhk/). *PsyArXiv*.
 * Bohn, M., Eckert, J., Hanus, D., & Haun, D. (2021). [A Longitudinal Study of Great Ape Cognition: Stability, Reliability and the Influence of Individual Characteristics](https://psyarxiv.com/pdt5w). *Proceedings of the 43rd Annual Conference of the Cognitive Science Society*.
 
 ### Structure
