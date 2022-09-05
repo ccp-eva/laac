@@ -73,7 +73,7 @@ draft             : no
 documentclass     : "apa6"
 classoption       : "man"
 output            : papaja::apa6_pdf
-csl               : pnas.csl            
+csl               : nature.csl            
 ---
 
 ```{r, include = FALSE}
@@ -81,10 +81,6 @@ library("papaja")
 library(png)
 library(tidyverse)
 ```
-
-# Significance statement
-
-Great ape cognition is often used as a reference point in theories about cognitive evolution as well as human cognitive uniqueness. This study asked how stable, reliable and predictable great ape cognitive performance is – questions that are fundamental to solid theorizing. We followed more than 40 great apes for more than a year and repeatedly assessed their cognitive performance in a range of domains as well as aspects of their everyday experience. The picture that emerges is one in which great ape cognition is structured by stable differences in cognitive abilities which are predicted by stable individual characteristics (e.g. group, research experience, or age); transient changes in everyday experience do influence cognitive performance but to a much lesser extent.  
 
 # Introduction
 
