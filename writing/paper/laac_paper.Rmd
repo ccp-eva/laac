@@ -72,7 +72,7 @@ draft             : no
 
 documentclass     : "apa6"
 classoption       : "man"
-output            : papaja::apa6_pdf
+output            : papaja::apa6_docx
 csl               : nature.csl            
 ---
 
@@ -286,7 +286,7 @@ We used Structural Equation Modeling (SEM) [@bollen1989structural; @hoyle2012han
 
 We used Bayesian estimation techniques to estimate the models. In the supplementary material available online, we report the prior settings used for estimation as well as the structural restrictions we imposed on the model parameters. We justify these settings and restrictions via simulation studies also included in the supplementary material.
 
-In our focal Latent Trait-State (LST) model, the observed categorical variables $Y_{it}$ for test half $i$ at time point $t$ result from a categorization of unobserved continuous latent variables $Y^*_{it}$ which underlie the observed categorical variables [graded response model, see @samejima1969estimation; @samejima1996graded]. This continuous latent variable $Y^*_{it}$ is then decomposed into a latent trait variable $T_{it}$, a latent state residual variable $\zeta_{it}$, and a measurement error variable. The latent trait variables $T_{it}$ are time-specific dispositions, that is, trait scores that capture the expected value of the latent state (i.e., true score) variable for an individual at time $t$ across all possible situations the individual might experience at time $t$ [@eid2017definition; @steyer2015theory]. The state residual variables $\zeta_{it}$ capture the deviation of a momentary state from the time-specific disposition $T_{it}$. We assumed that latent traits were stable across time. In addition, we assumed common latent trait and state residual variables across the two test halves, which leads to the following measurement equation for parcel $i$ at time point $t$:  
+In our focal Latent Trait-State (LST) model, the observed categorical variables $Y_{it}$ for test half $i$ at time point $t$ result from a categorization of unobserved continuous latent variables $Y^*_{it}$ which underlie the observed categorical variables (graded response model [@samejima1969estimation; @samejima1996graded]). This continuous latent variable $Y^*_{it}$ is then decomposed into a latent trait variable $T_{it}$, a latent state residual variable $\zeta_{it}$, and a measurement error variable. The latent trait variables $T_{it}$ are time-specific dispositions, that is, trait scores that capture the expected value of the latent state (i.e., true score) variable for an individual at time $t$ across all possible situations the individual might experience at time $t$ [@eid2017definition; @steyer2015theory]. The state residual variables $\zeta_{it}$ capture the deviation of a momentary state from the time-specific disposition $T_{it}$. We assumed that latent traits were stable across time. In addition, we assumed common latent trait and state residual variables across the two test halves, which leads to the following measurement equation for parcel $i$ at time point $t$:  
 
 ```{=tex}
 \begin{equation}

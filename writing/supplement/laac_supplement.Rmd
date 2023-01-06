@@ -3,14 +3,14 @@ title: "Probing the structure, stability, and predictability of great ape cognit
 author: "Manuel Bohn, Johanna Eckert, Daniel Hanus, Benedikt Lugauer, Jana Holtmann & Daniel Haun"
 subtitle: Supplementary material
 output:
-  bookdown::pdf_document2:
-    toc: yes
-    number_sections: no
   bookdown::html_document2:
     toc: yes
     toc_float: yes
     fig_caption: yes
     code_folding: hide
+    number_sections: no
+  bookdown::pdf_document2:
+    toc: yes
     number_sections: no
   html_document:
     toc: yes
@@ -92,11 +92,11 @@ data_trial <- read.csv("../../data/laac_data_trial.csv")%>%mutate(phase = ifelse
 
 # Overview
 
-This document gives a detailed overview of the methods used in the study "Probing the foundations of comparative cognition: the structure, stability and predictability of great ape cognition". First, we give an overview of our great ape [participants](#participants). Next we describe the general [setup](#setup) and the experimental [tasks](#tasks) that were used. In the section [data collection](#data-collection) we lay out the time line of data collection. Next, we give an overview of the [predictor variables](#predictors) we recorded in addition to the experimental data.
+This document gives a detailed overview of the methods used in the study "Probing the structure, stability, and predictability of great ape cognition". First, we give an overview of our great ape [participants](#participants). Next we describe the general [setup](#setup) and the experimental [tasks](#tasks) that were used. In the section [data collection](#data-collection) we lay out the time line of data collection. Next, we give an overview of the [predictor variables](#predictors) we recorded in addition to the experimental data.
 
-We then move on to describe the two parts of our [analytical framework](#analytical-framework): [Structural Equation Modeling](#structural-equation-modeling) to investigate stability and reliability of cognitive performance and [Projection Predictive Inference](#projection-predictive-inference) to test the importance of the predictor variables.
+We then move on to describe the two parts of our [analytical framework](#analytical-framework): [Structural Equation Modeling](#structural-equation-modeling) to investigate robustness, stability and reliability of cognitive performance and [Projection Predictive Inference](#projection-predictive-inference) to test the importance of the predictor variables.
 
-We present the [results](#results) separate for the two phases of data collection. For each phase, we first report results on [stability and reliability](#stability-and-reliability) of performance within each task and then we investigate [relations between](#relations-between-tasks) performance in the different tasks. Finally, we report how the different [predictors](#predictability) related to performance in the different tasks.
+We present the [results](#results) separate for the two phases of data collection. For each phase, we first report results on [robustness, stability and reliability](#robustness-stability-and-reliability) of performance within each task and then we investigate [relations between](#relations-between-tasks) performance in the different tasks. Finally, we report how the different [predictors](#predictability) related to performance in the different tasks.
 
 The [appendix](#appendix) contains results from simulation studies we conducted to investigate the performance of the employed Structural Equation Models under the sample sizes given in the present dataset.
 
@@ -678,13 +678,13 @@ Here we counted in how many other studies the participant had taken part in sinc
 
 # Analytical framework {#analytical-framework}
 
-We had two overarching questions. On the one hand, we were interested in the cognitive measures and the relations between them. That is, we asked how stable performance in a given task was on a group-level, how stable individual differences were, how reliable the measures were. We also investigated relations between the different tasks. We used *Structural Equation Modeling* (SEM) [@bollen1989structural; @hoyle2012handbook] to address these questions. SEMs usually require larger sample sizes than available in the present study. In the [appendix](#appendix) we present results from a small simulation study which show that parameters in the employed SEMs are accurately estimated using Bayesian estimation techniques given our available sample sizes under reasonable model restrictions. We lay out the restrictive assumptions we imposed on the parameters in the text below.
+We had two overarching questions. On the one hand, we were interested in the cognitive measures and the relations between them. That is, we asked how robust performance in a given task was on a task-level, how stable individual differences were and how reliable the measures were. We also investigated relations between the different tasks. We used *Structural Equation Modeling* (SEM) [@bollen1989structural; @hoyle2012handbook] to address these questions. SEMs usually require larger sample sizes than available in the present study. In the [appendix](#appendix) we present results from a small simulation study which show that parameters in the employed SEMs are accurately estimated using Bayesian estimation techniques given our available sample sizes under reasonable model restrictions. We lay out the restrictive assumptions we imposed on the parameters in the text below.
 
 Our second question was, which predictors explain variability in cognitive performance. Here we wanted to see which of the predictors we recorded were most important to predict performance over time. This is a variable selection problem (selecting a subset of variables from a larger pool) and we used *Projection Prediction Inference* for this [@piironen2018projective].
 
 ## Structural equation modeling {#structural-equation-modeling}
 
-In the present analyses we were interested in estimating the stability of performances in a given task across time as well as the association between performances across different tasks (on a stable as well as the time-point specific level). To separate components of random fluctuation (measurement error) from systematic differences in performance across time, we used Structural equation models (SEM). SEMs can be used to model relations between latent variables (constructs) which are estimated based on several observed variables.
+In the present analyses we were interested in estimating the stability of performances in a given task across time as well as the association between performances across different tasks. To separate components of random fluctuation (measurement error) from systematic differences in performance across time, we used Structural equation models (SEM). SEMs can be used to model relations between latent variables (constructs) which are estimated based on several observed variables.
 
 We used latent state-trait models to separate traits (stable over time) from state residuals (time varying). In the present context, one can think of a trait as a stable psychological ability (e.g. ability to make causal inferences) and state residuals as time-specific deviations from these traits due to variable psychological conditions (e.g. variations in performance due to being attentive or inattentive). Variation in performance on a given time point can then be partitioned into variance explained by the trait, variance explained by the situation or individual-situation interactions, and measurement error. Because the latent variables are estimated on multiple indicators (here: test halves), they are assumed to be measurement-error free [@steyer1992states; @steyer2015theory; @geiser2020longitudinal]. Next we describe the model construction process in more detail.
 
@@ -698,7 +698,7 @@ For model parsimony, to improve estimation accuracy (see simulation studies), an
 
 ### Models and coefficients
 
-For each task, we constructed two different models which increased in complexity. We started with a latent state (LS) model, which estimates a latent state for each time point based on the two test halves. Stability of group level performance can be assessed by comparing latent state means across time points. Stability of individual differences can be assessed by correlating latent state variables across different time points.
+For each task, we constructed two different models which increased in complexity. We started with a latent state (LS) model, which estimates a latent state for each time point based on the two test halves. Robustness of task-level performance can be assessed by comparing latent state means across time points. Stability of individual differences can be assessed by correlating latent state variables across different time points.
 
 Second, we fit a latent state-trait (LST) model. In LST models, true inter-individual differences are decomposed into a latent trait variable and time-specific deviations of the true score from the latent trait (state residual variable). In the following LST models, we assume stable latent trait variables across time (no trait change). The model allows us to partition the true variance in performance into stable (trait) and variable (state residual) components. Assuming a stable latent trait variable, the LST model is more restrictive than the LS model with respect to the implied covariance matrix, as correlations between true scores are not freely estimated across time points but assumed to be the same for different time lags.
 
@@ -1112,7 +1112,7 @@ rel_plot <- ggplot(data = cor_data, aes(x = value , y = reorder(task, desc(task)
   geom_vline(xintercept = 0, color = "black", size = .5, lty = 2) +
   geom_density_ridges(rel_min_height = 0.01,col = "black", scale = 2,
                       alpha = 0.5) +
-  geom_pointinterval(data = cor_data_sum, aes(xmin = .lower, xmax = .upper), size = 1)+
+  #geom_pointinterval(data = cor_data_sum, aes(xmin = .lower, xmax = .upper), size = 1)+
   labs(x = "Correlation Coefficient",
        y = element_blank()) +
   #geom_text(data = mutate_if(cor_data_sum, is.numeric, round, 2),
@@ -1127,8 +1127,8 @@ rel_plot_dis <- cor_data%>%
   mutate(time_span = abs(as.numeric(term) - as.numeric(time_point)))%>%
   ggplot(aes(x = time_span, y = value, col = task))+
   geom_point(alpha = .5, size = 0.75)+
-  geom_smooth(method = "lm", se = F, col = "black", lty = 2, size = .5)+
-  stat_cor(method = "pearson", aes(x = time_span, y = value, label = paste(..r.label..)), inherit.aes = F,r.accuracy = 0.01, cor.coef.name = "r", label.x = 1, label.y = 0.99,)+
+  #geom_smooth(method = "lm", se = F, col = "black", lty = 2, size = .5)+
+  #stat_cor(method = "pearson", aes(x = time_span, y = value, label = paste(..r.label..)), inherit.aes = F,r.accuracy = 0.01, cor.coef.name = "r", label.x = 1, label.y = 0.99,)+
   ylim(0,1)+
   labs(y = "Correlation Coefficient",
      x = "Time Span") +
@@ -1139,7 +1139,7 @@ rel_plot_dis <- cor_data%>%
 
 ```
 
-```{r relplot, out.width="100%", fig.width = 10, fig.height=6, set.cap.width=T, num.cols.cap=2, fig.cap = "(A) Distribution of correlations between time points for each task. Dots represent the mean of the distribution with 95\\% HDI. Numbers denote mean and 95\\% HDI. (B) Correlations between re-test reliability and time span (in time points) between the testing time points."}
+```{r relplot, out.width="100%", fig.width = 10, fig.height=6, set.cap.width=T, num.cols.cap=2, fig.cap = "(A) Distribution of correlations between time points for each task. (B) Re-test correlation coefficients plotted against the temporal distance between the testing time points."}
 ggarrange(rel_plot, rel_plot_dis, heights = c(1,1.5), labels = c("A","B"), nrow = 2)
 ```
 
@@ -1159,13 +1159,13 @@ lstg <- readModels("../supplement/saves/test_apes_data_LST_gaze_equSvar.out")
 
 ```
 
-## Stability and Reliability {#stability-and-reliability}
+## Robustness, Stability and Reliability {#stability-and-reliability}
 
-As mentioned above, we fit three different SEMs to the data from each task. Each model offers a slightly different perspective on how stable and reliable performance is. We report the results starting with the LS model, followed by the LST model and finally the LST-AR model.
+As mentioned above, we fit two different SEMs to the data from each task. Each model offers a slightly different perspective on how robust, stable and reliable performance is. We report the results starting with the LS model, followed by the LST model.
 
 Reliability is defined as the proportion of true-score variance relative to the total (observed) variance, that is, in the context of the specified SEMs, variance that is explained by the latent state (residual) and trait variables. Reliability is estimated based on the correlations between indicators. Because the two indicators corresponded to the two test halves in our case, reliability was equivalent to a split-half reliability estimate.
 
-In the LS models, we can look at the stability of group level performance by comparing the latent means estimated for each time point to see if they differ substantially from one another. To assess the stability of individual differences, we can look at the correlations between the latent state estimates for the different time points.
+In the LS models, we can look at the robustness of task-level performance by comparing the latent means estimated for each time point to see if they differ substantially from one another. To assess the stability of individual differences, we can look at the correlations between the latent state estimates for the different time points.
 
 For LST models, we can assess stability of individual differences by looking at consistency and occasion specificity estimates. A high level of consistency means that a large portion of the variation observed in performance at the different time points can be traced back to variation in the overarching trait. High levels of occasion specificity mean the inverse, namely that large portions of the variation in performance is explained by variation in the state residual -- that is, occasion-specific variation not explained by the trait, due to situation and/or person-situation interaction effects.
 
@@ -1173,11 +1173,11 @@ We ran the same models for the data from Phase 1 and Phase 2. We first report th
 
 ### Phase 1
 
-To get an overview of the results, we first visualized the data. Figure \@ref(fig:perfplot) shows performance at the different time points. From a group-level perspective, we can say that performance was consistently above chance (0.5) in the direct causal inference and quantity discrimination tasks. For gaze following, there is no meaningful chance level. We can note, however, that group level performance never went down to zero, which would be expected if apes did not pay attention to the experimenter's gaze. The performance score in the switching task was largely negative, suggesting no successful switching between the two phases.
+To get an overview of the results, we first visualized the data. Figure \@ref(fig:perfplot) shows performance at the different time points. From a task-level perspective, we can say that performance was consistently above chance (0.5) in the direct causal inference and quantity discrimination tasks. For gaze following, there is no meaningful chance level. We can note, however, that task-level performance never went down to zero, which would be expected if apes did not pay attention to the experimenter's gaze. The performance score in the switching task was largely negative, suggesting no successful switching between the two phases.
 
-For a first glimpse on the stability of individual differences, we correlated performance at the different time points for each task (all possible combinations of time points). Figure \@ref(fig:relplot)A visualizes the distribution of raw correlations between the different time points and \@ref(fig:relplot)B shows the relation between re-test correlations and the time span between time points. Correlations between time points were large and clearly different from zero for quantity discrimination, inference by exclusion and gaze following. For quantity discrimination, this distribution was wider and closer to zero, but still clearly positive. For switching, the distribution was even wider and substantially overlapped with zero. For all tasks, correlations between time points tended to be lower for time points that were further apart [@uher2011individual]. These re-test correlations confound measurement precision (reliability) and stability of individual differences. That is, low correlations (like e.g. for quantity discrimination) could reflect high measurement error or a lack of stability of individual differences. We tease these components apart in the SEM models reported below. 
+For a first glimpse on the stability of individual differences, we correlated performance at the different time points for each task (all possible combinations of time points). Figure \@ref(fig:relplot)A visualizes the distribution of raw correlations between the different time points and \@ref(fig:relplot)B plots the re-test correlation coefficients against the temporal distance between time points. Correlations between time points were large and exclusively zero for direct causal inference, inference by exclusion and gaze following. For quantity discrimination, this distribution was wider and overlapped with zero, but was still mostly positive. For switching, the distribution was even wider and substantially overlapped with zero. For all tasks, correlations between time points tended to be lower for time points that were further apart [@uher2011individual]. However, these re-test correlations confound measurement precision (reliability) and stability of individual differences. That is, low correlations (like e.g. for quantity discrimination) could reflect high measurement error or a lack of stability of individual differences. We tease these components apart in the SEM models reported below. 
 
-We excluded the switching task from further analysis for two reasons. First, group level scores were constantly negative and performance in the feature trials always overlapped with chance. This suggests that, as a group, apes did not successfully switch strategies (see Figure \@ref(fig:perfplot)). Second, the correlations between the different measurement time points were low, suggesting no systematic individual differences (see Figure \@ref(fig:relplot)).
+We excluded the switching task from further analysis for two reasons. First, task-level scores were constantly negative and performance in the feature trials always overlapped with chance. This suggests that, as a group, apes did not successfully switch strategies (see Figure \@ref(fig:perfplot)). Second, the correlations between the different measurement time points were low, suggesting no systematic individual differences (see Figure \@ref(fig:relplot)).
 
 Next, we report the SEM results for the different tasks and the relations between them. All models showed acceptable fit indices (see Table \@ref(tab:semt)). The threshold parameters for each model are shown in Table \@ref(tab:thresht).
 
@@ -1293,7 +1293,7 @@ kable_classic(full_width = F)%>%
 
 To fit the models, the response categories of 0 or 1 solved trial had to be collapsed into one category due to sparsity. Furthermore, the thresholds could not be set equal for test-half 2 at time point 3 and 11 as well as test-half 1 at time points 4 and 12 due to a different number of observed categories for the respective test halves and time point combination. Latent means can still be compared across time for the state factors based on the respective other test half. At time point 7, thresholds of both test-halves could not be set invariant across time (due to a divergent number of observed categories). Latent mean differences for the latent state variable at time point 7 should therefore be interpreted with caution.
 
-Figure \@ref(fig:lseplot) visualizes the latent state means and reliability estimates from the LS model. Reliability was consistently high. None of the latent means was significantly different from zero, suggesting stable group level performance and no systematic mean change over time. Figure \@ref(fig:lsplot) gives the correlations between the latent states for the different time points. Correlations were generally high, indicating stable individual differences.
+Figure \@ref(fig:lseplot) visualizes the latent state means and reliability estimates from the LS model. Reliability was consistently high. None of the latent means was significantly different from zero, suggesting robust task-level performance and no systematic mean change over time. Figure \@ref(fig:lsplot) gives the correlations between the latent states for the different time points. Correlations were generally high, indicating stable individual differences.
 
 ```{r}
 plse <- bind_rows(lsc$parameters$unstandardized%>%mutate(task = "causality"),
@@ -1353,7 +1353,7 @@ plser
 
 In the LSTM, the consistency coefficient was estimated to be around .903. This means that around 90% of true inter-individual differences are attributable to stable (trait) differences between individuals, while approximately 10% are due to variance in time point specific deviations from the stable trait. Reliability (across time points) was estimated to be high with a mean of .725 (see Figure \@ref(fig:lsteplot)).
 
-In sum, all models converge on the conclusion that group- and individual-level performance was highly stable over time. As noted above -- and as can be seen in Figure \@ref(fig:perfplot) -- performance on a group level was clearly above chance.
+In sum, all models converge on the conclusion that group- and individual-level performance was highly stable over time. As noted above -- and as can be seen in Figure \@ref(fig:perfplot) -- performance on a task level was clearly above chance.
 
 ```{r}
 cor <- bind_rows(
@@ -1402,7 +1402,7 @@ Reliability was high in the LS model and none of the latent means differed from 
 
 In the LSTM, consistency was estimated to be around .859 -- around 86% of true inter-individual differences were attributable to stable (trait) differences between individuals. Approximately 14% were due to variance in time-point specific deviations from the stable trait. Reliability was high with an estimate of .815 (see Figure \@ref(fig:lsteplot)).
 
-Taken together, we saw a similar pattern as for the direct causal inference task: Performance was very stable on a group level and so were the differences between individuals. Interestingly, from Figure \@ref(fig:perfplot) we take that group-level performance was at chance. The stable individual differences we found here suggest that variation around this mean was systematic and therefore that some individuals consistently performed above chance. Thus, despite the fact that this task was very difficult for apes, it was suitable to measure individual differences.
+Taken together, we saw a similar pattern as for the direct causal inference task: Performance was very robust on a task level and so were the differences between individuals. Interestingly, from Figure \@ref(fig:perfplot) we take that task-level performance was at chance. The stable individual differences we found here suggest that variation around this mean was systematic and therefore that some individuals consistently performed above chance. Thus, despite the fact that this task was very difficult for apes, it was suitable to measure individual differences.
 
 ```{r}
 plste <- bind_rows(
@@ -1446,7 +1446,7 @@ Latent state means estimated in the LSM varied between -0.990 and -2.153 (for ti
 
 In the LSTM, consistency was estimated to be around .758, that is around 76% of true inter-individual differences are attributable to stable differences between individuals. Approximately 24% of inter-individual differences were due to variance in time point specific deviations from the stable trait. Reliability was high with an estimate of .792.
 
-In sum, we see a change in gaze following over time (Figure \@ref(fig:perfplot)). This group-level effect, however, did not affect differences between individuals, which were systematic across time points.
+In sum, we see a change in gaze following over time (Figure \@ref(fig:perfplot)). This task-level effect, however, did not affect differences between individuals, which were systematic across time points.
 
 #### Quantity discrimination
 
@@ -1456,7 +1456,7 @@ Latent state means estimated in the LSM varied very little and all lay between -
 
 The consistency coefficient was estimated to be around .964, that is around 96% of true inter-individual differences was attributable to stable differences between individuals and only approximately 3.6% were due to variance in time-point specific deviations from the stable trait. Again, reliability was rather low with an estimate of .446.
 
-Taken together, quantity judgments were very stable over time on the group level (see also Figure \@ref(fig:perfplot)). The low reliability estimates suggest, however, that the task is less suited to capture individual differences.
+Taken together, quantity judgments were very robust over time on the task level (see also Figure \@ref(fig:perfplot)). The low reliability estimates suggest, however, that the task is less suited to capture individual differences.
 
 ### Phase 2
 
@@ -1478,7 +1478,7 @@ lsti2p2 <- readModels("../supplement/saves/test_apes_data_LST_inf_equSvar_2phase
 
 ```
 
-For a visual overview of group-level performance in the different tasks see Figure \@ref(fig:perfplot). The pattern observed in Phase 1 was similar in Phase 2 for causal reasoning and quantity discrimination. The rate of gaze following remained on the low level reached at the end of Phase 1. For inference by exclusion, there was an increase in performance over time, which already began to show itself at the end of Phase 1. Taken together, there was a lot of continuity between Phase 1 and 2. The newly added delay of gratification task produced fairly variable results -- with no ceiling or floor effect.
+For a visual overview of task-level performance in the different tasks see Figure \@ref(fig:perfplot). The pattern observed in Phase 1 was similar in Phase 2 for causal reasoning and quantity discrimination. The rate of gaze following remained on the low level reached at the end of Phase 1. For inference by exclusion, there was an increase in performance over time, which already began to show itself at the end of Phase 1. Taken together, there was a lot of continuity between Phase 1 and 2. The newly added delay of gratification task produced fairly variable results -- with no ceiling or floor effect.
 
 Correlations between time points were similar in Phase 1 and 2 for all tasks (Figure \@ref(fig:relplot)). Performance in the delay of gratification task proofed to be stable between individuals. Next, we present the results from the SEMs separate for each task. All models showed acceptable fit indices, except for the LST model for inference by exclusion (see Table \@ref(tab:semt2)). We therefore adjusted the LST model for this task in a way we describe below. The threshold parameters for each model are shown in Table \@ref(tab:thresht2).
 
@@ -1631,11 +1631,11 @@ kable_classic(full_width = F)%>%
 
 As in phase 1, the lowest two categories (0 and 1 correctly solved trials per test half) were collapsed due to sparsity. Thresholds could not be set equal for test half 1 at time point 5, 8, and 11 as well as test half 2 at time point 14 (of phase 2), due to a different number of observed categories for the respective test half and time-point combination. Latent means can still be compared across time.
 
-Figure \@ref(fig:lseplot2) visualizes the latent state means and reliability estimates from the LS model. Reliability was consistently high. Except for time point 2, none of the latent means was significantly different from zero, suggesting stable group level performance and no systematic mean change over time. Figure \@ref(fig:lsplot2) gives the correlations between the latent states for the different time points. Correlations were generally high -- indicating stable individual differences -- with a trend towards lower correlations for time points further apart.
+Figure \@ref(fig:lseplot2) visualizes the latent state means and reliability estimates from the LS model. Reliability was consistently high. Except for time point 2, none of the latent means was significantly different from zero, suggesting robust task-level performance and no systematic mean change over time. Figure \@ref(fig:lsplot2) gives the correlations between the latent states for the different time points. Correlations were generally high -- indicating stable individual differences -- with a trend towards lower correlations for time points further apart.
 
 In the LSTM, the consistency coefficient was estimated to be around .912. This means that around 91% of true inter-individual differences are attributable to stable (trait) differences between individuals, while approximately 9% are due to variance in time point specific deviations from the stable trait. Reliability was estimated to be high with a value of .726 (see Figure \@ref(fig:lsteplot2)).
 
-In sum, the results suggest that group- and individual-level performance was relatively stable over time. As noted above -- and as can be seen in Figure \@ref(fig:perfplot) -- performance on a group level was clearly above chance.
+In sum, the results suggest that task-level results were robust and individual-level performance was relatively stable over time. As noted above -- and as can be seen in Figure \@ref(fig:perfplot) -- performance on a task level was clearly above chance.
 
 ```{r}
 plse2 <- bind_rows(lsc2$parameters$unstandardized%>%mutate(task = "causality"),
@@ -1739,13 +1739,13 @@ plsc2
 
 The lowest two categories (0 and 1 correctly solved trials per test half) were collapsed due to sparsity. Thresholds could not be set equal for test half 1 at time point 13, due to a different number of observed categories for the respective test half and time-point combination. Latent means can still be compared across time.
 
-The latent state means shown in Figure \@ref(fig:lseplot2) reflect the increase in performance over time that was also noted in Figure \@ref(fig:perfplot). From time point 6 onward, all latent state means were estimated to be significantly different from zero. Reliability was consistently high. The latent state correlations shown in Figure \@ref(fig:lsplot2) suggest that there was a split in the data in that there were high correlations between latent states among the time points smaller than 8 as well as among time points larger than 8. Looking at Figure \@ref(fig:perfplot), we can see that the increase in group level performance started around that time and was largely driven by individuals from the B-chimpanzee group. What this suggests is that some individuals quickly "rose through the ranks" and then retained a higher level of performance for the rest of the study. Some of the orangutans changed in the other direction, though to a lesser extend.
+The latent state means shown in Figure \@ref(fig:lseplot2) reflect the increase in performance over time that was also noted in Figure \@ref(fig:perfplot). From time point 6 onward, all latent state means were estimated to be significantly different from zero. Reliability was consistently high. The latent state correlations shown in Figure \@ref(fig:lsplot2) suggest that there was a split in the data in that there were high correlations between latent states among the time points smaller than 8 as well as among time points larger than 8. Looking at Figure \@ref(fig:perfplot), we can see that the increase in task-level performance started around that time and was largely driven by individuals from the B-chimpanzee group. What this suggests is that some individuals improved in performance and then retained a higher level for the rest of the study. Some of the orangutans changed in the other direction, though to a lesser extend.
 
 With a PPP of `r lsti2$summaries$PostPred_PValue`, the LST model for inference by exclusion did not provide a good fit to the data. We suspect the change in performance by some individuals that we discussed above to be responsible for that. That is, the assumption that a single, time invariant trait underlies performance at all time points seemed to be violated. We therefore fit an adjusted LST model for which we estimated one trait for time points 1 to 8 and a second trait for time points 9 to 14. As a consequence, we get two values for each LSTM coefficient (one for each part) as well as a correlation between the two traits.
 
 The adjusted model provided an acceptable fit to the data (see Table \@ref(tab:semt2)). The consistency coefficients were very similar for the two parts: .912 (Part 1) and .928 (Part 2). That is, for both parts, more than 90% of true inter-individual differences are attributable to stable (trait) differences between individuals, while less than 10% are due to variance in time point specific deviations from the stable trait. The latent trait from the two parts correlated to $r = .815$. The mean of the latent trait variable of part 2 was 0.625 (that is, 0.625 higher than in part 1) and significantly different from zero. Reliability was estimated to be high for both parts: .800 (Part 1) and .830 (Part 2) (see Figure \@ref(fig:lsteplot2)).
 
-In sum, the models suggest that there was an increase in group-level performance over time which resulted in reliable above-chance performance in later time points (see Figure \@ref(fig:perfplot). This change was largely driven by a few individuals who quickly improved and thereby changed their relative ranks. This resulted in a split in the data, with inter-individual differences in each part being quite stable.
+In sum, the models suggest that there was an increase in task-level performance over time which resulted in reliable above-chance performance in later time points (see Figure \@ref(fig:perfplot). This change was largely driven by a few individuals who quickly improved and thereby changed their relative ranks. This resulted in a split in the data, with inter-individual differences in each part being quite stable.
 
 ```{r}
 plste2 <- bind_rows(
@@ -1795,7 +1795,7 @@ plste2
 
 As in phase 1, the highest two categories (3 and 4 correctly solved trials) were collapsed into one category due to sparsity. Thresholds could not be set equal for test half 2 at time point 1, 4, and 8, test half 1 at time point 9, as well as test half 1 and 2 at time point 3, due to a different number of observed categories for the respective test half and time point combination. Latent means can still be compared across time with the exception of time point 3.
 
-None of the latent state means -- except for time point 14 -- were significantly different from zero, suggesting a stable average level of gaze following in Phase 2 (Figure \@ref(fig:lseplot2)). Reliability was generally high, but variable, ranging between `r min(plsr2%>%filter(task == "Gaze following")%>%pull(est))` and `r max(plsr2%>%filter(task == "Gaze following")%>%pull(est))`. The correlations between latent states for the different time points were generally high, pointing to stable individual differences (Figure \@ref(fig:lsplot2)).
+None of the latent state means -- except for time point 14 -- were significantly different from zero, suggesting a robust average level of gaze following in Phase 2 (Figure \@ref(fig:lseplot2)). Reliability was generally high, but variable, ranging between `r min(plsr2%>%filter(task == "Gaze following")%>%pull(est))` and `r max(plsr2%>%filter(task == "Gaze following")%>%pull(est))`. The correlations between latent states for the different time points were generally high, pointing to stable individual differences (Figure \@ref(fig:lsplot2)).
 
 In the LSTM, consistency was estimated to be 0.769, that is around 77% of true inter-individual differences are attributable to stable differences between individuals. Approximately 23% of inter-individual differences were due to variance in time point specific deviations from the stable trait. Reliability was high with an estimate of 0.77. In sum, gaze following in Phase 2 was stable over time with systematic and stable differences between individuals (Figure \@ref(fig:perfplot)).
 
@@ -1807,7 +1807,7 @@ Like for gaze following, none of the latent state means differed from zero, exce
 
 In the LST model, the consistency coefficient was estimated to be 0.939, that is around 94% of true inter-individual differences was attributable to stable differences between individuals. Only 6% of inter-individual differences were due to variance in time-point specific deviations from the stable trait. With an estimate of 0.436, reliability was once again lower compared to the other tasks.
 
-Taken together, quantity judgments were stable over time on the group level. Group-level performance was clearly different from chance (Figure \@ref(fig:perfplot)). Performance was also stable on an individual level, with the constrained that the reliability of measurement was lower compared to the other tasks.
+Taken together, quantity judgments were robust over time on the task level. Task-level performance was clearly different from chance (Figure \@ref(fig:perfplot)). Performance was also stable on an individual level, with the constrained that the reliability of measurement was lower compared to the other tasks.
 
 #### Delay of gratification
 
@@ -1817,17 +1817,17 @@ Three of the latent state means were significantly different from zero (time poi
 
 In the LSTM, consistency was estimated to be around 0.772, that is around 77% of true inter-individual differences are attributable to stable differences between individuals. Approximately 23% of inter-individual differences were due to variance in time point specific deviations from the stable trait. Reliability was very high with an estimate of 0.891.
 
-In sum, delay of gratification showed some variation in group level performance. Differences between individuals were relatively stable over time, though slightly less so compared to other tasks (Figure \@ref(fig:perfplot)).
+In sum, delay of gratification showed some variation in task-level performance. Differences between individuals were relatively stable over time, though slightly less so compared to other tasks (Figure \@ref(fig:perfplot)).
 
 ### Comparison between phases
 
 For the comparison, we will focus on the four tasks that were included in both phases: direct causal inference, inference by exclusion, gaze following and quantity.
 
-For the direct causal inference task, the raw performance in Figure \@ref(fig:perfplot) shows no marked difference between the two phases. Similarly, we see no systematic difference between the two phases when looking at the latent state means estimated by the LSM. This suggests stable group-level performance across the two phases. The LSTM estimates for consistency, occasion specificity and reliability were also very similar for the two phases (Figure \@ref(fig:lstdifplot)), which indicates that individual differences were structured similarly in the two phases.
+For the direct causal inference task, the raw performance in Figure \@ref(fig:perfplot) shows no marked difference between the two phases. Similarly, we see no systematic difference between the two phases when looking at the latent state means estimated by the LSM. This suggests robust task-level performance across the two phases. The LSTM estimates for consistency, occasion specificity and reliability were also very similar for the two phases (Figure \@ref(fig:lstdifplot)), which indicates that individual differences were structured similarly in the two phases.
 
-For inference by exclusion, we saw an increase in performance towards the end of Phase 2 (Figure \@ref(fig:perfplot)), which was also reflected in the latent state means. As noted above, a relatively quick change in performance by some individuals was responsible for this group-level increase. As a consequence, for the LSTM, we had to split Phase 2 into two parts. Nevertheless, the LSTM model estimates for Phase 1 and both parts of Phase 2 were very similar.
+For inference by exclusion, we saw an increase in performance towards the end of Phase 2 (Figure \@ref(fig:perfplot)), which was also reflected in the latent state means. As noted above, a relatively quick change in performance by some individuals was responsible for this task-level increase. As a consequence, for the LSTM, we had to split Phase 2 into two parts. Nevertheless, the LSTM model estimates for Phase 1 and both parts of Phase 2 were very similar.
 
-The gaze following task showed notable differences between the two phases. The initial decline in gaze following in the beginning of Phase 1 did not repeat itself in Phase 2. Performance in Phase 2 seemed to pick up where it left off at the end of Phase 1 (Figure \@ref(fig:perfplot)). The LSM mean estimates for the different time points follow a similar pattern. Despite this difference in group-level performance, the near-identical LSTM estimates for consistency and occasion specificity showed that individual differences were structured in a similar way across the two phases (Figure \@ref(fig:lstdifplot)).
+The gaze following task showed notable differences between the two phases. The initial decline in gaze following in the beginning of Phase 1 did not repeat itself in Phase 2. Performance in Phase 2 seemed to pick up where it left off at the end of Phase 1 (Figure \@ref(fig:perfplot)). The LSM mean estimates for the different time points follow a similar pattern. Despite this difference in task-level performance, the near-identical LSTM estimates for consistency and occasion specificity showed that individual differences were structured in a similar way across the two phases (Figure \@ref(fig:lstdifplot)).
 
 ```{r}
 lstdif <- bind_rows(
@@ -1885,7 +1885,7 @@ plstdif <- ggplot(lstdif, aes(x = param, y = est, col = phase, pch = part))+
 plstdif
 ```
 
-Raw performance in the quantity task did not show a markedly different pattern in the two phases (Figure \@ref(fig:perfplot)). This was once again also reflected in the latent state means estimated by the LSM and suggests stable group-level performance across the two phases. The three LSTM estimates for consistency, occasion specificity and reliability were also very similar for the two phases, which indicates that individual differences were measured and structured in a similar way in the two phases (Figure \@ref(fig:lstdifplot)).
+Raw performance in the quantity task did not show a markedly different pattern in the two phases (Figure \@ref(fig:perfplot)). This was once again also reflected in the latent state means estimated by the LSM and suggests stable task-level performance across the two phases. The three LSTM estimates for consistency, occasion specificity and reliability were also very similar for the two phases, which indicates that individual differences were measured and structured in a similar way in the two phases (Figure \@ref(fig:lstdifplot)).
 
 ## Relations between tasks {#relations-between-tasks}
 
@@ -2298,7 +2298,7 @@ The most notable difference between the two phases was that we saw more substant
 
 These results suggest low to moderate commonalities between the traits -- with gaze following being an exception (see Figure \@ref(fig:mtmplotc)). However, the sample size we studied here is still comparatively small for individual differences research. Larger samples are needed to corroborate these findings.
 
-The significant *negative* state residual correlation between direct causal inference and inference by exclusion found in Phase 1 was not present in Phase 2. This suggests a de-coupling between the two tasks in that apes were less likely to confuse them in Phase 2. This interpretation is also supported by the increase in group-level performance for inference by exclusion and an increase in the trait correlation between the two tasks.
+The significant *negative* state residual correlation between direct causal inference and inference by exclusion found in Phase 1 was not present in Phase 2. This suggests a de-coupling between the two tasks in that apes were less likely to confuse them in Phase 2. This interpretation is also supported by the increase in task-level performance for inference by exclusion and an increase in the trait correlation between the two tasks.
 
 ```{r}
 lstmcor <- bind_rows(
@@ -3189,7 +3189,7 @@ The most obvious result was that the random intercept term `(1 | subject)` was -
 
 Second, we saw that most of the relevant predictors came from the group of stable individual characteristics. This aligns well with the SEM results, in which we saw that most of the variance in performance could be traced back to stable trait differences between individuals. Following this reasoning, there was very little *systematic* variation between time points, and thus not much the time-varying predictors could account for. In line with this interpretation, we selected time point specific predictors only for gaze following, the task with the highest occasion specificity estimate according to the LSTM.
 
-The predictor selected most often was `group`. Differences between groups were, however, variable. The B-chimpanzee group tended to perform best across tasks, but the ranking of the other groups (including the other chimpanzee group) changed from task to task. This speaks against clear species differences in general cognitive performance. Again, the most likely explanation for group differences is an interaction between species specific dispositions and individual- / group-level developmental processes.
+The predictor selected most often was `group`. Differences between groups were, however, variable. The B-chimpanzee group tended to perform best across tasks, but the ranking of the other groups (including the other chimpanzee group) changed from task to task. This speaks against clear species differences in general cognitive performance. Again, the most likely explanation for group differences is an interaction between species specific dispositions and individual- / task-level developmental processes.
 
 The predictors that were selected more than once influenced performance in a systematic way. Whenever rearing history was selected to be relevant, mother-reared individuals outperformed others. The more time an individual had lived in Leipzig, the better performance was. An exception was `age`, which had a positive estimate for gaze following but a negative one for inference.
 
@@ -4145,7 +4145,7 @@ The stable individual characteristics that turned out to be systematically relat
 
 # Summary
 
-When reflecting on the results presented here, we can draw the following tentative conclusions: First, the majority of tasks produced stable group level results and showed acceptable re-test reliability. Exceptions were the switching task -- which produced no interpretable individual differences -- and the quantity discrimination task, which produced stable group-level results but less reliable individual differences. Thus, assessing the psychometric properties of tasks is an important prerequisite to contextualize and interpret the results of individual differences studies in great apes.  
+When reflecting on the results presented here, we can draw the following tentative conclusions: First, the majority of tasks produced robust task-level results and showed relatively high re-test correlations. Exceptions were the switching task -- which produced no interpretable individual differences -- and the quantity discrimination task, which produced robust task-level results but less reliable individual differences. Thus, assessing the psychometric properties of tasks is an important prerequisite to contextualize and interpret the results of individual differences studies in great apes.  
 
 We saw that individual differences in performance were best explained by stable differences in cognitive abilities between individuals. This does not mean that these abilities are time-invariant. For the inference by exclusion task, we saw that some individuals quickly improved, leading to a re-ordering of individual difference. It means that change is systematic and potentially long-lasting, reflecting a change in the underlying cognitive abilities. 
 
