@@ -690,7 +690,7 @@ We used latent state-trait models to separate traits (stable over time) from sta
 
 At each time point, we observed several identical trials per individual per task. Using the individual trials (8 to 12 dichotomous items, depending on the task) as indicators for a latent ability factor per time point (i.e., assuming a Rasch model per time point) in a longitudinal SEM resulted in estimation problems due to many empty cells in the bivariate distributions across time and / or tasks. Therefore we decided to model sum scores of the repeated trials, given that each trial per task was an identical repetition of the same task.
 
-To separate reliable from unreliable variance components and obtain reliability estimates of the resulting sum score variables, we build two sum score variables per task per time point. That is, for each task, two parallel test halves were build, corresponding to performance sum scores of half of the trials of the same time point per task. Trials were alternately assigned to the first and the second test half. For tasks with 12 trials per time point this procedure resulted in two test halves assuming 7 possible values (0 to 6 correctly solved trials), for tasks with 8 trials per time point, test halves could maximally assume 5 possible values (0 to 4 correctly solved trials).
+To separate reliable from unreliable variance components and obtain reliability estimates of the resulting sum score variables, we build two sum score variables per task per time point. That is, for each task, two parallel test halves were build, corresponding to performance sum scores of half of the trials of the same time point per task. Trials were alternately assigned to the first and the second test half. For tasks with 12 trials per time point this procedure resulted in two test halves assuming 7 possible values (0 to 6 correctly solved trials), for tasks with 8 trials per time point, test halves could maximally assume 5 possible values (0 to 4 correctly solved trials). We interpreted reliability estimates in the following way: acceptable = .7, good = .8 and high = .9. Please note that these estimates are for test-halves and the reliability of the full would be higher.
 
 The two test halves served as indicators for a common latent construct per time point, assuming parallel test halves (i.e., factor loadings set to 1 and assuming equal reliability). Due to only few different observed values and skewed distributions of the sum score variables, indicators were modeled as ordered categorical variables, using a probit link function. The models thereby correspond to normal-ogive graded response models [@samejima1969estimation; @samejima1996graded]. That is, the models assume a continuous latent ability underlying the discrete responses, with an increasing probability of more correctly solved trials with increasing ability.
 
@@ -1304,6 +1304,8 @@ filter(paramHeader == "Means")%>%
   mutate(time_point = factor(as.numeric(gsub("[^0-9.-]", "", param))),
          estimate = "Latent state mean",
          ref = 0)%>%
+  filter(!(task == "gaze_following" & time_point == 8),
+         !(task == "causality" & time_point == 7))%>%
   mutate(task = recode(task,
     gaze_following = "Gaze following",
     causality = "Causal inference",
@@ -1322,6 +1324,8 @@ plsr <- bind_rows(lsc$parameters$r2%>%mutate(task = "causality"),
   mutate(time_point = factor(str_remove(param, "P1")),
          estimate = "Reliability",
          ref = NA)%>%
+  filter(!(task == "gaze_following" & time_point == 8),
+         !(task == "causality" & time_point == 7))%>%
   mutate(task = recode(task,
     gaze_following = "Gaze following",
     causality = "Causal inference",
@@ -1647,6 +1651,7 @@ filter(paramHeader == "Means")%>%
   mutate(time_point = factor(as.numeric(gsub("[^0-9.-]", "", param))),
          estimate = "Latent state mean",
          ref = 0)%>%
+  filter(!(task == "gaze_following" & time_point == 3))%>%
   mutate(task = recode(task,
     gaze_following = "Gaze following",
     causality = "Causal inference",
@@ -1666,6 +1671,7 @@ plsr2 <- bind_rows(lsc2$parameters$r2%>%mutate(task = "causality"),
   mutate(time_point = factor(str_remove(param, "P1")),
          estimate = "Reliability",
          ref = NA)%>%
+  filter(!(task == "gaze_following" & time_point == 3))%>%
   mutate(task = recode(task,
     gaze_following = "Gaze following",
     causality = "Causal inference",

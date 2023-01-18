@@ -338,7 +338,8 @@ filter(paramHeader == "Means")%>%
          estimate = "Latent state mean",
          ref = 0,
          phase = "1")%>%
-  filter(!(task == "gaze_following" & time_point == 8)),
+  filter(!(task == "gaze_following" & time_point == 8),
+         !(task == "causality" & time_point == 7)),
 bind_rows(
   lsc2$parameters$unstandardized%>%mutate(task = "causality"),
   lsi2$parameters$unstandardized%>%mutate(task = "inference"),
@@ -350,7 +351,8 @@ filter(paramHeader == "Means")%>%
   mutate(time_point = as.numeric(gsub("[^0-9.-]", "", param)),
          estimate = "Latent state mean",
          ref = 0, 
-         phase = "2")
+         phase = "2")%>%
+  filter(!(task == "gaze_following" & time_point == 3))
 )%>%
   mutate(task = recode(task,
     gaze_following = "Gaze following",
@@ -363,6 +365,7 @@ filter(paramHeader == "Means")%>%
   task = factor(task, levels = c("Gaze following", "Causal inference","Inference by exclusion" ,"Quantity discrimination","Strategy switching", "Delay of gratification")))
 ```
 
+  
 ```{r}
 lsm <- ggplot(lsep, aes(x = time_point, y = est, col = phase, pch = sig))+
   geom_hline(aes(yintercept = ref), lty = 3, alpha = .75)+
@@ -394,7 +397,8 @@ slice(which(row_number() %% 2 == 1))%>%
          estimate = "Reliability",
          ref = NA,
          phase = "1")%>%
-  filter(!(task == "gaze_following" & time_point == 8)),
+  filter(!(task == "gaze_following" & time_point == 8),
+         !(task == "causality" & time_point == 7)),
 bind_rows(
   lsc2$parameters$r2%>%mutate(task = "causality"),
   lsi2$parameters$r2%>%mutate(task = "inference"),
@@ -406,7 +410,8 @@ bind_rows(
   mutate(time_point = as.numeric(str_remove(param, "P1")),
          estimate = "Reliability",
          ref = NA,
-         phase = "2")
+         phase = "2")%>%
+  filter(!(task == "gaze_following" & time_point == 3))
 )%>%
   mutate(task = recode(task,
     gaze_following = "Gaze following",
@@ -810,6 +815,18 @@ ggplot(lstar_beta,aes(x = task, y = est, col = phase))+
   #theme(legend.position = "bottom", legend.box = "vertical")+
   theme(#legend.text=element_text(size=7), legend.key.size = unit(0.4,"cm"),
     legend.position = c(0.15,0.1), legend.direction = "horizontal", legend.spacing.x = unit(0, 'cm'), legend.spacing.y = unit(0, 'cm'))
+
+plstmpar <- ggplot(lst,aes(x = param, y = est, col = phase, pch = part))+
+    geom_pointrange(aes(ymin = lower_2.5ci, ymax = upper_2.5ci), position = position_dodge(width = .7))+
+  theme_few()+
+  ylim(0,1)+
+  facet_wrap(~task)+
+  labs(x = "", y = "LST model estimate")+
+  scale_color_colorblind(name = "")+
+  scale_shape(name = "", guide = F)+
+  scale_x_discrete(guide = guide_axis(n.dodge = 2))+
+  theme(#legend.text=element_text(size=7), legend.key.size = unit(0.4,"cm"),
+    legend.position = c(0.8,0.2), legend.box = "vertical", legend.spacing.x = unit(0, 'cm'), legend.spacing.y = unit(0, 'cm'))
 ```
 
 
@@ -880,14 +897,14 @@ pmtm <- plstmcor%>%
 
 
 ```{r}
-ggarrange(plstmpar, pmtm, widths = c(1,1))
+ggarrange(plstmpar, pmtm, widths = c(1,1), labels = c("A", "B"))
 ```
 
 
 
 
 ```{r}
-ggsave("../visuals/structure.png", width = 16, height = 4, scale = 1, bg = "white")
+ggsave("../writing/paper/figures/structure.png", width = 16, height = 4.5, scale = 1, bg = "white")
 ```
 
 # PPI 
