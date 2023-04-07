@@ -278,7 +278,7 @@ ggplot()+
 ```
 
 ```{r}
-ggsave("../writing/paper/figures/performance.png", width = 10, height = 4, scale = 1.2, bg = "white")
+ggsave("../writing/paper/figures/performance.pdf", width = 180, height = 80, units = "mm", scale = 1.75, bg = "white")
 ```
 
 
@@ -445,7 +445,7 @@ lsrel <- ggplot(lsrp, aes(x = time_point, y = est, col = phase))+
 
 plot_grid(lsm, lsrel, nrow = 2, labels = c("A", "B"), align = "v", rel_heights = c(1,1))
 
-ggsave("../writing/paper/figures/latent_states_reliability.png", width = 10, height = 3, scale = 1.25, bg = "white")
+ggsave("../writing/paper/figures/latent_states_reliability.pdf", width = 180, height = 80, units = "mm", scale = 1.75, bg = "white")
 ```
 
 ```{r}
@@ -566,11 +566,10 @@ cor_data%>%
         legend.background = element_blank())+
   theme_ggside_void()
 
-
 ```
 
 ```{r}
-ggsave("../writing/paper/figures/reliability2.png", width = 10, height = 2.5, scale = 1.2, bg = "white")
+ggsave("../writing/paper/figures/reliability2.pdf", width = 180, height = 40, units = "mm", scale = 1.75, bg = "white")
 ```
 
 
@@ -897,14 +896,14 @@ pmtm <- plstmcor%>%
 
 
 ```{r}
-ggarrange(plstmpar, pmtm, widths = c(1,1), labels = c("A", "B"))
+ggarrange(plstmpar, pmtm, nrow = 1, labels = c("A", "B"))
 ```
 
 
 
 
 ```{r}
-ggsave("../writing/paper/figures/structure.png", width = 16, height = 4.5, scale = 1, bg = "white")
+ggsave("../writing/paper/figures/structure.pdf", width = 180, height = 50, unit = "mm", scale = 2, bg = "white")
 ```
 
 # PPI 
@@ -1407,7 +1406,7 @@ labels = c("A","B"),
 vjust = 3,
 align = "h")
 
-ggsave(plot=xp,"../writing/paper/figures/ppi3_i6.png", width = 10, height = 6, scale = 1.25, bg = "white")
+ggsave(plot=xp,"../writing/paper/figures/ppi3_i6.pdf", width = 10, height = 6, scale = 1.25, bg = "white")
 ```
 
 ```{r}
@@ -1424,7 +1423,7 @@ widths = c(1,1.75),
 nrow = 1, 
 labels = c("A",""))
 
-ggsave(plot=xp2,"../writing/paper/figures/ppi3_i7.png", width = 12, height = 6, scale = 1.25, bg = "white")
+ggsave(plot=xp2,"../writing/paper/figures/ppi3_i7.pdf", width = 180, height = 100, unit = "mm", scale = 2, bg = "white")
 ```
 
 ```{r}

@@ -1,7 +1,4 @@
 ---
-title: "Probing the structure, stability, and predictability of great ape cognition"
-author: "Manuel Bohn, Johanna Eckert, Daniel Hanus, Benedikt Lugauer, Jana Holtmann & Daniel Haun"
-subtitle: Supplementary material
 output:
   bookdown::pdf_document2:
     toc: yes
@@ -19,7 +16,7 @@ output:
     toc: yes
 bibliography: ../library.bib
 csl: apa6.csl
-#header-includes: \usepackage{caption} \renewcommand{\thetable}{S\arabic{table}} \renewcommand{\thefigure}{S\arabic{figure}}
+header-includes: \usepackage{caption} \renewcommand{\figurename}{Supplementary Figure} \renewcommand{\tablename}{Supplementary Table}
 ---
 
 ```{r, include = F}
@@ -92,13 +89,13 @@ data_trial <- read.csv("../../data/laac_data_trial.csv")%>%mutate(phase = ifelse
 
 # Overview
 
-This document gives a detailed overview of the methods used in the study "Probing the structure, stability, and predictability of great ape cognition". First, we give an overview of our great ape [participants](#participants). Next we describe the general [setup](#setup) and the experimental [tasks](#tasks) that were used. In the section [data collection](#data-collection) we lay out the time line of data collection. Next, we give an overview of the [predictor variables](#predictors) we recorded in addition to the experimental data.
+This document supplements the paper "Great ape cognition is structured by stable cognitive abilities and predicted by developmental conditions". First, we give an overview of our great ape [participants](#participants). Next we describe the general [setup](#setup) and the experimental [tasks](#tasks) that were used. In the section [data collection](#data-collection) we lay out the time line of data collection. Next, we give an overview of the [predictor variables](#predictors) we recorded in addition to the experimental data.
 
 We then move on to describe the two parts of our [analytical framework](#analytical-framework): [Structural Equation Modeling](#structural-equation-modeling) to investigate robustness, stability and reliability of cognitive performance and [Projection Predictive Inference](#projection-predictive-inference) to test the importance of the predictor variables.
 
 We present the [results](#results) separate for the two phases of data collection. For each phase, we first report results on [robustness, stability and reliability](#robustness-stability-and-reliability) of performance within each task and then we investigate [relations between](#relations-between-tasks) performance in the different tasks. Finally, we report how the different [predictors](#predictability) related to performance in the different tasks.
 
-The [appendix](#appendix) contains results from simulation studies we conducted to investigate the performance of the employed Structural Equation Models under the sample sizes given in the present dataset.
+The [Supplementary Note](#appendix) contains results from simulation studies we conducted to investigate the performance of the employed Structural Equation Models under the sample sizes given in the present dataset.
 
 # Methods
 
@@ -209,13 +206,13 @@ We assume that apes reason that the absence of a sound suggests that the shaken 
 
 ### Quantity discrimination
 
-For this task, we followed the general procedure of @hanus2007discrete. Two small plates were presented left and right on the table (see Figure \@ref(fig:setup)B). The experimenter covered the plates with the occluder and placed five small food pieces on one plate and seven on the other. Then they pushed the sliding table forwards, and the participant made a choice. We coded as correct when the subject chose the plate with the larger quantity. Participants always received the food from the plate they chose. There were 12 trials, six with the larger quantity on the right and six on the left (order counterbalanced).
+For this task, we followed the general procedure of @hanus2007discrete. Two small plates were presented left and right on the table (see Supplementary Figure \@ref(fig:setup)B). The experimenter covered the plates with the occluder and placed five small food pieces on one plate and seven on the other. Then they pushed the sliding table forwards, and the participant made a choice. We coded as correct when the subject chose the plate with the larger quantity. Participants always received the food from the plate they chose. There were 12 trials, six with the larger quantity on the right and six on the left (order counterbalanced).
 
 We assume that apes identify the larger of the two food amounts based on discrete quantity estimation.
 
 ### Switching
 
-This task was modeled after @haun2006evolutionary. Three differently looking cups (silver metal cup with handle, green plastic ice cone, red cup without handle - Figure \@ref(fig:setup)D) were placed next to each other on the table. There were two conditions. In the place condition, the experimenter hid a piece of food under one of the cups in full view of the participant. Next, the cups were covered by the occluder and the experimenter switched the position of two cups, while the reward remained in the same location. Next, the experimenter removed the occluder and pushed the table forward. We coded as correct if the participant chose the location where the food was hidden. Participants received four trials in this condition.
+This task was modeled after @haun2006evolutionary. Three differently looking cups (silver metal cup with handle, green plastic ice cone, red cup without handle - Supplementary Figure \@ref(fig:setup)D) were placed next to each other on the table. There were two conditions. In the place condition, the experimenter hid a piece of food under one of the cups in full view of the participant. Next, the cups were covered by the occluder and the experimenter switched the position of two cups, while the reward remained in the same location. Next, the experimenter removed the occluder and pushed the table forward. We coded as correct if the participant chose the location where the food was hidden. Participants received four trials in this condition.
 
 The place condition was run first. The subsequent feature condition followed the same procedure, but now the experimenter also moved the reward when switching the cups. The switch between conditions happened without informing the participant in any way. A correct choice in this condition meant choosing the location to which the cup plus the food were moved. Here, participants received eight trials.
 
@@ -237,13 +234,13 @@ A second coder unfamiliar to the purpose of the study coded 15% of all time poin
 
 ## Data collection {#data-collection}
 
-One time point meant running all tasks with all participants. Within each time point, the tasks were organized in two sessions (see Figure \@ref(fig:setup)F). Session 1 started with two gaze following trials. Next was a pseudo randomized mix of direct causal inference and inference by exclusion trials with 12 trials per task, but no more than two trials of the same task in a row. At the end of Session 1, there were again two gaze following trials. Session 2 also started with two gaze following trials, followed by quantity discrimination and switching (Phase 1) or Delay of Gratification (Phase 2). Finally, there were again two gaze following trials. By spreading out or mixing tasks we hoped to keep subjects more attentive and engaged.
+One time point meant running all tasks with all participants. Within each time point, the tasks were organized in two sessions (see Supplementary Figure \@ref(fig:setup)F). Session 1 started with two gaze following trials. Next was a pseudo randomized mix of direct causal inference and inference by exclusion trials with 12 trials per task, but no more than two trials of the same task in a row. At the end of Session 1, there were again two gaze following trials. Session 2 also started with two gaze following trials, followed by quantity discrimination and switching (Phase 1) or Delay of Gratification (Phase 2). Finally, there were again two gaze following trials. By spreading out or mixing tasks we hoped to keep subjects more attentive and engaged.
 
 The order of tasks was the same for all subjects. So was the positioning of food items within each task. The counterbalancing can be found in the coding sheets in the online repository in `documentation/`. This exact procedure was repeated at each time point so that the results would be comparable across participants and time points. The two sessions were usually spread out across two adjacent days. For the larger chimpanzee group, they were sometimes spread out across four days.
 
-The interval between two time points was planned to be two weeks. However, it was not always possible to follow this schedule so that some intervals were longer or shorter. Figure \@ref(fig:sample) visualizes the intervals between time points.
+The interval between two time points was planned to be two weeks. However, it was not always possible to follow this schedule so that some intervals were longer or shorter. Supplementary Figure \@ref(fig:sample) visualizes the intervals between time points.
 
-We collected data in two phases. Phase 1 started on August 1st, 2020, lasted until March 5th, 2021 and included 14 time points. Phase 2 started on May 26th, 2021 and lasted until December 4th, 2021 and also had 14 time points (see Figure \@ref(fig:sample)).
+We collected data in two phases. Phase 1 started on August 1st, 2020, lasted until March 5th, 2021 and included 14 time points. Phase 2 started on May 26th, 2021 and lasted until December 4th, 2021 and also had 14 time points (see Supplementary Figure \@ref(fig:sample)).
 
 ## Predictors {#predictors}
 
@@ -255,7 +252,7 @@ Most predictors were collected via a diary that the animal caretakers filled out
 
 ### Stable individual characteristics
 
-These predictors are stable individual differences. As a source, we used the ape handbook at Zoo Leipzig. Figure \@ref(fig:demo) gives an overview of the distribution of the different characteristics in the sample.
+These predictors are stable individual differences. As a source, we used the ape handbook at Zoo Leipzig. Supplementary Figure \@ref(fig:demo) gives an overview of the distribution of the different characteristics in the sample.
 
 #### Group
 
@@ -381,7 +378,7 @@ These predictors varied by participant and time point.
 
 #### Rank
 
-We asked caretakers to order individuals within a given group according to their rank. Ties were allowed. This was done at each time point. An individual's rank was mostly stable (see Figure \@ref(fig:socrel)A) across time points, however, there was some variation. Variable name in model: `rel_rank`.
+We asked caretakers to order individuals within a given group according to their rank. Ties were allowed. This was done at each time point. An individual's rank was mostly stable (see Supplementary Figure \@ref(fig:socrel)A) across time points, however, there was some variation. Variable name in model: `rel_rank`.
 
 #### Sickness
 
@@ -583,7 +580,7 @@ To derive individual specific estimates of sociality for each time point, we fit
 
 In `brms` syntax, our model had the following structure: `count | trials(n) ~ group + (time_point | mm(focal, associates)) + (time_point | dyad)`. The dependent variable `count | trials(n)` is the number of times a dyad has been observed (`count`) at a time point relative to the number of scans taken for that time point (`trials(n)`). The fixed effect `group` estimates group difference in sociality. The random effect `(time_point | mm(focal, associates))` estimates the sociality for each individual. In that, the multi-membership grouping term `mm(focal, associates)` captures the fact that the assignment of the two roles (focal and associate) is arbitrary in the context of a symmetric behavior. The random slope `time_point` (treated as a factor) allowed us to estimate sociality for each time point. Finally, the random effect `(time_point | dyad)` accounts for dyad composition; in some cases a particular dyad composition (e.g. mother and infant) might be sufficient to explain high levels of sociality in an individual.
 
-For each individual and time point, we extracted the sociality estimates and used them to predict cognitive performance in the different tasks for that time point. Figure \@ref(fig:socrel)B visualizes the sociality measures for one group across the different time points. Variable name in model: `sociality`.
+For each individual and time point, we extracted the sociality estimates and used them to predict cognitive performance in the different tasks for that time point. Supplementary Figure \@ref(fig:socrel)B visualizes the sociality measures for one group across the different time points. Variable name in model: `sociality`.
 
 ```{r, out.width="100%", fig.height = 4, fig.cap = "Stable individual characteristics. A) participant sex, B) age distribution by species, C) rearing history, D) time lived in leipzig by species."}
 prank <- data_trial%>%
@@ -616,7 +613,7 @@ ggarrange(prank,psrm, labels = c("A","B"), widths = c(1,1.5))
 
 ### Group life
 
-These predictors varied by time point and group, but were the same for all individuals in that group. They were recorded in the animal caretaker diary. Figure \@ref(fig:glife) visualizes the different variables across time points.
+These predictors varied by time point and group, but were the same for all individuals in that group. They were recorded in the animal caretaker diary. Supplementary Figure \@ref(fig:glife) visualizes the different variables across time points.
 
 #### Time outdoors
 
@@ -706,7 +703,7 @@ In addition, we also fit an LST model with autoregressive effects (LST-AR). In a
 
 The following sections give a mathematical description of the different models and the parameters in them.
 
-#### Latent State Models
+#### Latent state models
 
 In the following we chose a factor analytical representation of the graded response model, that is, we present the models as factor models for ordinal data. Thereby we assume that the observed categorical variables $Y_{it}$ for test half $i$ at time point $t$ result from a categorization of unobserved continuous latent variables $Y^*_{it}$ which underlie the observed categorical variables. For observed variables that take on $k_{it}$ different ordered values out of the set of possible categories $S_{it} = 0, ..., k_{it}-1$ the relation between $Y_{it}$ and $Y^*_{it}$ is described by:
 
@@ -733,7 +730,7 @@ Y^*_{it}= S_t + \epsilon_{it}
 ```
 with $\epsilon_{it} \sim N(0,1)$ $\forall~ i,t$ (probit parameterization; normal-ogive graded response model). See @takane1987relationship for the equivalence of the normal-ogive graded response model and the factor model with ordinal indicators.
 
-At each time point $t$, the two latent variables $Y^*_{1t}$ and $Y^*_{2t}$ are assumed to capture a common latent state variable $S_t$. Latent state variables are allowed to freely correlate across time, with latent (measurement-error free) correlations serving as indirect indicators of stability across time. The model is depicted for six measurement time points in Figure \@ref(fig:lsgraph).
+At each time point $t$, the two latent variables $Y^*_{1t}$ and $Y^*_{2t}$ are assumed to capture a common latent state variable $S_t$. Latent state variables are allowed to freely correlate across time, with latent (measurement-error free) correlations serving as indirect indicators of stability across time. The model is depicted for six measurement time points in Supplementary Figure \@ref(fig:lsgraph).
 
 To test for possible mean changes of ability across time, the means of the latent state variables are freely estimated (assuming invariance of the threshold parameters $\kappa_{sit}$ across time).
 
@@ -817,7 +814,7 @@ node[align=center,below,yshift= 0mm, pos=0.5]
 
 ```
 
-#### Latent State-Trait (LST) models
+#### Latent state-trait (LST) models
 
 In LST models, the latent state variables $S_{it}$ are further decomposed into a latent trait variable $T_{it}$ and a latent state residual variable $\zeta_{it}$. The latent trait variables $T_{it}$ are time-specific dispositions, that is, trait scores capture the expected value of the latent state (i.e., true score) variable for an individual at time $t$ across all possible situations the individual might experience at time $t$ [@eid2017definition; @steyer2015theory]. The state residual variables $\zeta_{it}$ capture the deviation of a momentary state from the time-specific disposition $T_{it}$. In the following models, we assume that latent traits are stable across time. Additionally assuming common latent trait and state residual variables across the two test halves, results in the following measurement equation for parcel $i$ at time point $t$:
 
@@ -826,7 +823,7 @@ In LST models, the latent state variables $S_{it}$ are further decomposed into a
 Y^*_{it}= T + \zeta_t + \epsilon_{it}
 \end{equation}
 ```
-Here, $T$ is a stable (time-invariant) latent trait variable, capturing stable inter-individual differences between individuals. The state residual variable $\zeta_t$ captures time-specific deviations of the respective true score from the trait variable at time $t$, and thereby captures deviations from the trait due to situation or person-situation interaction effects. $\epsilon_{it}$ denotes a measurement error variable, with $\epsilon_{it} \sim N(0,1)$ $\forall~ i,t$. The model is depicted for 6 measurement time points in Figure \@ref(fig:lstgraph).
+Here, $T$ is a stable (time-invariant) latent trait variable, capturing stable inter-individual differences between individuals. The state residual variable $\zeta_t$ captures time-specific deviations of the respective true score from the trait variable at time $t$, and thereby captures deviations from the trait due to situation or person-situation interaction effects. $\epsilon_{it}$ denotes a measurement error variable, with $\epsilon_{it} \sim N(0,1)$ $\forall~ i,t$. The model is depicted for 6 measurement time points in Supplementary Figure \@ref(fig:lstgraph).
 
 ```{r lstgraph, engine='tikz', fig.cap="Latent State-Trait model for two indicators and six measurement time points. All factor loadings of the latent trait factor $T$ are fixed to 1 (not displayed in the figure)", out.width="30%", fig.align='center'}
 
@@ -1030,7 +1027,7 @@ perfplot <- ggplot()+
   theme(legend.position = "bottom", legend.direction = "horizontal")
 ```
 
-```{r perfplot, fig.width = 10, fig.height = 6,fig.cap = "Results from the five cognitive tasks across time points. Black crosses show mean performance at each time point across species (with 95\\% CI). Colored dots show mean performance by species. Dashed line shows the chance level whenever applicable. The vertical back line marks the transition between phase 1 and 2.", out.width="100%"}
+```{r perfplot, fig.width = 10, fig.height = 6,fig.cap = "Results from the five cognitive tasks across time points. Black crosses show mean performance at each time point across species (with 95\\% CI). The sample size varied between time points and can be found in Supplementary Figure 1. Colored dots show mean performance by species. Dashed line shows the chance level whenever applicable. The vertical back line marks the transition between phase 1 and 2.", out.width="100%"}
 # ggarrange(perfcaus, perfinf, perfquant, perfgaze, perfswitch, common.legend = T, ncol= 1,  labels = c("A","B","C","D","E"), legend = "right")
 perfplot
 ```
@@ -1173,13 +1170,13 @@ We ran the same models for the data from Phase 1 and Phase 2. We first report th
 
 ### Phase 1
 
-To get an overview of the results, we first visualized the data. Figure \@ref(fig:perfplot) shows performance at the different time points. From a task-level perspective, we can say that performance was consistently above chance (0.5) in the direct causal inference and quantity discrimination tasks. For gaze following, there is no meaningful chance level. We can note, however, that task-level performance never went down to zero, which would be expected if apes did not pay attention to the experimenter's gaze. The performance score in the switching task was largely negative, suggesting no successful switching between the two phases.
+To get an overview of the results, we first visualized the data. Supplementary Figure \@ref(fig:perfplot) shows performance at the different time points. From a task-level perspective, we can say that performance was consistently above chance (0.5) in the direct causal inference and quantity discrimination tasks. For gaze following, there is no meaningful chance level. We can note, however, that task-level performance never went down to zero, which would be expected if apes did not pay attention to the experimenter's gaze. The performance score in the switching task was largely negative, suggesting no successful switching between the two phases.
 
-For a first glimpse on the stability of individual differences, we correlated performance at the different time points for each task (all possible combinations of time points). Figure \@ref(fig:relplot)A visualizes the distribution of raw correlations between the different time points and \@ref(fig:relplot)B plots the re-test correlation coefficients against the temporal distance between time points. Correlations between time points were large and exclusively larger than zero for direct causal inference, inference by exclusion and gaze following. For quantity discrimination, this distribution was wider and overlapped with zero, but was still mostly positive. For switching, the distribution was even wider and substantially overlapped with zero. For all tasks, correlations between time points tended to be lower for time points that were further apart [@uher2011individual]. However, these re-test correlations confound measurement precision (reliability) and stability of individual differences. That is, low correlations (like e.g. for quantity discrimination) could reflect high measurement error or a lack of stability of individual differences. We tease these components apart in the SEM models reported below. 
+For a first glimpse on the stability of individual differences, we correlated performance at the different time points for each task (all possible combinations of time points). Supplementary Figure \@ref(fig:relplot)A visualizes the distribution of raw correlations between the different time points and \@ref(fig:relplot)B plots the re-test correlation coefficients against the temporal distance between time points. Correlations between time points were large and exclusively larger than zero for direct causal inference, inference by exclusion and gaze following. For quantity discrimination, this distribution was wider and overlapped with zero, but was still mostly positive. For switching, the distribution was even wider and substantially overlapped with zero. For all tasks, correlations between time points tended to be lower for time points that were further apart [@uher2011individual]. However, these re-test correlations confound measurement precision (reliability) and stability of individual differences. That is, low correlations (like e.g. for quantity discrimination) could reflect high measurement error or a lack of stability of individual differences. We tease these components apart in the SEM models reported below. 
 
-We excluded the switching task from further analysis for two reasons. First, task-level scores were constantly negative and performance in the feature trials always overlapped with chance. This suggests that, as a group, apes did not successfully switch strategies (see Figure \@ref(fig:perfplot)). Second, the correlations between the different measurement time points were low, suggesting no systematic individual differences (see Figure \@ref(fig:relplot)).
+We excluded the switching task from further analysis for two reasons. First, task-level scores were constantly negative and performance in the feature trials always overlapped with chance. This suggests that, as a group, apes did not successfully switch strategies (see Supplementary Figure \@ref(fig:perfplot)). Second, the correlations between the different measurement time points were low, suggesting no systematic individual differences (see Supplementary Figure \@ref(fig:relplot)).
 
-Next, we report the SEM results for the different tasks and the relations between them. All models showed acceptable fit indices (see Table \@ref(tab:semt)). The threshold parameters for each model are shown in Table \@ref(tab:thresht).
+Next, we report the SEM results for the different tasks and the relations between them. All models showed acceptable fit indices (see Supplementary Table \@ref(tab:semt)). The threshold parameters for each model are shown in Supplementary Table \@ref(tab:thresht).
 
 ```{r}
 mot <- bind_rows(
@@ -1222,7 +1219,7 @@ mot <- bind_rows(
 ```{r semt}
 kable(mot, align = c("l", "l", "c", "c"), caption = "Model fit indices Phase 1", booktabs=TRUE)%>%
 kable_classic(full_width = F)%>%
-      footnote(c("LSM = Latent state model", "LSTM = Latent state-trait model", "PPP = Posterior predictive p-value", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values"))
+      footnote(c("LSM = Latent state model", "LSTM = Latent state-trait model", "PPP = Posterior predictive p-value. Cut-off values (two-tailed): 0.025 and 0.975", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values"))
 ```
 
 ```{r}
@@ -1293,7 +1290,7 @@ kable_classic(full_width = F)%>%
 
 To fit the models, the response categories of 0 or 1 solved trial had to be collapsed into one category due to sparsity. Furthermore, the thresholds could not be set equal for test-half 2 at time point 3 and 11 as well as test-half 1 at time points 4 and 12 due to a different number of observed categories for the respective test halves and time point combination. Latent means can still be compared across time for the state factors based on the respective other test half. At time point 7, thresholds of both test-halves could not be set invariant across time (due to a divergent number of observed categories). Latent mean differences for the latent state variable at time point 7 should therefore be interpreted with caution.
 
-Figure \@ref(fig:lseplot) visualizes the latent state means and reliability estimates from the LS model. Reliability was consistently acceptable to good. Only one of the latent means was significantly different from zero, suggesting robust task-level performance and no systematic mean change over time. Figure \@ref(fig:lsplot) gives the correlations between the latent states for the different time points. Correlations were generally very high, indicating stable individual differences.
+Supplementary Figure \@ref(fig:lseplot) visualizes the latent state means and reliability estimates from the LS model. Reliability was consistently acceptable to good. Only one of the latent means was significantly different from zero, suggesting robust task-level performance and no systematic mean change over time. Supplementary Figure \@ref(fig:lsplot) gives the correlations between the latent states for the different time points. Correlations were generally very high, indicating stable individual differences.
 
 ```{r}
 plse <- bind_rows(lsc$parameters$unstandardized%>%mutate(task = "causality"),
@@ -1351,13 +1348,13 @@ plser <-
   theme_minimal()
 ```
 
-```{r lseplot, fig.height = 4, fig.cap = "Phase 1: latent means and reliability estimates with 95\\% CI for each time point based on LSM. Means at time point 1 are set to 0.", out.width="100%"}
+```{r lseplot, fig.height = 4, fig.cap = "Phase 1: latent means and reliability estimates with 95\\% CI for each time point based on LSM. The sample size varied between time points and can be found in Supplementary Figure 1. Means at time point 1 are set to 0.", out.width="100%"}
 plser
 ```
 
-In the LST model, the consistency coefficient was estimated to be around .903. This means that around 90% of true inter-individual differences are attributable to stable (trait) differences between individuals, while approximately 10% are due to variance in time point specific deviations from the stable trait. Reliability (across time points) was estimated to be acceptable to good with a mean of .725 (see Figure \@ref(fig:lsteplot)).
+In the LST model, the consistency coefficient was estimated to be around .903. This means that around 90% of true inter-individual differences are attributable to stable (trait) differences between individuals, while approximately 10% are due to variance in time point specific deviations from the stable trait. Reliability (across time points) was estimated to be acceptable to good with a mean of .725 (see Supplementary Figure \@ref(fig:lsteplot)).
 
-In sum, all models converge on the conclusion that group- and individual-level performance was highly stable over time. As noted above -- and as can be seen in Figure \@ref(fig:perfplot) -- performance on a task level was clearly above chance.
+In sum, all models converge on the conclusion that group- and individual-level performance was highly stable over time. As noted above -- and as can be seen in Supplementary Figure \@ref(fig:perfplot) -- performance on a task level was clearly above chance.
 
 ```{r}
 cor <- bind_rows(
@@ -1402,11 +1399,11 @@ plsc
 
 Thresholds could not be set equal for test half 2 at time point 6 as well as test half 1 at time points 7 and 14, due to a different number of observed categories for the respective test halves and time-point combination. Latent means can still be compared across time for the respective state factors based on the other test half.
 
-Reliability was good in the LS model and none of the latent means differed from zero (Figure  \@ref(fig:lseplot)). Correlations between latent states were generally high across time points (Figure \@ref(fig:lsplot)).
+Reliability was good in the LS model and none of the latent means differed from zero (Supplementary Figure  \@ref(fig:lseplot)). Correlations between latent states were generally high across time points (Supplementary Figure \@ref(fig:lsplot)).
 
-In the LST model, consistency was estimated to be around .859 -- around 86% of true inter-individual differences were attributable to stable (trait) differences between individuals. Approximately 14% were due to variance in time-point specific deviations from the stable trait. Reliability was good with an estimate of .815 (see Figure \@ref(fig:lsteplot)).
+In the LST model, consistency was estimated to be around .859 -- around 86% of true inter-individual differences were attributable to stable (trait) differences between individuals. Approximately 14% were due to variance in time-point specific deviations from the stable trait. Reliability was good with an estimate of .815 (see Supplementary Figure \@ref(fig:lsteplot)).
 
-Taken together, we saw a similar pattern as for the direct causal inference task: Performance was very robust on a task level and so were the differences between individuals. Interestingly, from Figure \@ref(fig:perfplot) we take that task-level performance was at chance. The stable individual differences we found here suggest that variation around this mean was systematic and therefore that some individuals consistently performed above chance. Thus, despite the fact that this task was very difficult for apes, it was suitable to measure individual differences.
+Taken together, we saw a similar pattern as for the direct causal inference task: Performance was very robust on a task level and so were the differences between individuals. Interestingly, from Supplementary Figure \@ref(fig:perfplot) we take that task-level performance was at chance. The stable individual differences we found here suggest that variation around this mean was systematic and therefore that some individuals consistently performed above chance. Thus, despite the fact that this task was very difficult for apes, it was suitable to measure individual differences.
 
 ```{r}
 plste <- bind_rows(
@@ -1438,7 +1435,7 @@ plste <- bind_rows(
   scale_color_colorblind(name = "Task")
 ```
 
-```{r lsteplot, fig.height = 3.5, fig.cap = "Phase 1: model parameters (with 95\\% CI) from LSTM for the four tasks.", out.width="100%"}
+```{r lsteplot, fig.height = 3.5, fig.cap = "Phase 1: Posterior mean for model parameters (with 95\\% CrI) from LSTM for the four tasks based on data from N = 43 participants.", out.width="100%"}
 plste
 ```
 
@@ -1446,21 +1443,21 @@ plste
 
 For gaze following, we had only 8 observed trials per measurement occasion. The highest two categories (3 and 4 correctly solved trials) were collapsed into one category due to sparsity. Thresholds could not be set equal for test half 2 at time point 9 as well as test half 1 and test half 2 at time point 8, due to a different number of observed categories for the respective test half and time point combination. Latent means can still be compared across time with the exception of time point 8.
 
-Latent state means estimated in the LS model varied between -0.990 and -2.153. All of the latent state means were significantly lower than zero, suggesting a decrease in gaze following after the second time point (Figure \@ref(fig:lseplot)). Reliability was acceptable to good for all time points. The correlations between latent states for the different time points were generally high, pointing to stable individual differences (Figure \@ref(fig:lsplot)).
+Latent state means estimated in the LS model varied between -0.990 and -2.153. All of the latent state means were significantly lower than zero, suggesting a decrease in gaze following after the second time point (Supplementary Figure \@ref(fig:lseplot)). Reliability was acceptable to good for all time points. The correlations between latent states for the different time points were generally high, pointing to stable individual differences (Supplementary Figure \@ref(fig:lsplot)).
 
 In the LST model, consistency was estimated to be around .758, that is around 76% of true inter-individual differences are attributable to stable differences between individuals. Approximately 24% of inter-individual differences were due to variance in time point specific deviations from the stable trait. Reliability was good with an estimate of .792.
 
-In sum, we see a change in gaze following over time (Figure \@ref(fig:perfplot)). This task-level effect, however, did not affect differences between individuals, which were systematic across time points.
+In sum, we see a change in gaze following over time (Supplementary Figure \@ref(fig:perfplot)). This task-level effect, however, did not affect differences between individuals, which were systematic across time points.
 
 #### Quantity discrimination
 
 The lowest three (out of seven possible) categories (0, 1 and 2 correctly solved trials per test half) were collapsed due to sparsity. Thresholds could not be set equal for test half 1 at time point 5, due to a different number of observed categories for the respective test half and time-point combination. Latent means can still be compared across time.
 
-Latent state means estimated in the LS model varied very little and all lay between -0.058 and 0.369. None of these state means differed from zero (Figure \@ref(fig:lseplot)). Reliability estimates were substantially lower compared to the other tasks.
+Latent state means estimated in the LS model varied very little and all lay between -0.058 and 0.369. None of these state means differed from zero (Supplementary Figure \@ref(fig:lseplot)). Reliability estimates were substantially lower compared to the other tasks.
 
 The consistency coefficient was estimated to be around .964, that is around 96% of true inter-individual differences was attributable to stable differences between individuals and only approximately 3.6% were due to variance in time-point specific deviations from the stable trait. Again, reliability was rather low with an estimate of .446.
 
-Taken together, quantity judgments were very robust over time on the task level (see also Figure \@ref(fig:perfplot)). The low reliability estimates suggest, however, that the task is less suited to capture individual differences.
+Taken together, quantity judgments were very robust over time on the task level (see also Supplementary Figure \@ref(fig:perfplot)). The low reliability estimates suggest, however, that the task is less suited to capture individual differences.
 
 ### Phase 2
 
@@ -1482,9 +1479,9 @@ lsti2p2 <- readModels("../supplement/saves/test_apes_data_LST_inf_equSvar_2phase
 
 ```
 
-For a visual overview of task-level performance in the different tasks see Figure \@ref(fig:perfplot). The pattern observed in Phase 1 was similar in Phase 2 for causal reasoning and quantity discrimination. The rate of gaze following remained on the low level reached at the end of Phase 1. For inference by exclusion, there was an increase in performance over time, which already began to show itself at the end of Phase 1. Taken together, there was a lot of continuity between Phase 1 and 2. The newly added delay of gratification task produced fairly variable results -- with no ceiling or floor effect.
+For a visual overview of task-level performance in the different tasks see Supplementary Figure \@ref(fig:perfplot). The pattern observed in Phase 1 was similar in Phase 2 for causal reasoning and quantity discrimination. The rate of gaze following remained on the low level reached at the end of Phase 1. For inference by exclusion, there was an increase in performance over time, which already began to show itself at the end of Phase 1. Taken together, there was a lot of continuity between Phase 1 and 2. The newly added delay of gratification task produced fairly variable results -- with no ceiling or floor effect.
 
-Correlations between time points were similar in Phase 1 and 2 for all tasks (Figure \@ref(fig:relplot)). Performance in the delay of gratification task proofed to be stable between individuals. Next, we present the results from the SEMs separate for each task. All models showed acceptable fit indices, except for the LST model for inference by exclusion (see Table \@ref(tab:semt2)). We therefore adjusted the LST model for this task in a way we describe below. The threshold parameters for each model are shown in Table \@ref(tab:thresht2).
+Correlations between time points were similar in Phase 1 and 2 for all tasks (Supplementary Figure \@ref(fig:relplot)). Performance in the delay of gratification task proofed to be stable between individuals. Next, we present the results from the SEMs separate for each task. All models showed acceptable fit indices, except for the LST model for inference by exclusion (seeSupplementary Table \@ref(tab:semt2)). We therefore adjusted the LST model for this task in a way we describe below. The threshold parameters for each model are shown in Supplementary Table \@ref(tab:thresht2).
 
 ```{r}
 mot2 <- bind_rows(
@@ -1552,7 +1549,7 @@ tibble(
 ```{r semt2}
 kable(mot2, align = c("l", "l", "c", "c"), caption = "Model fit indices Phase 2", booktabs=TRUE)%>%
 kable_classic(full_width = F)%>%
-      footnote(c("LSM = Latent state model", "LSTM = Latent state-trait model", "PPP = Posterior predictive p-value", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values"))
+      footnote(c("LSM = Latent state model", "LSTM = Latent state-trait model", "PPP = Posterior predictive p-value. Cut-off values (two-tailed): 0.025 and 0.975", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values"))
 ```
 
 ```{r}
@@ -1635,11 +1632,11 @@ kable_classic(full_width = F)%>%
 
 As in phase 1, the lowest two categories (0 and 1 correctly solved trials per test half) were collapsed due to sparsity. Thresholds could not be set equal for test half 1 at time point 5, 8, and 11 as well as test half 2 at time point 14 (of phase 2), due to a different number of observed categories for the respective test half and time-point combination. Latent means can still be compared across time.
 
-Figure \@ref(fig:lseplot2) visualizes the latent state means and reliability estimates from the LS model. Reliability was consistently acceptable to good. Except for time point 2, none of the latent means was significantly different from zero, suggesting robust task-level performance and no systematic mean change over time. Figure \@ref(fig:lsplot2) gives the correlations between the latent states for the different time points. Correlations were generally high -- indicating stable individual differences -- with a trend towards lower correlations for time points further apart.
+Supplementary Figure \@ref(fig:lseplot2) visualizes the latent state means and reliability estimates from the LS model. Reliability was consistently acceptable to good. Except for time point 2, none of the latent means was significantly different from zero, suggesting robust task-level performance and no systematic mean change over time. Supplementary Figure \@ref(fig:lsplot2) gives the correlations between the latent states for the different time points. Correlations were generally high -- indicating stable individual differences -- with a trend towards lower correlations for time points further apart.
 
-In the LST model, the consistency coefficient was estimated to be around .912. This means that around 91% of true inter-individual differences are attributable to stable (trait) differences between individuals, while approximately 9% are due to variance in time point specific deviations from the stable trait. Reliability was estimated to be adequate with a value of .726 (see Figure \@ref(fig:lsteplot2)).
+In the LST model, the consistency coefficient was estimated to be around .912. This means that around 91% of true inter-individual differences are attributable to stable (trait) differences between individuals, while approximately 9% are due to variance in time point specific deviations from the stable trait. Reliability was estimated to be adequate with a value of .726 (see Supplementary Figure \@ref(fig:lsteplot2)).
 
-In sum, the results suggest that task-level results were robust and individual-level performance was relatively stable over time. As noted above -- and as can be seen in Figure \@ref(fig:perfplot) -- performance on a task level was clearly above chance.
+In sum, the results suggest that task-level results were robust and individual-level performance was relatively stable over time. As noted above -- and as can be seen in Supplementary Figure \@ref(fig:perfplot) -- performance on a task level was clearly above chance.
 
 ```{r}
 plse2 <- bind_rows(lsc2$parameters$unstandardized%>%mutate(task = "causality"),
@@ -1697,7 +1694,7 @@ plser2 <-
   theme_minimal()
 ```
 
-```{r lseplot2, fig.height = 4, fig.cap = "Phase 2: latent means and reliability estimates with 95\\% CI for each time point based on LSM. Means at time point 1 are set to 0.", out.width="100%"}
+```{r lseplot2, fig.height = 4, fig.cap = "Phase 2: latent means and reliability estimates with 95\\% CI for each time point based on LSM. The sample size varied between time points and can be found in Supplementary Figure 1. Means at time point 1 are set to 0.", out.width="100%"}
 plser2
 ```
 
@@ -1745,13 +1742,13 @@ plsc2
 
 The lowest two categories (0 and 1 correctly solved trials per test half) were collapsed due to sparsity. Thresholds could not be set equal for test half 1 at time point 13, due to a different number of observed categories for the respective test half and time-point combination. Latent means can still be compared across time.
 
-The latent state means shown in Figure \@ref(fig:lseplot2) reflect the increase in performance over time that was also noted in Figure \@ref(fig:perfplot). From time point 6 onward, all latent state means were estimated to be significantly different from zero. Reliability was consistently good. The latent state correlations shown in Figure \@ref(fig:lsplot2) suggest that there was a split in the data in that there were high correlations between latent states among the time points smaller than 8 as well as among time points larger than 8. Looking at Figure \@ref(fig:perfplot), we can see that the increase in task-level performance started around that time and was largely driven by individuals from the B-chimpanzee group. What this suggests is that some individuals improved in performance and then retained a higher level for the rest of the study. Some of the orangutans changed in the other direction, though to a lesser extend.
+The latent state means shown in Supplementary Figure \@ref(fig:lseplot2) reflect the increase in performance over time that was also noted in Supplementary Figure \@ref(fig:perfplot). From time point 6 onward, all latent state means were estimated to be significantly different from zero. Reliability was consistently good. The latent state correlations shown in Supplementary Figure \@ref(fig:lsplot2) suggest that there was a split in the data in that there were high correlations between latent states among the time points smaller than 8 as well as among time points larger than 8. Looking at Supplementary Figure \@ref(fig:perfplot), we can see that the increase in task-level performance started around that time and was largely driven by individuals from the B-chimpanzee group. What this suggests is that some individuals improved in performance and then retained a higher level for the rest of the study. Some of the orangutans changed in the other direction, though to a lesser extend.
 
 With a PPP of `r lsti2$summaries$PostPred_PValue`, the LST model for inference by exclusion did not provide a good fit to the data. We suspect the change in performance by some individuals that we discussed above to be responsible for that. That is, the assumption that a single, time invariant trait underlies performance at all time points seemed to be violated. We therefore fit an adjusted LST model for which we estimated one trait for time points 1 to 8 and a second trait for time points 9 to 14. As a consequence, we get two values for each LST model coefficient (one for each part) as well as a correlation between the two traits.
 
-The adjusted model provided an acceptable fit to the data (see Table \@ref(tab:semt2)). The consistency coefficients were very similar for the two parts: .912 (Part 1) and .928 (Part 2). That is, for both parts, more than 90% of true inter-individual differences are attributable to stable (trait) differences between individuals, while less than 10% are due to variance in time point specific deviations from the stable trait. The latent trait from the two parts correlated to $r = .815$. The mean of the latent trait variable of part 2 was 0.625 (that is, 0.625 higher than in part 1) and significantly different from zero. Reliability was estimated to be good for both parts: .800 (Part 1) and .830 (Part 2) (see Figure \@ref(fig:lsteplot2)).
+The adjusted model provided an acceptable fit to the data (see Supplementary Table \@ref(tab:semt2)). The consistency coefficients were very similar for the two parts: .912 (Part 1) and .928 (Part 2). That is, for both parts, more than 90% of true inter-individual differences are attributable to stable (trait) differences between individuals, while less than 10% are due to variance in time point specific deviations from the stable trait. The latent trait from the two parts correlated to $r = .815$. The mean of the latent trait variable of part 2 was 0.625 (that is, 0.625 higher than in part 1) and significantly different from zero. Reliability was estimated to be good for both parts: .800 (Part 1) and .830 (Part 2) (see Supplementary Figure \@ref(fig:lsteplot2)).
 
-In sum, the models suggest that there was an increase in task-level performance over time which resulted in consistent above-chance performance in later time points (see Figure \@ref(fig:perfplot)). This change was apparently driven by a few individuals who quickly improved and thereby changed their relative ranks. This resulted in a split in the data, with inter-individual differences in each part being quite stable.
+In sum, the models suggest that there was an increase in task-level performance over time which resulted in consistent above-chance performance in later time points (see Supplementary Figure \@ref(fig:perfplot)). This change was apparently driven by a few individuals who quickly improved and thereby changed their relative ranks. This resulted in a split in the data, with inter-individual differences in each part being quite stable.
 
 ```{r}
 plste2 <- bind_rows(
@@ -1793,7 +1790,7 @@ plste2 <- bind_rows(
   scale_color_colorblind(name = "Task")
 ```
 
-```{r lsteplot2, fig.height = 3.5, fig.cap = "Phase 2: model parameters (with 95\\% CI) from LST model for the four tasks.", out.width="100%"}
+```{r lsteplot2, fig.height = 3.5, fig.cap = "Phase 2: posterior means of model parameters (with 95\\% CI) from LST model for the four tasks based on data from N = 43 participants.", out.width="100%"}
 plste2
 ```
 
@@ -1801,39 +1798,39 @@ plste2
 
 As in phase 1, the highest two categories (3 and 4 correctly solved trials) were collapsed into one category due to sparsity. Thresholds could not be set equal for test half 2 at time point 1, 4, and 8, test half 1 at time point 9, as well as test half 1 and 2 at time point 3, due to a different number of observed categories for the respective test half and time point combination. Latent means can still be compared across time with the exception of time point 3.
 
-None of the latent state means -- except for time point 14 -- were significantly different from zero, suggesting a robust average level of gaze following in Phase 2 (Figure \@ref(fig:lseplot2)). Reliability varied between acceptable and high, ranging between `r min(plsr2%>%filter(task == "Gaze following")%>%pull(est))` and `r max(plsr2%>%filter(task == "Gaze following")%>%pull(est))`. The correlations between latent states for the different time points were generally high, pointing to stable individual differences (Figure \@ref(fig:lsplot2)).
+None of the latent state means -- except for time point 14 -- were significantly different from zero, suggesting a robust average level of gaze following in Phase 2 (Supplementary Figure \@ref(fig:lseplot2)). Reliability varied between acceptable and high, ranging between `r min(plsr2%>%filter(task == "Gaze following")%>%pull(est))` and `r max(plsr2%>%filter(task == "Gaze following")%>%pull(est))`. The correlations between latent states for the different time points were generally high, pointing to stable individual differences (Supplementary Figure \@ref(fig:lsplot2)).
 
-In the LST model, consistency was estimated to be 0.769, that is around 77% of true inter-individual differences are attributable to stable differences between individuals. Approximately 23% of inter-individual differences were due to variance in time point specific deviations from the stable trait. Reliability was good with an estimate of 0.77. In sum, gaze following in Phase 2 was stable over time with systematic and stable differences between individuals (Figure \@ref(fig:perfplot)).
+In the LST model, consistency was estimated to be 0.769, that is around 77% of true inter-individual differences are attributable to stable differences between individuals. Approximately 23% of inter-individual differences were due to variance in time point specific deviations from the stable trait. Reliability was good with an estimate of 0.77. In sum, gaze following in Phase 2 was stable over time with systematic and stable differences between individuals (Supplementary Figure \@ref(fig:perfplot)).
 
 #### Quantity discrimination
 
 As in phase 1, the lowest three (out of seven possible) categories (0, 1 and 2 correctly solved trials per test half) had to be collapsed due to sparsity. Thresholds were set equal across all time points.
 
-Like for gaze following, none of the latent state means differed from zero, except for time point 14. Reliability estimates were substantially lower compared to the other tasks (Figure \@ref(fig:lseplot2)). Correlations between time points were generally high, but somewhat lower compared to gaze following or direct causal inference.
+Like for gaze following, none of the latent state means differed from zero, except for time point 14. Reliability estimates were substantially lower compared to the other tasks (Supplementary Figure \@ref(fig:lseplot2)). Correlations between time points were generally high, but somewhat lower compared to gaze following or direct causal inference.
 
 In the LST model, the consistency coefficient was estimated to be 0.939, that is around 94% of true inter-individual differences was attributable to stable differences between individuals. Only 6% of inter-individual differences were due to variance in time-point specific deviations from the stable trait. With an estimate of 0.436, reliability was once again lower compared to the other tasks.
 
-Taken together, quantity judgments were robust over time on the task level. Task-level performance was clearly different from chance (Figure \@ref(fig:perfplot)). Performance was also stable on an individual level, with the constraint that the reliability of measurement was lower compared to the other tasks.
+Taken together, quantity judgments were robust over time on the task level. Task-level performance was clearly different from chance (Supplementary Figure \@ref(fig:perfplot)). Performance was also stable on an individual level, with the constraint that the reliability of measurement was lower compared to the other tasks.
 
 #### Delay of gratification
 
 Thresholds could not be set equal for test half 1 at time point 2, 9, 10, 11, and 14 as well as test half 2 at time point 6 and 7 due to a different number of observed categories for the respective test half and time point combination. Latent means can still be compared across time.
 
-Three of the latent state means were significantly different from zero (time point 4, 5 and 8). However, there was no clear temporal pattern in that the latent means steadily de- or increased (Figure \@ref(fig:lseplot2)). Reliability was very high at all time points. Latent state correlations across the different time points were generally high, with time point 4 being a notable exception with lower correlations with time points further away (Figure \@ref(fig:lsplot2)).
+Three of the latent state means were significantly different from zero (time point 4, 5 and 8). However, there was no clear temporal pattern in that the latent means steadily de- or increased (Supplementary Figure \@ref(fig:lseplot2)). Reliability was very high at all time points. Latent state correlations across the different time points were generally high, with time point 4 being a notable exception with lower correlations with time points further away (Supplementary Figure \@ref(fig:lsplot2)).
 
 In the LST model, consistency was estimated to be around 0.772, that is around 77% of true inter-individual differences are attributable to stable differences between individuals. Approximately 23% of inter-individual differences were due to variance in time point specific deviations from the stable trait. Reliability was high with an estimate of 0.891.
 
-In sum, delay of gratification showed some variation in task-level performance. Differences between individuals were relatively stable over time, though slightly less so compared to other tasks (Figure \@ref(fig:perfplot)).
+In sum, delay of gratification showed some variation in task-level performance. Differences between individuals were relatively stable over time, though slightly less so compared to other tasks (Supplementary Figure \@ref(fig:perfplot)).
 
 ### Comparison between phases
 
 For the comparison, we will focus on the four tasks that were included in both phases: direct causal inference, inference by exclusion, gaze following and quantity.
 
-For the direct causal inference task, the raw performance in Figure \@ref(fig:perfplot) shows no marked difference between the two phases. Similarly, we see no systematic difference between the two phases when looking at the latent state means and threshold parameters estimated by the LS model. This suggests robust task-level performance across the two phases. The LST model estimates for consistency, occasion specificity and reliability were also very similar for the two phases (Figure \@ref(fig:lstdifplot)), which indicates that individual differences were structured similarly in the two phases.
+For the direct causal inference task, the raw performance in Supplementary Figure \@ref(fig:perfplot) shows no marked difference between the two phases. Similarly, we see no systematic difference between the two phases when looking at the latent state means and threshold parameters estimated by the LS model. This suggests robust task-level performance across the two phases. The LST model estimates for consistency, occasion specificity and reliability were also very similar for the two phases (Supplementary Figure \@ref(fig:lstdifplot)), which indicates that individual differences were structured similarly in the two phases.
 
-For inference by exclusion, we saw an increase in performance towards the end of Phase 2 (Figure \@ref(fig:perfplot)), which was also reflected in the latent state means. As noted above, a relatively quick change in performance by some individuals was most likely responsible for this task-level increase. As a consequence, for the LST model, we had to split Phase 2 into two parts. Nevertheless, the LST model estimates for Phase 1 and both parts of Phase 2 were very similar.
+For inference by exclusion, we saw an increase in performance towards the end of Phase 2 (Supplementary Figure \@ref(fig:perfplot)), which was also reflected in the latent state means. As noted above, a relatively quick change in performance by some individuals was most likely responsible for this task-level increase. As a consequence, for the LST model, we had to split Phase 2 into two parts. Nevertheless, the LST model estimates for Phase 1 and both parts of Phase 2 were very similar.
 
-The gaze following task showed notable differences between the two phases. The initial decline in gaze following in the beginning of Phase 1 did not repeat itself in Phase 2. Performance in Phase 2 seemed to pick up where it left off at the end of Phase 1 (Figure \@ref(fig:perfplot)). The LS model mean estimates for the different time points follow a similar pattern. Despite this difference in task-level performance, the near-identical LST model estimates for consistency and occasion specificity showed that individual differences were structured in a similar way across the two phases (Figure \@ref(fig:lstdifplot)).
+The gaze following task showed notable differences between the two phases. The initial decline in gaze following in the beginning of Phase 1 did not repeat itself in Phase 2. Performance in Phase 2 seemed to pick up where it left off at the end of Phase 1 (Supplementary Figure \@ref(fig:perfplot)). The LS model mean estimates for the different time points follow a similar pattern. Despite this difference in task-level performance, the near-identical LST model estimates for consistency and occasion specificity showed that individual differences were structured in a similar way across the two phases (Supplementary Figure \@ref(fig:lstdifplot)).
 
 ```{r}
 lstdif <- bind_rows(
@@ -1887,15 +1884,15 @@ plstdif <- ggplot(lstdif, aes(x = param, y = est, col = phase, pch = part))+
 
 ```
 
-```{r lstdifplot, fig.height = 3, fig.width = 10, fig.cap = "LST model estimates for Phase 1 and Phase 2. In Phase 2, inference by exclusion has two estimates, one for each part (see text for details).", out.width="100%"}
+```{r lstdifplot, fig.height = 3, fig.width = 10, fig.cap = "LST model estimates for Phase 1 and Phase 2. Points show mean of the posterior distribution with 95\\% CrI based on data from N = 43 participants. In Phase 2, inference by exclusion has two estimates, one for each part (see text for details).", out.width="100%"}
 plstdif
 ```
 
-Raw performance in the quantity task did not show a markedly different pattern in the two phases (Figure \@ref(fig:perfplot)). This was once again also reflected in the latent state means estimated by the LS model and suggests stable task-level performance across the two phases. The three LST model estimates for consistency, occasion specificity and reliability were also very similar for the two phases, which indicates that individual differences were measured and structured in a similar way in the two phases (Figure \@ref(fig:lstdifplot)).
+Raw performance in the quantity task did not show a markedly different pattern in the two phases (Supplementary Figure \@ref(fig:perfplot)). This was once again also reflected in the latent state means estimated by the LS model and suggests stable task-level performance across the two phases. The three LST model estimates for consistency, occasion specificity and reliability were also very similar for the two phases, which indicates that individual differences were measured and structured in a similar way in the two phases (Supplementary Figure \@ref(fig:lstdifplot)).
 
 ## Relations between tasks {#relations-between-tasks}
 
-To analyse relations between different tasks (constructs), we estimated separate LST models, each modeling the relation between two tasks. In these combined models, the sub-models for each task were equivalent to the LST models described above. For ease of model specification, the LST models were estimated as multilevel models. These models are equivalent to the LST models for single tasks under the assumption of strict factorial invariance. Figure \@ref(fig:relgraph) visualizes the model for two tasks.
+To analyse relations between different tasks (constructs), we estimated separate LST models, each modeling the relation between two tasks. In these combined models, the sub-models for each task were equivalent to the LST models described above. For ease of model specification, the LST models were estimated as multilevel models. These models are equivalent to the LST models for single tasks under the assumption of strict factorial invariance. Supplementary Figure \@ref(fig:relgraph) visualizes the model for two tasks.
 
 ```{r relgraph, engine='tikz', fig.cap="Latent State-Trait models for two tasks with correlations between traits and states for two indicators and six measurement time points.", out.width="80%", fig.align='center'}
 
@@ -2070,10 +2067,10 @@ rtt <- tibble(
 ```{r relt}
 kable(rtt, align = c("l", "l", "c", "c"), caption = "Model fit indices for multi-construct models Phase 1", booktabs=TRUE)%>%
 kable_classic(full_width = F)%>%
-      footnote(c("PPP = Posterior predictive p-value", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values"))
+      footnote(c("PPP = Posterior predictive p-value. Cut-off values (two-tailed): 0.025 and 0.975", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values"))
 ```
 
-Model fit indices are shown in Table \@ref(tab:relt). Due to a low PPP value, the model for direct causal inference and quantity discrimination was modified such that for each task, test-half specific trait factors were estimated on the between-level. The correlations between the two tasks are therefore also reported as test-half specific trait correlations.
+Model fit indices are shown in Supplementary Table \@ref(tab:relt). Due to a low PPP value, the model for direct causal inference and quantity discrimination was modified such that for each task, test-half specific trait factors were estimated on the between-level. The correlations between the two tasks are therefore also reported as test-half specific trait correlations.
 
 The only correlations for which the 95% CI did not include zero were the state residual correlation between direct causal inference and inference by exclusion ($r_{s_c,s_i}$ = `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(est)`, 95% CI = [`r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(lower_2.5ci)`; `r lstci$parameters$stdyx.standardized%>%filter(paramHeader == "SI.WITH")%>%pull(upper_2.5ci)`]) and the trait correlation between inference by exclusion and quantity discrimination ($r_{t_i,t_q}$ = `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]).
 
@@ -2081,7 +2078,7 @@ The negative state correlations between direct causal inference and inference by
 
 The trait correlation between inference by exclusion and quantity discrimination was positive, suggesting that individuals with better quantity judgment abilities also have better inferential abilities.
 
-One (out of four) of the test-half specific trait correlations between direct causal inference and quantity discrimination was also different from zero ($r_{t_{c_{h2}},t_{q_{h1}}}$ = `r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(est)`, 95% CI = [`r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(lower_2.5ci)`; `r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(upper_2.5ci)`]). We do not consider this result to be substantial evidence for a substantive association between the trait estimates in the two tasks and therefore do not interpret it any further. Figure \@ref(fig:mtmplot) shows all correlations between the different tasks.
+One (out of four) of the test-half specific trait correlations between direct causal inference and quantity discrimination was also different from zero ($r_{t_{c_{h2}},t_{q_{h1}}}$ = `r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(est)`, 95% CI = [`r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(lower_2.5ci)`; `r lstcq$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(upper_2.5ci)`]). We do not consider this result to be substantial evidence for a substantive association between the trait estimates in the two tasks and therefore do not interpret it any further. Supplementary Figure \@ref(fig:mtmplot) shows all correlations between the different tasks.
 
 ```{r}
 mtmcor <- bind_rows(
@@ -2169,7 +2166,7 @@ lstgd2 <- readModels("../../models and documentation Jana/Application/Testphase 
 ```{r}
 rtt2 <- tibble(
   Task1 = c("causality", "", "", "","", "inference", "","", "","","", "quantity","","gaze_following"),
-  Task2 = c("gaze_following","inference","","quantity","delay of gratification", "gaze_following", "","quantity","","delay_of_gratification","","gaze_following","delay_of_gratification","delay_of_gratification"),
+  Task2 = c("gaze_following","inference","","quantity","delay_of_gratification", "gaze_following", "","quantity","","delay_of_gratification","","gaze_following","delay_of_gratification","delay_of_gratification"),
   Part = c("","Part 1","Part 2","","","Part 1","Part 2","Part 1","Part 2","Part 1","Part 2","","",""),
   PPP = c(lstcg2$summaries$PostPred_PValue,
           lstci2p1$summaries$PostPred_PValue,
@@ -2281,10 +2278,10 @@ scale_x_discrete(guide = guide_axis(n.dodge = 2),limits = c("Causal inference", 
 ```{r relt2}
   kable(rtt2, align = c("l", "l", "c", "c"), caption = "Model fit indices for multi-construct models Phase 2", booktabs=TRUE)%>%
 kable_classic(full_width = F)%>%
-      footnote(c("PPP = Posterior predictive p-value", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values", "Part = separate models for the two parts of the data (see main text for details)"))
+      footnote(c("PPP = Posterior predictive p-value. Cut-off values (two-tailed): 0.025 and 0.975", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values", "Part = separate models for the two parts of the data (see main text for details)"))
 ```
 
-Model fit indices are shown in Table \@ref(tab:relt2). Like in Phase 1, due to a low PPP value, the model for direct causal inference and quantity was modified such that for each task, test-half specific trait factors were estimated on the between-level. The correlations between the two tasks are therefore also reported as test-half specific trait correlations.
+Model fit indices are shown in Supplementary Table \@ref(tab:relt2). Like in Phase 1, due to a low PPP value, the model for direct causal inference and quantity was modified such that for each task, test-half specific trait factors were estimated on the between-level. The correlations between the two tasks are therefore also reported as test-half specific trait correlations.
 
 As noted above, we had to fit a 2-part LST model to the data of the inference by exclusion task. We retained this adjustment and for all models involving two tasks, we modeled the correlations between tasks separately for the two parts. Thus, there are two correlations (one for part 1 and one for part 2) for each case involving inference by exclusion.
 
@@ -2292,7 +2289,7 @@ For the state residuals, the correlation between inference by exclusion and dela
 
 Five of nine task combinations showed evidence for a substantial trait correlation. These included quantity discrimination and delay of gratification ($r_{t_d,t_q}$ = `r lstqd2$parameters$stdyx.standardized%>%filter(paramHeader == "TD.WITH")%>%pull(est)`, 95% CI = [`r lstqd2$parameters$stdyx.standardized%>%filter(paramHeader == "TD.WITH")%>%pull(lower_2.5ci)`; `r lstqd2$parameters$stdyx.standardized%>%filter(paramHeader == "TD.WITH")%>%pull(upper_2.5ci)`]) as well as quantity discrimination and gaze following ($r_{t_g,t_q}$ = `r lstqg2$parameters$stdyx.standardized%>%filter(paramHeader == "TG.WITH")%>%pull(est)`, 95% CI = [`r lstqg2$parameters$stdyx.standardized%>%filter(paramHeader == "TG.WITH")%>%pull(lower_2.5ci)`; `r lstqg2$parameters$stdyx.standardized%>%filter(paramHeader == "TG.WITH")%>%pull(upper_2.5ci)`]). The remaining three included the inference by exclusion task and thus had two coefficients per combination: inference by exclusion and direct causal inference (Part 1: $r_{t_{i_1},t_{q_1}}$ = `r lstci2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstci2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstci2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]; Part 2: $r_{t_{i_2},t_{q_2}}$ = `r lstci2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstci2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstci2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]) as well as inference by exclusion and delay of gratification (Part 1: $r_{t_{i_1},t_{d_1}}$ = `r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstid2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]; Part 2: $r_{t_{i_2},t_{d_2}}$ = `r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstid2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]). For inference by exclusion and quantity discrimination, only the correlation for Part 1 was different from zero, the one for Part 2, however, was also largely positive (Part 1: $r_{t_{i_1},t_{q_1}}$ = `r lstiq2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq2p1$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]; Part 2: $r_{t_{i_2},t_{q_2}}$ = `r lstiq2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(est)`, 95% CI = [`r lstiq2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(lower_2.5ci)`; `r lstiq2p2$parameters$stdyx.standardized%>%filter(paramHeader == "TI.WITH")%>%pull(upper_2.5ci)`]).
 
-Two (out of four) of the test-half specific trait correlations between direct causal inference and quantity discrimination were also different from zero ($r_{t_{c_{h1}},t_{q_{h2}}}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(upper_2.5ci)`]; $r_{t_{c_{h2}},t_{q_{h2}}}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(upper_2.5ci)`]). Given that a third correlation was also of similar magnitude ($r_{t_{c_{h2}},t_{q_{h1}}}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(upper_2.5ci)`]), we consider this to be at least suggestive evidence that individuals with higher quantitative abilities were also better at making direct causal inferences. Figure \@ref(fig:mtmplot2) shows all correlations between the different tasks.
+Two (out of four) of the test-half specific trait correlations between direct causal inference and quantity discrimination were also different from zero ($r_{t_{c_{h1}},t_{q_{h2}}}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC1.WITH", param == "TQ2")%>%pull(upper_2.5ci)`]; $r_{t_{c_{h2}},t_{q_{h2}}}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ2")%>%pull(upper_2.5ci)`]). Given that a third correlation was also of similar magnitude ($r_{t_{c_{h2}},t_{q_{h1}}}$ = `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(est)`, 95% CI = [`r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(lower_2.5ci)`; `r lstcq2$parameters$stdyx.standardized%>%filter(paramHeader == "TC2.WITH", param == "TQ1")%>%pull(upper_2.5ci)`]), we consider this to be at least suggestive evidence that individuals with higher quantitative abilities were also better at making direct causal inferences. Supplementary Figure \@ref(fig:mtmplot2) shows all correlations between the different tasks.
 
 ```{r mtmplot2, fig.height=4, fig.width=8, fig.cap = "Phase 2: correlations between latent traits and latent state residual variables, respectively, of different tasks. Bold correlations are different from zero as judged by the 95\\% CI.", out.width="100%"}
 pmtmcor2
@@ -2300,9 +2297,9 @@ pmtmcor2
 
 ### Comparison between phases
 
-The most notable difference between the two phases was that we saw more substantial trait correlations in Phase 2 compared to Phase 1. This was expected given that we had one additional task in Phase 2 and thus four more combined models. The only significant trait correlation from Phase 1 also turned out to be significant in Phase 2 (quantity discrimination and inference by exclusion). For the tasks that were part of both phases, correlations were numerically similar (Figure \@ref(fig:mtmplotc)).
+The most notable difference between the two phases was that we saw more substantial trait correlations in Phase 2 compared to Phase 1. This was expected given that we had one additional task in Phase 2 and thus four more combined models. The only significant trait correlation from Phase 1 also turned out to be significant in Phase 2 (quantity discrimination and inference by exclusion). For the tasks that were part of both phases, correlations were numerically similar (Supplementary Figure \@ref(fig:mtmplotc)).
 
-These results suggest low to moderate commonalities between the traits -- with gaze following being an exception (see Figure \@ref(fig:mtmplotc)). However, the sample size we studied here is still comparatively small for individual differences research. Larger samples are needed to corroborate these findings.
+These results suggest low to moderate commonalities between the traits -- with gaze following being an exception (see Supplementary Figure \@ref(fig:mtmplotc)). However, the sample size we studied here is still comparatively small for individual differences research. Larger samples are needed to corroborate these findings.
 
 The significant *negative* state residual correlation between direct causal inference and inference by exclusion found in Phase 1 was not present in Phase 2. This suggests a de-coupling between the two tasks in that apes were less likely to confuse them in Phase 2. This interpretation is also supported by the increase in task-level performance for inference by exclusion and an increase in the trait correlation between the two tasks.
 
@@ -2727,11 +2724,11 @@ pcpro <- ggplot(proj_samples_cau, aes(x = value, y = pred)) +
   theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
 ```
 
-```{r cselp, fig.height=4,fig.width=10, fig.cap = "Predictor selection for direct causal inference in Phase 1. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel. Reference level for group are bonobos.", out.width="100%"}
+```{r cselp, fig.height=4,fig.width=10, fig.cap = "Predictor selection for direct causal inference in Phase 1. A) Elpd and RMSE values (with standard error) for predictors based on data from N = 43 participants, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel. Reference level for group are bonobos.", out.width="100%"}
 ggarrange(pcsel, pcpro, labels = c("A","B"), widths = c(1.5,1))
 ```
 
-Figure \@ref(fig:cselp) visualizes the results. Out of the 13 predictor variables we analysed, we selected only `group` to be relevant in addition to the random intercept term. When inspecting the projected posterior distribution for `group`, we saw substantial differences between the groups: Orangutans and the B-chimpanzee group performed best, followed by Bonobos (reference level) and finally the Gorillas and the A-chimpanzee group (see Figure \@ref(fig:cselp)B).
+Supplementary Figure \@ref(fig:cselp) visualizes the results. Out of the 13 predictor variables we analysed, we selected only `group` to be relevant in addition to the random intercept term. When inspecting the projected posterior distribution for `group`, we saw substantial differences between the groups: Orangutans and the B-chimpanzee group performed best, followed by Bonobos (reference level) and finally the Gorillas and the A-chimpanzee group (see Supplementary Figure \@ref(fig:cselp)B).
 
 #### Inference by exclusion
 
@@ -2874,13 +2871,13 @@ facet_grid(factor~., scales = "free", space = "free")+
   theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
 ```
 
-```{r iselp, fig.height=4, fig.width=10,fig.cap = "Predictor selection for inference by exclusion in Phase 1. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel.", out.width="100%"}
+```{r iselp, fig.height=4, fig.width=10,fig.cap = "Predictor selection for inference by exclusion in Phase 1. A) Elpd and RMSE values (with standard error) for predictors based on data from N = 43 participants, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel.", out.width="100%"}
 ggarrange(pisel, pipro, labels = c("A","B"), widths = c(1.5,1))
 ```
 
-Figure \@ref(fig:iselp) visualizes the results. For inference by exclusion, we selected `time_in_leipzig`, `group`, and `age` as relevant predictors in addition to the random intercept term. All three predictors capture stable individual characteristics.
+Supplementary Figure \@ref(fig:iselp) visualizes the results. For inference by exclusion, we selected `time_in_leipzig`, `group`, and `age` as relevant predictors in addition to the random intercept term. All three predictors capture stable individual characteristics.
 
-Figure \@ref(fig:iselp)B shows the projected posterior distributions for the predictors and suggests that the longer apes lived in Leipzig, the better their performance was. The differences between groups were such that the two chimpanzee groups together with the Gorillas performed on a higher level compared to the Bonobos (reference level) and Orangutans. With respect to `age`, we found that performance decreased with age.
+Supplementary Figure \@ref(fig:iselp)B shows the projected posterior distributions for the predictors and suggests that the longer apes lived in Leipzig, the better their performance was. The differences between groups were such that the two chimpanzee groups together with the Gorillas performed on a higher level compared to the Bonobos (reference level) and Orangutans. With respect to `age`, we found that performance decreased with age.
 
 #### Gaze Following
 
@@ -3028,13 +3025,13 @@ facet_grid(factor~., scales = "free", space = "free")+
   
 ```
 
-```{r gselp, fig.height=6, fig.width=10, fig.cap = "Predictor selection for gaze following in Phase 1. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel model.", out.width="100%"}
+```{r gselp, fig.height=6, fig.width=10, fig.cap = "Predictor selection for gaze following in Phase 1. A) Elpd and RMSE values (with standard error) for predictors based on data from N = 43 participants, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel model.", out.width="100%"}
 ggarrange(pgsel, pgpro, labels = c("A","B"), nrow = 1, widths = c(1.5,1))
 ```
 
-Figure \@ref(fig:gselp) visualizes the results. Gaze following had the most selected predictors of all tasks in Phase 1. In addition to the random intercept term, we selected `group`, `rearing`, `time_outdoors`, `age`, `sociality`, `sex`, `sick_severity`, and `observer`. Half of the predictors were stable individual characteristics, while the other half captured variable characteristics of experience.
+Supplementary Figure \@ref(fig:gselp) visualizes the results. Gaze following had the most selected predictors of all tasks in Phase 1. In addition to the random intercept term, we selected `group`, `rearing`, `time_outdoors`, `age`, `sociality`, `sex`, `sick_severity`, and `observer`. Half of the predictors were stable individual characteristics, while the other half captured variable characteristics of experience.
 
-Groups differed in that the two chimpanzee groups were most likely to follow gaze followed by the Bonobos (reference level). Gorillas and Orangutans were the least likely to follow the experimenter's gaze. Mother-reared individuals outperformed hand-reared individuals (including those with an unknown rearing history). The more time individuals spent outdoors, the more likely they were to follow gaze. Also, the probability to follow gaze increased with age. Individuals with a lower sociality index had higher rates of gaze following; females outperformed males. The rate of gaze following was lower when observers were present and when higher levels of sickness were reported for individuals. Figure \@ref(fig:gselp)B visualizes these results.
+Groups differed in that the two chimpanzee groups were most likely to follow gaze followed by the Bonobos (reference level). Gorillas and Orangutans were the least likely to follow the experimenter's gaze. Mother-reared individuals outperformed hand-reared individuals (including those with an unknown rearing history). The more time individuals spent outdoors, the more likely they were to follow gaze. Also, the probability to follow gaze increased with age. Individuals with a lower sociality index had higher rates of gaze following; females outperformed males. The rate of gaze following was lower when observers were present and when higher levels of sickness were reported for individuals. Supplementary Figure \@ref(fig:gselp)B visualizes these results.
 
 #### Quantity discrimination
 
@@ -3181,13 +3178,13 @@ pqpro <- ggplot(proj_samples_quant, aes(x = value, y = pred)) +
   
 ```
 
-```{r qselp, fig.height=5, fig.width=10, fig.cap = "Predictor selection for quantity discrimination in Phase 1. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel model.", out.width="100%"}
+```{r qselp, fig.height=5, fig.width=10, fig.cap = "Predictor selection for quantity discrimination in Phase 1. A) Elpd and RMSE values (with standard error) for predictors based on data from N = 43 participants, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel model.", out.width="100%"}
 ggarrange(pqsel, pqpro, labels = c("A","B"), nrow = 1, widths = c(1.5,1))
 ```
 
-Figure \@ref(fig:qselp) visualizes the results. For quantity, we selected three predictors in addition to the random intercept term: `time_in_leipzig`, `rearing`, and `group`. All of these predictors were stable individual characteristics.
+Supplementary Figure \@ref(fig:qselp) visualizes the results. For quantity, we selected three predictors in addition to the random intercept term: `time_in_leipzig`, `rearing`, and `group`. All of these predictors were stable individual characteristics.
 
-The longer individuals had lived in Leipzig, the better they performed in the task. Group differences were such that b-chimpanzees performed best, followed by Bonobos (reference level) and Gorillas. A-Chimpanzees performed slightly worse, but still better than the Orangutans. Once again, mother reared individuals outperformed those who were hand-reared or whose rearing history was unknown. Figure \@ref(fig:qselp)B visualizes these results.
+The longer individuals had lived in Leipzig, the better they performed in the task. Group differences were such that b-chimpanzees performed best, followed by Bonobos (reference level) and Gorillas. A-Chimpanzees performed slightly worse, but still better than the Orangutans. Once again, mother reared individuals outperformed those who were hand-reared or whose rearing history was unknown. Supplementary Figure \@ref(fig:qselp)B visualizes these results.
 
 #### Summary
 
@@ -3435,11 +3432,11 @@ pcpro_p2 <- ggplot(proj_samples_cau_p2, aes(x = value, y = pred)) +
   theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
 ```
 
-```{r cselp2, fig.height=4,fig.width=10, fig.cap = "Predictor selection for direct causal inference in Phase 2. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel.", out.width="100%"}
+```{r cselp2, fig.height=4,fig.width=10, fig.cap = "Predictor selection for direct causal inference in Phase 2. A) Elpd and RMSE values (with standard error) for predictors based on data from N = 43 participants, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel.", out.width="100%"}
 ggarrange(pcsel_p2, pcpro_p2, labels = c("A","B"), widths = c(1.5,1))
 ```
 
-Figure \@ref(fig:cselp2) visualizes the results. In addition to the random intercept term, `group` and `time_outdoors` were selected as relevant predictors. When inspecting the projected posterior distribution for `time_outdoors`, we saw that performance was better on time points on which subjects spent less time outdoors. For `group`, we saw substantial differences between the groups: Orangutans and the B-chimpanzee group performed best, followed by Bonobos (reference level) and finally the Gorillas and the A-chimpanzee group (see Figure \@ref(fig:cselp)B).
+Supplementary Figure \@ref(fig:cselp2) visualizes the results. In addition to the random intercept term, `group` and `time_outdoors` were selected as relevant predictors. When inspecting the projected posterior distribution for `time_outdoors`, we saw that performance was better on time points on which subjects spent less time outdoors. For `group`, we saw substantial differences between the groups: Orangutans and the B-chimpanzee group performed best, followed by Bonobos (reference level) and finally the Gorillas and the A-chimpanzee group (see Supplementary Figure \@ref(fig:cselp)B).
 
 #### Inference by exclusion
 
@@ -3582,13 +3579,13 @@ pipro_p2 <- ggplot(proj_samples_inf_p2, aes(x = value, y = pred)) +
   theme(panel.border = element_rect(color = "black",fill = NA,size = 1))
 ```
 
-```{r iselp2, fig.height=4, fig.width=10,fig.cap = "Predictor selection for inference by exclusion in Phase 2. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel.", out.width="100%"}
+```{r iselp2, fig.height=4, fig.width=10,fig.cap = "Predictor selection for inference by exclusion in Phase 2. A) Elpd and RMSE values (with standard error) for predictors based on data from N = 43 participants, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel.", out.width="100%"}
 ggarrange(pisel_p2, pipro_p2, labels = c("A","B"), widths = c(1.5,1))
 ```
 
-Figure \@ref(fig:iselp2) visualizes the results. For inference by exclusion, we selected `time_in_leipzig`, `group`, `age` and `time_point` as relevant predictors in addition to the random intercept term. All predictors )not counting `time_point`) captured stable individual characteristics. 
+Supplementary Figure \@ref(fig:iselp2) visualizes the results. For inference by exclusion, we selected `time_in_leipzig`, `group`, `age` and `time_point` as relevant predictors in addition to the random intercept term. All predictors )not counting `time_point`) captured stable individual characteristics. 
 
-Figure \@ref(fig:iselp2)B shows the projected posterior distributions for the predictors and suggests that the longer apes lived in Leipzig, the better their performance was. For `age` the results suggest better performance for younger individuals. The differences between groups were such that the B-chimpanzee group performed best, followed by the Gorillas. The remaining groups performed on a substantially lower level. The positive effect of `time_point` mirrors the likely learning effects discussed above. 
+Supplementary Figure \@ref(fig:iselp2)B shows the projected posterior distributions for the predictors and suggests that the longer apes lived in Leipzig, the better their performance was. For `age` the results suggest better performance for younger individuals. The differences between groups were such that the B-chimpanzee group performed best, followed by the Gorillas. The remaining groups performed on a substantially lower level. The positive effect of `time_point` mirrors the likely learning effects discussed above. 
 
 #### Gaze following
 
@@ -3739,14 +3736,14 @@ pgpro_p2 <- ggplot(proj_samples_gaze_p2, aes(x = value, y = pred)) +
 
 ```
 
-```{r gselp2, fig.height=6, fig.width=10, fig.cap = "Predictor selection for gaze following in Phase 2. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel model.", out.width="100%"}
+```{r gselp2, fig.height=6, fig.width=10, fig.cap = "Predictor selection for gaze following in Phase 2. A) Elpd and RMSE values (with standard error) for predictors based on data from N = 43 participants, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel model.", out.width="100%"}
 ggarrange(pgsel_p2, pgpro_p2, labels = c("A","B"), nrow = 1, widths = c(1.5,1))
 ```
 
 
-Figure \@ref(fig:gselp2) visualizes the results. In addition to the random intercept term, we selected `group`,`sex`, `observer`, and `age`. All of these predictors were stable individual characteristics, with the exception of `observer`.
+Supplementary Figure \@ref(fig:gselp2) visualizes the results. In addition to the random intercept term, we selected `group`,`sex`, `observer`, and `age`. All of these predictors were stable individual characteristics, with the exception of `observer`.
 
-Groups differed in that individuals from the A-chimpanzee group were most likely to follow gaze, followed by the B-chimpanzee group and the bonbons (reference level). Gorillas and the Orangutans were less likely to follow gaze. Females outperformed males. The rate of gaze following was higher when no observer was present. Finally, the rate of gaze following further decreased with age. Figure \@ref(fig:gselp2)B visualizes these results. Please not the unusual shape of the posterior distribution for some of the predictors. While we are confident about the selection of the selection process, we would caution against an overly strong interpretation of the absolute values of the projected estimates.
+Groups differed in that individuals from the A-chimpanzee group were most likely to follow gaze, followed by the B-chimpanzee group and the bonbons (reference level). Gorillas and the Orangutans were less likely to follow gaze. Females outperformed males. The rate of gaze following was higher when no observer was present. Finally, the rate of gaze following further decreased with age. Supplementary Figure \@ref(fig:gselp2)B visualizes these results. Please not the unusual shape of the posterior distribution for some of the predictors. While we are confident about the selection of the selection process, we would caution against an overly strong interpretation of the absolute values of the projected estimates.
 
 #### Quantity discrimination
 
@@ -3893,13 +3890,13 @@ pqpro_p2 <- ggplot(proj_samples_quant_p2, aes(x = value, y = pred)) +
   
 ```
 
-```{r qselp2, fig.height=6, fig.width=10, fig.cap = "Predictor selection for quantity discrimination in Phase 2. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel model.", out.width="100%"}
+```{r qselp2, fig.height=6, fig.width=10, fig.cap = "Predictor selection for quantity discrimination in Phase 2. A) Elpd and RMSE values (with standard error) for predictors based on data from N = 43 participants, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel model.", out.width="100%"}
 ggarrange(pqsel_p2, pqpro_p2, labels = c("A","B"), nrow = 1, widths = c(1.5,1))
 ```
 
-Figure \@ref(fig:qselp2) visualizes the results. In addition to the random intercept term, we selected `rel_rank`, `rearing`, `time_in_leipzig`, `group`, `observer` and `time_point`. Two of the five predictors (excluding `time_point`) captured more variable aspects of experience.
+Supplementary Figure \@ref(fig:qselp2) visualizes the results. In addition to the random intercept term, we selected `rel_rank`, `rearing`, `time_in_leipzig`, `group`, `observer` and `time_point`. Two of the five predictors (excluding `time_point`) captured more variable aspects of experience.
 
-Figure \@ref(fig:iselp2)B shows the projected posterior distributions for the predictors. Higher ranking individuals performed better in the task. Mother-reared individuals performed better compared to hand-reared individuals. The more time the individual had spent in Leipzig, the better the performance. With respect to `group`, we found that the B-chimpanzee group performed above the Bonobos (reference level) which in turn were better compared to the other groups. Performance was better, when there was no observer. Finally, individuals who had already participated in another study on the same day showed better performance. The effect of `time_point` suggested a slight increase in performance over time. 
+Supplementary Figure \@ref(fig:iselp2)B shows the projected posterior distributions for the predictors. Higher ranking individuals performed better in the task. Mother-reared individuals performed better compared to hand-reared individuals. The more time the individual had spent in Leipzig, the better the performance. With respect to `group`, we found that the B-chimpanzee group performed above the Bonobos (reference level) which in turn were better compared to the other groups. Performance was better, when there was no observer. Finally, individuals who had already participated in another study on the same day showed better performance. The effect of `time_point` suggested a slight increase in performance over time. 
 
 #### Delay of gratification
 
@@ -4046,17 +4043,17 @@ pdgpro_p2 <- ggplot(proj_samples_grat_p2, aes(x = value, y = pred)) +
   
 ```
 
-```{r dgselp2, fig.height=4, fig.width=10, fig.cap = "Predictor selection for delay of gratification in Phase 2. A) Elpd and RMSE values for predictors, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel model.", out.width="100%"}
+```{r dgselp2, fig.height=4, fig.width=10, fig.cap = "Predictor selection for delay of gratification in Phase 2. A) Elpd and RMSE values (with standard error) for predictors based on data from N = 43 participants, ordered by importance (left to right) according to the cross-validated projection prediction model. Note that the random intercept term was forced to be the last one to be included. B) Projections for the selected predictors based on the submodel model.", out.width="100%"}
 ggarrange(pdgsel_p2, pdgpro_p2, labels = c("A","B"), nrow = 1, widths = c(1.5,1))
 ```
 
-Figure \@ref(fig:dgselp2) visualizes the results. In addition to the random intercept term, we selected `time_in_leipzig`, `observer`, and `sex`. Notably, delay of gratification was the only task for which `group` was not selected as a predictor. 
+Supplementary Figure \@ref(fig:dgselp2) visualizes the results. In addition to the random intercept term, we selected `time_in_leipzig`, `observer`, and `sex`. Notably, delay of gratification was the only task for which `group` was not selected as a predictor. 
 
-Individuals who have spent more time in Leipzig were more likely to delay gratification. Waiting for the bigger reward was also more likely when there was no observer present. Males  also had higher rates of waiting. Figure \@ref(fig:dgselp2)B visualizes these results.
+Individuals who have spent more time in Leipzig were more likely to delay gratification. Waiting for the bigger reward was also more likely when there was no observer present. Males  also had higher rates of waiting. Supplementary Figure \@ref(fig:dgselp2)B visualizes these results.
 
 #### Summary
 
-Once again, the random intercept term `(1 | subject)` was the predictor that improved the model fit the most. Predictors capturing stable individual characteristics were selected most often, which aligns well with the SEM results, in which we saw that most of the variance in performance could be traced back to stable trait differences between individuals. The tasks with the highest occasion-specific variance (gaze following and delay of gratification, see Figure \@ref(fig:lsteplot2)) were also those for which the most time point specific predictors were selected. However, the quantity discrimination task did not fit this pattern; even though the LST model suggested that only a very small portion of the variance in performance was occasion specific, three time point specific variables were selected to be relevant. 
+Once again, the random intercept term `(1 | subject)` was the predictor that improved the model fit the most. Predictors capturing stable individual characteristics were selected most often, which aligns well with the SEM results, in which we saw that most of the variance in performance could be traced back to stable trait differences between individuals. The tasks with the highest occasion-specific variance (gaze following and delay of gratification, see Supplementary Figure \@ref(fig:lsteplot2)) were also those for which the most time point specific predictors were selected. However, the quantity discrimination task did not fit this pattern; even though the LST model suggested that only a very small portion of the variance in performance was occasion specific, three time point specific variables were selected to be relevant. 
 
 The predictor selected most often was `group`. The differences between groups were, however, variable with no obvious pattern. The two chimpanzee groups varied largely independent from each other. Thus, it makes more sense to interpret this as differences between groups rather than species.
 
@@ -4135,7 +4132,7 @@ ppicomp <- ggplot(ro,aes(x = fct_reorder(solution_terms,sum), y = size, lty = ph
 ```{r ppisum, fig.height=6, fig.width=8, fig.cap = "Predictor ranking and selection based on PPI models for Phase 1 and Phase 2. Different linetypes show the different phases, crosses mark predictors that were selected to be relevant based on the PPI models. Color shows the broader category each predictor belongs to. The x-axis is sorted by the average rank across tasks and phases.", out.width="100%"}
 ppicomp
 ```
-Figure \@ref(fig:ppisum)) shows the predictor ranking and selection across tasks and phases. For the following comparison between the two phases, we focus on the tasks that were part of both. The picture that emerges is one of consistency with occasional variability. 
+Supplementary Figure \@ref(fig:ppisum)) shows the predictor ranking and selection across tasks and phases. For the following comparison between the two phases, we focus on the tasks that were part of both. The picture that emerges is one of consistency with occasional variability. 
 
 Inference by exclusion was the most consistent of all tasks, that is, the same predictors were selected to be relevant in both phases (`group`,`time_in_leipzig`, `age`). Furthermore, theses predictors were ranked in the same order. 
 
@@ -4143,7 +4140,7 @@ For direct causal inference, the highest ranked predictor was the same in both p
 
 For quantity discrimination, all predictors that were selected in Phase 1 were also selected in Phase 2 (`time_in_leipzig`, `rearing`, `group`, similar ranking in both Phases), however, Phase 2 two additional -- time point specific -- predictors:`rank` and ``observer`. 
 
-The gaze following task was the only one for which some of the predictors selected in Phase 1 were not selected in Phase 2 (`rearing`, `time_outdoors`, `sociality`, `sick_severity`). However, except for `time_outdoors`, despite not being selected, the ranking of the predictors was similar. The divergence for `time_outdoors` can largely be explained by the initial habituation we saw in gaze following at the beginning of Phase 1 (Figure \@ref(fig:perfplot)) which coincided with a seasonal decline in time spent outdoors (Figure \@ref(fig:glife)). At the beginning of Phase 2, gaze following rates remained low while time spent outdoors was high again. Thus, the result of Phase 1 is likely to be a mere artifact. Overlapping predictors between phases were `group`, `age`, `observer`, and `sex`. The case of `observer` is the only one in which a variable predictor was selected in both phases.
+The gaze following task was the only one for which some of the predictors selected in Phase 1 were not selected in Phase 2 (`rearing`, `time_outdoors`, `sociality`, `sick_severity`). However, except for `time_outdoors`, despite not being selected, the ranking of the predictors was similar. The divergence for `time_outdoors` can largely be explained by the initial habituation we saw in gaze following at the beginning of Phase 1 (Supplementary Figure \@ref(fig:perfplot)) which coincided with a seasonal decline in time spent outdoors (Supplementary Figure \@ref(fig:glife)). At the beginning of Phase 2, gaze following rates remained low while time spent outdoors was high again. Thus, the result of Phase 1 is likely to be a mere artifact. Overlapping predictors between phases were `group`, `age`, `observer`, and `sex`. The case of `observer` is the only one in which a variable predictor was selected in both phases.
 
 The consistency between phases was that for most tasks the predictors selected as relevant in Phase 1 were again selected in Phase 2. This constitutes solid evidence that there is a systematic and consistent relation between performance and these predictors. All predictors that were selected twice capture stable individual differences (`group`, `age`, `time_in_leipzig`, `rearing`), echoing once again the results of the LST models. Variability showed itself in the time point specific variables. There was no overlap in time point specific predictors between Phase 1 and 2. This suggests that cognitive performance *is* influenced by temporal variation in group life, testing arrangements and variable characteristics, the way this happens, however, is either less consistent or less pronounced (or both). 
 
@@ -4157,22 +4154,17 @@ We saw that individual differences in performance were best explained by stable 
 
 Performance was best predicted by variables that captured stable individual characteristics such as group membership, age or experience with research. This aligns well with the stability of individual differences mentioned above. However, the single most important predictor of performance was a term that simply reflected the identity of the individual. This suggests that the -- fairly comprehensive -- set of predictors that we studied here do not fully explain cognitive performance in great apes. Most likely, idiosyncratic developmental processes in combination with genetic pre-dispositions -- which operate on a much longer time-scale -- are the source of these unexplained individual differences.
 
-# References
-
-::: {#refs}
-:::
-
-# Appendix {#appendix}
+# Supplementary Note {#appendix}
 
 ## Analysis and results
 
-### Latent State-Trait models with autoregressive effects (LST-AR)
+### Latent state-trait models with autoregressive effects (LST-AR)
 
 LST-AR models extend LST models by accounting for potential carry-over effects between temporally adjacent observations. The autoregressive effects thereby capture accumulated situational effects, that is, effects of previously experienced situations on subsequent trait levels [@eid2017definition]. For instance, a person that experiences a great success at work at time $t$ may not only show greater job satisfaction as compared to their habitual trait level at that point in time, but an increase in job satisfaction that lasts across a prolonged time period (i.e., change in the habitual trait level at time $t'$ with $t' > t$ due to the positive experience at time $t$). LST-AR models allow us to quantify the temporal predictability of performance based on occasion-specific variance in the previous time points. This is captured in the (autoregressive) predictability coefficient and quantifies how much of the variation in performance can be explained by the variation in the occasion-specific variables at the previous time point (note that the names of the coefficients used here slightly differ from those used in @eid2017definition).
 
 #### Model description
 
-The following model is a restrictive variant of the model described in @eid2017definition. The model is depicted for six measurement time points in Figure \@ref(fig:lstrgraph).
+The following model is a restrictive variant of the model described in @eid2017definition. The model is depicted for six measurement time points in Supplementary Figure \@ref(fig:lstrgraph).
 
 ```{r lstrgraph, engine='tikz', fig.cap="Latent State-Trait model with autoregressive effects for two indicators and six measurement time points. All factor loadings of the latent trait factor $T$ are fixed to 1 (not displayed in the figure)", out.width="35%", fig.align='center'}
 
@@ -4357,12 +4349,12 @@ motar <- tibble(
 ```{r semtar}
 kable(motar, align = c("l", "l", "c", "c"), caption = "Model fit indices for LST-AR models", booktabs=TRUE)%>%
 kable_classic(full_width = F)%>%
-      footnote(c("PPP = Posterior predictive p-value", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values"))
+      footnote(c("PPP = Posterior predictive p-value. Cut-off values (two-tailed): 0.025 and 0.975", "Chi 95% CI = 95%CI of difference between predicted and observed chi-square values"))
 ```
 
-All LST-AR models in Phase 1 and Phase 2 fit the data reasonably well (see Table \@ref(tab:semtar)). The model estimates for consistency, occasion specificity and reliability were largely similar to the LST model models (see Figure \@ref(fig:lstardifplot)). There were some pronounced differences: most notably, the models for the inference by exclusion and quantity discrimination tasks had very high predictability estimates in Phase 2. However, these results should be interpreted with caution. First, the credible intervals for the parameter estimates for consistency and predictability were very wide -- covering the whole range of possible values between 0 and 1 -- suggesting that the model was in fact unable to precisely quantify the two components.
+All LST-AR models in Phase 1 and Phase 2 fit the data reasonably well (see Supplementary Table \@ref(tab:semtar)). The model estimates for consistency, occasion specificity and reliability were largely similar to the LST model models (see Supplementary Figure \@ref(fig:lstardifplot)). There were some pronounced differences: most notably, the models for the inference by exclusion and quantity discrimination tasks had very high predictability estimates in Phase 2. However, these results should be interpreted with caution. First, the credible intervals for the parameter estimates for consistency and predictability were very wide -- covering the whole range of possible values between 0 and 1 -- suggesting that the model was in fact unable to precisely quantify the two components.
 
-More importantly, however, the $\beta$ coefficients that quantify the auto-regressive effect suggest that the models were in fact unidentifiable [see also @ludtke2018more]. The upper bound for $\beta$ is 1 (i.e. 100% of true score variance of $t_i$ is predicted by the residual state variance of $t_{i-1}$) and the 95% CIs for the parameter estimates for the models in question included values that were larger than that (Figure \@ref(fig:lstarbeta)). This was also the case for the direct causal inference model of Phase 2. Because of this issue, and because the unproblematic models did not yield different interpretations from the LST models, we did not use the LST-AR models to interpret the results.
+More importantly, however, the $\beta$ coefficients that quantify the auto-regressive effect suggest that the models were in fact unidentifiable [see also @ludtke2018more]. The upper bound for $\beta$ is 1 (i.e. 100% of true score variance of $t_i$ is predicted by the residual state variance of $t_{i-1}$) and the 95% CIs for the parameter estimates for the models in question included values that were larger than that (Supplementary Figure \@ref(fig:lstarbeta)). This was also the case for the direct causal inference model of Phase 2. Because of this issue, and because the unproblematic models did not yield different interpretations from the LST models, we did not use the LST-AR models to interpret the results.
 
 ```{r}
 lstare<- bind_rows(
@@ -4437,7 +4429,7 @@ plstardif <- ggplot(lstardif,aes(x = param, y = est, col = phase))+
 
 ```
 
-```{r lstardifplot, fig.height = 4, fig.cap = "LSTM-AR estimates for time point 14 for Phase 1 and Phase 2 with 95\\% CI.", out.width="100%"}
+```{r lstardifplot, fig.height = 4, fig.cap = "Posterior means of LSTM-AR estimates for time point 14 for Phase 1 and Phase 2 with 95\\% CrI based on data from N = 43 participants.", out.width="100%"}
 plstardif
 ```
 
@@ -4481,7 +4473,7 @@ pbeta <- ggplot(lstar_beta,aes(x = task, y = est, col = phase))+
     legend.position = c(0.4,0.2), legend.direction = "horizontal", legend.spacing.x = unit(0, 'cm'), legend.spacing.y = unit(0, 'cm'))
 ```
 
-(ref:figlab1) Auto-regressive $\beta$ coefficients for LST-AR models with 95% CI.
+(ref:figlab1) Posterior means of auto-regressive $\beta$ coefficients for LST-AR models with 95% CrI based on data from N = 43 participants.
 
 ```{r lstarbeta, fig.height = 3, fig.width= 10, fig.cap = "(ref:figlab1)", out.width="100%"}
 pbeta
@@ -4516,7 +4508,7 @@ Data were generated and estimated using MPlus 8.4. Data-generating values are ba
 
 ### Simulation results
 
-In the following, the 95% coverage rate, the Relative Parameter Estimation Bias (deviation between average estimate and population parameter divided by the population parameter), the Mean Squared Error, absolute bias, as well as Relative Standard Error Bias are displayed for every simulated model (Figure \@ref(fig:sim1) - \@ref(fig:sim4)). Relative parameter and standard error biases below 0.1 (that is $< 10 \%$) are considered acceptable.
+In the following, the 95% coverage rate, the Relative Parameter Estimation Bias (deviation between average estimate and population parameter divided by the population parameter), the Mean Squared Error, absolute bias, as well as Relative Standard Error Bias are displayed for every simulated model (Supplementary Figure \@ref(fig:sim1) - \@ref(fig:sim4)). Relative parameter and standard error biases below 0.1 (that is $< 10 \%$) are considered acceptable.
 
 Parameters in the latent state models for one construct are estimated accurately, with relative biases below a cutoff of 10% bias and good coverage rates, irrespective of simulating 7 or 5 observed ordered categories for the observed indicators.
 
@@ -4526,7 +4518,7 @@ Latent state-trait models for a combination of two constructs with latent varian
 
 In conclusion, latent state models for one construct (freely estimated variances) as well as latent state-trait models for one or two constructs with state residual variances restricted across time exhibit good estimation performance (low biases, high coverage) and application under the simulated samples size should be feasible in practice.
 
-```{r sim1, fig.height=3.5, fig.cap = "Results of the simulation study for the Latent State (LS) model including one construct with freely estimated latent State variances and covariances, spanning 9 measurement time points. Ordinal indicators were simulated with 5 ordered categories. Boxplots display the distribution of the respective statistic across different parameters of the same parameter type.", out.width="100%"}
+```{r sim1, fig.height=3.5, fig.cap = "Results of the simulation study for the latent state (LS) model including one construct with freely estimated latent state variances and covariances, spanning 9 measurement time points. Simulated sample size was N = 40. Ordinal indicators were simulated with 5 ordered categories. Boxplots display the distribution of the respective statistic across different parameters of the same parameter type. Whiskers show the minimum and the maximum. Red dots show ouliers. The box ranges from the 25\\% to the 75\\% quantile. Black line shows the median.", out.width="100%"}
 psim %>%
   filter(model == "2")%>%
   ggplot(.,aes(x=parameter,y=value, fill = parameter)) + 
@@ -4550,7 +4542,7 @@ psim %>%
   theme(axis.text.x = element_text(angle=45,hjust = 1))
 ```
 
-```{r sim3, fig.height=3.5, fig.cap = "Results of the simulation study for the Latent State (LS) model including one construct with freely estimated latent State variances and covariances, spanning 9 measurement time points. Ordinal indicators were simulated with 7 ordered categories. Boxplots display the distribution of the respective statistic across different parameters of the same parameter type.", out.width="100%"}
+```{r sim3, fig.height=3.5, fig.cap = "Results of the simulation study for the latent state (LS) model including one construct with freely estimated latent atate variances and covariances, spanning 9 measurement time points. Simulated sample size was N = 40. Ordinal indicators were simulated with 7 ordered categories. Boxplots display the distribution of the respective statistic across different parameters of the same parameter type. Whiskers show the minimum and the maximum. Red dots show ouliers. The box ranges from the 25\\% to the 75\\% quantile. Black line shows the median.", out.width="100%"}
 psim %>%
   filter(model == "3")%>%
   ggplot(.,aes(x=parameter,y=value, fill = parameter)) + 
@@ -4575,7 +4567,7 @@ psim %>%
 
 ```
 
-```{r sim7, fig.height=3.5, fig.cap = " Results of the simulation study for the Latent State-Trait (LST) model including one construct with latent state residual variances fixed to be equal across time, spanning 9 measurement time points. MPlus default priors. Ordinal indicators were simulated with 7 ordered categories. Boxplots display the distribution of the respective statistic across different parameters of the same parameter type.", out.width="100%"}
+```{r sim7, fig.height=3.5, fig.cap = " Results of the simulation study for the latent state-trait (LST) model including one construct with latent state residual variances fixed to be equal across time, spanning 9 measurement time points. Simulated sample size was N = 40. MPlus default priors. Ordinal indicators were simulated with 7 ordered categories. Boxplots display the distribution of the respective statistic across different parameters of the same parameter type. Whiskers show the minimum and the maximum. Red dots show ouliers. The box ranges from the 25\\% to the 75\\% quantile. Black line shows the median.", out.width="100%"}
 psim %>%
   filter(model == "7")%>%
   ggplot(.,aes(x=parameter,y=value, fill = parameter)) + 
@@ -4600,7 +4592,7 @@ psim %>%
 
 ```
 
-```{r sim6, fig.height=3.5, fig.cap = "Results of the simulation study for the Latent State-Trait (LST) model including one construct with latent state residual variances fixed to be equal across time, spanning 9 measurement time points. Inverse gamma priors IG(0.001,0.001) for all variances. Ordinal indicators were simulated with 7 ordered categories. Boxplots display the distribution of the respective statistic across different parameters of the same parameter type.", out.width="100%"}
+```{r sim6, fig.height=3.5, fig.cap = "Results of the simulation study for the latent state-trait (LST) model including one construct with latent state residual variances fixed to be equal across time, spanning 9 measurement time points. Simulated sample size was N = 40. Inverse gamma priors IG(0.001,0.001) for all variances. Ordinal indicators were simulated with 7 ordered categories. Boxplots display the distribution of the respective statistic across different parameters of the same parameter type. Whiskers show the minimum and the maximum. Red dots show ouliers. The box ranges from the 25\\% to the 75\\% quantile. Black line shows the median.", out.width="100%"}
 psim %>%
   filter(model == "6")%>%
   ggplot(.,aes(x=parameter,y=value, fill = parameter)) + 
@@ -4625,7 +4617,7 @@ psim %>%
 
 ```
 
-```{r sim8, fig.height=3.5, fig.cap = "Results of the simulation study for the Latent State-Trait (LST) model including one construct with latent state residual variances freely estimates across time, spanning 9 measurement time points. Ordinal indicators were simulated with 7 ordered categories. Boxplots display the distribution of the respective statistic across different parameters of the same parameter type.", out.width="100%"}
+```{r sim8, fig.height=3.5, fig.cap = "Results of the simulation study for the latent state-trait (LST) model including one construct with latent state residual variances freely estimates across time, spanning 9 measurement time points. Simulated sample size was N = 40. Ordinal indicators were simulated with 7 ordered categories. Boxplots display the distribution of the respective statistic across different parameters of the same parameter type. Whiskers show the minimum and the maximum. Red dots show ouliers. The box ranges from the 25\\% to the 75\\% quantile. Black line shows the median.", out.width="100%"}
 psim %>%
   filter(model == "8")%>%
   ggplot(.,aes(x=parameter,y=value, fill = parameter)) + 
@@ -4650,7 +4642,7 @@ psim %>%
 
 ```
 
-```{r sim9, fig.height=3.5, fig.cap = "Results of the simulation study for the Latent State-Trait (LST) model including one construct with latent state residual variances freely estimates across time, spanning 9 measurement time points. Inverse gamma priors IG(0.001,0.001) for all variances. Ordinal indicators were simulated with 7 ordered categories. Boxplots display the distribution of the respective statistic across different parameters of the same parameter type.", out.width="100%"}
+```{r sim9, fig.height=3.5, fig.cap = "Results of the simulation study for the latent state-trait (LST) model including one construct with latent state residual variances freely estimates across time, spanning 9 measurement time points. Simulated sample size was N = 40. Inverse gamma priors IG(0.001,0.001) for all variances. Ordinal indicators were simulated with 7 ordered categories. Boxplots display the distribution of the respective statistic across different parameters of the same parameter type. Whiskers show the minimum and the maximum. Red dots show ouliers. The box ranges from the 25\\% to the 75\\% quantile. Black line shows the median.", out.width="100%"}
 psim %>%
   filter(model == "9")%>%
   ggplot(.,aes(x=parameter,y=value, fill = parameter)) + 
@@ -4675,7 +4667,7 @@ psim %>%
 
 ```
 
-```{r sim2, fig.height=3.5, fig.cap = "Results of the simulation study for the Latent State model including two constructs with latent state variances freely estimates across time, spanning 9 measurement time points. Ordinal indicators were simulated with 7 ordered categories. Boxplots display the distribution of the respective statistic across different parameters of the same parameter type.", out.width="100%"}
+```{r sim2, fig.height=3.5, fig.cap = "Results of the simulation study for the latent state model including two constructs with latent state variances freely estimates across time, spanning 9 measurement time points. Simulated sample size was N = 40. Ordinal indicators were simulated with 7 ordered categories. Boxplots display the distribution of the respective statistic across different parameters of the same parameter type. Whiskers show the minimum and the maximum. Red dots show ouliers. The box ranges from the 25\\% to the 75\\% quantile. Black line shows the median.", out.width="100%"}
 psim %>%
   filter(model == "1")%>%
   ggplot(.,aes(x=parameter,y=value, fill = parameter)) + 
@@ -4700,7 +4692,7 @@ psim %>%
 
 ```
 
-```{r sim5, fig.height=3.5, fig.cap = "Results of the simulation study for the Latent State-Trait (LST) model including two constructs with free latent state residual variances across time, spanning 9 measurement time points. Ordinal indicators were simulated with 7 ordered categories. Boxplots display the distribution of the respective statistic across different parameters of the same parameter type.", out.width="100%"}
+```{r sim5, fig.height=3.5, fig.cap = "Results of the simulation study for the latent state-trait (LST) model including two constructs with free latent state residual variances across time, spanning 9 measurement time points. Simulated sample size was N = 40. Ordinal indicators were simulated with 7 ordered categories. Boxplots display the distribution of the respective statistic across different parameters of the same parameter type. Whiskers show the minimum and the maximum. Red dots show ouliers. The box ranges from the 25\\% to the 75\\% quantile. Black line shows the median.", out.width="100%"}
 psim %>%
   filter(model == "5")%>%
   ggplot(.,aes(x=parameter,y=value, fill = parameter)) + 
@@ -4725,7 +4717,7 @@ psim %>%
 
 ```
 
-```{r sim4, fig.height=3.5, fig.cap = "Results of the simulation study for the Latent State-Trait (LST) model including two constructs with fixed latent state residual variances across time, spanning 9 measurement time points. Ordinal indicators were simulated with 7 ordered categories. Boxplots display the distribution of the respective statistic across different parameters of the same parameter type.", out.width="100%"}
+```{r sim4, fig.height=3.5, fig.cap = "Results of the simulation study for the latent state-trait (LST) model including two constructs with fixed latent state residual variances across time, spanning 9 measurement time points. Simulated sample size was N = 40. Ordinal indicators were simulated with 7 ordered categories. Boxplots display the distribution of the respective statistic across different parameters of the same parameter type. Whiskers show the minimum and the maximum. Red dots show ouliers. The box ranges from the 25\\% to the 75\\% quantile. Black line shows the median.", out.width="100%"}
 psim %>%
   filter(model == "4")%>%
   ggplot(.,aes(x=parameter,y=value, fill = parameter)) + 
@@ -4749,3 +4741,10 @@ psim %>%
   theme(axis.text.x = element_text(angle=45,hjust = 1))
 
 ```
+
+\newpage
+
+# Supplementary References
+
+::: {#refs}
+:::
